@@ -57,8 +57,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="ImposterTests.cs" />
+    <Compile Include="Models\ImposterTests.cs" />
     <Compile Include="MountebankClientTests.cs" />
+    <Compile Include="MountebankRequestProxyTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
