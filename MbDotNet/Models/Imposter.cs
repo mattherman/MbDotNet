@@ -3,7 +3,6 @@ using System.Net;
 using MbDotNet.Enums;
 using MbDotNet.Exceptions;
 using MbDotNet.Interfaces;
-using MbDotNet.RequestModels;
 using Newtonsoft.Json;
 using RestSharp;
 
@@ -11,10 +10,17 @@ namespace MbDotNet
 {
     public class Imposter : IImposter
     {
+        [JsonProperty("port")]
         public virtual int Port { get; private set; }
-        public virtual Protocol Protocol { get; private set; }
+
+        [JsonProperty("protocol")]
+        public virtual string Protocol { get; private set; }
+
+        [JsonIgnore]
         public virtual bool PendingSubmission { get; private set; }
-        public ICollection<Response> Responses { get; private set; }
+
+        [JsonProperty("stubs")]
+        public ICollection<Stub> Stubs { get; private set; } 
 
         private readonly IRestClient _client;
 
@@ -23,33 +29,24 @@ namespace MbDotNet
         public Imposter(int port, Protocol protocol, IRestClient client)
         {
             Port = port;
-            Protocol = protocol;
+            Protocol = protocol.ToString().ToLower();
             PendingSubmission = true;
 
             _client = client;
 
-            Responses = new List<Response>();
+            Stubs = new List<Stub>();
         }
 
-        public Imposter Returns(HttpStatusCode statusCode)
+        public Stub AddStub()
         {
-            Returns(statusCode, null);
-
-            return this;
-        }
-
-        public Imposter Returns(HttpStatusCode statusCode, object responseObject)
-        {
-            var response = new Response(statusCode, responseObject);
-            Responses.Add(response);
-
-            return this;
+            var stub = new Stub();
+            Stubs.Add(stub);
+            return stub;
         }
 
         public void Submit()
         {
-            var request = new ImposterContract(this);
-            SendCreateImposterRequest(request);
+            SendCreateImposterRequest(this);
             PendingSubmission = false;
         }
 
@@ -61,7 +58,7 @@ namespace MbDotNet
             }
         }
 
-        private void SendCreateImposterRequest(ImposterContract requestObject)
+        private void SendCreateImposterRequest(Imposter requestObject)
         {
             var request = new RestRequest("imposters", Method.POST);
 

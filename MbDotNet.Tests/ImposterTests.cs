@@ -2,7 +2,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MbDotNet.Enums;
 using MbDotNet.Exceptions;
-using MbDotNet.Interfaces;
 using Moq;
 using RestSharp;
 
@@ -39,9 +38,8 @@ namespace MbDotNet.Tests
         [TestMethod]
         public void Constructor_SetsProtocol()
         {
-            var protocol = Protocol.Http;
-            var imposter = new Imposter(123, protocol);
-            Assert.AreEqual(protocol, imposter.Protocol);
+            var imposter = new Imposter(123, Protocol.Http);
+            Assert.AreEqual("http", imposter.Protocol);
         }
 
         [TestMethod]
@@ -60,9 +58,10 @@ namespace MbDotNet.Tests
         {
             _mockRestClient.Setup(x => x.Execute(It.IsAny<IRestRequest>())).Returns(new RestResponse { StatusCode = HttpStatusCode.Created });
 
-            _imposter.Submit();
+            var imposter = new Imposter(123, Protocol.Http, _mockRestClient.Object);
+            imposter.Submit();
 
-            Assert.IsFalse(_imposter.PendingSubmission);
+            Assert.IsFalse(imposter.PendingSubmission);
         }
 
         [TestMethod]
@@ -72,10 +71,11 @@ namespace MbDotNet.Tests
             _mockRestClient.Setup(x => x.Execute(It.IsAny<IRestRequest>()))
                 .Callback<IRestRequest>(r => request = r).Returns(new RestResponse { StatusCode = HttpStatusCode.Created });
 
-            _imposter.Submit();
+            var imposter = new Imposter(123, Protocol.Http, _mockRestClient.Object);
+            imposter.Submit();
 
-            Assert.IsTrue(request.Parameters[0].ToString().Contains(_imposter.Port.ToString()));
-            Assert.IsTrue(request.Parameters[0].ToString().Contains(_imposter.Protocol.ToString().ToLower()));
+            Assert.IsTrue(request.Parameters[0].ToString().Contains(imposter.Port.ToString()));
+            Assert.IsTrue(request.Parameters[0].ToString().Contains(imposter.Protocol.ToLower()));
         }
 
         [TestMethod]
@@ -85,7 +85,8 @@ namespace MbDotNet.Tests
 
             try
             {
-                _imposter.Submit();
+                var imposter = new Imposter(123, Protocol.Http, _mockRestClient.Object);
+                imposter.Submit();
                 Assert.Fail("Expected MountebankException to be thrown.");
             }
             catch (MountebankException)

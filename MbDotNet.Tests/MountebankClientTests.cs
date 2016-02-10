@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Linq;
+using System.Net;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MbDotNet.Enums;
 using MbDotNet.Interfaces;
@@ -129,7 +130,8 @@ namespace MbDotNet.Tests
         {
             _client.DeleteAllImposters();
             var testObj = new {Status = "Available", Name = "Test"};
-            _client.CreateImposter(5738, Protocol.Http).Returns(HttpStatusCode.OK, testObj).Submit();
+            _client.CreateImposter(5738, Protocol.Http).AddStub().Returns(HttpStatusCode.OK, testObj);
+            _client.Imposters.First().Submit();
         }
     }
 }

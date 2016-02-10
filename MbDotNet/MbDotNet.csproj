@@ -48,16 +48,23 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Enums\Protocol.cs" />
     <Compile Include="Exceptions\MountebankException.cs" />
-    <Compile Include="Imposter.cs" />
+    <Compile Include="Interfaces\IPredicate.cs" />
+    <Compile Include="Models\Imposter.cs" />
     <Compile Include="Interfaces\IClient.cs" />
     <Compile Include="Interfaces\IImposter.cs" />
+    <Compile Include="Interfaces\IResponse.cs" />
+    <Compile Include="Interfaces\IStub.cs" />
+    <Compile Include="Models\Predicates\EqualsPredicateDetail.cs" />
+    <Compile Include="Models\Responses\InjectResponse.cs" />
+    <Compile Include="Models\Responses\InjectResponseDetail.cs" />
+    <Compile Include="Models\Responses\IsResponse.cs" />
+    <Compile Include="Models\Responses\IsResponseDetail.cs" />
+    <Compile Include="Models\Responses\ProxyResponse.cs" />
+    <Compile Include="Models\Responses\ProxyResponseDetail.cs" />
     <Compile Include="MountebankClient.cs" />
+    <Compile Include="Models\Predicates\EqualsPredicate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RequestContracts\ImposterContract.cs" />
-    <Compile Include="RequestContracts\ResponseContract.cs" />
-    <Compile Include="RequestContracts\ResponseDetailContract.cs" />
-    <Compile Include="RequestContracts\StubContract.cs" />
-    <Compile Include="Response.cs" />
+    <Compile Include="Models\Stub.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
