@@ -45,10 +45,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constants.cs" />
     <Compile Include="Enums\Protocol.cs" />
     <Compile Include="Exceptions\MountebankException.cs" />
     <Compile Include="Interfaces\IPredicate.cs" />
+    <Compile Include="Interfaces\IRequestProxy.cs" />
     <Compile Include="Models\Imposter.cs" />
     <Compile Include="Interfaces\IClient.cs" />
     <Compile Include="Interfaces\IImposter.cs" />
@@ -63,6 +63,7 @@
     <Compile Include="Models\Responses\ProxyResponseDetail.cs" />
     <Compile Include="MountebankClient.cs" />
     <Compile Include="Models\Predicates\EqualsPredicate.cs" />
+    <Compile Include="MountebankRequestProxy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\Stub.cs" />
   </ItemGroup>

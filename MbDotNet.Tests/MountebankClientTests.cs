@@ -11,11 +11,13 @@ namespace MbDotNet.Tests
     public class MountebankClientTests
     {
         private IClient _client;
+        private Mock<IRequestProxy> _mockRequestProxy;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            _client = new MountebankClient();
+            _mockRequestProxy = new Mock<IRequestProxy>();
+            _client = new MountebankClient(_mockRequestProxy.Object);
         }
 
         [TestMethod]
@@ -26,36 +28,44 @@ namespace MbDotNet.Tests
         }
 
         [TestMethod]
-        public void SubmitAll_SubmitsAllPendingImposters()
+        public void Submit_CallsSubmitOnAllPendingImposters()
         {
-            var firstMockPendingImposter = new Mock<IImposter>();
-            firstMockPendingImposter.SetupGet(x => x.PendingSubmission).Returns(true);
-            firstMockPendingImposter.Setup(x => x.Submit());
+            const int firstPortNumber = 123;
+            const int secondPortNumber = 456;
 
-            var secondMockPendingImposter = new Mock<IImposter>();
-            secondMockPendingImposter.SetupGet(x => x.PendingSubmission).Returns(true);
-            secondMockPendingImposter.Setup(x => x.Submit());
+            _client.Imposters.Add(new Imposter(firstPortNumber, Protocol.Http));
+            _client.Imposters.Add(new Imposter(secondPortNumber, Protocol.Http));
 
-            _client.Imposters.Add(firstMockPendingImposter.Object);
-            _client.Imposters.Add(secondMockPendingImposter.Object);
+            _mockRequestProxy.Setup(x => x.CreateImposter(It.Is<IImposter>(imp => imp.Port == firstPortNumber)));
+            _mockRequestProxy.Setup(x => x.CreateImposter(It.Is<IImposter>(imp => imp.Port == secondPortNumber)));
 
-            _client.SubmitAll();
+            _client.Submit();
 
-            firstMockPendingImposter.Verify(x => x.Submit());
-            secondMockPendingImposter.Verify(x => x.Submit());
+            _mockRequestProxy.Verify(x => x.CreateImposter(It.Is<IImposter>(imp => imp.Port == firstPortNumber)), Times.Once);
+            _mockRequestProxy.Verify(x => x.CreateImposter(It.Is<IImposter>(imp => imp.Port == secondPortNumber)), Times.Once);
         }
 
         [TestMethod]
-        public void SubmitAll_DoesNotSubmitNonPendingImposters()
+        public void Submit_SetsPendingSubmissionFalse()
+        {
+            _client.Imposters.Add(new Imposter(8080, Protocol.Http));
+
+            _client.Submit();
+
+            Assert.IsFalse(_client.Imposters.First().PendingSubmission);
+        }
+
+        [TestMethod]
+        public void Submit_DoesNotSubmitNonPendingImposters()
         {
             var mockImposter = new Mock<IImposter>();
             mockImposter.SetupGet(x => x.PendingSubmission).Returns(false);
 
             _client.Imposters.Add(mockImposter.Object);
 
-            _client.SubmitAll();
+            _client.Submit();
 
-            mockImposter.Verify(x => x.Submit(), Times.Never);
+            _mockRequestProxy.Verify(x => x.CreateImposter(It.IsAny<IImposter>()), Times.Never);
         }
 
         [TestMethod]
@@ -63,15 +73,13 @@ namespace MbDotNet.Tests
         {
             const int port = 8080;
 
-            var mockImposter = new Mock<IImposter>();
-            mockImposter.SetupGet(x => x.Port).Returns(port);
-            mockImposter.Setup(x => x.Delete());
+            _client.Imposters.Add(new Imposter(port, Protocol.Http));
 
-            _client.Imposters.Add(mockImposter.Object);
+            _mockRequestProxy.Setup(x => x.DeleteImposter(port));
 
             _client.DeleteImposter(port);
 
-            mockImposter.Verify(x => x.Delete(), Times.Once);
+            _mockRequestProxy.Verify(x => x.DeleteImposter(port), Times.Once);
         }
 
         [TestMethod]
@@ -79,11 +87,7 @@ namespace MbDotNet.Tests
         {
             const int port = 8080;
 
-            var mockImposter = new Mock<IImposter>();
-            mockImposter.SetupGet(x => x.Port).Returns(port);
-            mockImposter.Setup(x => x.Delete());
-
-            _client.Imposters.Add(mockImposter.Object);
+            _client.Imposters.Add(new Imposter(port, Protocol.Http));
 
             _client.DeleteImposter(port);
 
@@ -91,34 +95,25 @@ namespace MbDotNet.Tests
         }
 
         [TestMethod]
-        public void DeleteAllImposters_CallsDeleteOnAllImposters()
+        public void DeleteAllImposters_CallsDeleteAll()
         {
-            var firstMockPendingImposter = new Mock<IImposter>();
-            firstMockPendingImposter.Setup(x => x.Delete());
+            _mockRequestProxy.Setup(x => x.DeleteAllImposters());
 
-            var secondMockPendingImposter = new Mock<IImposter>();
-            secondMockPendingImposter.Setup(x => x.Delete());
-
-            _client.Imposters.Add(firstMockPendingImposter.Object);
-            _client.Imposters.Add(secondMockPendingImposter.Object);
+            _client.Imposters.Add(new Imposter(123, Protocol.Http));
+            _client.Imposters.Add(new Imposter(456, Protocol.Tcp));
 
             _client.DeleteAllImposters();
 
-            firstMockPendingImposter.Verify(x => x.Delete(), Times.Once);
-            secondMockPendingImposter.Verify(x => x.Delete(), Times.Once);
+            _mockRequestProxy.Verify(x => x.DeleteAllImposters(), Times.Once);
         }
 
         [TestMethod]
         public void DeleteAllImposters_RemovesAllImpostersFromCollection()
         {
-            var firstMockPendingImposter = new Mock<IImposter>();
-            firstMockPendingImposter.Setup(x => x.Delete());
+            _mockRequestProxy.Setup(x => x.DeleteAllImposters());
 
-            var secondMockPendingImposter = new Mock<IImposter>();
-            secondMockPendingImposter.Setup(x => x.Delete());
-
-            _client.Imposters.Add(firstMockPendingImposter.Object);
-            _client.Imposters.Add(secondMockPendingImposter.Object);
+            _client.Imposters.Add(new Imposter(123, Protocol.Http));
+            _client.Imposters.Add(new Imposter(456, Protocol.Tcp));
 
             _client.DeleteAllImposters();
 
@@ -129,9 +124,11 @@ namespace MbDotNet.Tests
         public void Test()
         {
             _client.DeleteAllImposters();
+
             var testObj = new {Status = "Available", Name = "Test"};
             _client.CreateImposter(5738, Protocol.Http).AddStub().Returns(HttpStatusCode.OK, testObj);
-            _client.Imposters.First().Submit();
+
+            _client.Submit();
         }
     }
 }

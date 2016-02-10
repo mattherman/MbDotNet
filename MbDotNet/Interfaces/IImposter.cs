@@ -6,10 +6,8 @@ namespace MbDotNet.Interfaces
     {
         int Port { get; }
         string Protocol { get; }
-        bool PendingSubmission { get; }
+        bool PendingSubmission { get; set; }
 
         Stub AddStub();
-        void Submit();
-        void Delete();
     }
 }

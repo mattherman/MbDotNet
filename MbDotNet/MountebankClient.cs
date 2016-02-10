@@ -7,12 +7,17 @@ namespace MbDotNet
 {
     public class MountebankClient : IClient
     {
-        public MountebankClient()
-        {
-            Imposters = new List<IImposter>();
-        }
+        private readonly IRequestProxy _requestProxy;
 
         public ICollection<IImposter> Imposters { get; private set; }
+
+        public MountebankClient() : this(new MountebankRequestProxy()) { }
+
+        public MountebankClient(IRequestProxy requestProxy)
+        {
+            Imposters = new List<IImposter>();
+            _requestProxy = requestProxy;
+        }
 
         public IImposter CreateImposter(int port, Protocol protocol)
         {
@@ -27,26 +32,23 @@ namespace MbDotNet
 
             if (imposter != null)
             {
-                imposter.Delete();
+                _requestProxy.DeleteImposter(port);
                 Imposters.Remove(imposter);
             }
         }
 
         public void DeleteAllImposters()
         {
-            foreach (var imposter in Imposters)
-            {
-                imposter.Delete();
-            }
-
+            _requestProxy.DeleteAllImposters();
             Imposters = new List<IImposter>();
         }
 
-        public void SubmitAll()
+        public void Submit()
         {
             foreach (var imposter in Imposters.Where(imp => imp.PendingSubmission))
             {
-                imposter.Submit();
+                _requestProxy.CreateImposter(imposter);
+                imposter.PendingSubmission = false;
             }
         }
     }

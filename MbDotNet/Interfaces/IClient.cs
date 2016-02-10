@@ -10,6 +10,6 @@ namespace MbDotNet.Interfaces
         IImposter CreateImposter(int port, Protocol protocol);
         void DeleteImposter(int port);
         void DeleteAllImposters();
-        void SubmitAll();
+        void Submit();
     }
 }
