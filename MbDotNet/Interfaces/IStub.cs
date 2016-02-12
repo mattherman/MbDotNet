@@ -7,7 +7,9 @@ namespace MbDotNet.Interfaces
     {
         ICollection<IResponse> Responses { get; }
 
-        IStub Returns(HttpStatusCode statusCode);
-        IStub Returns(HttpStatusCode statusCode, object responseObject);
+        IStub ReturnsStatus(HttpStatusCode statusCode);
+        IStub ReturnsJson(HttpStatusCode statusCode, object responseObject);
+        IStub ReturnsXml(HttpStatusCode statusCode, object responseObject);
+        IStub Returns(IResponse response);
     }
 }

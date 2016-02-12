@@ -1,6 +1,4 @@
-﻿using MbDotNet.Enums;
-
-namespace MbDotNet.Interfaces
+﻿namespace MbDotNet.Interfaces
 {
     public interface IImposter
     {
@@ -8,6 +6,6 @@ namespace MbDotNet.Interfaces
         string Protocol { get; }
         bool PendingSubmission { get; set; }
 
-        Stub AddStub();
+        IStub AddStub();
     }
 }

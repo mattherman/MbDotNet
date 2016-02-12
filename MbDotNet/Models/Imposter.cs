@@ -17,7 +17,7 @@ namespace MbDotNet
         public virtual bool PendingSubmission { get; set; }
 
         [JsonProperty("stubs")]
-        public ICollection<Stub> Stubs { get; private set; }
+        public ICollection<IStub> Stubs { get; private set; }
 
         public Imposter(int port, Protocol protocol)
         {
@@ -25,10 +25,10 @@ namespace MbDotNet
             Protocol = protocol.ToString().ToLower();
             PendingSubmission = true;
 
-            Stubs = new List<Stub>();
+            Stubs = new List<IStub>();
         }
 
-        public Stub AddStub()
+        public IStub AddStub()
         {
             var stub = new Stub();
             Stubs.Add(stub);

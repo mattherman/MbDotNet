@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using MbDotNet.Interfaces;
 using Newtonsoft.Json;
 
 namespace MbDotNet
 {
-    public class Stub
+    public class Stub : IStub
     {
         [JsonProperty("responses")]
         public ICollection<IResponse> Responses { get; private set; }
@@ -20,18 +20,26 @@ namespace MbDotNet
             Predicates = new List<IPredicate>();
         }
 
-        public Stub Returns(HttpStatusCode statusCode)
+        public IStub ReturnsStatus(HttpStatusCode statusCode)
         {
-            Returns(statusCode, null);
-
-            return this;
+            var response = new IsResponse(statusCode);
+            return Returns(response);
         }
 
-        public Stub Returns(HttpStatusCode statusCode, object responseObject)
+        public IStub ReturnsJson(HttpStatusCode statusCode, object responseObject)
         {
             var response = new IsResponse(statusCode, responseObject);
-            Responses.Add(response);
+            return Returns(response);
+        }
 
+        public IStub ReturnsXml(HttpStatusCode statusCode, object responseObject)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IStub Returns(IResponse response)
+        {
+            Responses.Add(response);
             return this;
         }
     }

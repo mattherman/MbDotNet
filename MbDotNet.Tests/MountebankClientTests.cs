@@ -128,7 +128,7 @@ namespace MbDotNet.Tests
             client.DeleteAllImposters();
 
             var testObj = new {Status = "Available", Name = "Test"};
-            client.CreateImposter(5738, Protocol.Http).AddStub().Returns(HttpStatusCode.OK, testObj);
+            client.CreateImposter(5738, Protocol.Http).AddStub().ReturnsJson(HttpStatusCode.OK, testObj);
 
             client.Submit();
         }

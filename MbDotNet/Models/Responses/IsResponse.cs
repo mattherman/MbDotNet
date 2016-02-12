@@ -7,7 +7,10 @@ namespace MbDotNet
     public class IsResponse : IResponse
     {
         [JsonProperty("is")] 
-        private IsResponseDetail _detail;
+        private readonly IsResponseDetail _detail;
+
+        public HttpStatusCode StatusCode { get { return _detail.StatusCode; } }
+        public object ResponseObject { get { return _detail.ResponseObject; } }
 
         public IsResponse(HttpStatusCode statusCode) : this(statusCode, null) { }
 
