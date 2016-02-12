@@ -40,7 +40,7 @@ namespace MbDotNet.Tests.Models
             const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
 
             var stub = new Stub();
-            stub.ReturnsJson(expectedStatusCode, null);
+            stub.ReturnsJson(expectedStatusCode, "test");
 
             var response = stub.Responses.First() as IsResponse;
             Assert.AreEqual(expectedStatusCode, response.StatusCode);
@@ -66,6 +66,40 @@ namespace MbDotNet.Tests.Models
 
             var response = stub.Responses.First() as IsResponse;
             Assert.AreEqual("application/json", response.Headers["Content-Type"]);
+        }
+
+        [TestMethod]
+        public void ReturnsXml_AddsResponse_StatusCodeSet()
+        {
+            const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
+
+            var stub = new Stub();
+            stub.ReturnsXml(expectedStatusCode, "test");
+
+            var response = stub.Responses.First() as IsResponse;
+            Assert.AreEqual(expectedStatusCode, response.StatusCode);
+        }
+
+        [TestMethod]
+        public void ReturnsXml_AddsResponse_ResponseObjectSerializedAndSet()
+        {
+            const string expectedResponseObject = "<string>Test Response</string>";
+
+            var stub = new Stub();
+            stub.ReturnsXml(HttpStatusCode.OK, "Test Response");
+
+            var response = stub.Responses.First() as IsResponse;
+            Assert.IsTrue(response.ResponseObject.ToString().Contains(expectedResponseObject));
+        }
+
+        [TestMethod]
+        public void ReturnsXml_AddsResponse_ContentTypeHeaderSet()
+        {
+            var stub = new Stub();
+            stub.ReturnsXml(HttpStatusCode.OK, "test");
+
+            var response = stub.Responses.First() as IsResponse;
+            Assert.AreEqual("application/xml", response.Headers["Content-Type"]);
         }
 
         [TestMethod]

@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MbDotNet.Enums;
@@ -134,8 +136,8 @@ namespace MbDotNet.Tests
 
             client.DeleteAllImposters();
 
-            var testObj = new {Status = "Available", Name = "Test"};
-            client.CreateImposter(5738, Protocol.Http).AddStub().ReturnsJson(HttpStatusCode.OK, testObj);
+            var responseObject = new {Name = "Ten", Value = 10};
+            client.CreateImposter(5738, Protocol.Http).AddStub().ReturnsJson(HttpStatusCode.OK, responseObject);
 
             client.Submit();
         }

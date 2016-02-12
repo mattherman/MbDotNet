@@ -1,6 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Net;
+using System.Xml;
+using System.Xml.Serialization;
 using MbDotNet.Interfaces;
 using Newtonsoft.Json;
 
@@ -26,7 +28,7 @@ namespace MbDotNet
             return Returns(response);
         }
 
-        public IStub ReturnsJson(HttpStatusCode statusCode, object responseObject)
+        public IStub ReturnsJson<T>(HttpStatusCode statusCode, T responseObject)
         {
             var headers = new Dictionary<string, string>
             {
@@ -37,14 +39,29 @@ namespace MbDotNet
             return Returns(response);
         }
 
-        public IStub ReturnsXml(HttpStatusCode statusCode, object responseObject)
+        public IStub ReturnsXml<T>(HttpStatusCode statusCode, T responseObject)
         {
             var headers = new Dictionary<string, string>
             {
                 {"Content-Type", "application/xml"}
             };
 
-            throw new NotImplementedException();
+            var responseObjectXml = ConvertResponseObjectToXml(responseObject);
+
+            var response = new IsResponse(statusCode, responseObjectXml, headers);
+            return Returns(response);
+        }
+
+        private static string ConvertResponseObjectToXml<T>(T objectToSerialize)
+        {
+            var serializer = new XmlSerializer(typeof(T));
+            var stringWriter = new StringWriter();
+
+            using (var writer = XmlWriter.Create(stringWriter))
+            {
+                serializer.Serialize(writer, objectToSerialize);
+                return stringWriter.ToString();
+            }
         }
 
         public IStub Returns(IResponse response)
