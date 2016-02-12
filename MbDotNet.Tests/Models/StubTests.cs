@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -60,7 +61,8 @@ namespace MbDotNet.Tests.Models
         [TestMethod]
         public void Returns_AddsResponse()
         {
-            var expectedResponse = new IsResponse(HttpStatusCode.OK, "Test Response", null);
+            var expectedResponse = new IsResponse(HttpStatusCode.OK, "Test Response",
+                new Dictionary<string, string> {{"Content-Type", "application/json"}});
 
             var stub = new Stub();
             stub.Returns(expectedResponse);

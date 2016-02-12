@@ -10,11 +10,16 @@ namespace MbDotNet
         [JsonProperty("is")] 
         private readonly IsResponseDetail _detail;
 
+        [JsonIgnore]
         public HttpStatusCode StatusCode { get { return _detail.StatusCode; } }
-        public object ResponseObject { get { return _detail.ResponseObject; } }
-        public ICollection<KeyValuePair<string, string>> Headers { get { return _detail.Headers; } } 
 
-        public IsResponse(HttpStatusCode statusCode, object responseObject, ICollection<KeyValuePair<string, string>> headers)
+        [JsonIgnore]
+        public object ResponseObject { get { return _detail.ResponseObject; } }
+
+        [JsonIgnore]
+        public Dictionary<string, string> Headers { get { return _detail.Headers; } }
+
+        public IsResponse(HttpStatusCode statusCode, object responseObject, Dictionary<string, string> headers)
         {
             _detail = new IsResponseDetail
             {
@@ -33,7 +38,7 @@ namespace MbDotNet
             public object ResponseObject { get; set; }
 
             [JsonProperty("headers")]
-            public ICollection<KeyValuePair<string, string>> Headers { get; set; } 
+            public Dictionary<string, string> Headers { get; set; } 
         }
     }
 }

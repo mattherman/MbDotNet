@@ -32,11 +32,10 @@ namespace MbDotNet.Tests.Models.Responses
         [TestMethod]
         public void Constructor_SetsHeaders()
         {
-            var expectedHeaders =
-                new List<KeyValuePair<string, string>>
-                {
-                    new KeyValuePair<string, string>("Content-Type", "application/json")
-                };
+            var expectedHeaders = new Dictionary<string, string>
+            {
+                {"Content-Type", "application/json"}
+            };
 
             var response = new IsResponse(HttpStatusCode.Created, null, expectedHeaders);
             Assert.AreEqual(expectedHeaders, response.Headers);
