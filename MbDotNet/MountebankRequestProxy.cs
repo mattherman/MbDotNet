@@ -10,6 +10,7 @@ namespace MbDotNet
     {
         private readonly IRestClient _client;
         private const string MountebankUrl = "http://matt-laptop:2525"; //"http://127.0.0.1:2525";
+        private const string ImpostersResource = "imposters";
 
         public MountebankRequestProxy() : this(new RestClient(MountebankUrl)) {}
         public MountebankRequestProxy(IRestClient client)
@@ -19,21 +20,21 @@ namespace MbDotNet
 
         public void DeleteAllImposters()
         {
-            var request = new RestRequest("imposters", Method.DELETE);
+            var request = new RestRequest(ImpostersResource, Method.DELETE);
 
             ExecuteRequestAndCheckStatusCode(request, HttpStatusCode.OK, "Failed to delete the imposters.");
         }
 
         public void DeleteImposter(int port)
         {
-            var request = new RestRequest(string.Format("imposters/{0}", port), Method.DELETE);
+            var request = new RestRequest(string.Format("{0}/{1}", ImpostersResource, port), Method.DELETE);
 
             ExecuteRequestAndCheckStatusCode(request, HttpStatusCode.OK, string.Format("Failed to delete the imposter with port {0}.", port));
         }
 
         public void CreateImposter(IImposter imposter)
         {
-            var request = new RestRequest("imposters", Method.POST);
+            var request = new RestRequest(ImpostersResource, Method.POST);
 
             var json = JsonConvert.SerializeObject(imposter);
             request.AddParameter("application/json; charset=utf-8", json, ParameterType.RequestBody);
