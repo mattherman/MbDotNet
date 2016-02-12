@@ -6,10 +6,11 @@ namespace MbDotNet
     public class EqualsPredicate : IPredicate
     {
         [JsonProperty("equals")]
-        private EqualsPredicateDetail detail;
+        private EqualsPredicateDetail _detail;
 
         public EqualsPredicate()
         {
+            _detail = new EqualsPredicateDetail();
         }
 
         internal class EqualsPredicateDetail
