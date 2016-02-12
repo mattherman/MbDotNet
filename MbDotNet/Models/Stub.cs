@@ -29,8 +29,7 @@ namespace MbDotNet
 
         public Stub Returns(HttpStatusCode statusCode, object responseObject)
         {
-            var responseDetail = new IsResponseDetail(statusCode, responseObject);
-            var response = new IsResponse(responseDetail);
+            var response = new IsResponse(statusCode, responseObject);
             Responses.Add(response);
 
             return this;

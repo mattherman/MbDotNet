@@ -6,12 +6,27 @@ namespace MbDotNet
 {
     public class IsResponse : IResponse
     {
-        [JsonProperty("is")]
-        public IsResponseDetail Detail { get; private set; }
+        [JsonProperty("is")] 
+        private IsResponseDetail _detail;
 
-        public IsResponse(IsResponseDetail detail)
+        public IsResponse(HttpStatusCode statusCode) : this(statusCode, null) { }
+
+        public IsResponse(HttpStatusCode statusCode, object responseObject)
         {
-            Detail = detail;
+            _detail = new IsResponseDetail
+            {
+                StatusCode = statusCode,
+                ResponseObject = responseObject
+            };
+        }
+
+        private class IsResponseDetail
+        {
+            [JsonProperty("statusCode")]
+            public HttpStatusCode StatusCode { get; set; }
+
+            [JsonProperty("body")]
+            public object ResponseObject { get; set; }
         }
     }
 }

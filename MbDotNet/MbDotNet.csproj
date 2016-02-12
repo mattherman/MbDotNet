@@ -54,13 +54,9 @@
     <Compile Include="Interfaces\IImposter.cs" />
     <Compile Include="Interfaces\IResponse.cs" />
     <Compile Include="Interfaces\IStub.cs" />
-    <Compile Include="Models\Predicates\EqualsPredicateDetail.cs" />
     <Compile Include="Models\Responses\InjectResponse.cs" />
-    <Compile Include="Models\Responses\InjectResponseDetail.cs" />
     <Compile Include="Models\Responses\IsResponse.cs" />
-    <Compile Include="Models\Responses\IsResponseDetail.cs" />
     <Compile Include="Models\Responses\ProxyResponse.cs" />
-    <Compile Include="Models\Responses\ProxyResponseDetail.cs" />
     <Compile Include="MountebankClient.cs" />
     <Compile Include="Models\Predicates\EqualsPredicate.cs" />
     <Compile Include="MountebankRequestProxy.cs" />

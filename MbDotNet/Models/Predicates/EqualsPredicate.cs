@@ -1,15 +1,20 @@
 ﻿using MbDotNet.Interfaces;
-using MbDotNet.Models.Predicates;
+using Newtonsoft.Json;
 
 namespace MbDotNet
 {
     public class EqualsPredicate : IPredicate
     {
-        public EqualsPredicateDetail Detail { get; private set; }
+        [JsonProperty("equals")]
+        private EqualsPredicateDetail detail;
 
-        public EqualsPredicate(EqualsPredicateDetail detail)
+        public EqualsPredicate()
         {
-            Detail = detail;
+        }
+
+        internal class EqualsPredicateDetail
+        {
+
         }
     }
 }

@@ -4,12 +4,17 @@ namespace MbDotNet.Models.Responses
 {
     public class ProxyResponse
     {
-        [JsonProperty("proxy")]
-        public ProxyResponseDetail Detail { get; private set; }
+        [JsonProperty("proxy")] 
+        private ProxyResponseDetail _detail;
 
         public ProxyResponse()
         {
-            Detail = new ProxyResponseDetail();
+            _detail = new ProxyResponseDetail();
+        }
+
+        private class ProxyResponseDetail
+        {
+            // Not yet implemented
         }
     }
 }

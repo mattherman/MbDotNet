@@ -123,12 +123,14 @@ namespace MbDotNet.Tests
         [TestMethod]
         public void Test()
         {
-            _client.DeleteAllImposters();
+            var client = new MountebankClient();
+
+            client.DeleteAllImposters();
 
             var testObj = new {Status = "Available", Name = "Test"};
-            _client.CreateImposter(5738, Protocol.Http).AddStub().Returns(HttpStatusCode.OK, testObj);
+            client.CreateImposter(5738, Protocol.Http).AddStub().Returns(HttpStatusCode.OK, testObj);
 
-            _client.Submit();
+            client.Submit();
         }
     }
 }
