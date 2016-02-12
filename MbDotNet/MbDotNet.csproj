@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\Method.cs" />
     <Compile Include="Enums\Protocol.cs" />
     <Compile Include="Exceptions\MountebankException.cs" />
     <Compile Include="Interfaces\IPredicate.cs" />

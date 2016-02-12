@@ -31,13 +31,13 @@ namespace MbDotNet.Models.Responses
 
         private class IsResponseDetail
         {
-            [JsonProperty("statusCode")]
+            [JsonProperty("statusCode", NullValueHandling = NullValueHandling.Ignore)]
             public HttpStatusCode StatusCode { get; set; }
 
-            [JsonProperty("body")]
+            [JsonProperty("body", NullValueHandling = NullValueHandling.Ignore)]
             public object ResponseObject { get; set; }
 
-            [JsonProperty("headers")]
+            [JsonProperty("headers", NullValueHandling = NullValueHandling.Ignore)]
             public Dictionary<string, string> Headers { get; set; } 
         }
     }

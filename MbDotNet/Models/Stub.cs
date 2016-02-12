@@ -3,7 +3,9 @@ using System.IO;
 using System.Net;
 using System.Xml;
 using System.Xml.Serialization;
+using MbDotNet.Enums;
 using MbDotNet.Interfaces;
+using MbDotNet.Models.Predicates;
 using MbDotNet.Models.Responses;
 using Newtonsoft.Json;
 
@@ -68,6 +70,24 @@ namespace MbDotNet.Models
         public IStub Returns(IResponse response)
         {
             Responses.Add(response);
+            return this;
+        }
+
+        public IStub OnPathEquals(string path)
+        {
+            var predicate = new EqualsPredicate(path, null, null, null, null);
+            return On(predicate);
+        }
+
+        public IStub OnPathAndMethodEqual(string path, Method method)
+        {
+            var predicate = new EqualsPredicate(path, method, null, null, null);
+            return On(predicate);
+        }
+
+        public IStub On(IPredicate predicate)
+        {
+            Predicates.Add(predicate);
             return this;
         }
     }

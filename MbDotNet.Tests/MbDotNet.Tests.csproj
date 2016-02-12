@@ -58,6 +58,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Models\ImposterTests.cs" />
+    <Compile Include="Models\Predicates\EqualsPredicateTests.cs" />
     <Compile Include="Models\Responses\IsResponseTests.cs" />
     <Compile Include="Models\StubTests.cs" />
     <Compile Include="MountebankClientTests.cs" />

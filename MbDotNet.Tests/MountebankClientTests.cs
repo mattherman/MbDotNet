@@ -1,9 +1,11 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MbDotNet.Enums;
 using MbDotNet.Interfaces;
 using MbDotNet.Models;
+using MbDotNet.Models.Predicates;
 using Moq;
 
 namespace MbDotNet.Tests
@@ -136,7 +138,24 @@ namespace MbDotNet.Tests
             client.DeleteAllImposters();
 
             var responseObject = new {Name = "Ten", Value = 10};
-            client.CreateImposter(5738, Protocol.Http).AddStub().ReturnsJson(HttpStatusCode.OK, responseObject);
+
+            var imposter = client.CreateImposter(5738, Protocol.Http);
+
+            var queryParameters = new Dictionary<string, string> {{"id", "1"}};
+            imposter.AddStub()
+                .ReturnsStatus(HttpStatusCode.NotFound)
+                .On(new EqualsPredicate("/test", Method.Get, null, null, queryParameters));
+
+            imposter.AddStub()
+                .ReturnsJson(HttpStatusCode.OK, responseObject)
+                .OnPathAndMethodEqual("/test", Method.Get);
+
+            imposter.AddStub()
+                .ReturnsStatus(HttpStatusCode.Created)
+                .On(new EqualsPredicate("/test", Method.Post, "test", null, null));
+
+            imposter.AddStub()
+                .ReturnsStatus(HttpStatusCode.MethodNotAllowed).OnPathEquals("/test");
 
             client.Submit();
         }

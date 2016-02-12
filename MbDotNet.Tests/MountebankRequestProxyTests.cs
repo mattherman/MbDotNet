@@ -5,6 +5,7 @@ using MbDotNet.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using RestSharp;
+using Method = RestSharp.Method;
 
 namespace MbDotNet.Tests
 {
