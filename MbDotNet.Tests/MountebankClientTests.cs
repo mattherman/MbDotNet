@@ -21,6 +21,13 @@ namespace MbDotNet.Tests
         }
 
         [TestMethod]
+        public void Constructor_InitializesImposterCollection()
+        {
+            var client = new MountebankClient();
+            Assert.IsNotNull(client.Imposters);
+        }
+
+        [TestMethod]
         public void Create_AddsNewImposterToCollection()
         {
             _client.CreateImposter(123, Protocol.Http);
