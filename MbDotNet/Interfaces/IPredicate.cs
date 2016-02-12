@@ -1,6 +1,6 @@
 ﻿namespace MbDotNet.Interfaces
 {
-    public class IPredicate
+    public interface IPredicate
     {
     }
 }
