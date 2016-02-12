@@ -2,6 +2,7 @@
 using System.Linq;
 using MbDotNet.Interfaces;
 using MbDotNet.Enums;
+using MbDotNet.Models;
 
 namespace MbDotNet
 {

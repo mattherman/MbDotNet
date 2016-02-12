@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using MbDotNet.Models;
+using MbDotNet.Models.Responses;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MbDotNet.Tests.Models
@@ -31,6 +33,7 @@ namespace MbDotNet.Tests.Models
             stub.ReturnsStatus(expectedStatusCode);
 
             var response = stub.Responses.First() as IsResponse;
+            Assert.IsNotNull(response);
             Assert.AreEqual(expectedStatusCode, response.StatusCode);
         }
 
@@ -43,6 +46,7 @@ namespace MbDotNet.Tests.Models
             stub.ReturnsJson(expectedStatusCode, "test");
 
             var response = stub.Responses.First() as IsResponse;
+            Assert.IsNotNull(response);
             Assert.AreEqual(expectedStatusCode, response.StatusCode);
         }
 
@@ -55,6 +59,7 @@ namespace MbDotNet.Tests.Models
             stub.ReturnsJson(HttpStatusCode.OK, expectedResponseObject);
 
             var response = stub.Responses.First() as IsResponse;
+            Assert.IsNotNull(response);
             Assert.AreEqual(expectedResponseObject, response.ResponseObject);
         }
 
@@ -65,6 +70,7 @@ namespace MbDotNet.Tests.Models
             stub.ReturnsJson(HttpStatusCode.OK, "test");
 
             var response = stub.Responses.First() as IsResponse;
+            Assert.IsNotNull(response);
             Assert.AreEqual("application/json", response.Headers["Content-Type"]);
         }
 
@@ -77,6 +83,7 @@ namespace MbDotNet.Tests.Models
             stub.ReturnsXml(expectedStatusCode, "test");
 
             var response = stub.Responses.First() as IsResponse;
+            Assert.IsNotNull(response);
             Assert.AreEqual(expectedStatusCode, response.StatusCode);
         }
 
@@ -89,6 +96,7 @@ namespace MbDotNet.Tests.Models
             stub.ReturnsXml(HttpStatusCode.OK, "Test Response");
 
             var response = stub.Responses.First() as IsResponse;
+            Assert.IsNotNull(response);
             Assert.IsTrue(response.ResponseObject.ToString().Contains(expectedResponseObject));
         }
 
@@ -99,6 +107,7 @@ namespace MbDotNet.Tests.Models
             stub.ReturnsXml(HttpStatusCode.OK, "test");
 
             var response = stub.Responses.First() as IsResponse;
+            Assert.IsNotNull(response);
             Assert.AreEqual("application/xml", response.Headers["Content-Type"]);
         }
 

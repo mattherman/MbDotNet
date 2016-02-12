@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MbDotNet.Enums;
+using MbDotNet.Models;
 
 namespace MbDotNet.Tests
 {

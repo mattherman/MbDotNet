@@ -4,9 +4,10 @@ using System.Net;
 using System.Xml;
 using System.Xml.Serialization;
 using MbDotNet.Interfaces;
+using MbDotNet.Models.Responses;
 using Newtonsoft.Json;
 
-namespace MbDotNet
+namespace MbDotNet.Models
 {
     public class Stub : IStub
     {

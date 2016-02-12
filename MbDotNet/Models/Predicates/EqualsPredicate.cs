@@ -1,7 +1,7 @@
 ﻿using MbDotNet.Interfaces;
 using Newtonsoft.Json;
 
-namespace MbDotNet
+namespace MbDotNet.Models.Predicates
 {
     public class EqualsPredicate : IPredicate
     {

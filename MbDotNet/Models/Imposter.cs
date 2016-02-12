@@ -3,18 +3,18 @@ using MbDotNet.Enums;
 using MbDotNet.Interfaces;
 using Newtonsoft.Json;
 
-namespace MbDotNet
+namespace MbDotNet.Models
 {
     public class Imposter : IImposter
     {
         [JsonProperty("port")]
-        public virtual int Port { get; private set; }
+        public int Port { get; private set; }
 
         [JsonProperty("protocol")]
-        public virtual string Protocol { get; private set; }
+        public string Protocol { get; private set; }
 
         [JsonIgnore]
-        public virtual bool PendingSubmission { get; set; }
+        public bool PendingSubmission { get; set; }
 
         [JsonProperty("stubs")]
         public ICollection<IStub> Stubs { get; private set; }

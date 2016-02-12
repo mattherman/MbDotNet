@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MbDotNet.Enums;
 using MbDotNet.Interfaces;
+using MbDotNet.Models;
 using Moq;
 
 namespace MbDotNet.Tests

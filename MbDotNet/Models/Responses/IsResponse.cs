@@ -3,7 +3,7 @@ using System.Net;
 using MbDotNet.Interfaces;
 using Newtonsoft.Json;
 
-namespace MbDotNet
+namespace MbDotNet.Models.Responses
 {
     public class IsResponse : IResponse
     {
