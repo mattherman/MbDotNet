@@ -11,13 +11,14 @@ This example shows how to create an HTTP imposter on port 8080 that returns a 40
 
 ```
 var client = new MountebankClient();
-client.CreateImposter(8080, Protocol.Http).Returns(HttpStatusCode.BadRequest).Submit();
+client.CreateImposter(8080, Protocol.Http).AddStub().Returns(HttpStatusCode.BadRequest);
+client.Submit();
 ```
 
 A response object can also be returned from the imposter.
 ```
 var obj = new { Key = "x", Value = "y" };
-client.CreateImposter(8080, Protocol.Http).Returns(HttpStatusCode.OK, obj).Submit();
+client.CreateImposter(8080, Protocol.Http).AddStub().Returns(HttpStatusCode.OK, obj);
 ```
 
 All existing imposters can be removed by calling the DeleteAllImposters methods on the client.
