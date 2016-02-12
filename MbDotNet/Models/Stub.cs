@@ -28,12 +28,22 @@ namespace MbDotNet
 
         public IStub ReturnsJson(HttpStatusCode statusCode, object responseObject)
         {
-            var response = new IsResponse(statusCode, responseObject, null);
+            var headers = new Dictionary<string, string>
+            {
+                {"Content-Type", "application/json"}
+            };
+
+            var response = new IsResponse(statusCode, responseObject, headers);
             return Returns(response);
         }
 
         public IStub ReturnsXml(HttpStatusCode statusCode, object responseObject)
         {
+            var headers = new Dictionary<string, string>
+            {
+                {"Content-Type", "application/xml"}
+            };
+
             throw new NotImplementedException();
         }
 

@@ -59,6 +59,16 @@ namespace MbDotNet.Tests.Models
         }
 
         [TestMethod]
+        public void ReturnsJson_AddsResponse_ContentTypeHeaderSet()
+        {
+            var stub = new Stub();
+            stub.ReturnsJson(HttpStatusCode.OK, "test");
+
+            var response = stub.Responses.First() as IsResponse;
+            Assert.AreEqual("application/json", response.Headers["Content-Type"]);
+        }
+
+        [TestMethod]
         public void Returns_AddsResponse()
         {
             var expectedResponse = new IsResponse(HttpStatusCode.OK, "Test Response",
