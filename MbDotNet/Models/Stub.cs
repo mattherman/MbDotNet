@@ -22,13 +22,13 @@ namespace MbDotNet
 
         public IStub ReturnsStatus(HttpStatusCode statusCode)
         {
-            var response = new IsResponse(statusCode);
+            var response = new IsResponse(statusCode, null, null);
             return Returns(response);
         }
 
         public IStub ReturnsJson(HttpStatusCode statusCode, object responseObject)
         {
-            var response = new IsResponse(statusCode, responseObject);
+            var response = new IsResponse(statusCode, responseObject, null);
             return Returns(response);
         }
 

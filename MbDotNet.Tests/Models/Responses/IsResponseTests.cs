@@ -12,30 +12,34 @@ namespace MbDotNet.Tests.Models.Responses
     public class IsResponseTests
     {
         [TestMethod]
-        public void Constructor_OneParameter_SetsStatusCode()
+        public void Constructor_SetsStatusCode()
         {
             const HttpStatusCode expectedStatusCode = HttpStatusCode.Created;
 
-            var response = new IsResponse(expectedStatusCode);
+            var response = new IsResponse(expectedStatusCode, null, null);
             Assert.AreEqual(expectedStatusCode, response.StatusCode);
         }
 
         [TestMethod]
-        public void Constructor_TwoParameters_SetsStatusCode()
-        {
-            const HttpStatusCode expectedStatusCode = HttpStatusCode.Created;
-
-            var response = new IsResponse(expectedStatusCode, null);
-            Assert.AreEqual(expectedStatusCode, response.StatusCode);
-        }
-
-        [TestMethod]
-        public void Constructor_SingleParameter_SetsResponseObject()
+        public void Constructor_SetsResponseObject()
         {
             const string expectedResponseObject = "Test";
 
-            var response = new IsResponse(HttpStatusCode.Created, expectedResponseObject);
+            var response = new IsResponse(HttpStatusCode.Created, expectedResponseObject, null);
             Assert.AreEqual(expectedResponseObject, response.ResponseObject);
+        }
+
+        [TestMethod]
+        public void Constructor_SetsHeaders()
+        {
+            var expectedHeaders =
+                new List<KeyValuePair<string, string>>
+                {
+                    new KeyValuePair<string, string>("Content-Type", "application/json")
+                };
+
+            var response = new IsResponse(HttpStatusCode.Created, null, expectedHeaders);
+            Assert.AreEqual(expectedHeaders, response.Headers);
         }
     }
 }

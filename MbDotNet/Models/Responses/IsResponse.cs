@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Net;
 using MbDotNet.Interfaces;
 using Newtonsoft.Json;
 
@@ -11,15 +12,15 @@ namespace MbDotNet
 
         public HttpStatusCode StatusCode { get { return _detail.StatusCode; } }
         public object ResponseObject { get { return _detail.ResponseObject; } }
+        public ICollection<KeyValuePair<string, string>> Headers { get { return _detail.Headers; } } 
 
-        public IsResponse(HttpStatusCode statusCode) : this(statusCode, null) { }
-
-        public IsResponse(HttpStatusCode statusCode, object responseObject)
+        public IsResponse(HttpStatusCode statusCode, object responseObject, ICollection<KeyValuePair<string, string>> headers)
         {
             _detail = new IsResponseDetail
             {
                 StatusCode = statusCode,
-                ResponseObject = responseObject
+                ResponseObject = responseObject,
+                Headers = headers
             };
         }
 
@@ -30,6 +31,9 @@ namespace MbDotNet
 
             [JsonProperty("body")]
             public object ResponseObject { get; set; }
+
+            [JsonProperty("headers")]
+            public ICollection<KeyValuePair<string, string>> Headers { get; set; } 
         }
     }
 }

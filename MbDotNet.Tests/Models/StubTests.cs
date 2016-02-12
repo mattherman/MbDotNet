@@ -60,7 +60,7 @@ namespace MbDotNet.Tests.Models
         [TestMethod]
         public void Returns_AddsResponse()
         {
-            var expectedResponse = new IsResponse(HttpStatusCode.OK, "Test Response");
+            var expectedResponse = new IsResponse(HttpStatusCode.OK, "Test Response", null);
 
             var stub = new Stub();
             stub.Returns(expectedResponse);
