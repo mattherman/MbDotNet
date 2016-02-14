@@ -107,4 +107,3 @@ Reponses
 
 Predicates
 - All predicate types other than "equals"
-- The "caseSensitive", "except", and "xpath" properties
