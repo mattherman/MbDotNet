@@ -1,15 +1,16 @@
 # MbDotNet
-A .NET client library for interacting with mountebank (www.mbtest.org).
+A .NET client library for interacting with mountebank (www.mbtest.org). This project aims to reduce the amount of mountebank knowledge required in order to create usable stubs.
 
 ## NuGet Package ##
 The library will be available as a NuGet package at some point in the future.
 
 ## Usage Examples
-This section (along with the entire README) is a work in progress.
+
+This section contains usage examples for the most common use cases.
 
 ### Creating Imposters ###
 
-This example shows how to create an HTTP imposter on port 8080.
+This example shows how to create an HTTP imposter on port 8080. Mountebank also supports HTTPS, TCP, and SMTP imposters.
 
 ```
 var client = new MountebankClient();
@@ -61,6 +62,8 @@ var predicate = new EqualsPredicate("/test", Method.Get, null, headers, queryPar
 imposter.AddStub().ReturnsStatus(HttpStatusCode.UnsupportedMediaType).On(predicate);
 ```
 
+An alternate predicate constructor exists that will let you specify whether matches should be case sensitive (false by default), define a regex expression to remove prior to matching, or an xpath selector to that can be used to select values from an XML document.
+
 Any number of stubs can be added to an imposter. If there are multiple, the stub with the first set of predicates to match the request will be used by mountebank.
 
 Multiple responses/predicates can also be added to a single stub. If a stub has multiple responses, they will be returned in order. In the following example, the first request will get an 200 status code, but the next will receive a 404 status code.
@@ -82,6 +85,8 @@ var firstPredicate = new EqualsPredicate("/test", null, null, null, null);
 var secondPredicate = new EqualsPredicate(null, Method.Get, null, null, null);
 imposter.AddStub().ReturnsStatus(HttpStatus.OK).On(firstPredicate).On(secondPredicate);
 ```
+
+For more information on responses and predicates, see the mountebank documentation at http://www.mbtest.org.
 
 ### Deleting Imposters ###
 
