@@ -2,7 +2,10 @@
 A .NET client library for interacting with mountebank (www.mbtest.org). This project aims to reduce the amount of mountebank knowledge required in order to create usable stubs.
 
 ## NuGet Package ##
-The library will be available as a NuGet package at some point in the future.
+
+The library is available for install as a NuGet package.
+
+https://www.nuget.org/packages/MbDotNet/1.0.0
 
 ## Usage Examples
 
