@@ -157,6 +157,10 @@ namespace MbDotNet.Tests
             imposter.AddStub()
                 .ReturnsStatus(HttpStatusCode.MethodNotAllowed).OnPathEquals("/test");
 
+            imposter.AddStub()
+                .ReturnsStatus(HttpStatusCode.Forbidden)
+                .On(new EqualsPredicate("/Admin", Method.Get, null, null, null, true, null, null));
+
             client.Submit();
         }
     }

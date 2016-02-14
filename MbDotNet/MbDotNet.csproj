@@ -55,6 +55,8 @@
     <Compile Include="Interfaces\IImposter.cs" />
     <Compile Include="Interfaces\IResponse.cs" />
     <Compile Include="Interfaces\IStub.cs" />
+    <Compile Include="Models\Predicates\PredicateBase.cs" />
+    <Compile Include="Models\Predicates\XPathSelector.cs" />
     <Compile Include="Models\Responses\InjectResponse.cs" />
     <Compile Include="Models\Responses\IsResponse.cs" />
     <Compile Include="Models\Responses\ProxyResponse.cs" />

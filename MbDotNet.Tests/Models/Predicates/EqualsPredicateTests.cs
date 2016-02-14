@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using MbDotNet.Enums;
 using MbDotNet.Models.Predicates;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -54,6 +55,31 @@ namespace MbDotNet.Tests.Models.Predicates
         {
             var predicate = new EqualsPredicate(null, null, null, null, new Dictionary<string, string>());
             Assert.IsNotNull(predicate.QueryParameters);
+        }
+
+        [TestMethod]
+        public void Constructor_SetsCaseSensitivity()
+        {
+            var predicate = new EqualsPredicate(null, null, null, null, null, true, null, null);
+            Assert.IsTrue(predicate.IsCaseSensitive);
+        }
+
+        [TestMethod]
+        public void Constructor_SetsExceptExpression()
+        {
+            const string expectedExceptRegex = "!$";
+
+            var predicate = new EqualsPredicate(null, null, null, null, null, false, expectedExceptRegex, null);
+            Assert.AreEqual(expectedExceptRegex, predicate.ExceptExpression);
+        }
+
+        [TestMethod]
+        public void Constructor_SetsXpathSelector()
+        {
+            var expectedXPathSelector = new XPathSelector("!$");
+
+            var predicate = new EqualsPredicate(null, null, null, null, null, false, null, expectedXPathSelector);
+            Assert.AreEqual(expectedXPathSelector, predicate.Selector);
         }
     }
 }

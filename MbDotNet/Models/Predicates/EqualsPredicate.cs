@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using MbDotNet.Enums;
-using MbDotNet.Interfaces;
 using Newtonsoft.Json;
 
 namespace MbDotNet.Models.Predicates
 {
-    public class EqualsPredicate : IPredicate
+    public class EqualsPredicate : PredicateBase
     {
         [JsonProperty("equals")]
         private readonly EqualsPredicateDetail _detail;
@@ -23,9 +22,24 @@ namespace MbDotNet.Models.Predicates
         public Dictionary<string, string> Headers { get { return _detail.Headers; } }
  
         [JsonIgnore]
-        public Dictionary<string, string> QueryParameters { get { return _detail.QueryParameters; } } 
+        public Dictionary<string, string> QueryParameters { get { return _detail.QueryParameters; } }
 
-        public EqualsPredicate(string path, Method? method, string body, Dictionary<string, string> headers, Dictionary<string, string> queryParameters)
+        public EqualsPredicate(string path, Method? method, string body, Dictionary<string, string> headers,
+            Dictionary<string, string> queryParameters)
+        {
+            _detail = new EqualsPredicateDetail
+            {
+                Path = path,
+                Method = method == null ? null : method.ToString().ToUpper(),
+                RequestBody = body,
+                Headers = headers,
+                QueryParameters = queryParameters
+            };
+        }
+
+        public EqualsPredicate(string path, Method? method, string body, Dictionary<string, string> headers,
+            Dictionary<string, string> queryParameters, bool isCaseSensitive, string exceptExpression, XPathSelector selector)
+            : base(isCaseSensitive, exceptExpression, selector)
         {
             _detail = new EqualsPredicateDetail
             {
