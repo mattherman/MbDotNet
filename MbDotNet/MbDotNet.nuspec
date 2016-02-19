@@ -10,7 +10,7 @@
     <projectUrl>http://github.com/mattherman/MbDotNet</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A .NET client library for interacting with mountebank (www.mbtest.org).</description>
-    <releaseNotes>Downgraded JSON.NET version to v7.0.0</releaseNotes>
+    <releaseNotes>Downgraded JSON.NET version to v7.0.1</releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>mountebank client wrapper</tags>
   </metadata>
