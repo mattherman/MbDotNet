@@ -129,39 +129,5 @@ namespace MbDotNet.Tests
 
             Assert.AreEqual(0, _client.Imposters.Count);
         }
-
-        [TestMethod]
-        public void Test()
-        {
-            var client = new MountebankClient();
-
-            client.DeleteAllImposters();
-
-            var responseObject = new {Name = "Ten", Value = 10};
-
-            var imposter = client.CreateImposter(5738, Protocol.Http);
-
-            var queryParameters = new Dictionary<string, string> {{"id", "1"}};
-            imposter.AddStub()
-                .ReturnsStatus(HttpStatusCode.NotFound)
-                .On(new EqualsPredicate("/test", Method.Get, null, null, queryParameters));
-
-            imposter.AddStub()
-                .ReturnsJson(HttpStatusCode.OK, responseObject)
-                .OnPathAndMethodEqual("/test", Method.Get);
-
-            imposter.AddStub()
-                .ReturnsStatus(HttpStatusCode.Created)
-                .On(new EqualsPredicate("/test", Method.Post, "test", null, null));
-
-            imposter.AddStub()
-                .ReturnsStatus(HttpStatusCode.MethodNotAllowed).OnPathEquals("/test");
-
-            imposter.AddStub()
-                .ReturnsStatus(HttpStatusCode.Forbidden)
-                .On(new EqualsPredicate("/Admin", Method.Get, null, null, null, true, null, null));
-
-            client.Submit();
-        }
     }
 }

@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>MbDotNet</id>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <title>MbDotNet</title>
     <authors>Matthew Herman</authors>
     <owners>Matthew Herman</owners>
@@ -10,7 +10,7 @@
     <projectUrl>http://github.com/mattherman/MbDotNet</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A .NET client library for interacting with mountebank (www.mbtest.org).</description>
-    <releaseNotes>Initial release. See project page for information about currently unsupported functionality.</releaseNotes>
+    <releaseNotes>Downgraded JSON.NET version to v7.0.1</releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>mountebank client wrapper</tags>
   </metadata>
