@@ -40,12 +40,13 @@ namespace MbDotNet.Tests.Models
         }
 
         [TestMethod]
-        public void ReturnsJson_AddsResponse_StatusCodeSet()
+        public void Returns_AddsResponse_StatusCodeSet()
         {
             const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
+            var contentType = ContentType.Json;
 
             var stub = new Stub();
-            stub.ReturnsJson(expectedStatusCode, "test");
+            stub.Returns(expectedStatusCode, contentType, "test");
 
             var response = stub.Responses.First() as IsResponse;
             Assert.IsNotNull(response);
@@ -53,12 +54,13 @@ namespace MbDotNet.Tests.Models
         }
 
         [TestMethod]
-        public void ReturnsJson_AddsResponse_ResponseObjectSet()
+        public void Returns_AddsResponse_ResponseObjectSet()
         {
             const string expectedResponseObject = "Test Response";
+            var contentType = ContentType.Json;
 
             var stub = new Stub();
-            stub.ReturnsJson(HttpStatusCode.OK, expectedResponseObject);
+            stub.Returns(HttpStatusCode.OK, contentType, expectedResponseObject);
 
             var response = stub.Responses.First() as IsResponse;
             Assert.IsNotNull(response);
@@ -66,14 +68,30 @@ namespace MbDotNet.Tests.Models
         }
 
         [TestMethod]
-        public void ReturnsJson_AddsResponse_ContentTypeHeaderSet()
+        public void Returns_AddsResponse_ContentTypeHeaderSet()
         {
+            var contentType = ContentType.Json;
+
             var stub = new Stub();
-            stub.ReturnsJson(HttpStatusCode.OK, "test");
+            stub.Returns(HttpStatusCode.OK, contentType, "test");
 
             var response = stub.Responses.First() as IsResponse;
             Assert.IsNotNull(response);
-            Assert.AreEqual("application/json", response.Headers["Content-Type"]);
+            Assert.AreEqual(contentType.ContentTypeString, response.Headers["Content-Type"]);
+        }
+
+        [TestMethod]
+        public void Returns_AddsResponse()
+        {
+            var contentType = ContentType.Json;
+            var expectedResponse = new IsResponse(HttpStatusCode.OK, "Test Response",
+                new Dictionary<string, string> { { "Content-Type", contentType.ContentTypeString } });
+
+            var stub = new Stub();
+            stub.Returns(expectedResponse);
+
+            var response = stub.Responses.First() as IsResponse;
+            Assert.AreEqual(expectedResponse, response);
         }
 
         [TestMethod]
@@ -105,25 +123,14 @@ namespace MbDotNet.Tests.Models
         [TestMethod]
         public void ReturnsXml_AddsResponse_ContentTypeHeaderSet()
         {
+            var contentType = ContentType.Xml;
+
             var stub = new Stub();
             stub.ReturnsXml(HttpStatusCode.OK, "test");
 
             var response = stub.Responses.First() as IsResponse;
             Assert.IsNotNull(response);
-            Assert.AreEqual("application/xml", response.Headers["Content-Type"]);
-        }
-
-        [TestMethod]
-        public void Returns_AddsResponse()
-        {
-            var expectedResponse = new IsResponse(HttpStatusCode.OK, "Test Response",
-                new Dictionary<string, string> {{"Content-Type", "application/json"}});
-
-            var stub = new Stub();
-            stub.Returns(expectedResponse);
-
-            var response = stub.Responses.First() as IsResponse;
-            Assert.AreEqual(expectedResponse, response);
+            Assert.AreEqual(contentType.ContentTypeString, response.Headers["Content-Type"]);
         }
 
         [TestMethod]
@@ -168,8 +175,10 @@ namespace MbDotNet.Tests.Models
         [TestMethod]
         public void On_AddsPredicate()
         {
+            var contentType = ContentType.Json;
+
             var expectedPredicate = new EqualsPredicate("/test", Method.Get, "test",
-                new Dictionary<string, string> {{"Content-Type", "application/json"}}, null);
+                new Dictionary<string, string> { { "Content-Type", contentType.ContentTypeString } }, null);
 
             var stub = new Stub();
             stub.On(expectedPredicate);
