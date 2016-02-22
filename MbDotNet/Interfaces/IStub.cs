@@ -46,6 +46,15 @@ namespace MbDotNet.Interfaces
         IStub ReturnsXml<T>(HttpStatusCode statusCode, T responseObject);
 
         /// <summary>
+        /// Adds a response to the stub with the specified content type
+        /// </summary>
+        /// <param name="statusCode">The status code to be returned</param>
+        /// <param name="contentType">The content type of the object being returned</param>
+        /// <param name="responseObject">The response object that will be returned as the specified content type</param>
+        /// <returns></returns>
+        IStub Returns(HttpStatusCode statusCode, ContentType contentType, object responseObject);
+
+        /// <summary>
         /// Adds a response to the stub.
         /// </summary>
         /// <param name="response">The response object designating what the stub will return</param>
