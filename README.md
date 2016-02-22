@@ -5,7 +5,7 @@ A .NET client library for interacting with mountebank (www.mbtest.org). This pro
 
 The library is available for install as a NuGet package.
 
-https://www.nuget.org/packages/MbDotNet/1.0.0
+https://www.nuget.org/packages/MbDotNet/1.1.0
 
 ## Usage Examples
 
