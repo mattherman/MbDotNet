@@ -43,10 +43,10 @@ namespace MbDotNet.Tests.Models
         public void Returns_AddsResponse_StatusCodeSet()
         {
             const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
-            var contentType = ContentType.Json;
+            var headers = new Dictionary<string, string> { {"Content-Type", "application/json"} };
 
             var stub = new Stub();
-            stub.Returns(expectedStatusCode, contentType, "test");
+            stub.Returns(expectedStatusCode, headers, "test");
 
             var response = stub.Responses.First() as IsResponse;
             Assert.IsNotNull(response);
@@ -57,10 +57,10 @@ namespace MbDotNet.Tests.Models
         public void Returns_AddsResponse_ResponseObjectSet()
         {
             const string expectedResponseObject = "Test Response";
-            var contentType = ContentType.Json;
+            var headers = new Dictionary<string, string> { { "Content-Type", "application/json" } };
 
             var stub = new Stub();
-            stub.Returns(HttpStatusCode.OK, contentType, expectedResponseObject);
+            stub.Returns(HttpStatusCode.OK, headers, expectedResponseObject);
 
             var response = stub.Responses.First() as IsResponse;
             Assert.IsNotNull(response);
@@ -70,22 +70,21 @@ namespace MbDotNet.Tests.Models
         [TestMethod]
         public void Returns_AddsResponse_ContentTypeHeaderSet()
         {
-            var contentType = ContentType.Json;
+            var headers = new Dictionary<string, string> { { "Content-Type", "application/json" } };
 
             var stub = new Stub();
-            stub.Returns(HttpStatusCode.OK, contentType, "test");
+            stub.Returns(HttpStatusCode.OK, headers, "test");
 
             var response = stub.Responses.First() as IsResponse;
             Assert.IsNotNull(response);
-            Assert.AreEqual(contentType.ContentTypeString, response.Headers["Content-Type"]);
+            Assert.AreEqual(headers, response.Headers);
         }
 
         [TestMethod]
         public void Returns_AddsResponse()
         {
-            var contentType = ContentType.Json;
-            var expectedResponse = new IsResponse(HttpStatusCode.OK, "Test Response",
-                new Dictionary<string, string> { { "Content-Type", contentType.ContentTypeString } });
+            var headers = new Dictionary<string, string> { { "Content-Type", "application/json" } };
+            var expectedResponse = new IsResponse(HttpStatusCode.OK, "Test Response", headers);
 
             var stub = new Stub();
             stub.Returns(expectedResponse);
@@ -123,14 +122,14 @@ namespace MbDotNet.Tests.Models
         [TestMethod]
         public void ReturnsXml_AddsResponse_ContentTypeHeaderSet()
         {
-            var contentType = ContentType.Xml;
+            var headers = new Dictionary<string, string> { { "Content-Type", "application/xml" } };
 
             var stub = new Stub();
             stub.ReturnsXml(HttpStatusCode.OK, "test");
 
             var response = stub.Responses.First() as IsResponse;
             Assert.IsNotNull(response);
-            Assert.AreEqual(contentType.ContentTypeString, response.Headers["Content-Type"]);
+            Assert.AreEqual(headers["Content-Type"], response.Headers["Content-Type"]);
         }
 
         [TestMethod]
@@ -175,10 +174,8 @@ namespace MbDotNet.Tests.Models
         [TestMethod]
         public void On_AddsPredicate()
         {
-            var contentType = ContentType.Json;
-
-            var expectedPredicate = new EqualsPredicate("/test", Method.Get, "test",
-                new Dictionary<string, string> { { "Content-Type", contentType.ContentTypeString } }, null);
+            var headers = new Dictionary<string, string> { { "Content-Type", "application/json" } };
+            var expectedPredicate = new EqualsPredicate("/test", Method.Get, "test", headers, null);
 
             var stub = new Stub();
             stub.On(expectedPredicate);

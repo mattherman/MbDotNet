@@ -49,10 +49,10 @@ namespace MbDotNet.Interfaces
         /// Adds a response to the stub with the specified content type
         /// </summary>
         /// <param name="statusCode">The status code to be returned</param>
-        /// <param name="contentType">The content type of the object being returned</param>
+        /// <param name="headers">The headers for the response</param>
         /// <param name="responseObject">The response object that will be returned as the specified content type</param>
         /// <returns></returns>
-        IStub Returns(HttpStatusCode statusCode, ContentType contentType, object responseObject);
+        IStub Returns(HttpStatusCode statusCode, IDictionary<string, string> headers, object responseObject);
 
         /// <summary>
         /// Adds a response to the stub.
