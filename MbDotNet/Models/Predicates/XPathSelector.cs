@@ -9,11 +9,11 @@ namespace MbDotNet.Models.Predicates
         public string Selector { get; private set; }
 
         [JsonProperty("ns", NullValueHandling = NullValueHandling.Ignore)]
-        public Dictionary<string, string> Namespaces { get; private set; }
+        public IDictionary<string, string> Namespaces { get; private set; }
 
         public XPathSelector(string selector) : this(selector, null) { }
 
-        public XPathSelector(string selector, Dictionary<string, string> namespaces)
+        public XPathSelector(string selector, IDictionary<string, string> namespaces)
         {
             Selector = selector;
             Namespaces = namespaces;

@@ -19,13 +19,13 @@ namespace MbDotNet.Models.Predicates
         public string Method { get { return _detail.Method; } }
 
         [JsonIgnore]
-        public Dictionary<string, string> Headers { get { return _detail.Headers; } }
+        public IDictionary<string, string> Headers { get { return _detail.Headers; } }
  
         [JsonIgnore]
-        public Dictionary<string, string> QueryParameters { get { return _detail.QueryParameters; } }
+        public IDictionary<string, string> QueryParameters { get { return _detail.QueryParameters; } }
 
-        public EqualsPredicate(string path, Method? method, string body, Dictionary<string, string> headers,
-            Dictionary<string, string> queryParameters)
+        public EqualsPredicate(string path, Method? method, string body, IDictionary<string, string> headers,
+            IDictionary<string, string> queryParameters)
         {
             _detail = new EqualsPredicateDetail
             {
@@ -37,8 +37,8 @@ namespace MbDotNet.Models.Predicates
             };
         }
 
-        public EqualsPredicate(string path, Method? method, string body, Dictionary<string, string> headers,
-            Dictionary<string, string> queryParameters, bool isCaseSensitive, string exceptExpression, XPathSelector selector)
+        public EqualsPredicate(string path, Method? method, string body, IDictionary<string, string> headers,
+            IDictionary<string, string> queryParameters, bool isCaseSensitive, string exceptExpression, XPathSelector selector)
             : base(isCaseSensitive, exceptExpression, selector)
         {
             _detail = new EqualsPredicateDetail
@@ -63,10 +63,10 @@ namespace MbDotNet.Models.Predicates
             public string Method { get; set; }
 
             [JsonProperty("headers", NullValueHandling = NullValueHandling.Ignore)]
-            public Dictionary<string, string> Headers { get; set; }
+            public IDictionary<string, string> Headers { get; set; }
 
             [JsonProperty("query", NullValueHandling = NullValueHandling.Ignore)]
-            public Dictionary<string, string> QueryParameters { get; set; }
+            public IDictionary<string, string> QueryParameters { get; set; }
         }
     }
 }
