@@ -33,26 +33,14 @@ namespace MbDotNet.Models
 
         public IStub ReturnsJson<T>(HttpStatusCode statusCode, T responseObject)
         {
-            var headers = new Dictionary<string, string>
-            {
-                {"Content-Type", "application/json"}
-            };
-
-            var response = new IsResponse(statusCode, responseObject, headers);
-            return Returns(response);
+            return Returns(statusCode, new Dictionary<string, string> { { "Content-Type", "application/json" } }, responseObject);
         }
 
         public IStub ReturnsXml<T>(HttpStatusCode statusCode, T responseObject)
         {
-            var headers = new Dictionary<string, string>
-            {
-                {"Content-Type", "application/xml"}
-            };
-
             var responseObjectXml = ConvertResponseObjectToXml(responseObject);
 
-            var response = new IsResponse(statusCode, responseObjectXml, headers);
-            return Returns(response);
+            return Returns(statusCode, new Dictionary<string, string> { {"Content-Type", "application/xml"} }, responseObjectXml);
         }
 
         private static string ConvertResponseObjectToXml<T>(T objectToSerialize)
@@ -65,6 +53,12 @@ namespace MbDotNet.Models
                 serializer.Serialize(writer, objectToSerialize);
                 return stringWriter.ToString();
             }
+        }
+
+        public IStub Returns(HttpStatusCode statusCode, IDictionary<string, string> headers, object responseObject)
+        {
+            var response = new IsResponse(statusCode, responseObject, headers);
+            return Returns(response);
         }
 
         public IStub Returns(IResponse response)

@@ -17,9 +17,9 @@ namespace MbDotNet.Models.Responses
         public object ResponseObject { get { return _detail.ResponseObject; } }
 
         [JsonIgnore]
-        public Dictionary<string, string> Headers { get { return _detail.Headers; } }
+        public IDictionary<string, string> Headers { get { return _detail.Headers; } }
 
-        public IsResponse(HttpStatusCode statusCode, object responseObject, Dictionary<string, string> headers)
+        public IsResponse(HttpStatusCode statusCode, object responseObject, IDictionary<string, string> headers)
         {
             _detail = new IsResponseDetail
             {
@@ -38,7 +38,7 @@ namespace MbDotNet.Models.Responses
             public object ResponseObject { get; set; }
 
             [JsonProperty("headers", NullValueHandling = NullValueHandling.Ignore)]
-            public Dictionary<string, string> Headers { get; set; } 
+            public IDictionary<string, string> Headers { get; set; } 
         }
     }
 }
