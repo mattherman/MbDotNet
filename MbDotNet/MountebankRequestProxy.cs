@@ -9,11 +9,14 @@ namespace MbDotNet
     public class MountebankRequestProxy : IRequestProxy
     {
         private readonly IRestClient _client;
-        private const string MountebankUrl = "http://127.0.0.1:2525";
+        private const string DefaultMountebankUrl = "http://127.0.0.1:2525";
         private const string ImpostersResource = "imposters";
+		
+        public MountebankRequestProxy() : this(new RestClient(DefaultMountebankUrl)) {}
+		
+		public MountebankRequestProxy(string mountebankUrl) : this(new RestClient(mountebankUrl)) { }
 
-        public MountebankRequestProxy() : this(new RestClient(MountebankUrl)) {}
-        public MountebankRequestProxy(IRestClient client)
+		public MountebankRequestProxy(IRestClient client)
         {
             _client = client;
         }
