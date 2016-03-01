@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>MbDotNet</id>
-    <version>1.2.0</version>
+    <version>1.3.0</version>
     <title>MbDotNet</title>
     <authors>Matthew Herman</authors>
     <owners>Matthew Herman</owners>
@@ -10,7 +10,7 @@
     <projectUrl>http://github.com/mattherman/MbDotNet</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A .NET client library for interacting with mountebank (www.mbtest.org).</description>
-    <releaseNotes>Added helper method for returning specific headers</releaseNotes>
+    <releaseNotes>Added ability to specify custom mountebank URL</releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>mountebank client wrapper</tags>
   </metadata>
