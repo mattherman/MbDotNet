@@ -104,7 +104,7 @@ client.DeleteAllImposters();
 To remove a single imposter, use the DeleteImposter method.
 ```
 const int port = 8080;
-client.DeleteImposter(8080);
+client.DeleteImposter(port);
 ```
 
 ## Unsupported Functionality ##
