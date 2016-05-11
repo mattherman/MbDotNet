@@ -49,14 +49,11 @@
     <Compile Include="Enums\Method.cs" />
     <Compile Include="Enums\Protocol.cs" />
     <Compile Include="Exceptions\MountebankException.cs" />
-    <Compile Include="Interfaces\IPredicate.cs" />
     <Compile Include="Interfaces\IRequestProxy.cs" />
     <Compile Include="Models\HttpStub.cs" />
     <Compile Include="Models\Imposter.cs" />
     <Compile Include="Interfaces\IClient.cs" />
     <Compile Include="Interfaces\IImposter.cs" />
-    <Compile Include="Interfaces\IResponse.cs" />
-    <Compile Include="Interfaces\IStub.cs" />
     <Compile Include="Models\Predicates\Fields\HttpPredicateFields.cs" />
     <Compile Include="Models\Predicates\Fields\PredicateFields.cs" />
     <Compile Include="Models\Predicates\PredicateBase.cs" />
