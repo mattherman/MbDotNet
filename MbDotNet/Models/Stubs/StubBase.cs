@@ -8,7 +8,7 @@ using MbDotNet.Models.Predicates;
 using MbDotNet.Models.Responses;
 using Newtonsoft.Json;
 
-namespace MbDotNet.Models
+namespace MbDotNet.Models.Stubs
 {
     public abstract class StubBase
     {

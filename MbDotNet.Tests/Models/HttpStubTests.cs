@@ -7,6 +7,7 @@ using MbDotNet.Models.Predicates;
 using MbDotNet.Models.Predicates.Fields;
 using MbDotNet.Models.Responses;
 using MbDotNet.Models.Responses.Fields;
+using MbDotNet.Models.Stubs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MbDotNet.Tests.Models

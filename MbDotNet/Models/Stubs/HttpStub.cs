@@ -11,7 +11,7 @@ using MbDotNet.Models.Responses;
 using MbDotNet.Models.Responses.Fields;
 using Newtonsoft.Json;
 
-namespace MbDotNet.Models
+namespace MbDotNet.Models.Stubs
 {
     public class HttpStub : StubBase
     {
