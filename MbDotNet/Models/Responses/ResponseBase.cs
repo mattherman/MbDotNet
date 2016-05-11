@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MbDotNet.Models.Responses
 {
-    public class ResponseBase
+    public abstract class ResponseBase
     {
     }
 }
