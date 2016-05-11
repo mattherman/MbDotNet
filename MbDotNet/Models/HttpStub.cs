@@ -8,6 +8,7 @@ using MbDotNet.Interfaces;
 using MbDotNet.Models.Predicates;
 using MbDotNet.Models.Predicates.Fields;
 using MbDotNet.Models.Responses;
+using MbDotNet.Models.Responses.Fields;
 using Newtonsoft.Json;
 
 namespace MbDotNet.Models
@@ -16,13 +17,19 @@ namespace MbDotNet.Models
     {
         public HttpStub()
         {
-            Responses = new List<IResponse>();
+            Responses = new List<ResponseBase>();
             Predicates = new List<PredicateBase>();
         }
 
         public HttpStub ReturnsStatus(HttpStatusCode statusCode)
         {
-            var response = new IsResponse(statusCode, null, null);
+            var fields = new HttpResponseFields
+            {
+                StatusCode = statusCode
+            };
+
+            var response = new IsResponse<HttpResponseFields>(fields);
+
             return Returns(response);
         }
 
@@ -52,11 +59,19 @@ namespace MbDotNet.Models
 
         public HttpStub Returns(HttpStatusCode statusCode, IDictionary<string, string> headers, object responseObject)
         {
-            var response = new IsResponse(statusCode, responseObject, headers);
+            var fields = new HttpResponseFields
+            {
+                StatusCode = statusCode,
+                ResponseObject = responseObject,
+                Headers = headers
+            };
+
+            var response = new IsResponse<HttpResponseFields>(fields);
+
             return Returns(response);
         }
 
-        public HttpStub Returns(IResponse response)
+        public HttpStub Returns(IsResponse<HttpResponseFields> response)
         {
             Responses.Add(response);
             return this;

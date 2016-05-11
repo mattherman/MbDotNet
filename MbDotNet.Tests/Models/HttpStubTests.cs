@@ -6,6 +6,7 @@ using MbDotNet.Models;
 using MbDotNet.Models.Predicates;
 using MbDotNet.Models.Predicates.Fields;
 using MbDotNet.Models.Responses;
+using MbDotNet.Models.Responses.Fields;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MbDotNet.Tests.Models
@@ -35,9 +36,9 @@ namespace MbDotNet.Tests.Models
             var stub = new HttpStub();
             stub.ReturnsStatus(expectedStatusCode);
 
-            var response = stub.Responses.First() as IsResponse;
+            var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
             Assert.IsNotNull(response);
-            Assert.AreEqual(expectedStatusCode, response.StatusCode);
+            Assert.AreEqual(expectedStatusCode, response.Fields.StatusCode);
         }
 
         [TestMethod]
@@ -49,9 +50,9 @@ namespace MbDotNet.Tests.Models
             var stub = new HttpStub();
             stub.Returns(expectedStatusCode, headers, "test");
 
-            var response = stub.Responses.First() as IsResponse;
+            var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
             Assert.IsNotNull(response);
-            Assert.AreEqual(expectedStatusCode, response.StatusCode);
+            Assert.AreEqual(expectedStatusCode, response.Fields.StatusCode);
         }
 
         [TestMethod]
@@ -63,9 +64,9 @@ namespace MbDotNet.Tests.Models
             var stub = new HttpStub();
             stub.Returns(HttpStatusCode.OK, headers, expectedResponseObject);
 
-            var response = stub.Responses.First() as IsResponse;
+            var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
             Assert.IsNotNull(response);
-            Assert.AreEqual(expectedResponseObject, response.ResponseObject);
+            Assert.AreEqual(expectedResponseObject, response.Fields.ResponseObject);
         }
 
         [TestMethod]
@@ -76,21 +77,21 @@ namespace MbDotNet.Tests.Models
             var stub = new HttpStub();
             stub.Returns(HttpStatusCode.OK, headers, "test");
 
-            var response = stub.Responses.First() as IsResponse;
+            var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
             Assert.IsNotNull(response);
-            Assert.AreEqual(headers, response.Headers);
+            Assert.AreEqual(headers, response.Fields.Headers);
         }
 
         [TestMethod]
         public void Returns_AddsResponse()
         {
             var headers = new Dictionary<string, string> { { "Content-Type", "application/json" } };
-            var expectedResponse = new IsResponse(HttpStatusCode.OK, "Test Response", headers);
+            var expectedResponse = new IsResponse<HttpResponseFields>(new HttpResponseFields());
 
             var stub = new HttpStub();
             stub.Returns(expectedResponse);
 
-            var response = stub.Responses.First() as IsResponse;
+            var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
             Assert.AreEqual(expectedResponse, response);
         }
 
@@ -102,9 +103,9 @@ namespace MbDotNet.Tests.Models
             var stub = new HttpStub();
             stub.ReturnsXml(expectedStatusCode, "test");
 
-            var response = stub.Responses.First() as IsResponse;
+            var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
             Assert.IsNotNull(response);
-            Assert.AreEqual(expectedStatusCode, response.StatusCode);
+            Assert.AreEqual(expectedStatusCode, response.Fields.StatusCode);
         }
 
         [TestMethod]
@@ -115,9 +116,9 @@ namespace MbDotNet.Tests.Models
             var stub = new HttpStub();
             stub.ReturnsXml(HttpStatusCode.OK, "Test Response");
 
-            var response = stub.Responses.First() as IsResponse;
+            var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
             Assert.IsNotNull(response);
-            Assert.IsTrue(response.ResponseObject.ToString().Contains(expectedResponseObject));
+            Assert.IsTrue(response.Fields.ResponseObject.ToString().Contains(expectedResponseObject));
         }
 
         [TestMethod]
@@ -128,9 +129,9 @@ namespace MbDotNet.Tests.Models
             var stub = new HttpStub();
             stub.ReturnsXml(HttpStatusCode.OK, "test");
 
-            var response = stub.Responses.First() as IsResponse;
+            var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
             Assert.IsNotNull(response);
-            Assert.AreEqual(headers["Content-Type"], response.Headers["Content-Type"]);
+            Assert.AreEqual(headers["Content-Type"], response.Fields.Headers["Content-Type"]);
         }
 
         [TestMethod]

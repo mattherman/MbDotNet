@@ -61,9 +61,10 @@
     <Compile Include="Models\Predicates\Fields\PredicateFields.cs" />
     <Compile Include="Models\Predicates\PredicateBase.cs" />
     <Compile Include="Models\Predicates\XPathSelector.cs" />
-    <Compile Include="Models\Responses\InjectResponse.cs" />
+    <Compile Include="Models\Responses\Fields\HttpResponseFields.cs" />
+    <Compile Include="Models\Responses\Fields\ResponseFields.cs" />
     <Compile Include="Models\Responses\IsResponse.cs" />
-    <Compile Include="Models\Responses\ProxyResponse.cs" />
+    <Compile Include="Models\Responses\ResponseBase.cs" />
     <Compile Include="Models\StubBase.cs" />
     <Compile Include="MountebankClient.cs" />
     <Compile Include="Models\Predicates\EqualsPredicate.cs" />
