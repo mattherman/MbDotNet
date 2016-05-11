@@ -6,6 +6,7 @@ using System.Xml.Serialization;
 using MbDotNet.Enums;
 using MbDotNet.Interfaces;
 using MbDotNet.Models.Predicates;
+using MbDotNet.Models.Predicates.Fields;
 using MbDotNet.Models.Responses;
 using Newtonsoft.Json;
 
@@ -16,7 +17,7 @@ namespace MbDotNet.Models
         public HttpStub()
         {
             Responses = new List<IResponse>();
-            Predicates = new List<IPredicate>();
+            Predicates = new List<PredicateBase>();
         }
 
         public HttpStub ReturnsStatus(HttpStatusCode statusCode)
@@ -63,17 +64,30 @@ namespace MbDotNet.Models
 
         public HttpStub OnPathEquals(string path)
         {
-            var predicate = new EqualsPredicate(path, null, null, null, null);
+            var fields = new HttpPredicateFields
+            {
+                Path = path
+            };
+
+            var predicate = new EqualsPredicate<HttpPredicateFields>(fields);
+
             return On(predicate);
         }
 
         public HttpStub OnPathAndMethodEqual(string path, Method method)
         {
-            var predicate = new EqualsPredicate(path, method, null, null, null);
+            var fields = new HttpPredicateFields
+            {
+                Path = path,
+                Method = method
+            };
+
+            var predicate = new EqualsPredicate<HttpPredicateFields>(fields);
+
             return On(predicate);
         }
 
-        public HttpStub On(IPredicate predicate)
+        public HttpStub On(EqualsPredicate<HttpPredicateFields> predicate)
         {
             Predicates.Add(predicate);
             return this;

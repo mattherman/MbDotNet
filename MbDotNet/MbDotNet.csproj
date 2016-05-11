@@ -57,6 +57,8 @@
     <Compile Include="Interfaces\IImposter.cs" />
     <Compile Include="Interfaces\IResponse.cs" />
     <Compile Include="Interfaces\IStub.cs" />
+    <Compile Include="Models\Predicates\Fields\HttpPredicateFields.cs" />
+    <Compile Include="Models\Predicates\Fields\PredicateFields.cs" />
     <Compile Include="Models\Predicates\PredicateBase.cs" />
     <Compile Include="Models\Predicates\XPathSelector.cs" />
     <Compile Include="Models\Responses\InjectResponse.cs" />
@@ -67,7 +69,6 @@
     <Compile Include="Models\Predicates\EqualsPredicate.cs" />
     <Compile Include="MountebankRequestProxy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Models\Stub.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

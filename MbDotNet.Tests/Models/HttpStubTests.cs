@@ -4,25 +4,26 @@ using System.Net;
 using MbDotNet.Enums;
 using MbDotNet.Models;
 using MbDotNet.Models.Predicates;
+using MbDotNet.Models.Predicates.Fields;
 using MbDotNet.Models.Responses;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MbDotNet.Tests.Models
 {
     [TestClass]
-    public class StubTests
+    public class HttpStubTests
     {
         [TestMethod]
         public void Constructor_InitializesResponsesCollection()
         {
-            var stub = new Stub();
+            var stub = new HttpStub();
             Assert.IsNotNull(stub.Responses);
         }
 
         [TestMethod]
         public void Constructor_InitializesPredicatesCollection()
         {
-            var stub = new Stub();
+            var stub = new HttpStub();
             Assert.IsNotNull(stub.Predicates);
         }
 
@@ -31,7 +32,7 @@ namespace MbDotNet.Tests.Models
         {
             const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
 
-            var stub = new Stub();
+            var stub = new HttpStub();
             stub.ReturnsStatus(expectedStatusCode);
 
             var response = stub.Responses.First() as IsResponse;
@@ -45,7 +46,7 @@ namespace MbDotNet.Tests.Models
             const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
             var headers = new Dictionary<string, string> { {"Content-Type", "application/json"} };
 
-            var stub = new Stub();
+            var stub = new HttpStub();
             stub.Returns(expectedStatusCode, headers, "test");
 
             var response = stub.Responses.First() as IsResponse;
@@ -59,7 +60,7 @@ namespace MbDotNet.Tests.Models
             const string expectedResponseObject = "Test Response";
             var headers = new Dictionary<string, string> { { "Content-Type", "application/json" } };
 
-            var stub = new Stub();
+            var stub = new HttpStub();
             stub.Returns(HttpStatusCode.OK, headers, expectedResponseObject);
 
             var response = stub.Responses.First() as IsResponse;
@@ -72,7 +73,7 @@ namespace MbDotNet.Tests.Models
         {
             var headers = new Dictionary<string, string> { { "Content-Type", "application/json" } };
 
-            var stub = new Stub();
+            var stub = new HttpStub();
             stub.Returns(HttpStatusCode.OK, headers, "test");
 
             var response = stub.Responses.First() as IsResponse;
@@ -86,7 +87,7 @@ namespace MbDotNet.Tests.Models
             var headers = new Dictionary<string, string> { { "Content-Type", "application/json" } };
             var expectedResponse = new IsResponse(HttpStatusCode.OK, "Test Response", headers);
 
-            var stub = new Stub();
+            var stub = new HttpStub();
             stub.Returns(expectedResponse);
 
             var response = stub.Responses.First() as IsResponse;
@@ -98,7 +99,7 @@ namespace MbDotNet.Tests.Models
         {
             const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
 
-            var stub = new Stub();
+            var stub = new HttpStub();
             stub.ReturnsXml(expectedStatusCode, "test");
 
             var response = stub.Responses.First() as IsResponse;
@@ -111,7 +112,7 @@ namespace MbDotNet.Tests.Models
         {
             const string expectedResponseObject = "<string>Test Response</string>";
 
-            var stub = new Stub();
+            var stub = new HttpStub();
             stub.ReturnsXml(HttpStatusCode.OK, "Test Response");
 
             var response = stub.Responses.First() as IsResponse;
@@ -124,7 +125,7 @@ namespace MbDotNet.Tests.Models
         {
             var headers = new Dictionary<string, string> { { "Content-Type", "application/xml" } };
 
-            var stub = new Stub();
+            var stub = new HttpStub();
             stub.ReturnsXml(HttpStatusCode.OK, "test");
 
             var response = stub.Responses.First() as IsResponse;
@@ -137,12 +138,12 @@ namespace MbDotNet.Tests.Models
         {
             const string expectedPath = "/test";
 
-            var stub = new Stub();
+            var stub = new HttpStub();
             stub.OnPathEquals("/test");
 
-            var predicate = stub.Predicates.First() as EqualsPredicate;
+            var predicate = stub.Predicates.First() as EqualsPredicate<HttpPredicateFields>;
             Assert.IsNotNull(predicate);
-            Assert.AreEqual(expectedPath, predicate.Path);
+            Assert.AreEqual(expectedPath, predicate.Fields.Path);
         }
 
         [TestMethod]
@@ -150,37 +151,38 @@ namespace MbDotNet.Tests.Models
         {
             const string expectedPath = "/test";
 
-            var stub = new Stub();
+            var stub = new HttpStub();
             stub.OnPathAndMethodEqual("/test", Method.Get);
 
-            var predicate = stub.Predicates.First() as EqualsPredicate;
+            var predicate = stub.Predicates.First() as EqualsPredicate<HttpPredicateFields>;
             Assert.IsNotNull(predicate);
-            Assert.AreEqual(expectedPath, predicate.Path);
+            Assert.AreEqual(expectedPath, predicate.Fields.Path);
         }
 
         [TestMethod]
         public void OnPathAndMethodEqual_AddsPredicate_MethodSet()
         {
-            const string expectedMethodString = "POST";
+            const Method expectedMethod = Method.Post;
 
-            var stub = new Stub();
-            stub.OnPathAndMethodEqual("/test", Method.Post);
+            var stub = new HttpStub();
+            stub.OnPathAndMethodEqual("/test", expectedMethod);
 
-            var predicate = stub.Predicates.First() as EqualsPredicate;
+            var predicate = stub.Predicates.First() as EqualsPredicate<HttpPredicateFields>;
             Assert.IsNotNull(predicate);
-            Assert.AreEqual(expectedMethodString, predicate.Method);
+            Assert.AreEqual(expectedMethod, predicate.Fields.Method);
         }
 
         [TestMethod]
         public void On_AddsPredicate()
         {
             var headers = new Dictionary<string, string> { { "Content-Type", "application/json" } };
-            var expectedPredicate = new EqualsPredicate("/test", Method.Get, "test", headers, null);
 
-            var stub = new Stub();
+            var expectedPredicate = new EqualsPredicate<HttpPredicateFields>(new HttpPredicateFields());
+
+            var stub = new HttpStub();
             stub.On(expectedPredicate);
 
-            var predicate = stub.Predicates.First() as EqualsPredicate;
+            var predicate = stub.Predicates.First() as EqualsPredicate<HttpPredicateFields>;
             Assert.AreEqual(expectedPredicate, predicate);
         }
     }
