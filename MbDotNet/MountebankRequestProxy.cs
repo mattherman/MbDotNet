@@ -53,7 +53,8 @@ namespace MbDotNet
 
             if (response.StatusCode != expectedStatusCode)
             {
-                throw new MountebankException(string.Format("{0} --- {1}", failureErrorMessage, response.ErrorMessage));
+                var errorMessage = string.Format("{0}\n\nError Message => \n{1}", failureErrorMessage, response.Content);
+                throw new MountebankException(errorMessage);
             }
         }
     }
