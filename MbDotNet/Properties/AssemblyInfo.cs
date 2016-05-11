@@ -36,3 +36,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("1.3.0.0")]
 
 [assembly: InternalsVisibleTo("MbDotNet.Tests")]
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
