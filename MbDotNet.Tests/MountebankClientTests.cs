@@ -6,6 +6,7 @@ using MbDotNet.Enums;
 using MbDotNet.Interfaces;
 using MbDotNet.Models;
 using MbDotNet.Models.Predicates;
+using MbDotNet.Models.Imposters;
 using Moq;
 
 namespace MbDotNet.Tests

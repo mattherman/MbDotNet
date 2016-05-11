@@ -3,7 +3,7 @@ using MbDotNet.Enums;
 using MbDotNet.Interfaces;
 using Newtonsoft.Json;
 
-namespace MbDotNet.Models
+namespace MbDotNet.Models.Imposters
 {
     public class HttpImposter : Imposter 
     {

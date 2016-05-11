@@ -51,9 +51,9 @@
     <Compile Include="Exceptions\MountebankException.cs" />
     <Compile Include="Interfaces\IRequestProxy.cs" />
     <Compile Include="Models\HttpStub.cs" />
-    <Compile Include="Models\HttpImposter.cs" />
+    <Compile Include="Models\Imposters\HttpImposter.cs" />
     <Compile Include="Interfaces\IClient.cs" />
-    <Compile Include="Interfaces\Imposter.cs" />
+    <Compile Include="Models\Imposters\Imposter.cs" />
     <Compile Include="Models\Predicates\ContainsPredicate.cs" />
     <Compile Include="Models\Predicates\DeepEqualsPredicate.cs" />
     <Compile Include="Models\Predicates\Fields\HttpPredicateFields.cs" />

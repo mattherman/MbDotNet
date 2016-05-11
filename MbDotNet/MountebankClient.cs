@@ -3,6 +3,7 @@ using System.Linq;
 using MbDotNet.Interfaces;
 using MbDotNet.Enums;
 using MbDotNet.Models;
+using MbDotNet.Models.Imposters;
 
 namespace MbDotNet
 {

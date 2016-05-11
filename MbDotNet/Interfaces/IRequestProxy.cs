@@ -1,4 +1,6 @@
-﻿namespace MbDotNet.Interfaces
+﻿using MbDotNet.Models.Imposters;
+
+namespace MbDotNet.Interfaces
 {
     internal interface IRequestProxy
     {

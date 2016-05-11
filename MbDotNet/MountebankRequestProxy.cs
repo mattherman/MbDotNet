@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using MbDotNet.Exceptions;
 using MbDotNet.Interfaces;
+using MbDotNet.Models.Imposters;
 using Newtonsoft.Json;
 using RestSharp;
 
