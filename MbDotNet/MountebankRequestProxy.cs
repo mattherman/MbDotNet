@@ -6,7 +6,7 @@ using RestSharp;
 
 namespace MbDotNet
 {
-    public class MountebankRequestProxy : IRequestProxy
+    internal class MountebankRequestProxy : IRequestProxy
     {
         private readonly IRestClient _client;
         private const string DefaultMountebankUrl = "http://127.0.0.1:2525";

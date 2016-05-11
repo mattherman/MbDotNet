@@ -21,7 +21,7 @@ namespace MbDotNet
 
 		public MountebankClient(string mountebankUrl) : this(new MountebankRequestProxy(mountebankUrl)) { }
 
-		public MountebankClient(IRequestProxy requestProxy)
+		internal MountebankClient(IRequestProxy requestProxy)
         {
             Imposters = new List<IImposter>();
             _requestProxy = requestProxy;

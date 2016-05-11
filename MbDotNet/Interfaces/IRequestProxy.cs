@@ -1,6 +1,6 @@
 ﻿namespace MbDotNet.Interfaces
 {
-    public interface IRequestProxy
+    internal interface IRequestProxy
     {
         void DeleteAllImposters();
         void DeleteImposter(int port);
