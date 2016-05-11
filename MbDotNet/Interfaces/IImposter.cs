@@ -1,4 +1,7 @@
-﻿namespace MbDotNet.Interfaces
+﻿using System.Collections.Generic;
+using MbDotNet.Models;
+
+namespace MbDotNet.Interfaces
 {
     public interface IImposter
     {
@@ -16,11 +19,5 @@
         /// Whether or not the imposter has been added to mountebank.
         /// </summary>
         bool PendingSubmission { get; set; }
-
-        /// <summary>
-        /// Adds a new stub to the imposter.
-        /// </summary>
-        /// <returns>The newly created stub</returns>
-        IStub AddStub();
     }
 }

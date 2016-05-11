@@ -16,21 +16,21 @@ namespace MbDotNet.Tests
         public void Constructor_SetsPort()
         {
             const int port = 123;
-            var imposter = new Imposter(port, Protocol.Http);
+            var imposter = new Imposter<HttpStub>(port, Protocol.Http);
             Assert.AreEqual(port, imposter.Port);
         }
 
         [TestMethod]
         public void Constructor_SetsProtocol()
         {
-            var imposter = new Imposter(123, Protocol.Http);
+            var imposter = new Imposter<HttpStub>(123, Protocol.Http);
             Assert.AreEqual("http", imposter.Protocol);
         }
 
         [TestMethod]
         public void Constructor_PendingSubmissionUponCreation()
         {
-            var imposter = new Imposter(123, Protocol.Http);
+            var imposter = new Imposter<HttpStub>(123, Protocol.Http);
             Assert.IsTrue(imposter.PendingSubmission);
         }
 
@@ -41,7 +41,7 @@ namespace MbDotNet.Tests
         [TestMethod]
         public void AddStub_AddsStubToCollection()
         {
-            var imposter = new Imposter(123, Protocol.Http);
+            var imposter = new Imposter<HttpStub>(123, Protocol.Http);
             imposter.AddStub();
             Assert.AreEqual(1, imposter.Stubs.Count);
         }

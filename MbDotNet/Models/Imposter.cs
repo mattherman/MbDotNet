@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace MbDotNet.Models
 {
-    public class Imposter : IImposter
+    public class Imposter<T> : IImposter where T : StubBase, new()
     {
         [JsonProperty("port")]
         public int Port { get; private set; }
@@ -17,7 +17,7 @@ namespace MbDotNet.Models
         public bool PendingSubmission { get; set; }
 
         [JsonProperty("stubs")]
-        public ICollection<IStub> Stubs { get; private set; }
+        public ICollection<T> Stubs { get; private set; }
 
         public Imposter(int port, Protocol protocol)
         {
@@ -25,12 +25,12 @@ namespace MbDotNet.Models
             Protocol = protocol.ToString().ToLower();
             PendingSubmission = true;
 
-            Stubs = new List<IStub>();
+            Stubs = new List<T>();
         }
 
-        public IStub AddStub()
+        public T AddStub()
         {
-            var stub = new Stub();
+            var stub = new T();
             Stubs.Add(stub);
             return stub;
         }

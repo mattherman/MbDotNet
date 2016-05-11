@@ -34,9 +34,9 @@ namespace MbDotNet
         /// <param name="port">The port the imposter will be set up to receive requests on</param>
         /// <param name="protocol">The protocol the imposter will be set up to receive requests through</param>
         /// <returns>The newly created imposter</returns>
-        public IImposter CreateImposter(int port, Protocol protocol)
+        public Imposter<HttpStub> CreateHttpImposter(int port)
         {
-            var imposter = new Imposter(port, protocol);
+            var imposter = new Imposter<HttpStub>(port, Protocol.Http);
             Imposters.Add(imposter);
             return imposter;
         }

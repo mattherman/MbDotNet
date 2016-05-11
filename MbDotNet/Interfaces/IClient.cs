@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using MbDotNet.Enums;
+using MbDotNet.Models;
 
 namespace MbDotNet.Interfaces
 {
@@ -19,7 +20,7 @@ namespace MbDotNet.Interfaces
         /// <param name="port">The port the imposter will be set up to receive requests on</param>
         /// <param name="protocol">The protocol the imposter will be set up to receive requests through</param>
         /// <returns>The newly created imposter</returns>
-        IImposter CreateImposter(int port, Protocol protocol);
+        Imposter<HttpStub> CreateHttpImposter(int port);
 
         /// <summary>
         /// Deletes a single imposter from mountebank. Will also remove the imposter from the collection

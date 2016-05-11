@@ -51,6 +51,7 @@
     <Compile Include="Exceptions\MountebankException.cs" />
     <Compile Include="Interfaces\IPredicate.cs" />
     <Compile Include="Interfaces\IRequestProxy.cs" />
+    <Compile Include="Models\HttpStub.cs" />
     <Compile Include="Models\Imposter.cs" />
     <Compile Include="Interfaces\IClient.cs" />
     <Compile Include="Interfaces\IImposter.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="Models\Responses\InjectResponse.cs" />
     <Compile Include="Models\Responses\IsResponse.cs" />
     <Compile Include="Models\Responses\ProxyResponse.cs" />
+    <Compile Include="Models\StubBase.cs" />
     <Compile Include="MountebankClient.cs" />
     <Compile Include="Models\Predicates\EqualsPredicate.cs" />
     <Compile Include="MountebankRequestProxy.cs" />
