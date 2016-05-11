@@ -43,22 +43,22 @@ namespace MbDotNet.Tests
             const int firstPortNumber = 123;
             const int secondPortNumber = 456;
 
-            _client.Imposters.Add(new Imposter<HttpStub>(firstPortNumber, Protocol.Http));
-            _client.Imposters.Add(new Imposter<HttpStub>(secondPortNumber, Protocol.Http));
+            _client.Imposters.Add(new HttpImposter(firstPortNumber, null));
+            _client.Imposters.Add(new HttpImposter(secondPortNumber, null));
 
-            _mockRequestProxy.Setup(x => x.CreateImposter(It.Is<IImposter>(imp => imp.Port == firstPortNumber)));
-            _mockRequestProxy.Setup(x => x.CreateImposter(It.Is<IImposter>(imp => imp.Port == secondPortNumber)));
+            _mockRequestProxy.Setup(x => x.CreateImposter(It.Is<Imposter>(imp => imp.Port == firstPortNumber)));
+            _mockRequestProxy.Setup(x => x.CreateImposter(It.Is<Imposter>(imp => imp.Port == secondPortNumber)));
 
             _client.Submit();
 
-            _mockRequestProxy.Verify(x => x.CreateImposter(It.Is<IImposter>(imp => imp.Port == firstPortNumber)), Times.Once);
-            _mockRequestProxy.Verify(x => x.CreateImposter(It.Is<IImposter>(imp => imp.Port == secondPortNumber)), Times.Once);
+            _mockRequestProxy.Verify(x => x.CreateImposter(It.Is<Imposter>(imp => imp.Port == firstPortNumber)), Times.Once);
+            _mockRequestProxy.Verify(x => x.CreateImposter(It.Is<Imposter>(imp => imp.Port == secondPortNumber)), Times.Once);
         }
 
         [TestMethod]
         public void Submit_SetsPendingSubmissionFalse()
         {
-            _client.Imposters.Add(new Imposter<HttpStub>(8080, Protocol.Http));
+            _client.Imposters.Add(new HttpImposter(8080, null));
 
             _client.Submit();
 
@@ -68,14 +68,14 @@ namespace MbDotNet.Tests
         [TestMethod]
         public void Submit_DoesNotSubmitNonPendingImposters()
         {
-            var mockImposter = new Mock<IImposter>();
+            var mockImposter = new Mock<HttpImposter>(123, null);
             mockImposter.SetupGet(x => x.PendingSubmission).Returns(false);
 
             _client.Imposters.Add(mockImposter.Object);
 
             _client.Submit();
 
-            _mockRequestProxy.Verify(x => x.CreateImposter(It.IsAny<IImposter>()), Times.Never);
+            _mockRequestProxy.Verify(x => x.CreateImposter(It.IsAny<HttpImposter>()), Times.Never);
         }
 
         [TestMethod]
@@ -83,7 +83,7 @@ namespace MbDotNet.Tests
         {
             const int port = 8080;
 
-            _client.Imposters.Add(new Imposter<HttpStub>(port, Protocol.Http));
+            _client.Imposters.Add(new HttpImposter(port, null));
 
             _mockRequestProxy.Setup(x => x.DeleteImposter(port));
 
@@ -97,7 +97,7 @@ namespace MbDotNet.Tests
         {
             const int port = 8080;
 
-            _client.Imposters.Add(new Imposter<HttpStub>(port, Protocol.Http));
+            _client.Imposters.Add(new HttpImposter(port, null));
 
             _client.DeleteImposter(port);
 
@@ -109,8 +109,8 @@ namespace MbDotNet.Tests
         {
             _mockRequestProxy.Setup(x => x.DeleteAllImposters());
 
-            _client.Imposters.Add(new Imposter<HttpStub>(123, Protocol.Http));
-            _client.Imposters.Add(new Imposter<HttpStub>(456, Protocol.Http));
+            _client.Imposters.Add(new HttpImposter(123, null));
+            _client.Imposters.Add(new HttpImposter(456, null));
 
             _client.DeleteAllImposters();
 
@@ -122,8 +122,8 @@ namespace MbDotNet.Tests
         {
             _mockRequestProxy.Setup(x => x.DeleteAllImposters());
 
-            _client.Imposters.Add(new Imposter<HttpStub>(123, Protocol.Http));
-            _client.Imposters.Add(new Imposter<HttpStub>(456, Protocol.Http));
+            _client.Imposters.Add(new HttpImposter(123, null));
+            _client.Imposters.Add(new HttpImposter(456, null));
 
             _client.DeleteAllImposters();
 

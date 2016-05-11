@@ -15,7 +15,7 @@ namespace MbDotNet
         /// collection may or may not have been added to mountebank. See IImposter.PendingSubmission
         /// for more information.
         /// </summary>
-        public ICollection<IImposter> Imposters { get; private set; }
+        public ICollection<Imposter> Imposters { get; private set; }
 
         public MountebankClient() : this(new MountebankRequestProxy()) { }
 
@@ -23,7 +23,7 @@ namespace MbDotNet
 
 		internal MountebankClient(IRequestProxy requestProxy)
         {
-            Imposters = new List<IImposter>();
+            Imposters = new List<Imposter>();
             _requestProxy = requestProxy;
         }
 
@@ -34,9 +34,9 @@ namespace MbDotNet
         /// <param name="port">The port the imposter will be set up to receive requests on</param>
         /// <param name="protocol">The protocol the imposter will be set up to receive requests through</param>
         /// <returns>The newly created imposter</returns>
-        public Imposter<HttpStub> CreateHttpImposter(int port)
+        public HttpImposter CreateHttpImposter(int port, string name = null)
         {
-            var imposter = new Imposter<HttpStub>(port, Protocol.Http);
+            var imposter = new HttpImposter(port, null);
             Imposters.Add(imposter);
             return imposter;
         }
@@ -64,7 +64,7 @@ namespace MbDotNet
         public void DeleteAllImposters()
         {
             _requestProxy.DeleteAllImposters();
-            Imposters = new List<IImposter>();
+            Imposters = new List<Imposter>();
         }
 
         /// <summary>

@@ -35,7 +35,7 @@ namespace MbDotNet
             ExecuteRequestAndCheckStatusCode(request, HttpStatusCode.OK, string.Format("Failed to delete the imposter with port {0}.", port));
         }
 
-        public void CreateImposter(IImposter imposter)
+        public void CreateImposter(Imposter imposter)
         {
             var request = new RestRequest(ImpostersResource, Method.POST);
 

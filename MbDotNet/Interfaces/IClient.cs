@@ -11,7 +11,7 @@ namespace MbDotNet.Interfaces
         /// collection may or may not have been added to mountebank. See IImposter.PendingSubmission
         /// for more information.
         /// </summary>
-        ICollection<IImposter> Imposters { get; }
+        ICollection<Imposter> Imposters { get; }
 
         /// <summary>
         /// Creates a new imposter on the specified port with the specified protocol. The Submit method
@@ -20,7 +20,7 @@ namespace MbDotNet.Interfaces
         /// <param name="port">The port the imposter will be set up to receive requests on</param>
         /// <param name="protocol">The protocol the imposter will be set up to receive requests through</param>
         /// <returns>The newly created imposter</returns>
-        Imposter<HttpStub> CreateHttpImposter(int port);
+        HttpImposter CreateHttpImposter(int port, string name = null);
 
         /// <summary>
         /// Deletes a single imposter from mountebank. Will also remove the imposter from the collection

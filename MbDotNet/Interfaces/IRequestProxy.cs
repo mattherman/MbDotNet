@@ -4,6 +4,6 @@
     {
         void DeleteAllImposters();
         void DeleteImposter(int port);
-        void CreateImposter(IImposter imposter);
+        void CreateImposter(Imposter imposter);
     }
 }
