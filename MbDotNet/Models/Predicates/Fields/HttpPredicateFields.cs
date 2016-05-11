@@ -28,6 +28,7 @@ namespace MbDotNet.Models.Predicates.Fields
         /// <summary>
         /// The request method
         /// </summary>
+        [JsonIgnore]
         public Method? Method { get; set; }
 
         /// <summary>
