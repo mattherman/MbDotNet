@@ -154,7 +154,7 @@ namespace MbDotNet.Models
         /// </summary>
         /// <param name="predicate">The predicate object designating what the stub will match on</param>
         /// <returns>The stub that the predicate was added to</returns>
-        public HttpStub On(EqualsPredicate<HttpPredicateFields> predicate)
+        public HttpStub On(PredicateBase predicate)
         {
             Predicates.Add(predicate);
             return this;
