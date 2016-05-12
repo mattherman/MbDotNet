@@ -3,7 +3,7 @@ using MbDotNet.Enums;
 using MbDotNet.Models;
 using MbDotNet.Models.Imposters;
 
-namespace MbDotNet.Tests
+namespace MbDotNet.Tests.Imposters
 {
     /// <summary>
     /// Summary description for ImposterTests

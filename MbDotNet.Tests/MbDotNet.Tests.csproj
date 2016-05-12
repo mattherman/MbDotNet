@@ -57,7 +57,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Models\ImposterTests.cs" />
+    <Compile Include="Models\Imposters\ImposterTests.cs" />
     <Compile Include="Models\Predicates\ContainsPredicateTests.cs" />
     <Compile Include="Models\Predicates\DeepEqualsPredicateTests.cs" />
     <Compile Include="Models\Predicates\EqualsPredicateTests.cs" />
