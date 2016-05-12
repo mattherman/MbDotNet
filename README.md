@@ -19,6 +19,6 @@ The following Mountebank functionality is not yet supported:
 - HTTPS and SMTP imposters
 - Stub behaviors
 - All response types other than "is"
-- All predicate types other than "equals", "deepEquals", and "contains"
+- The "exists", "or", "and", and "inject" predicates
 
 Pull requests are always welcome.
