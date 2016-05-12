@@ -10,7 +10,7 @@ namespace MbDotNet.Models.Predicates
 {
     public class EndsWithPredicate<T> : PredicateBase where T : PredicateFields, new()
     {
-        [JsonProperty("startsWith")]
+        [JsonProperty("endsWith")]
         public T Fields { get; private set; }
 
         public EndsWithPredicate(T fields)
