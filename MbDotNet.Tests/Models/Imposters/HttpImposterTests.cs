@@ -9,7 +9,7 @@ namespace MbDotNet.Tests.Imposters
     /// Summary description for ImposterTests
     /// </summary>
     [TestClass]
-    public class ImposterTests
+    public class HttpImposterTests
     {
         #region Constructor Tests
 
@@ -41,6 +41,13 @@ namespace MbDotNet.Tests.Imposters
         {
             var imposter = new HttpImposter(123, null);
             Assert.IsTrue(imposter.PendingSubmission);
+        }
+
+        [TestMethod]
+        public void Constructor_InitializesStubsCollection()
+        {
+            var imposter = new HttpImposter(123, null);
+            Assert.IsNotNull(imposter.Stubs);
         }
 
         #endregion
