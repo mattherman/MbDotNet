@@ -63,6 +63,7 @@
     <Compile Include="Models\Predicates\DeepEqualsPredicateTests.cs" />
     <Compile Include="Models\Predicates\EndsWithPredicateTests.cs" />
     <Compile Include="Models\Predicates\EqualsPredicateTests.cs" />
+    <Compile Include="Models\Predicates\MatchesPredicateTests.cs" />
     <Compile Include="Models\Predicates\PredicateTestBase.cs" />
     <Compile Include="Models\Predicates\StartsWithPredicateTests.cs" />
     <Compile Include="Models\Predicates\XPathSelectorTests.cs" />
