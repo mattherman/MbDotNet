@@ -67,6 +67,7 @@
     <Compile Include="Models\Responses\IsResponse.cs" />
     <Compile Include="Models\Responses\ResponseBase.cs" />
     <Compile Include="Models\Stubs\StubBase.cs" />
+    <Compile Include="Models\Stubs\TcpStub.cs" />
     <Compile Include="MountebankClient.cs" />
     <Compile Include="Models\Predicates\EqualsPredicate.cs" />
     <Compile Include="MountebankRequestProxy.cs" />

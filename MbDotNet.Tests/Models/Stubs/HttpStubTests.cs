@@ -10,7 +10,7 @@ using MbDotNet.Models.Responses.Fields;
 using MbDotNet.Models.Stubs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace MbDotNet.Tests.Models
+namespace MbDotNet.Tests.Models.Stubs
 {
     [TestClass]
     public class HttpStubTests

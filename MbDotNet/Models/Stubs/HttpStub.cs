@@ -15,12 +15,7 @@ namespace MbDotNet.Models.Stubs
 {
     public class HttpStub : StubBase
     {
-        public HttpStub()
-        {
-            Responses = new List<ResponseBase>();
-            Predicates = new List<PredicateBase>();
-        }
-
+        
         /// <summary>
         /// Adds a response to the stub that will return the specified HTTP status code.
         /// </summary>
@@ -35,7 +30,7 @@ namespace MbDotNet.Models.Stubs
 
             var response = new IsResponse<HttpResponseFields>(fields);
 
-            return Returns(response);
+            return (HttpStub) Returns(response);
         }
 
         /// <summary>
@@ -49,7 +44,7 @@ namespace MbDotNet.Models.Stubs
         /// <returns>The stub that the response was added to</returns>
         public HttpStub ReturnsJson<T>(HttpStatusCode statusCode, T responseObject)
         {
-            return Returns(statusCode, new Dictionary<string, string> { { "Content-Type", "application/json" } }, responseObject);
+            return (HttpStub) Returns(statusCode, new Dictionary<string, string> { { "Content-Type", "application/json" } }, responseObject);
         }
 
         /// <summary>
@@ -65,7 +60,7 @@ namespace MbDotNet.Models.Stubs
         {
             var responseObjectXml = ConvertResponseObjectToXml(responseObject);
 
-            return Returns(statusCode, new Dictionary<string, string> { {"Content-Type", "application/xml"} }, responseObjectXml);
+            return (HttpStub) Returns(statusCode, new Dictionary<string, string> { {"Content-Type", "application/xml"} }, responseObjectXml);
         }
 
         private static string ConvertResponseObjectToXml<T>(T objectToSerialize)
@@ -98,18 +93,7 @@ namespace MbDotNet.Models.Stubs
 
             var response = new IsResponse<HttpResponseFields>(fields);
 
-            return Returns(response);
-        }
-
-        /// <summary>
-        /// Adds a response to the stub.
-        /// </summary>
-        /// <param name="response">The response object designating what the stub will return</param>
-        /// <returns>The stub that the response was added to</returns>
-        public HttpStub Returns(IsResponse<HttpResponseFields> response)
-        {
-            Responses.Add(response);
-            return this;
+            return (HttpStub) Returns(response);
         }
 
         /// <summary>
@@ -126,7 +110,7 @@ namespace MbDotNet.Models.Stubs
 
             var predicate = new EqualsPredicate<HttpPredicateFields>(fields);
 
-            return On(predicate);
+            return (HttpStub) On(predicate);
         }
 
         /// <summary>
@@ -146,18 +130,7 @@ namespace MbDotNet.Models.Stubs
 
             var predicate = new EqualsPredicate<HttpPredicateFields>(fields);
 
-            return On(predicate);
-        }
-
-        /// <summary>
-        /// Adds a predicate to the stub
-        /// </summary>
-        /// <param name="predicate">The predicate object designating what the stub will match on</param>
-        /// <returns>The stub that the predicate was added to</returns>
-        public HttpStub On(PredicateBase predicate)
-        {
-            Predicates.Add(predicate);
-            return this;
+            return (HttpStub) On(predicate);
         }
     }
 }

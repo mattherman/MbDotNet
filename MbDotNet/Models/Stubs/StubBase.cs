@@ -23,5 +23,33 @@ namespace MbDotNet.Models.Stubs
         /// </summary>
         [JsonProperty("responses", NullValueHandling = NullValueHandling.Ignore)]
         public ICollection<ResponseBase> Responses { get; set; }
+
+        public StubBase()
+        {
+            Responses = new List<ResponseBase>();
+            Predicates = new List<PredicateBase>();
+        }
+
+        /// <summary>
+        /// Adds a predicate to the stub
+        /// </summary>
+        /// <param name="predicate">The predicate object designating what the stub will match on</param>
+        /// <returns>The stub that the predicate was added to</returns>
+        public StubBase On(PredicateBase predicate)
+        {
+            Predicates.Add(predicate);
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a response to the stub.
+        /// </summary>
+        /// <param name="response">The response object designating what the stub will return</param>
+        /// <returns>The stub that the response was added to</returns>
+        public StubBase Returns(ResponseBase response)
+        {
+            Responses.Add(response);
+            return this;
+        }
     }
 }

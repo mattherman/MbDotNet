@@ -64,7 +64,8 @@
     <Compile Include="Models\Predicates\PredicateTestBase.cs" />
     <Compile Include="Models\Predicates\XPathSelectorTests.cs" />
     <Compile Include="Models\Responses\IsResponseTests.cs" />
-    <Compile Include="Models\HttpStubTests.cs" />
+    <Compile Include="Models\Stubs\HttpStubTests.cs" />
+    <Compile Include="Models\Stubs\TcpStubTests.cs" />
     <Compile Include="MountebankClientTests.cs" />
     <Compile Include="MountebankRequestProxyTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
