@@ -15,13 +15,23 @@ namespace MbDotNet.Interfaces
         ICollection<Imposter> Imposters { get; }
 
         /// <summary>
-        /// Creates a new imposter on the specified port with the specified protocol. The Submit method
+        /// Creates a new imposter on the specified port with the HTTP protocol. The Submit method
         /// must be called on the client in order to submit the imposter to mountebank.
         /// </summary>
         /// <param name="port">The port the imposter will be set up to receive requests on</param>
-        /// <param name="protocol">The protocol the imposter will be set up to receive requests through</param>
+        /// <param name="name">The name the imposter will recieve, useful for debugging/logging purposes</param>
         /// <returns>The newly created imposter</returns>
         HttpImposter CreateHttpImposter(int port, string name = null);
+
+        /// <summary>
+        /// Creates a new imposter on the specified port with the TCP protocol. The Submit method
+        /// must be called on the client in order to submit the imposter to mountebank.
+        /// </summary>
+        /// <param name="port">The port the imposter will be set up to receive requests on</param>
+        /// <param name="name">The name the imposter will recieve, useful for debugging/logging purposes</param>
+        /// <param name="mode">The mode of the imposter, text or binary. This defines the encoding for request/response data</param>
+        /// <returns>The newly created imposter</returns>
+        TcpImposter CreateTcpImposter(int port, string name = null, TcpMode mode = TcpMode.Text);
 
         /// <summary>
         /// Deletes a single imposter from mountebank. Will also remove the imposter from the collection
