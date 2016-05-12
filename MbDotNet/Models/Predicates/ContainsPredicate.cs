@@ -7,7 +7,7 @@ namespace MbDotNet.Models.Predicates
 {
     public class ContainsPredicate<T> : PredicateBase where T : PredicateFields, new()
     {
-        [JsonProperty("equals")]
+        [JsonProperty("contains")]
         public T Fields { get; private set; }
 
         public ContainsPredicate(T fields)

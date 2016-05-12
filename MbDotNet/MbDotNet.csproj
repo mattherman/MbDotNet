@@ -52,6 +52,7 @@
     <Compile Include="Exceptions\MountebankException.cs" />
     <Compile Include="Interfaces\IRequestProxy.cs" />
     <Compile Include="Models\Imposters\TcpImposter.cs" />
+    <Compile Include="Models\Predicates\StartsWithPredicate.cs" />
     <Compile Include="Models\Stubs\HttpStub.cs" />
     <Compile Include="Models\Imposters\HttpImposter.cs" />
     <Compile Include="Interfaces\IClient.cs" />
