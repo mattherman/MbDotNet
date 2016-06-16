@@ -74,6 +74,7 @@
     <Compile Include="MountebankClientTests.cs" />
     <Compile Include="MountebankRequestProxyTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TutorialExamples.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MbDotNet\MbDotNet.csproj">
