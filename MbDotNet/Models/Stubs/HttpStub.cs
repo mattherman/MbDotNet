@@ -34,6 +34,18 @@ namespace MbDotNet.Models.Stubs
         }
 
         /// <summary>
+        /// Returns the specified HTTP status code along with the given string in
+        /// the body of the response.
+        /// </summary>
+        /// <param name="statusCode">The status code to be returned</param>
+        /// <param name="body">The text to include in the body of the response</param>
+        /// <returns>The stub that the response was added to</returns>
+        public HttpStub ReturnsBody(HttpStatusCode statusCode, string body)
+        {
+            return Returns(statusCode, null, body);
+        }
+
+        /// <summary>
         /// Adds a response to the stub that will return the specified HTTP status code
         /// along with a response object serialized as JSON. Automatically adds an appropriate
         /// Content-Type header to the response.
@@ -117,6 +129,23 @@ namespace MbDotNet.Models.Stubs
             var fields = new HttpPredicateFields
             {
                 Path = path
+            };
+
+            var predicate = new EqualsPredicate<HttpPredicateFields>(fields);
+
+            return On(predicate);
+        }
+
+        /// <summary>
+        /// Adds a predicate to the stub that will match when the request method equals the specified method.
+        /// </summary>
+        /// <param name="method">The method to match on</param>
+        /// <returns>The stub that the predicate was added to</returns>
+        public HttpStub OnMethodEquals(Method method)
+        {
+            var fields = new HttpPredicateFields
+            {
+                Method = method
             };
 
             var predicate = new EqualsPredicate<HttpPredicateFields>(fields);

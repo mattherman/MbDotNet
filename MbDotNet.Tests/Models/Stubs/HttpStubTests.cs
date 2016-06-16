@@ -97,6 +97,32 @@ namespace MbDotNet.Tests.Models.Stubs
         }
 
         [TestMethod]
+        public void ReturnsBody_AddsResponse_StatusCodeSet()
+        {
+            const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
+
+            var stub = new HttpStub();
+            stub.ReturnsBody(expectedStatusCode, "test");
+
+            var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
+            Assert.IsNotNull(response);
+            Assert.AreEqual(expectedStatusCode, response.Fields.StatusCode);
+        }
+
+        [TestMethod]
+        public void ReturnsBody_AddsResponse_ResponseObjectSet()
+        {
+            const string expectedBody = "test";
+
+            var stub = new HttpStub();
+            stub.ReturnsBody(HttpStatusCode.OK, expectedBody);
+
+            var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
+            Assert.IsNotNull(response);
+            Assert.AreEqual(expectedBody, response.Fields.ResponseObject.ToString());
+        }
+
+        [TestMethod]
         public void ReturnsXml_AddsResponse_StatusCodeSet()
         {
             const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
@@ -141,11 +167,24 @@ namespace MbDotNet.Tests.Models.Stubs
             const string expectedPath = "/test";
 
             var stub = new HttpStub();
-            stub.OnPathEquals("/test");
+            stub.OnPathEquals(expectedPath);
 
             var predicate = stub.Predicates.First() as EqualsPredicate<HttpPredicateFields>;
             Assert.IsNotNull(predicate);
             Assert.AreEqual(expectedPath, predicate.Fields.Path);
+        }
+
+        [TestMethod]
+        public void OnMethodEquals_AddsPredicate_MethodSet()
+        {
+            const Method expectedMethod = Method.Post;
+
+            var stub = new HttpStub();
+            stub.OnMethodEquals(expectedMethod);
+
+            var predicate = stub.Predicates.First() as EqualsPredicate<HttpPredicateFields>;
+            Assert.IsNotNull(predicate);
+            Assert.AreEqual(expectedMethod, predicate.Fields.Method);
         }
 
         [TestMethod]
@@ -154,7 +193,7 @@ namespace MbDotNet.Tests.Models.Stubs
             const string expectedPath = "/test";
 
             var stub = new HttpStub();
-            stub.OnPathAndMethodEqual("/test", Method.Get);
+            stub.OnPathAndMethodEqual(expectedPath, Method.Get);
 
             var predicate = stub.Predicates.First() as EqualsPredicate<HttpPredicateFields>;
             Assert.IsNotNull(predicate);
