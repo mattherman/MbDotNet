@@ -27,7 +27,18 @@ namespace MbDotNet.Models.Stubs
 
             var predicate = new EqualsPredicate<TcpPredicateFields>(fields);
 
-            return (TcpStub) On(predicate);
+            return On(predicate);
+        }
+
+        /// <summary>
+        /// Adds a predicate to the stub
+        /// </summary>
+        /// <param name="predicate">The predicate object designating what the stub will match on</param>
+        /// <returns>The stub that the predicate was added to</returns>
+        public TcpStub On(PredicateBase predicate)
+        {
+            Predicates.Add(predicate);
+            return this;
         }
 
         /// <summary>
@@ -44,7 +55,18 @@ namespace MbDotNet.Models.Stubs
 
             var response = new IsResponse<TcpResponseFields>(fields);
 
-            return (TcpStub) Returns(response);
+            return Returns(response);
+        }
+
+        /// <summary>
+        /// Adds a response to the stub.
+        /// </summary>
+        /// <param name="response">The response object designating what the stub will return</param>
+        /// <returns>The stub that the response was added to</returns>
+        public TcpStub Returns(ResponseBase response)
+        {
+            Responses.Add(response);
+            return this;
         }
     }
 }
