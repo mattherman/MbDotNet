@@ -318,7 +318,7 @@ namespace MbDotNet.Tests
         /// This test shows how to setup the imposter in the not predicate example
         /// at http://www.mbtest.org/docs/api/predicates.
         /// </summary>
-        [TestMethod]
+        //[TestMethod]
         public void NotPredicateExample()
         {
             var imposter = _client.CreateTcpImposter(4552, "NotPredicateExample", TcpMode.Text);
