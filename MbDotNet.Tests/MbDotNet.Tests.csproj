@@ -57,14 +57,24 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Models\ImposterTests.cs" />
+    <Compile Include="Models\Imposters\HttpImposterTests.cs" />
+    <Compile Include="Models\Imposters\TcpImposterTests.cs" />
+    <Compile Include="Models\Predicates\ContainsPredicateTests.cs" />
+    <Compile Include="Models\Predicates\DeepEqualsPredicateTests.cs" />
+    <Compile Include="Models\Predicates\EndsWithPredicateTests.cs" />
     <Compile Include="Models\Predicates\EqualsPredicateTests.cs" />
+    <Compile Include="Models\Predicates\MatchesPredicateTests.cs" />
+    <Compile Include="Models\Predicates\NotPredicateTests.cs" />
+    <Compile Include="Models\Predicates\PredicateTestBase.cs" />
+    <Compile Include="Models\Predicates\StartsWithPredicateTests.cs" />
     <Compile Include="Models\Predicates\XPathSelectorTests.cs" />
     <Compile Include="Models\Responses\IsResponseTests.cs" />
-    <Compile Include="Models\StubTests.cs" />
+    <Compile Include="Models\Stubs\HttpStubTests.cs" />
+    <Compile Include="Models\Stubs\TcpStubTests.cs" />
     <Compile Include="MountebankClientTests.cs" />
     <Compile Include="MountebankRequestProxyTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TutorialExamples.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MbDotNet\MbDotNet.csproj">

@@ -2,6 +2,7 @@
 using MbDotNet.Enums;
 using MbDotNet.Exceptions;
 using MbDotNet.Models;
+using MbDotNet.Models.Imposters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using RestSharp;
@@ -115,7 +116,7 @@ namespace MbDotNet.Tests
                 .Returns(response)
                 .Callback<IRestRequest>(req => requestSent = req);
 
-            _proxy.CreateImposter(new Imposter(123, Protocol.Http));
+            _proxy.CreateImposter(new HttpImposter(123, null));
 
             Assert.AreEqual(Method.POST, requestSent.Method);
         }
@@ -130,7 +131,7 @@ namespace MbDotNet.Tests
                 .Returns(response)
                 .Callback<IRestRequest>(req => requestSent = req);
 
-            _proxy.CreateImposter(new Imposter(123, Protocol.Http));
+            _proxy.CreateImposter(new HttpImposter(123, null));
 
             Assert.AreEqual("imposters", requestSent.Resource);
         }
@@ -145,7 +146,7 @@ namespace MbDotNet.Tests
                 .Returns(response)
                 .Callback<IRestRequest>(req => requestSent = req);
 
-            _proxy.CreateImposter(new Imposter(123, Protocol.Http));
+            _proxy.CreateImposter(new HttpImposter(123, null));
 
             Assert.AreEqual(DataFormat.Json, requestSent.RequestFormat);
             Assert.AreEqual(1, requestSent.Parameters.Count);
@@ -159,7 +160,7 @@ namespace MbDotNet.Tests
 
             _mockRestClient.Setup(x => x.Execute(It.IsAny<IRestRequest>())).Returns(response);
 
-            _proxy.CreateImposter(new Imposter(123, Protocol.Http));
+            _proxy.CreateImposter(new HttpImposter(123, null));
         }
     }
 }

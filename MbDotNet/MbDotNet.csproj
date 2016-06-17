@@ -48,24 +48,36 @@
   <ItemGroup>
     <Compile Include="Enums\Method.cs" />
     <Compile Include="Enums\Protocol.cs" />
+    <Compile Include="Enums\TcpMode.cs" />
     <Compile Include="Exceptions\MountebankException.cs" />
-    <Compile Include="Interfaces\IPredicate.cs" />
     <Compile Include="Interfaces\IRequestProxy.cs" />
-    <Compile Include="Models\Imposter.cs" />
+    <Compile Include="Models\Imposters\TcpImposter.cs" />
+    <Compile Include="Models\Predicates\EndsWithPredicate.cs" />
+    <Compile Include="Models\Predicates\MatchesPredicate.cs" />
+    <Compile Include="Models\Predicates\NotPredicate.cs" />
+    <Compile Include="Models\Predicates\StartsWithPredicate.cs" />
+    <Compile Include="Models\Stubs\HttpStub.cs" />
+    <Compile Include="Models\Imposters\HttpImposter.cs" />
     <Compile Include="Interfaces\IClient.cs" />
-    <Compile Include="Interfaces\IImposter.cs" />
-    <Compile Include="Interfaces\IResponse.cs" />
-    <Compile Include="Interfaces\IStub.cs" />
+    <Compile Include="Models\Imposters\Imposter.cs" />
+    <Compile Include="Models\Predicates\ContainsPredicate.cs" />
+    <Compile Include="Models\Predicates\DeepEqualsPredicate.cs" />
+    <Compile Include="Models\Predicates\Fields\HttpPredicateFields.cs" />
+    <Compile Include="Models\Predicates\Fields\PredicateFields.cs" />
+    <Compile Include="Models\Predicates\Fields\TcpPredicateFields.cs" />
     <Compile Include="Models\Predicates\PredicateBase.cs" />
     <Compile Include="Models\Predicates\XPathSelector.cs" />
-    <Compile Include="Models\Responses\InjectResponse.cs" />
+    <Compile Include="Models\Responses\Fields\HttpResponseFields.cs" />
+    <Compile Include="Models\Responses\Fields\ResponseFields.cs" />
+    <Compile Include="Models\Responses\Fields\TcpResponseFields.cs" />
     <Compile Include="Models\Responses\IsResponse.cs" />
-    <Compile Include="Models\Responses\ProxyResponse.cs" />
+    <Compile Include="Models\Responses\ResponseBase.cs" />
+    <Compile Include="Models\Stubs\StubBase.cs" />
+    <Compile Include="Models\Stubs\TcpStub.cs" />
     <Compile Include="MountebankClient.cs" />
     <Compile Include="Models\Predicates\EqualsPredicate.cs" />
     <Compile Include="MountebankRequestProxy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Models\Stub.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -11,15 +11,14 @@ https://www.nuget.org/packages/MbDotNet
 
 ## Usage Examples
 
-For usage examples, see the [Usage Examples (v1)](https://github.com/mattherman/MbDotNet/wiki/Usage-Examples-%28v1%29) wiki page.
+For usage examples, see the [Usage Examples (v2)](https://github.com/mattherman/MbDotNet/wiki/Usage-Examples-%28v2%29) wiki page.
 
 ## Unsupported Functionality ##
 
-Stubs
-- Behaviors
-
-Reponses
+The following Mountebank functionality is not yet supported:
+- HTTPS and SMTP imposters
+- Stub behaviors
 - All response types other than "is"
+- The "exists", "or", "and", and "inject" predicates
 
-Predicates
-- All predicate types other than "equals"
+Pull requests are always welcome.

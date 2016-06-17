@@ -5,17 +5,17 @@ using MbDotNet.Models.Predicates.Fields;
 
 namespace MbDotNet.Models.Predicates
 {
-    public class EqualsPredicate<T> : PredicateBase where T : PredicateFields, new()
+    public class ContainsPredicate<T> : PredicateBase where T : PredicateFields, new()
     {
-        [JsonProperty("equals")]
+        [JsonProperty("contains")]
         public T Fields { get; private set; }
 
-        public EqualsPredicate(T fields)
+        public ContainsPredicate(T fields)
         {
             Fields = fields;
         }
 
-        public EqualsPredicate(T fields, bool isCaseSensitive, string exceptExpression, XPathSelector selector)
+        public ContainsPredicate(T fields, bool isCaseSensitive, string exceptExpression, XPathSelector selector)
             : base(isCaseSensitive, exceptExpression, selector)
         {
             Fields = fields;

@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace MbDotNet.Models.Predicates
 {
-    public class PredicateBase : IPredicate
+    public abstract class PredicateBase
     {
         [JsonProperty("caseSensitive", NullValueHandling = NullValueHandling.Ignore)]
         public bool IsCaseSensitive { get; private set; }

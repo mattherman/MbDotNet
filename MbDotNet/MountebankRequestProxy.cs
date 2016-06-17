@@ -1,12 +1,13 @@
 ﻿using System.Net;
 using MbDotNet.Exceptions;
 using MbDotNet.Interfaces;
+using MbDotNet.Models.Imposters;
 using Newtonsoft.Json;
 using RestSharp;
 
 namespace MbDotNet
 {
-    public class MountebankRequestProxy : IRequestProxy
+    internal class MountebankRequestProxy : IRequestProxy
     {
         private readonly IRestClient _client;
         private const string DefaultMountebankUrl = "http://127.0.0.1:2525";
@@ -35,7 +36,7 @@ namespace MbDotNet
             ExecuteRequestAndCheckStatusCode(request, HttpStatusCode.OK, string.Format("Failed to delete the imposter with port {0}.", port));
         }
 
-        public void CreateImposter(IImposter imposter)
+        public void CreateImposter(Imposter imposter)
         {
             var request = new RestRequest(ImpostersResource, Method.POST);
 
@@ -53,7 +54,8 @@ namespace MbDotNet
 
             if (response.StatusCode != expectedStatusCode)
             {
-                throw new MountebankException(string.Format("{0} --- {1}", failureErrorMessage, response.ErrorMessage));
+                var errorMessage = string.Format("{0}\n\nError Message => \n{1}", failureErrorMessage, response.Content);
+                throw new MountebankException(errorMessage);
             }
         }
     }

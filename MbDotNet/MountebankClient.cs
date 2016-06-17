@@ -3,6 +3,7 @@ using System.Linq;
 using MbDotNet.Interfaces;
 using MbDotNet.Enums;
 using MbDotNet.Models;
+using MbDotNet.Models.Imposters;
 
 namespace MbDotNet
 {
@@ -15,28 +16,43 @@ namespace MbDotNet
         /// collection may or may not have been added to mountebank. See IImposter.PendingSubmission
         /// for more information.
         /// </summary>
-        public ICollection<IImposter> Imposters { get; private set; }
+        public ICollection<Imposter> Imposters { get; private set; }
 
         public MountebankClient() : this(new MountebankRequestProxy()) { }
 
 		public MountebankClient(string mountebankUrl) : this(new MountebankRequestProxy(mountebankUrl)) { }
 
-		public MountebankClient(IRequestProxy requestProxy)
+		internal MountebankClient(IRequestProxy requestProxy)
         {
-            Imposters = new List<IImposter>();
+            Imposters = new List<Imposter>();
             _requestProxy = requestProxy;
         }
 
         /// <summary>
-        /// Creates a new imposter on the specified port with the specified protocol. The Submit method
+        /// Creates a new imposter on the specified port with the HTTP protocol. The Submit method
         /// must be called on the client in order to submit the imposter to mountebank.
         /// </summary>
         /// <param name="port">The port the imposter will be set up to receive requests on</param>
-        /// <param name="protocol">The protocol the imposter will be set up to receive requests through</param>
+        /// <param name="name">The name the imposter will recieve, useful for debugging/logging purposes</param>
         /// <returns>The newly created imposter</returns>
-        public IImposter CreateImposter(int port, Protocol protocol)
+        public HttpImposter CreateHttpImposter(int port, string name = null)
         {
-            var imposter = new Imposter(port, protocol);
+            var imposter = new HttpImposter(port, name);
+            Imposters.Add(imposter);
+            return imposter;
+        }
+
+        /// <summary>
+        /// Creates a new imposter on the specified port with the TCP protocol. The Submit method
+        /// must be called on the client in order to submit the imposter to mountebank.
+        /// </summary>
+        /// <param name="port">The port the imposter will be set up to receive requests on</param>
+        /// <param name="name">The name the imposter will recieve, useful for debugging/logging purposes</param>
+        /// <param name="mode">The mode of the imposter, text or binary. This defines the encoding for request/response data</param>
+        /// <returns>The newly created imposter</returns>
+        public TcpImposter CreateTcpImposter(int port, string name = null, TcpMode mode = TcpMode.Text)
+        {
+            var imposter = new TcpImposter(port, name, mode);
             Imposters.Add(imposter);
             return imposter;
         }
@@ -64,7 +80,7 @@ namespace MbDotNet
         public void DeleteAllImposters()
         {
             _requestProxy.DeleteAllImposters();
-            Imposters = new List<IImposter>();
+            Imposters = new List<Imposter>();
         }
 
         /// <summary>
