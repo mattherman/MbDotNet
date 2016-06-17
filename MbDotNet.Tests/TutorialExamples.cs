@@ -55,7 +55,7 @@ namespace MbDotNet.Tests
             var imposter = _client.CreateHttpImposter(4545, "StubExample");
             imposter.AddStub().OnPathAndMethodEqual("/customers/123", Method.Post)
                 .ReturnsXml(HttpStatusCode.Created, new Customer { Email = "customer@test.com" })
-                .Returns(HttpStatusCode.BadRequest, null, "<error>Email already exists</error>");
+                .ReturnsBody(HttpStatusCode.BadRequest, "<error>Email already exists</error>");
 
             _client.Submit();
         }
@@ -83,6 +83,7 @@ namespace MbDotNet.Tests
                 QueryParameters = new Dictionary<string, string> { { "first", "1" }, { "second", "2" } },
                 Headers = new Dictionary<string, string> { { "Accept", "text/plain" } }
             };
+
             var complexPredicate = new EqualsPredicate<HttpPredicateFields>(complexPredicateFields);
 
             imposter.AddStub().On(complexPredicate).On(bodyPredicate).ReturnsStatus(HttpStatusCode.BadRequest);
@@ -96,10 +97,10 @@ namespace MbDotNet.Tests
             imposter.AddStub().On(new EqualsPredicate<HttpPredicateFields>(fields)).ReturnsStatus(HttpStatusCode.NotAcceptable);
 
             // Third stub
-            imposter.AddStub().OnPathAndMethodEqual(null, Method.Put).ReturnsStatus((HttpStatusCode)405);
+            imposter.AddStub().OnMethodEquals(Method.Put).ReturnsStatus((HttpStatusCode)405);
 
             // Fourth stub
-            imposter.AddStub().OnPathAndMethodEqual(null, Method.Put).ReturnsStatus((HttpStatusCode)500);
+            imposter.AddStub().OnMethodEquals(Method.Put).ReturnsStatus((HttpStatusCode)500);
 
             _client.Submit();
         }
