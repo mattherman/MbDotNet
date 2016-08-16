@@ -10,7 +10,7 @@
     <projectUrl>http://github.com/mattherman/MbDotNet</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A .NET client library for interacting with mountebank (www.mbtest.org).</description>
-    <releaseNotes>Added support for TCP imposters and most predicate types</releaseNotes>
+    <releaseNotes>Added signed assemblies</releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>mountebank client wrapper</tags>
   </metadata>
