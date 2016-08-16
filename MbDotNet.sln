@@ -1,16 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MbDotNet", "MbDotNet\MbDotNet.csproj", "{FE6F9080-0DCE-4444-8539-CFC82DD8D74B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MbDotNet.Tests", "MbDotNet.Tests\MbDotNet.Tests.csproj", "{AA6249B2-096C-47F7-B4B8-3684C7226A2E}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{11AD406D-CADB-4D11-983E-53E6B2B8CF6F}"
-	ProjectSection(SolutionItems) = preProject
-		MbDotNetKey.snk = MbDotNetKey.snk
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
