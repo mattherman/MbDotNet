@@ -134,13 +134,13 @@ namespace MbDotNet.Tests
             _client.Imposters.Add(new HttpImposter(firstPortNumber, null));
             _client.Imposters.Add(new HttpImposter(secondPortNumber, null));
 
-            _mockRequestProxy.Setup(x => x.CreateImposter(It.Is<Imposter>(imp => imp.Port == firstPortNumber)));
-            _mockRequestProxy.Setup(x => x.CreateImposter(It.Is<Imposter>(imp => imp.Port == secondPortNumber)));
+            _mockRequestProxy.Setup(x => x.CreateImposterAsync(It.Is<Imposter>(imp => imp.Port == firstPortNumber)));
+            _mockRequestProxy.Setup(x => x.CreateImposterAsync(It.Is<Imposter>(imp => imp.Port == secondPortNumber)));
 
             _client.Submit();
 
-            _mockRequestProxy.Verify(x => x.CreateImposter(It.Is<Imposter>(imp => imp.Port == firstPortNumber)), Times.Once);
-            _mockRequestProxy.Verify(x => x.CreateImposter(It.Is<Imposter>(imp => imp.Port == secondPortNumber)), Times.Once);
+            _mockRequestProxy.Verify(x => x.CreateImposterAsync(It.Is<Imposter>(imp => imp.Port == firstPortNumber)), Times.Once);
+            _mockRequestProxy.Verify(x => x.CreateImposterAsync(It.Is<Imposter>(imp => imp.Port == secondPortNumber)), Times.Once);
         }
 
         [TestMethod]
@@ -163,7 +163,7 @@ namespace MbDotNet.Tests
 
             _client.Submit();
 
-            _mockRequestProxy.Verify(x => x.CreateImposter(It.IsAny<HttpImposter>()), Times.Never);
+            _mockRequestProxy.Verify(x => x.CreateImposterAsync(It.IsAny<HttpImposter>()), Times.Never);
         }
 
         [TestMethod]
@@ -173,11 +173,11 @@ namespace MbDotNet.Tests
 
             _client.Imposters.Add(new HttpImposter(port, null));
 
-            _mockRequestProxy.Setup(x => x.DeleteImposter(port));
+            _mockRequestProxy.Setup(x => x.DeleteImposterAsync(port));
 
             _client.DeleteImposter(port);
 
-            _mockRequestProxy.Verify(x => x.DeleteImposter(port), Times.Once);
+            _mockRequestProxy.Verify(x => x.DeleteImposterAsync(port), Times.Once);
         }
 
         [TestMethod]
@@ -195,20 +195,20 @@ namespace MbDotNet.Tests
         [TestMethod]
         public void DeleteAllImposters_CallsDeleteAll()
         {
-            _mockRequestProxy.Setup(x => x.DeleteAllImposters());
+            _mockRequestProxy.Setup(x => x.DeleteAllImpostersAsync());
 
             _client.Imposters.Add(new HttpImposter(123, null));
             _client.Imposters.Add(new HttpImposter(456, null));
 
             _client.DeleteAllImposters();
 
-            _mockRequestProxy.Verify(x => x.DeleteAllImposters(), Times.Once);
+            _mockRequestProxy.Verify(x => x.DeleteAllImpostersAsync(), Times.Once);
         }
 
         [TestMethod]
         public void DeleteAllImposters_RemovesAllImpostersFromCollection()
         {
-            _mockRequestProxy.Setup(x => x.DeleteAllImposters());
+            _mockRequestProxy.Setup(x => x.DeleteAllImpostersAsync());
 
             _client.Imposters.Add(new HttpImposter(123, null));
             _client.Imposters.Add(new HttpImposter(456, null));
