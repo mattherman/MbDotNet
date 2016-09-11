@@ -41,12 +41,9 @@
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="RestSharp, Version=100.0.0.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
-      <HintPath>..\packages\RestSharpSigned.105.2.3\lib\net45\RestSharp.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -58,6 +55,8 @@
     <Compile Include="Enums\Protocol.cs" />
     <Compile Include="Enums\TcpMode.cs" />
     <Compile Include="Exceptions\MountebankException.cs" />
+    <Compile Include="HttpClientWrapper.cs" />
+    <Compile Include="Interfaces\IHttpClientWrapper.cs" />
     <Compile Include="Interfaces\IRequestProxy.cs" />
     <Compile Include="Models\Imposters\TcpImposter.cs" />
     <Compile Include="Models\Predicates\EndsWithPredicate.cs" />

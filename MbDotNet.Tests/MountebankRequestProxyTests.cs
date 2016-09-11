@@ -1,166 +1,137 @@
 ﻿using System.Net;
+using System.Net.Http;
+using MbDotNet.Interfaces;
 using MbDotNet.Enums;
 using MbDotNet.Exceptions;
 using MbDotNet.Models;
 using MbDotNet.Models.Imposters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using RestSharp;
-using Method = RestSharp.Method;
+using Newtonsoft.Json;
 
 namespace MbDotNet.Tests
 {
     [TestClass]
     public class MountebankRequestProxyTests
     {
-        private Mock<IRestClient> _mockRestClient;
+        private Mock<IHttpClientWrapper> _mockClient;
         private MountebankRequestProxy _proxy;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            _mockRestClient = new Mock<IRestClient>();
-            _proxy = new MountebankRequestProxy(_mockRestClient.Object);
+            _mockClient = new Mock<IHttpClientWrapper>();
+            _proxy = new MountebankRequestProxy(_mockClient.Object);
         }
 
         [TestMethod]
-        public void DeleteAllImposters_SendsRequest_DeleteMethod()
+        public void DeleteAllImposters_SendsRequest()
         {
-            var response = new RestResponse { StatusCode = HttpStatusCode.OK };
-            IRestRequest requestSent = null;
+            var expectedResource = "imposters";
 
-            _mockRestClient.Setup(x => x.Execute(It.IsAny<IRestRequest>()))
-                .Returns(response)
-                .Callback<IRestRequest>(req => requestSent = req);
+            var response = GetResponse(HttpStatusCode.OK);
+
+            _mockClient.Setup(x => x.DeleteAsync(expectedResource))
+                .ReturnsAsync(response);
 
             _proxy.DeleteAllImposters();
 
-            Assert.AreEqual(Method.DELETE, requestSent.Method);
-        }
-
-        [TestMethod]
-        public void DeleteAllImposters_SendsRequest_ImpostersResource()
-        {
-            var response = new RestResponse { StatusCode = HttpStatusCode.OK };
-            IRestRequest requestSent = null;
-
-            _mockRestClient.Setup(x => x.Execute(It.IsAny<IRestRequest>()))
-                .Returns(response)
-                .Callback<IRestRequest>(req => requestSent = req);
-
-            _proxy.DeleteAllImposters();
-
-            Assert.AreEqual("imposters", requestSent.Resource);
+            _mockClient.Verify(x => x.DeleteAsync(expectedResource), Times.Once);
         }
 
         [TestMethod]
         [ExpectedException(typeof(MountebankException))]
         public void DeleteAllImposters_StatusCodeNotOk_ThrowsMountebankException()
         {
-            var response = new RestResponse {StatusCode = HttpStatusCode.BadRequest};
+            var response = GetResponse(HttpStatusCode.BadRequest);
 
-            _mockRestClient.Setup(x => x.Execute(It.IsAny<IRestRequest>())).Returns(response);
+            _mockClient.Setup(x => x.DeleteAsync(It.IsAny<string>()))
+                .ReturnsAsync(response);
 
             _proxy.DeleteAllImposters();
-        }
-
-        [TestMethod]
-        public void DeleteImposter_SendsRequest_DeleteMethod()
-        {
-            var response = new RestResponse { StatusCode = HttpStatusCode.OK };
-            IRestRequest requestSent = null;
-
-            _mockRestClient.Setup(x => x.Execute(It.IsAny<IRestRequest>()))
-                .Returns(response)
-                .Callback<IRestRequest>(req => requestSent = req);
-
-            _proxy.DeleteImposter(123);
-
-            Assert.AreEqual(Method.DELETE, requestSent.Method);
         }
 
         [TestMethod]
         public void DeleteImposter_SendsRequest_ImpostersResourceWithPort()
         {
             const int port = 123;
-            var response = new RestResponse { StatusCode = HttpStatusCode.OK };
-            IRestRequest requestSent = null;
+            var expectedResource = string.Format("imposters/{0}", port);
 
-            _mockRestClient.Setup(x => x.Execute(It.IsAny<IRestRequest>()))
-                .Returns(response)
-                .Callback<IRestRequest>(req => requestSent = req);
+            var response = GetResponse(HttpStatusCode.OK);
+
+            _mockClient.Setup(x => x.DeleteAsync(expectedResource))
+                .ReturnsAsync(response);
 
             _proxy.DeleteImposter(port);
 
-            Assert.AreEqual(string.Format("imposters/{0}", port), requestSent.Resource);
+            _mockClient.Verify(x => x.DeleteAsync(expectedResource), Times.Once);
         }
 
         [TestMethod]
         [ExpectedException(typeof(MountebankException))]
         public void DeleteImposter_StatusCodeNotOk_ThrowsMountebankException()
         {
-            var response = new RestResponse { StatusCode = HttpStatusCode.BadRequest };
+            var response = GetResponse(HttpStatusCode.BadRequest);
 
-            _mockRestClient.Setup(x => x.Execute(It.IsAny<IRestRequest>())).Returns(response);
+            _mockClient.Setup(x => x.DeleteAsync(It.IsAny<string>()))
+                .ReturnsAsync(response);
 
             _proxy.DeleteImposter(123);
         }
 
         [TestMethod]
-        public void CreateImposter_SendsRequest_PostMethod()
-        {
-            var response = new RestResponse { StatusCode = HttpStatusCode.Created };
-            IRestRequest requestSent = null;
-
-            _mockRestClient.Setup(x => x.Execute(It.IsAny<IRestRequest>()))
-                .Returns(response)
-                .Callback<IRestRequest>(req => requestSent = req);
-
-            _proxy.CreateImposter(new HttpImposter(123, null));
-
-            Assert.AreEqual(Method.POST, requestSent.Method);
-        }
-
-        [TestMethod]
         public void CreateImposter_SendsRequest_ImpostersResource()
         {
-            var response = new RestResponse { StatusCode = HttpStatusCode.Created };
-            IRestRequest requestSent = null;
+            var expectedResource = "imposters";
 
-            _mockRestClient.Setup(x => x.Execute(It.IsAny<IRestRequest>()))
-                .Returns(response)
-                .Callback<IRestRequest>(req => requestSent = req);
+            var response = GetResponse(HttpStatusCode.Created);
+
+            _mockClient.Setup(x => x.PostAsync(expectedResource, It.IsAny<HttpContent>()))
+                .ReturnsAsync(response);
 
             _proxy.CreateImposter(new HttpImposter(123, null));
 
-            Assert.AreEqual("imposters", requestSent.Resource);
+            _mockClient.Verify(x => x.PostAsync(expectedResource, It.IsAny<HttpContent>()), Times.Once);
         }
 
         [TestMethod]
         public void CreateImposter_SendsRequest_WithJsonBody()
         {
-            var response = new RestResponse { StatusCode = HttpStatusCode.Created };
-            IRestRequest requestSent = null;
+            var imposter = new HttpImposter(123, null);
 
-            _mockRestClient.Setup(x => x.Execute(It.IsAny<IRestRequest>()))
-                .Returns(response)
-                .Callback<IRestRequest>(req => requestSent = req);
+            var response = GetResponse(HttpStatusCode.Created);
+
+            HttpContent content = null;
+            _mockClient.Setup(x => x.PostAsync(It.IsAny<string>(), It.IsAny<HttpContent>()))
+                .ReturnsAsync(response)
+                .Callback<string, HttpContent>((res, cont) => content = cont);
 
             _proxy.CreateImposter(new HttpImposter(123, null));
 
-            Assert.AreEqual(DataFormat.Json, requestSent.RequestFormat);
-            Assert.AreEqual(1, requestSent.Parameters.Count);
+            var json = content.ReadAsStringAsync().Result;
+            var serializedImposter = JsonConvert.DeserializeObject<HttpImposter>(json);
+
+            Assert.AreEqual(imposter.Port, serializedImposter.Port);
         }
 
         [TestMethod]
-        [ExpectedException(typeof (MountebankException))]
+        [ExpectedException(typeof(MountebankException))]
         public void CreateImposter_StatusCodeNotCreated_ThrowsMountebankException()
         {
-            var response = new RestResponse { StatusCode = HttpStatusCode.BadRequest };
+            var response = GetResponse(HttpStatusCode.BadRequest);
 
-            _mockRestClient.Setup(x => x.Execute(It.IsAny<IRestRequest>())).Returns(response);
+            _mockClient.Setup(x => x.PostAsync(It.IsAny<string>(), It.IsAny<HttpContent>()))
+                .ReturnsAsync(response);
 
             _proxy.CreateImposter(new HttpImposter(123, null));
+        }
+
+        private HttpResponseMessage GetResponse(HttpStatusCode statusCode) 
+        {
+            var response = new HttpResponseMessage();
+            response.StatusCode = statusCode;
+            response.Content = new StringContent(string.Empty);
+            return response;
         }
     }
 }

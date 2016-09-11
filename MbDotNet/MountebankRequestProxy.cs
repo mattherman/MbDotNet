@@ -1,62 +1,89 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
+using System.Net.Http;
 using MbDotNet.Exceptions;
 using MbDotNet.Interfaces;
 using MbDotNet.Models.Imposters;
 using Newtonsoft.Json;
-using RestSharp;
 
 namespace MbDotNet
 {
     internal class MountebankRequestProxy : IRequestProxy
     {
-        private readonly IRestClient _client;
         private const string DefaultMountebankUrl = "http://127.0.0.1:2525";
         private const string ImpostersResource = "imposters";
+        private readonly Uri _baseUri;
+        private readonly IHttpClientWrapper _httpClient;
 		
-        public MountebankRequestProxy() : this(new RestClient(DefaultMountebankUrl)) {}
+        public MountebankRequestProxy() : this(DefaultMountebankUrl) {}
 		
-		public MountebankRequestProxy(string mountebankUrl) : this(new RestClient(mountebankUrl)) { }
+		public MountebankRequestProxy(string mountebankUrl) : this(new Uri(mountebankUrl)) { }
 
-		public MountebankRequestProxy(IRestClient client)
+		public MountebankRequestProxy(Uri baseAddress)
         {
-            _client = client;
+            _baseUri = baseAddress;
+        }
+
+        /// <summary>
+        /// Internal constructor that allows injection of a client for
+        /// testing purposes.
+        /// </summary>
+        /// <param name="httpClient">An injected client</param>
+        internal MountebankRequestProxy(IHttpClientWrapper httpClient) : this()
+        {
+            _httpClient = httpClient;
         }
 
         public void DeleteAllImposters()
         {
-            var request = new RestRequest(ImpostersResource, Method.DELETE);
-
-            ExecuteRequestAndCheckStatusCode(request, HttpStatusCode.OK, "Failed to delete the imposters.");
+            var response = ExecuteDelete(ImpostersResource);
+            HandleResponse(response, HttpStatusCode.OK, "Failed to delete the imposters.");
         }
 
         public void DeleteImposter(int port)
         {
-            var request = new RestRequest(string.Format("{0}/{1}", ImpostersResource, port), Method.DELETE);
-
-            ExecuteRequestAndCheckStatusCode(request, HttpStatusCode.OK, string.Format("Failed to delete the imposter with port {0}.", port));
+            var response = ExecuteDelete(string.Format("{0}/{1}", ImpostersResource, port));
+            HandleResponse(response, HttpStatusCode.OK, string.Format("Failed to delete the imposter with port {0}.", port));
         }
 
         public void CreateImposter(Imposter imposter)
         {
-            var request = new RestRequest(ImpostersResource, Method.POST);
-
             var json = JsonConvert.SerializeObject(imposter);
-            request.AddParameter("application/json; charset=utf-8", json, ParameterType.RequestBody);
-            request.RequestFormat = DataFormat.Json;
-
-            ExecuteRequestAndCheckStatusCode(request, HttpStatusCode.Created, string.Format("Failed to create the imposter with port {0} and protocol {1}.", imposter.Port, imposter.Protocol));
+            var response = ExecutePost(ImpostersResource, json);
+            HandleResponse(response, HttpStatusCode.Created, string.Format("Failed to create the imposter with port {0} and protocol {1}.", imposter.Port, imposter.Protocol));
         }
 
-        private void ExecuteRequestAndCheckStatusCode(IRestRequest request, HttpStatusCode expectedStatusCode,
-            string failureErrorMessage)
+        private HttpResponseMessage ExecuteDelete(string resource)
         {
-            var response = _client.Execute(request);
+            using (var client = GetClient())
+            {
+                client.BaseAddress = _baseUri;
+                return client.DeleteAsync(resource).Result;
+            }
+        }
 
+        private HttpResponseMessage ExecutePost(string resource, string json)
+        {
+            using (var client = GetClient())
+            {
+                client.BaseAddress = _baseUri;
+                return client.PostAsync(resource, new StringContent(json)).Result;
+            }
+        }
+
+        private void HandleResponse(HttpResponseMessage response, HttpStatusCode expectedStatusCode, string failureErrorMessage)
+        {
             if (response.StatusCode != expectedStatusCode)
             {
-                var errorMessage = string.Format("{0}\n\nError Message => \n{1}", failureErrorMessage, response.Content);
+                var content = response.Content.ReadAsStringAsync().Result;
+                var errorMessage = string.Format("{0}\n\nError Message => \n{1}", failureErrorMessage, content);
                 throw new MountebankException(errorMessage);
             }
+        }
+
+        private IHttpClientWrapper GetClient()
+        {
+            return _httpClient ?? new HttpClientWrapper();
         }
     }
 }
