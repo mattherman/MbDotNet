@@ -68,7 +68,7 @@ namespace MbDotNet
 
             if (imposter != null)
             {
-                _requestProxy.DeleteImposterAsync(port);
+                _requestProxy.DeleteImposter(port);
                 Imposters.Remove(imposter);
             }
         }
@@ -79,7 +79,7 @@ namespace MbDotNet
         /// </summary>
         public void DeleteAllImposters()
         {
-            _requestProxy.DeleteAllImpostersAsync();
+            _requestProxy.DeleteAllImposters();
             Imposters = new List<Imposter>();
         }
 
@@ -91,7 +91,7 @@ namespace MbDotNet
         {
             foreach (var imposter in Imposters.Where(imp => imp.PendingSubmission))
             {
-                _requestProxy.CreateImposterAsync(imposter);
+                _requestProxy.CreateImposter(imposter);
                 imposter.PendingSubmission = false;
             }
         }

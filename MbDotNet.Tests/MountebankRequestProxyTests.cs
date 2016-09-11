@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
 using MbDotNet.Interfaces;
 using MbDotNet.Enums;
 using MbDotNet.Exceptions;
@@ -35,21 +34,21 @@ namespace MbDotNet.Tests
             _mockClient.Setup(x => x.DeleteAsync(expectedResource))
                 .ReturnsAsync(response);
 
-            _proxy.DeleteAllImpostersAsync();
+            _proxy.DeleteAllImposters();
 
             _mockClient.Verify(x => x.DeleteAsync(expectedResource), Times.Once);
         }
 
         [TestMethod]
         [ExpectedException(typeof(MountebankException))]
-        public async Task DeleteAllImposters_StatusCodeNotOk_ThrowsMountebankException()
+        public void DeleteAllImposters_StatusCodeNotOk_ThrowsMountebankException()
         {
             var response = GetResponse(HttpStatusCode.BadRequest);
 
             _mockClient.Setup(x => x.DeleteAsync(It.IsAny<string>()))
                 .ReturnsAsync(response);
 
-            await _proxy.DeleteAllImpostersAsync();
+            _proxy.DeleteAllImposters();
         }
 
         [TestMethod]
@@ -63,21 +62,21 @@ namespace MbDotNet.Tests
             _mockClient.Setup(x => x.DeleteAsync(expectedResource))
                 .ReturnsAsync(response);
 
-            _proxy.DeleteImposterAsync(port);
+            _proxy.DeleteImposter(port);
 
             _mockClient.Verify(x => x.DeleteAsync(expectedResource), Times.Once);
         }
 
         [TestMethod]
         [ExpectedException(typeof(MountebankException))]
-        public async Task DeleteImposter_StatusCodeNotOk_ThrowsMountebankException()
+        public void DeleteImposter_StatusCodeNotOk_ThrowsMountebankException()
         {
             var response = GetResponse(HttpStatusCode.BadRequest);
 
             _mockClient.Setup(x => x.DeleteAsync(It.IsAny<string>()))
                 .ReturnsAsync(response);
 
-            await _proxy.DeleteImposterAsync(123);
+            _proxy.DeleteImposter(123);
         }
 
         [TestMethod]
@@ -90,7 +89,7 @@ namespace MbDotNet.Tests
             _mockClient.Setup(x => x.PostAsync(expectedResource, It.IsAny<HttpContent>()))
                 .ReturnsAsync(response);
 
-            _proxy.CreateImposterAsync(new HttpImposter(123, null));
+            _proxy.CreateImposter(new HttpImposter(123, null));
 
             _mockClient.Verify(x => x.PostAsync(expectedResource, It.IsAny<HttpContent>()), Times.Once);
         }
@@ -107,7 +106,7 @@ namespace MbDotNet.Tests
                 .ReturnsAsync(response)
                 .Callback<string, HttpContent>((res, cont) => content = cont);
 
-            _proxy.CreateImposterAsync(new HttpImposter(123, null));
+            _proxy.CreateImposter(new HttpImposter(123, null));
 
             var json = content.ReadAsStringAsync().Result;
             var serializedImposter = JsonConvert.DeserializeObject<HttpImposter>(json);
@@ -117,14 +116,14 @@ namespace MbDotNet.Tests
 
         [TestMethod]
         [ExpectedException(typeof(MountebankException))]
-        public async Task CreateImposter_StatusCodeNotCreated_ThrowsMountebankException()
+        public void CreateImposter_StatusCodeNotCreated_ThrowsMountebankException()
         {
             var response = GetResponse(HttpStatusCode.BadRequest);
 
             _mockClient.Setup(x => x.PostAsync(It.IsAny<string>(), It.IsAny<HttpContent>()))
                 .ReturnsAsync(response);
 
-            await _proxy.CreateImposterAsync(new HttpImposter(123, null));
+            _proxy.CreateImposter(new HttpImposter(123, null));
         }
 
         private HttpResponseMessage GetResponse(HttpStatusCode statusCode) 
