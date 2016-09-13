@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Net;
 using System.Xml;
 using System.Xml.Serialization;
+using System.Text;
 using MbDotNet.Enums;
 using MbDotNet.Interfaces;
 using MbDotNet.Models.Predicates;
@@ -70,17 +70,37 @@ namespace MbDotNet.Models.Stubs
         /// <returns>The stub that the response was added to</returns>
         public HttpStub ReturnsXml<T>(HttpStatusCode statusCode, T responseObject)
         {
-            var responseObjectXml = ConvertResponseObjectToXml(responseObject);
-
-            return Returns(statusCode, new Dictionary<string, string> { {"Content-Type", "application/xml"} }, responseObjectXml);
+            return ReturnsXml<T>(statusCode, responseObject, Encoding.UTF8);
         }
 
-        private static string ConvertResponseObjectToXml<T>(T objectToSerialize)
+        /// <summary>
+        /// Adds a response to the stub that will return the specified HTTP status code
+        /// along with a response object serialized as XML. Automatically adds an appropriate 
+        /// Content-Type header to the response. Serializes the XML with the specified encoding.
+        /// </summary>
+        /// <typeparam name="T">The type of the response object being serialized</typeparam>
+        /// <param name="statusCode">The status code to be returned</param>
+        /// <param name="responseObject">The response object of type T that will be returned as XML</param>
+        /// <param name="encoding">The encoding with which to serialize the XML</param>
+        /// <returns></returns>
+        public HttpStub ReturnsXml<T>(HttpStatusCode statusCode, T responseObject, Encoding encoding)
+        {
+            var responseObjectXml = ConvertResponseObjectToXml(responseObject, encoding);
+
+            return Returns(statusCode, new Dictionary<string, string> { { "Content-Type", "application/xml" } }, responseObjectXml);
+        }
+
+        private static string ConvertResponseObjectToXml<T>(T objectToSerialize, Encoding encoding)
         {
             var serializer = new XmlSerializer(typeof(T));
-            var stringWriter = new StringWriter();
+            var stringWriter = new EncodedStringWriter(encoding);
 
-            using (var writer = XmlWriter.Create(stringWriter))
+            var settings = new XmlWriterSettings
+            {
+                Encoding = encoding
+            };
+
+            using (var writer = XmlWriter.Create(stringWriter, settings))
             {
                 serializer.Serialize(writer, objectToSerialize);
                 return stringWriter.ToString();

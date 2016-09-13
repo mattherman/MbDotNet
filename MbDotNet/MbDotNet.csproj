@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EncodedStringWriter.cs" />
     <Compile Include="Enums\Method.cs" />
     <Compile Include="Enums\Protocol.cs" />
     <Compile Include="Enums\TcpMode.cs" />

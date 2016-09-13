@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text;
 using MbDotNet.Enums;
 using MbDotNet.Models;
 using MbDotNet.Models.Predicates;
@@ -146,6 +147,32 @@ namespace MbDotNet.Tests.Models.Stubs
             var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
             Assert.IsNotNull(response);
             Assert.IsTrue(response.Fields.ResponseObject.ToString().Contains(expectedResponseObject));
+        }
+
+        [TestMethod]
+        public void ReturnsXml_AddsResponse_DefaultsToUtf8Encoding()
+        {
+            const string expectedEncoding = "utf-8";
+
+            var stub = new HttpStub();
+            stub.ReturnsXml(HttpStatusCode.OK, "Test Response");
+
+            var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
+            Assert.IsNotNull(response);
+            Assert.IsTrue(response.Fields.ResponseObject.ToString().Contains(expectedEncoding));
+        }
+
+        [TestMethod]
+        public void ReturnsXmlWithEncoding_AddsResponse_WithSpecifiedEncoding()
+        {
+            const string expectedEncoding = "utf-16";
+
+            var stub = new HttpStub();
+            stub.ReturnsXml(HttpStatusCode.OK, "Test Response", Encoding.Unicode);
+
+            var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
+            Assert.IsNotNull(response);
+            Assert.IsTrue(response.Fields.ResponseObject.ToString().Contains(expectedEncoding));
         }
 
         [TestMethod]
