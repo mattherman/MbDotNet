@@ -35,7 +35,7 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
             {
                 var imposter = _client.CreateHttpImposter(imposterPort);
                 imposter.AddStub().ReturnsStatus(HttpStatusCode.BadRequest);
-                _client.Submit();
+                _client.Submit(imposter);
             }
             catch (MountebankException e)
             {
@@ -49,8 +49,8 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
 
         private void CreateImposter()
         {
-            _client.CreateHttpImposter(imposterPort);
-            _client.Submit();
+            var imposter = _client.CreateHttpImposter(imposterPort);
+            _client.Submit(imposter);
         }
     }
 }

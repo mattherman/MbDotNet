@@ -78,20 +78,7 @@ namespace MbDotNet
             _requestProxy.DeleteAllImposters();
             Imposters = new List<Imposter>();
         }
-
-        /// <summary>
-        /// Submits all pending imposters to be created in mountebank. Will throw a MountebankException
-        /// if unable to create the imposter for any reason.
-        /// </summary>
-        public void Submit()
-        {
-            foreach (var imposter in Imposters.Where(imp => imp.PendingSubmission))
-            {
-                _requestProxy.CreateImposter(imposter);
-                imposter.PendingSubmission = false;
-            }
-        }
-
+        
         /// <summary>
         /// Submits all pending imposters from the supplied collection to be created in mountebank. 
         /// Will throw a MountebankException if unable to create the imposter for any reason.

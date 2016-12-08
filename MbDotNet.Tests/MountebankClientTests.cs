@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MbDotNet.Enums;
 using MbDotNet.Interfaces;
@@ -109,13 +110,10 @@ namespace MbDotNet.Tests
             const int firstPortNumber = 123;
             const int secondPortNumber = 456;
 
-            _client.Imposters.Add(new HttpImposter(firstPortNumber, null));
-            _client.Imposters.Add(new HttpImposter(secondPortNumber, null));
-
-            _mockRequestProxy.Setup(x => x.CreateImposter(It.Is<Imposter>(imp => imp.Port == firstPortNumber)));
-            _mockRequestProxy.Setup(x => x.CreateImposter(It.Is<Imposter>(imp => imp.Port == secondPortNumber)));
-
-            _client.Submit();
+            var imposter1 = new HttpImposter(firstPortNumber, null);
+            var imposter2 = new HttpImposter(secondPortNumber, null);
+          
+            _client.Submit(new [] { imposter1, imposter2});
 
             _mockRequestProxy.Verify(x => x.CreateImposter(It.Is<Imposter>(imp => imp.Port == firstPortNumber)), Times.Once);
             _mockRequestProxy.Verify(x => x.CreateImposter(It.Is<Imposter>(imp => imp.Port == secondPortNumber)), Times.Once);
@@ -124,9 +122,9 @@ namespace MbDotNet.Tests
         [TestMethod]
         public void Submit_SetsPendingSubmissionFalse()
         {
-            _client.Imposters.Add(new HttpImposter(8080, null));
+            var imposter = new HttpImposter(8080, null);
 
-            _client.Submit();
+            _client.Submit(imposter);
 
             Assert.IsFalse(_client.Imposters.First().PendingSubmission);
         }
@@ -137,9 +135,7 @@ namespace MbDotNet.Tests
             var mockImposter = new Mock<HttpImposter>(123, null);
             mockImposter.SetupGet(x => x.PendingSubmission).Returns(false);
 
-            _client.Imposters.Add(mockImposter.Object);
-
-            _client.Submit();
+            _client.Submit(mockImposter.Object);
 
             _mockRequestProxy.Verify(x => x.CreateImposter(It.IsAny<HttpImposter>()), Times.Never);
         }

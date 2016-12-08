@@ -40,8 +40,8 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
             MountebankException exception = null;
             try
             {
-                _client.CreateHttpImposter(_imposterPort);
-                _client.Submit();
+                var imposter = _client.CreateHttpImposter(_imposterPort);
+                _client.Submit(imposter);
             }
             catch (MountebankException e)
             {
@@ -54,8 +54,8 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
 
         private void CreateImposter()
         {
-            _client.CreateHttpImposter(_imposterPort);
-            _client.Submit();
+            var imposter = _client.CreateHttpImposter(_imposterPort);
+            _client.Submit(imposter);
         }
     }
 }
