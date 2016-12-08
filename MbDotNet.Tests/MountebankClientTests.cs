@@ -1,11 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MbDotNet.Enums;
 using MbDotNet.Interfaces;
-using MbDotNet.Models;
-using MbDotNet.Models.Predicates;
 using MbDotNet.Models.Imposters;
 using Moq;
 
@@ -32,20 +28,17 @@ namespace MbDotNet.Tests
         }
 
         [TestMethod]
-        public void CreateHttpImposter_AddsNewImposterToCollection()
+        public void CreateHttpImposter_ShouldNotAddNewImposterToCollection()
         {
             _client.CreateHttpImposter(123);
-            Assert.AreEqual(1, _client.Imposters.Count);
+            Assert.AreEqual(0, _client.Imposters.Count);
         }
 
         [TestMethod]
         public void CreateHttpImposter_WithoutName_SetsNameToNull()
         {
-            _client.CreateHttpImposter(123);
-            Assert.AreEqual(1, _client.Imposters.Count);
-
-            var imposter = _client.Imposters.First() as HttpImposter;
-
+            var imposter = _client.CreateHttpImposter(123);
+            
             Assert.IsNotNull(imposter);
             Assert.IsNull(imposter.Name);
         }
@@ -55,11 +48,8 @@ namespace MbDotNet.Tests
         {
             const string expectedName = "Service";
 
-            _client.CreateHttpImposter(123, expectedName);
-            Assert.AreEqual(1, _client.Imposters.Count);
-
-            var imposter = _client.Imposters.First() as HttpImposter;
-
+            var imposter = _client.CreateHttpImposter(123, expectedName);
+            
             Assert.IsNotNull(imposter);
             Assert.AreEqual(expectedName, imposter.Name);
         }

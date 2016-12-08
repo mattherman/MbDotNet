@@ -37,9 +37,7 @@ namespace MbDotNet
         /// <returns>The newly created imposter</returns>
         public HttpImposter CreateHttpImposter(int port, string name = null)
         {
-            var imposter = new HttpImposter(port, name);
-            Imposters.Add(imposter);
-            return imposter;
+            return new HttpImposter(port, name);
         }
 
         /// <summary>
