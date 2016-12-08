@@ -132,10 +132,9 @@ namespace MbDotNet.Tests
         [TestMethod]
         public void Submit_DoesNotSubmitNonPendingImposters()
         {
-            var mockImposter = new Mock<HttpImposter>(123, null);
-            mockImposter.SetupGet(x => x.PendingSubmission).Returns(false);
+            var imposter = new HttpImposter(123, null) {PendingSubmission = false};
 
-            _client.Submit(mockImposter.Object);
+            _client.Submit(imposter);
 
             _mockRequestProxy.Verify(x => x.CreateImposter(It.IsAny<HttpImposter>()), Times.Never);
         }
