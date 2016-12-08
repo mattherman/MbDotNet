@@ -55,19 +55,16 @@ namespace MbDotNet.Tests
         }
 
         [TestMethod]
-        public void CreateTcpImposter_AddsNewImposterToCollection()
+        public void CreateTcpImposter_ShouldNotAddNewImposterToCollection()
         {
             _client.CreateTcpImposter(123);
-            Assert.AreEqual(1, _client.Imposters.Count);
+            Assert.AreEqual(0, _client.Imposters.Count);
         }
 
         [TestMethod]
         public void CreateTcpImposter_WithoutName_SetsNameToNull()
         {
-            _client.CreateTcpImposter(123);
-            Assert.AreEqual(1, _client.Imposters.Count);
-
-            var imposter = _client.Imposters.First() as TcpImposter;
+            var imposter = _client.CreateTcpImposter(123);
 
             Assert.IsNotNull(imposter);
             Assert.IsNull(imposter.Name);
@@ -78,11 +75,8 @@ namespace MbDotNet.Tests
         {
             const string expectedName = "Service";
 
-            _client.CreateTcpImposter(123, expectedName);
-            Assert.AreEqual(1, _client.Imposters.Count);
-
-            var imposter = _client.Imposters.First() as TcpImposter;
-
+            var imposter = _client.CreateTcpImposter(123, expectedName);
+            
             Assert.IsNotNull(imposter);
             Assert.AreEqual(expectedName, imposter.Name);
         }
@@ -92,11 +86,8 @@ namespace MbDotNet.Tests
         {
             const string expectedMode = "text";
 
-            _client.CreateTcpImposter(123, null);
-            Assert.AreEqual(1, _client.Imposters.Count);
-
-            var imposter = _client.Imposters.First() as TcpImposter;
-
+            var imposter = _client.CreateTcpImposter(123, null);
+            
             Assert.IsNotNull(imposter);
             Assert.AreEqual(expectedMode, imposter.Mode);
         }
@@ -106,10 +97,7 @@ namespace MbDotNet.Tests
         {
             const string expectedMode = "binary";
 
-            _client.CreateTcpImposter(123, null, TcpMode.Binary);
-            Assert.AreEqual(1, _client.Imposters.Count);
-
-            var imposter = _client.Imposters.First() as TcpImposter;
+            var imposter = _client.CreateTcpImposter(123, null, TcpMode.Binary);
 
             Assert.IsNotNull(imposter);
             Assert.AreEqual(expectedMode, imposter.Mode);

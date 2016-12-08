@@ -50,9 +50,7 @@ namespace MbDotNet
         /// <returns>The newly created imposter</returns>
         public TcpImposter CreateTcpImposter(int port, string name = null, TcpMode mode = TcpMode.Text)
         {
-            var imposter = new TcpImposter(port, name, mode);
-            Imposters.Add(imposter);
-            return imposter;
+            return new TcpImposter(port, name, mode);
         }
 
         /// <summary>
