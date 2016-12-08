@@ -195,5 +195,59 @@ namespace MbDotNet.Tests
 
             Assert.AreEqual(0, _client.Imposters.Count);
         }
+
+        [TestMethod]
+        public void SubmitCollection_ShouldSubmitImpostersUsingProxy()
+        {
+            const int firstPortNumber = 123;
+            const int secondPortNumber = 456;
+
+            var imposter1 = _client.CreateHttpImposter(firstPortNumber);
+            var imposter2 = _client.CreateHttpImposter(secondPortNumber);
+            
+            _client.Submit(new[] { imposter1, imposter2 });
+
+            _mockRequestProxy.Verify(x => x.CreateImposter(It.Is<Imposter>(imp => imp.Port == firstPortNumber)), Times.Once);
+            _mockRequestProxy.Verify(x => x.CreateImposter(It.Is<Imposter>(imp => imp.Port == secondPortNumber)), Times.Once);
+        }
+
+        [TestMethod]
+        public void SubmitCollection_ShouldAddImpostersToCollection()
+        {
+            const int firstPortNumber = 123;
+            const int secondPortNumber = 456;
+
+            var imposter1 = _client.CreateHttpImposter(firstPortNumber);
+            var imposter2 = _client.CreateHttpImposter(secondPortNumber);
+
+            _client.Submit(new[] { imposter1, imposter2 });
+
+            Assert.AreEqual(1, _client.Imposters.Count(x => x.Port == firstPortNumber));
+            Assert.AreEqual(1, _client.Imposters.Count(x => x.Port == secondPortNumber));
+        }
+
+        [TestMethod]
+        public void SubmitCollection_WhenImposterIsNotPending_ShouldNotSubmitImposter()
+        {
+            var imposter1 = _client.CreateHttpImposter(123);
+
+            imposter1.PendingSubmission = false;
+
+            _client.Submit(new[] { imposter1 });
+
+            _mockRequestProxy.Verify(x => x.CreateImposter(It.IsAny<Imposter>()), Times.Never);
+        }
+
+        [TestMethod]
+        public void SubmitCollection_WhenImposterIsNotPending_ShouldNotAddToCollection()
+        {
+            var imposter1 = _client.CreateHttpImposter(123);
+
+            imposter1.PendingSubmission = false;
+
+            _client.Submit(new[] { imposter1 });
+
+            Assert.AreEqual(0, _client.Imposters.Count(x => x.Port == 123));
+        }
     }
 }

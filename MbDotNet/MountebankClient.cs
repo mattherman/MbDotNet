@@ -91,5 +91,19 @@ namespace MbDotNet
                 imposter.PendingSubmission = false;
             }
         }
+
+        /// <summary>
+        /// Submits all pending imposters from the supplied collection to be created in mountebank. 
+        /// Will throw a MountebankException if unable to create the imposter for any reason.
+        /// </summary>
+        public void Submit(ICollection<Imposter> imposters)
+        {
+            foreach (var imposter in imposters.Where(imp => imp.PendingSubmission))
+            {
+                _requestProxy.CreateImposter(imposter);
+                imposter.PendingSubmission = false;
+                Imposters.Add(imposter);
+            }
+        }
     }
 }
