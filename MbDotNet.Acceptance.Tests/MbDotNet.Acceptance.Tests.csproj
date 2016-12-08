@@ -59,6 +59,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AcceptanceTest.cs" />
+    <Compile Include="AcceptanceTests\CanCreateImposterTest.cs" />
+    <Compile Include="AcceptanceTests\CanDeleteImposter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -19,7 +19,8 @@ namespace MbDotNet.Acceptance.Tests
 
         private static void RunAcceptanceTests()
         {
-            new AcceptanceTest(Client).CanCreateImposter();
+            AcceptanceTest.CanCreateImposter(Client);
+            AcceptanceTest.CanDeleteImposter(Client);
         }
 
         private static void SetupTestEnvironment()
