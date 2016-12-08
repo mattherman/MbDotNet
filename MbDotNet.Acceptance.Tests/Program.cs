@@ -14,13 +14,23 @@ namespace MbDotNet.Acceptance.Tests
         {
             SetupTestEnvironment();
 
-            RunAcceptanceTests();
+            int resultCode = RunAcceptanceTests();
+
+            Environment.Exit(resultCode);
         }
 
-        private static void RunAcceptanceTests()
+        private static int RunAcceptanceTests()
         {
-            AcceptanceTest.CanCreateImposter(Client);
-            AcceptanceTest.CanDeleteImposter(Client);
+            try
+            {
+                AcceptanceTest.CanCreateImposter(Client);
+                AcceptanceTest.CanDeleteImposter(Client);
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
+            return 0;
         }
 
         private static void SetupTestEnvironment()
