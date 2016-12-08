@@ -12,7 +12,7 @@ namespace MbDotNet
         private readonly IRequestProxy _requestProxy;
 
         /// <summary>
-        /// A collection of all of the current imposters. The imposters in this
+        /// A collection of all of the current imposters. The imposter in this
         /// collection may or may not have been added to mountebank. See IImposter.PendingSubmission
         /// for more information.
         /// </summary>
@@ -70,7 +70,7 @@ namespace MbDotNet
         }
 
         /// <summary>
-        /// Deletes all imposters from mountebank. Will also remove the imposters from the collection
+        /// Deletes all imposters from mountebank. Will also remove the imposter from the collection
         /// of imposters that the client maintains.
         /// </summary>
         public void DeleteAllImposters()
@@ -104,6 +104,15 @@ namespace MbDotNet
                 imposter.PendingSubmission = false;
                 Imposters.Add(imposter);
             }
+        }
+
+        /// <summary>
+        /// Submits imposter if pending to be created in mountebank. 
+        /// Will throw a MountebankException if unable to create the imposter for any reason.
+        /// </summary>
+        public void Submit(Imposter imposter)
+        {
+            Submit(new [] { imposter });
         }
     }
 }
