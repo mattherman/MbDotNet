@@ -65,10 +65,10 @@ namespace MbDotNet
         public void DeleteImposter(int port)
         {
             var imposter = Imposters.FirstOrDefault(imp => imp.Port == port);
+            _requestProxy.DeleteImposter(port);
 
             if (imposter != null)
             {
-                _requestProxy.DeleteImposter(port);
                 Imposters.Remove(imposter);
             }
         }
