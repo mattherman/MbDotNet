@@ -7,5 +7,6 @@ namespace MbDotNet.Interfaces
         void DeleteAllImposters();
         void DeleteImposter(int port);
         void CreateImposter(Imposter imposter);
+        RetrievedImposter GetImposter(int port);
     }
 }

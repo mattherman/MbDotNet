@@ -12,5 +12,10 @@ namespace MbDotNet.Acceptance.Tests
         {
             new CanDeleteImposter(client).Run();
         }
+
+        public static void CanGetImposter(MountebankClient client)
+        {
+            new CanGetImposter(client).Run();
+        }
     }
 }

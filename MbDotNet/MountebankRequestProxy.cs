@@ -53,6 +53,22 @@ namespace MbDotNet
             HandleResponse(response, HttpStatusCode.Created, string.Format("Failed to create the imposter with port {0} and protocol {1}.", imposter.Port, imposter.Protocol));
         }
 
+        public RetrievedImposter GetImposter(int port)
+        {
+            var response = ExecuteGet($"{ImpostersResource}/{port}");
+            var result = response.Content.ReadAsStringAsync().Result;
+            return JsonConvert.DeserializeObject<RetrievedImposter>(result);
+        }
+
+        private HttpResponseMessage ExecuteGet(string resource)
+        {
+            using (var client = GetClient())
+            {
+                client.BaseAddress = _baseUri;
+                return client.GetAsync(resource).Result;
+            }
+        }
+
         private HttpResponseMessage ExecuteDelete(string resource)
         {
             using (var client = GetClient())

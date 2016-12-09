@@ -101,5 +101,10 @@ namespace MbDotNet
         {
             Submit(new [] { imposter });
         }
+
+        public RetrievedImposter GetImposter(int port)
+        {
+            return _requestProxy.GetImposter(port);
+        }
     }
 }

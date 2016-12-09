@@ -25,9 +25,11 @@ namespace MbDotNet.Acceptance.Tests
             {
                 AcceptanceTest.CanCreateImposter(Client);
                 AcceptanceTest.CanDeleteImposter(Client);
+                AcceptanceTest.CanGetImposter(Client);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return -1;
             }
             return 0;
