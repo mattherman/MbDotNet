@@ -55,6 +55,7 @@
     <Compile Include="Enums\Method.cs" />
     <Compile Include="Enums\Protocol.cs" />
     <Compile Include="Enums\TcpMode.cs" />
+    <Compile Include="Exceptions\ImposterNotFoundException.cs" />
     <Compile Include="Exceptions\MountebankException.cs" />
     <Compile Include="HttpClientWrapper.cs" />
     <Compile Include="Interfaces\IHttpClientWrapper.cs" />

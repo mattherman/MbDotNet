@@ -1,5 +1,6 @@
 ﻿using System;
 using FluentAssertions;
+using MbDotNet.Exceptions;
 using MbDotNet.Models.Imposters;
 
 namespace MbDotNet.Acceptance.Tests.AcceptanceTests
@@ -41,7 +42,7 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
             {
                 _retrievedImposter = _client.GetImposter(NonExistentImposterPort);
             }
-            catch (Exception e)
+            catch (ImposterNotFoundException e)
             {
                 _getImposterException = e;
             }

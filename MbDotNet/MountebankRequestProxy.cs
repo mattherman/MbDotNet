@@ -57,7 +57,9 @@ namespace MbDotNet
         public RetrievedImposter GetImposter(int port)
         {
             var response = ExecuteGet($"{ImpostersResource}/{port}");
-            HandleResponse(response, HttpStatusCode.OK, $"Failed to retrieve imposter with port {port}");
+
+            HandleResponse(response, HttpStatusCode.OK, $"Failed to retrieve imposter with port {port}",
+                (message) => new ImposterNotFoundException(message));
 
             var content = response.Content.ReadAsStringAsync().Result;
             return JsonConvert.DeserializeObject<RetrievedImposter>(content);
@@ -90,13 +92,17 @@ namespace MbDotNet
             }
         }
 
-        private void HandleResponse(HttpResponseMessage response, HttpStatusCode expectedStatusCode, string failureErrorMessage)
+        private void HandleResponse(HttpResponseMessage response, HttpStatusCode expectedStatusCode, 
+            string failureErrorMessage, Func<string, Exception> exceptionFactory = null)
         {
+            if (exceptionFactory == null)
+                exceptionFactory = (message) => new MountebankException(message);
+
             if (response.StatusCode != expectedStatusCode)
             {
                 var content = response.Content.ReadAsStringAsync().Result;
                 var errorMessage = $"{failureErrorMessage}\n\nError Message => \n{content}";
-                throw new MountebankException(errorMessage);
+                throw exceptionFactory(errorMessage);
             }
         }
 
