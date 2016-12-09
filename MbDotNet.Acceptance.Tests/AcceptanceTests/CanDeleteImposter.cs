@@ -40,8 +40,7 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
             MountebankException exception = null;
             try
             {
-                var imposter = _client.CreateHttpImposter(ImposterPort);
-                _client.Submit(imposter);
+                var imposter = _client.GetImposter(ImposterPort);
             }
             catch (MountebankException e)
             {
@@ -49,7 +48,8 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
 
             }
 
-            exception.Should().BeNull("Expected imposter to have been deleted");
+            exception.Should().NotBeNull("Expected imposter to have been deleted");
+            exception.Message.Should().Contain("no such resource");
         }
 
         private void CreateImposter()

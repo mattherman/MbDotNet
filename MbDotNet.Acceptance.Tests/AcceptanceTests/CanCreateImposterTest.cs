@@ -30,21 +30,8 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
 
         private void VerifyImposterHasBeenCreated()
         {
-            MountebankException exception = null;
-            try
-            {
-                var imposter = _client.CreateHttpImposter(ImposterPort);
-                imposter.AddStub().ReturnsStatus(HttpStatusCode.BadRequest);
-                _client.Submit(imposter);
-            }
-            catch (MountebankException e)
-            {
-                exception = e;
-
-            }
-
-            exception.Should().NotBeNull("Expected imposter to already exist on port");
-            exception.Message.Should().Contain("port is already in use", "Expected imposter to already exist on port");
+            var imposter = _client.GetImposter(ImposterPort);
+            imposter.Should().NotBeNull();
         }
 
         private void CreateImposter()
