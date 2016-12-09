@@ -23,10 +23,10 @@ namespace MbDotNet.Acceptance.Tests
         {
             try
             {
-                AcceptanceTest.CanCreateImposter(Client);
-                AcceptanceTest.CanDeleteImposter(Client);
                 AcceptanceTest.CanGetImposter(Client);
                 AcceptanceTest.CanNotGetImposterThatDoesNotExist(Client);
+                AcceptanceTest.CanCreateImposter(Client);
+                AcceptanceTest.CanDeleteImposter(Client);
             }
             catch (Exception ex)
             {
