@@ -42,15 +42,16 @@ namespace MbDotNet
 
         public void DeleteImposter(int port)
         {
-            var response = ExecuteDelete(string.Format("{0}/{1}", ImpostersResource, port));
-            HandleResponse(response, HttpStatusCode.OK, string.Format("Failed to delete the imposter with port {0}.", port));
+            var response = ExecuteDelete($"{ImpostersResource}/{port}");
+            HandleResponse(response, HttpStatusCode.OK, $"Failed to delete the imposter with port {port}.");
         }
 
         public void CreateImposter(Imposter imposter)
         {
             var json = JsonConvert.SerializeObject(imposter);
             var response = ExecutePost(ImpostersResource, json);
-            HandleResponse(response, HttpStatusCode.Created, string.Format("Failed to create the imposter with port {0} and protocol {1}.", imposter.Port, imposter.Protocol));
+            HandleResponse(response, HttpStatusCode.Created,
+                $"Failed to create the imposter with port {imposter.Port} and protocol {imposter.Protocol}.");
         }
 
         public RetrievedImposter GetImposter(int port)
@@ -94,7 +95,7 @@ namespace MbDotNet
             if (response.StatusCode != expectedStatusCode)
             {
                 var content = response.Content.ReadAsStringAsync().Result;
-                var errorMessage = string.Format("{0}\n\nError Message => \n{1}", failureErrorMessage, content);
+                var errorMessage = $"{failureErrorMessage}\n\nError Message => \n{content}";
                 throw new MountebankException(errorMessage);
             }
         }
