@@ -1,6 +1,4 @@
-﻿
-using System;
-using MbDotNet.Acceptance.Tests.AcceptanceTests;
+﻿using MbDotNet.Acceptance.Tests.AcceptanceTests;
 
 namespace MbDotNet.Acceptance.Tests
 {
@@ -8,9 +6,7 @@ namespace MbDotNet.Acceptance.Tests
     {
         public static void CanCreateImposter(MountebankClient client) => new CanCreateImposterTest(client).Run();
         public static void CanDeleteImposter(MountebankClient client) => new CanDeleteImposter(client).Run();
-        public static void CanGetImposter(MountebankClient client)
-        {
-            new CanGetImposter(client).Run();
-        }
+        public static void CanGetImposter(MountebankClient client) => new CanGetImposter(client).Run();
+        public static void CanNotGetImposterThatDoesNotExist(MountebankClient client) => new CanNotGetImposterThatDoesNotExist(client).Run();
     }
 }

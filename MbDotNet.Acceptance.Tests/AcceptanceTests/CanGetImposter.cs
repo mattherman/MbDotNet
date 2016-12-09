@@ -7,7 +7,7 @@ namespace MbDotNet.Acceptance.Tests
     internal class CanGetImposter
     {
         private readonly MountebankClient _client;
-        private int _imposterPort = 6000;
+        const int _imposterPort = 6000;
         private RetrievedImposter _retrievedImposter;
 
         public CanGetImposter(MountebankClient client)

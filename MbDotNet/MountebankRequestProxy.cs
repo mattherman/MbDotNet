@@ -56,8 +56,10 @@ namespace MbDotNet
         public RetrievedImposter GetImposter(int port)
         {
             var response = ExecuteGet($"{ImpostersResource}/{port}");
-            var result = response.Content.ReadAsStringAsync().Result;
-            return JsonConvert.DeserializeObject<RetrievedImposter>(result);
+            HandleResponse(response, HttpStatusCode.OK, $"Failed to retrieve imposter with port {port}");
+
+            var content = response.Content.ReadAsStringAsync().Result;
+            return JsonConvert.DeserializeObject<RetrievedImposter>(content);
         }
 
         private HttpResponseMessage ExecuteGet(string resource)
