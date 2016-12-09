@@ -1,13 +1,12 @@
 ﻿using FluentAssertions;
-using MbDotNet.Exceptions;
 using MbDotNet.Models.Imposters;
 
-namespace MbDotNet.Acceptance.Tests
+namespace MbDotNet.Acceptance.Tests.AcceptanceTests
 {
     internal class CanGetImposter
     {
         private readonly MountebankClient _client;
-        const int _imposterPort = 6000;
+        const int ImposterPort = 6000;
         private RetrievedImposter _retrievedImposter;
 
         public CanGetImposter(MountebankClient client)
@@ -29,7 +28,7 @@ namespace MbDotNet.Acceptance.Tests
 
         private void GetImposter()
         {
-            _retrievedImposter = _client.GetImposter(_imposterPort);
+            _retrievedImposter = _client.GetImposter(ImposterPort);
         }
 
         private void DeleteAllImposters()
@@ -44,7 +43,7 @@ namespace MbDotNet.Acceptance.Tests
 
         private void CreateImposter()
         {
-            var imposter = _client.CreateHttpImposter(_imposterPort);
+            var imposter = _client.CreateHttpImposter(ImposterPort);
             _client.Submit(imposter);
         }
     }
