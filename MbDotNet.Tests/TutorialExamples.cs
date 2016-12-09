@@ -57,7 +57,7 @@ namespace MbDotNet.Tests
                 .ReturnsXml(HttpStatusCode.Created, new Customer { Email = "customer@test.com" })
                 .ReturnsBody(HttpStatusCode.BadRequest, "<error>Email already exists</error>");
 
-            _client.Submit();
+            _client.Submit(imposter);
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace MbDotNet.Tests
             // Fourth stub
             imposter.AddStub().OnMethodEquals(Method.Put).ReturnsStatus((HttpStatusCode)500);
 
-            _client.Submit();
+            _client.Submit(imposter);
         }
 
         /// <summary>
@@ -156,7 +156,7 @@ namespace MbDotNet.Tests
             imposter.AddStub().On(new DeepEqualsPredicate<HttpPredicateFields>(predicateFields))
                 .Returns(new IsResponse<HttpResponseFields>(responseFields));
 
-            _client.Submit();
+            _client.Submit(imposter);
         }
 
         /// <summary>
@@ -195,7 +195,7 @@ namespace MbDotNet.Tests
             imposter.AddStub().On(new ContainsPredicate<TcpPredicateFields>(predicateFields))
                 .ReturnsData("dGhpcmQgcmVzcG9uc2U=");
 
-            _client.Submit();
+            _client.Submit(imposter);
         }
 
         /// <summary>
@@ -234,7 +234,7 @@ namespace MbDotNet.Tests
             imposter.AddStub().On(new StartsWithPredicate<TcpPredicateFields>(predicateFields))
                 .ReturnsData("third response");
 
-            _client.Submit();
+            _client.Submit(imposter);
         }
 
         /// <summary>
@@ -273,7 +273,7 @@ namespace MbDotNet.Tests
             imposter.AddStub().On(new EndsWithPredicate<TcpPredicateFields>(predicateFields))
                 .ReturnsData("dGhpcmQgcmVzcG9uc2U=");
 
-            _client.Submit();
+            _client.Submit(imposter);
         }
 
         /// <summary>
@@ -312,7 +312,7 @@ namespace MbDotNet.Tests
             imposter.AddStub().On(new MatchesPredicate<TcpPredicateFields>(predicateFields))
                 .ReturnsData("third response");
 
-            _client.Submit();
+            _client.Submit(imposter);
         }
 
         /// <summary>
@@ -334,7 +334,7 @@ namespace MbDotNet.Tests
             imposter.AddStub().On(predicate)
                 .ReturnsData("test");
 
-            _client.Submit();
+            _client.Submit(imposter);
         }
     }
 

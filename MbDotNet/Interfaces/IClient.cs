@@ -45,11 +45,17 @@ namespace MbDotNet.Interfaces
         /// of imposters that the client maintains.
         /// </summary>
         void DeleteAllImposters();
+        
+        /// <summary>
+        /// Submits all pending imposters from the supplied collection to be created in mountebank. 
+        /// Will throw a MountebankException if unable to create the imposter for any reason.
+        /// </summary>
+        void Submit(ICollection<Imposter> imposters);
 
         /// <summary>
-        /// Submits all pending imposters to be created in mountebank. Will throw a MountebankException
-        /// if unable to create the imposter for any reason.
+        /// Submits imposter if pending to be created in mountebank. 
+        /// Will throw a MountebankException if unable to create the imposter for any reason.
         /// </summary>
-        void Submit();
+        void Submit(Imposter imposter);
     }
 }

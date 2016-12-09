@@ -1,11 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MbDotNet.Enums;
 using MbDotNet.Interfaces;
-using MbDotNet.Models;
-using MbDotNet.Models.Predicates;
 using MbDotNet.Models.Imposters;
 using Moq;
 
@@ -32,20 +29,17 @@ namespace MbDotNet.Tests
         }
 
         [TestMethod]
-        public void CreateHttpImposter_AddsNewImposterToCollection()
+        public void CreateHttpImposter_ShouldNotAddNewImposterToCollection()
         {
             _client.CreateHttpImposter(123);
-            Assert.AreEqual(1, _client.Imposters.Count);
+            Assert.AreEqual(0, _client.Imposters.Count);
         }
 
         [TestMethod]
         public void CreateHttpImposter_WithoutName_SetsNameToNull()
         {
-            _client.CreateHttpImposter(123);
-            Assert.AreEqual(1, _client.Imposters.Count);
-
-            var imposter = _client.Imposters.First() as HttpImposter;
-
+            var imposter = _client.CreateHttpImposter(123);
+            
             Assert.IsNotNull(imposter);
             Assert.IsNull(imposter.Name);
         }
@@ -55,29 +49,23 @@ namespace MbDotNet.Tests
         {
             const string expectedName = "Service";
 
-            _client.CreateHttpImposter(123, expectedName);
-            Assert.AreEqual(1, _client.Imposters.Count);
-
-            var imposter = _client.Imposters.First() as HttpImposter;
-
+            var imposter = _client.CreateHttpImposter(123, expectedName);
+            
             Assert.IsNotNull(imposter);
             Assert.AreEqual(expectedName, imposter.Name);
         }
 
         [TestMethod]
-        public void CreateTcpImposter_AddsNewImposterToCollection()
+        public void CreateTcpImposter_ShouldNotAddNewImposterToCollection()
         {
             _client.CreateTcpImposter(123);
-            Assert.AreEqual(1, _client.Imposters.Count);
+            Assert.AreEqual(0, _client.Imposters.Count);
         }
 
         [TestMethod]
         public void CreateTcpImposter_WithoutName_SetsNameToNull()
         {
-            _client.CreateTcpImposter(123);
-            Assert.AreEqual(1, _client.Imposters.Count);
-
-            var imposter = _client.Imposters.First() as TcpImposter;
+            var imposter = _client.CreateTcpImposter(123);
 
             Assert.IsNotNull(imposter);
             Assert.IsNull(imposter.Name);
@@ -88,11 +76,8 @@ namespace MbDotNet.Tests
         {
             const string expectedName = "Service";
 
-            _client.CreateTcpImposter(123, expectedName);
-            Assert.AreEqual(1, _client.Imposters.Count);
-
-            var imposter = _client.Imposters.First() as TcpImposter;
-
+            var imposter = _client.CreateTcpImposter(123, expectedName);
+            
             Assert.IsNotNull(imposter);
             Assert.AreEqual(expectedName, imposter.Name);
         }
@@ -102,11 +87,8 @@ namespace MbDotNet.Tests
         {
             const string expectedMode = "text";
 
-            _client.CreateTcpImposter(123, null);
-            Assert.AreEqual(1, _client.Imposters.Count);
-
-            var imposter = _client.Imposters.First() as TcpImposter;
-
+            var imposter = _client.CreateTcpImposter(123, null);
+            
             Assert.IsNotNull(imposter);
             Assert.AreEqual(expectedMode, imposter.Mode);
         }
@@ -116,10 +98,7 @@ namespace MbDotNet.Tests
         {
             const string expectedMode = "binary";
 
-            _client.CreateTcpImposter(123, null, TcpMode.Binary);
-            Assert.AreEqual(1, _client.Imposters.Count);
-
-            var imposter = _client.Imposters.First() as TcpImposter;
+            var imposter = _client.CreateTcpImposter(123, null, TcpMode.Binary);
 
             Assert.IsNotNull(imposter);
             Assert.AreEqual(expectedMode, imposter.Mode);
@@ -131,13 +110,10 @@ namespace MbDotNet.Tests
             const int firstPortNumber = 123;
             const int secondPortNumber = 456;
 
-            _client.Imposters.Add(new HttpImposter(firstPortNumber, null));
-            _client.Imposters.Add(new HttpImposter(secondPortNumber, null));
-
-            _mockRequestProxy.Setup(x => x.CreateImposter(It.Is<Imposter>(imp => imp.Port == firstPortNumber)));
-            _mockRequestProxy.Setup(x => x.CreateImposter(It.Is<Imposter>(imp => imp.Port == secondPortNumber)));
-
-            _client.Submit();
+            var imposter1 = new HttpImposter(firstPortNumber, null);
+            var imposter2 = new HttpImposter(secondPortNumber, null);
+          
+            _client.Submit(new [] { imposter1, imposter2});
 
             _mockRequestProxy.Verify(x => x.CreateImposter(It.Is<Imposter>(imp => imp.Port == firstPortNumber)), Times.Once);
             _mockRequestProxy.Verify(x => x.CreateImposter(It.Is<Imposter>(imp => imp.Port == secondPortNumber)), Times.Once);
@@ -146,9 +122,9 @@ namespace MbDotNet.Tests
         [TestMethod]
         public void Submit_SetsPendingSubmissionFalse()
         {
-            _client.Imposters.Add(new HttpImposter(8080, null));
+            var imposter = new HttpImposter(8080, null);
 
-            _client.Submit();
+            _client.Submit(imposter);
 
             Assert.IsFalse(_client.Imposters.First().PendingSubmission);
         }
@@ -156,12 +132,9 @@ namespace MbDotNet.Tests
         [TestMethod]
         public void Submit_DoesNotSubmitNonPendingImposters()
         {
-            var mockImposter = new Mock<HttpImposter>(123, null);
-            mockImposter.SetupGet(x => x.PendingSubmission).Returns(false);
+            var imposter = new HttpImposter(123, null) {PendingSubmission = false};
 
-            _client.Imposters.Add(mockImposter.Object);
-
-            _client.Submit();
+            _client.Submit(imposter);
 
             _mockRequestProxy.Verify(x => x.CreateImposter(It.IsAny<HttpImposter>()), Times.Never);
         }
@@ -216,6 +189,60 @@ namespace MbDotNet.Tests
             _client.DeleteAllImposters();
 
             Assert.AreEqual(0, _client.Imposters.Count);
+        }
+
+        [TestMethod]
+        public void SubmitCollection_ShouldSubmitImpostersUsingProxy()
+        {
+            const int firstPortNumber = 123;
+            const int secondPortNumber = 456;
+
+            var imposter1 = _client.CreateHttpImposter(firstPortNumber);
+            var imposter2 = _client.CreateHttpImposter(secondPortNumber);
+            
+            _client.Submit(new[] { imposter1, imposter2 });
+
+            _mockRequestProxy.Verify(x => x.CreateImposter(It.Is<Imposter>(imp => imp.Port == firstPortNumber)), Times.Once);
+            _mockRequestProxy.Verify(x => x.CreateImposter(It.Is<Imposter>(imp => imp.Port == secondPortNumber)), Times.Once);
+        }
+
+        [TestMethod]
+        public void SubmitCollection_ShouldAddImpostersToCollection()
+        {
+            const int firstPortNumber = 123;
+            const int secondPortNumber = 456;
+
+            var imposter1 = _client.CreateHttpImposter(firstPortNumber);
+            var imposter2 = _client.CreateHttpImposter(secondPortNumber);
+
+            _client.Submit(new[] { imposter1, imposter2 });
+
+            Assert.AreEqual(1, _client.Imposters.Count(x => x.Port == firstPortNumber));
+            Assert.AreEqual(1, _client.Imposters.Count(x => x.Port == secondPortNumber));
+        }
+
+        [TestMethod]
+        public void SubmitCollection_WhenImposterIsNotPending_ShouldNotSubmitImposter()
+        {
+            var imposter1 = _client.CreateHttpImposter(123);
+
+            imposter1.PendingSubmission = false;
+
+            _client.Submit(new[] { imposter1 });
+
+            _mockRequestProxy.Verify(x => x.CreateImposter(It.IsAny<Imposter>()), Times.Never);
+        }
+
+        [TestMethod]
+        public void SubmitCollection_WhenImposterIsNotPending_ShouldNotAddToCollection()
+        {
+            var imposter1 = _client.CreateHttpImposter(123);
+
+            imposter1.PendingSubmission = false;
+
+            _client.Submit(new[] { imposter1 });
+
+            Assert.AreEqual(0, _client.Imposters.Count(x => x.Port == 123));
         }
     }
 }

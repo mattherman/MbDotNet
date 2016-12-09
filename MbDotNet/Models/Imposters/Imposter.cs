@@ -29,7 +29,7 @@ namespace MbDotNet.Models.Imposters
         /// Whether or not the imposter has been added to mountebank.
         /// </summary>
         [JsonIgnore]
-        public virtual bool PendingSubmission { get; set; }
+        public bool PendingSubmission { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors", Justification = "Set as virtual for testing purposes")]
         public Imposter(int port, Protocol protocol, string name)

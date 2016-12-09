@@ -12,7 +12,7 @@ namespace MbDotNet
         private readonly IRequestProxy _requestProxy;
 
         /// <summary>
-        /// A collection of all of the current imposters. The imposters in this
+        /// A collection of all of the current imposters. The imposter in this
         /// collection may or may not have been added to mountebank. See IImposter.PendingSubmission
         /// for more information.
         /// </summary>
@@ -37,9 +37,7 @@ namespace MbDotNet
         /// <returns>The newly created imposter</returns>
         public HttpImposter CreateHttpImposter(int port, string name = null)
         {
-            var imposter = new HttpImposter(port, name);
-            Imposters.Add(imposter);
-            return imposter;
+            return new HttpImposter(port, name);
         }
 
         /// <summary>
@@ -52,9 +50,7 @@ namespace MbDotNet
         /// <returns>The newly created imposter</returns>
         public TcpImposter CreateTcpImposter(int port, string name = null, TcpMode mode = TcpMode.Text)
         {
-            var imposter = new TcpImposter(port, name, mode);
-            Imposters.Add(imposter);
-            return imposter;
+            return new TcpImposter(port, name, mode);
         }
 
         /// <summary>
@@ -65,16 +61,16 @@ namespace MbDotNet
         public void DeleteImposter(int port)
         {
             var imposter = Imposters.FirstOrDefault(imp => imp.Port == port);
+            _requestProxy.DeleteImposter(port);
 
             if (imposter != null)
             {
-                _requestProxy.DeleteImposter(port);
                 Imposters.Remove(imposter);
             }
         }
 
         /// <summary>
-        /// Deletes all imposters from mountebank. Will also remove the imposters from the collection
+        /// Deletes all imposters from mountebank. Will also remove the imposter from the collection
         /// of imposters that the client maintains.
         /// </summary>
         public void DeleteAllImposters()
@@ -82,18 +78,28 @@ namespace MbDotNet
             _requestProxy.DeleteAllImposters();
             Imposters = new List<Imposter>();
         }
-
+        
         /// <summary>
-        /// Submits all pending imposters to be created in mountebank. Will throw a MountebankException
-        /// if unable to create the imposter for any reason.
+        /// Submits all pending imposters from the supplied collection to be created in mountebank. 
+        /// Will throw a MountebankException if unable to create the imposter for any reason.
         /// </summary>
-        public void Submit()
+        public void Submit(ICollection<Imposter> imposters)
         {
-            foreach (var imposter in Imposters.Where(imp => imp.PendingSubmission))
+            foreach (var imposter in imposters.Where(imp => imp.PendingSubmission))
             {
                 _requestProxy.CreateImposter(imposter);
                 imposter.PendingSubmission = false;
+                Imposters.Add(imposter);
             }
+        }
+
+        /// <summary>
+        /// Submits imposter if pending to be created in mountebank. 
+        /// Will throw a MountebankException if unable to create the imposter for any reason.
+        /// </summary>
+        public void Submit(Imposter imposter)
+        {
+            Submit(new [] { imposter });
         }
     }
 }
