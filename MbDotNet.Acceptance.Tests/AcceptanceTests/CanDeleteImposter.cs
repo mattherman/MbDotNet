@@ -8,7 +8,7 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
     internal class CanDeleteImposter
     {
         private readonly MountebankClient _client;
-        private int _imposterPort = 6001;
+        const int ImposterPort = 6001;
 
         public CanDeleteImposter(MountebankClient client)
         {
@@ -32,7 +32,7 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
 
         private void DeleteImposter()
         {
-            _client.DeleteImposter(_imposterPort);
+            _client.DeleteImposter(ImposterPort);
         }
 
         private void VerifyImposterHasBeenDeleted()
@@ -40,7 +40,7 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
             MountebankException exception = null;
             try
             {
-                var imposter = _client.CreateHttpImposter(_imposterPort);
+                var imposter = _client.CreateHttpImposter(ImposterPort);
                 _client.Submit(imposter);
             }
             catch (MountebankException e)
@@ -54,7 +54,7 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
 
         private void CreateImposter()
         {
-            var imposter = _client.CreateHttpImposter(_imposterPort);
+            var imposter = _client.CreateHttpImposter(ImposterPort);
             _client.Submit(imposter);
         }
     }

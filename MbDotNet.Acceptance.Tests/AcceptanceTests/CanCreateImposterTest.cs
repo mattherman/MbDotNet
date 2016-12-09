@@ -7,7 +7,7 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
     internal class CanCreateImposterTest
     {
         private readonly MountebankClient _client;
-        private int imposterPort = 6000;
+        const int ImposterPort = 6000;
 
         public CanCreateImposterTest(MountebankClient client)
         {
@@ -33,7 +33,7 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
             MountebankException exception = null;
             try
             {
-                var imposter = _client.CreateHttpImposter(imposterPort);
+                var imposter = _client.CreateHttpImposter(ImposterPort);
                 imposter.AddStub().ReturnsStatus(HttpStatusCode.BadRequest);
                 _client.Submit(imposter);
             }
@@ -49,7 +49,7 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
 
         private void CreateImposter()
         {
-            var imposter = _client.CreateHttpImposter(imposterPort);
+            var imposter = _client.CreateHttpImposter(ImposterPort);
             _client.Submit(imposter);
         }
     }
