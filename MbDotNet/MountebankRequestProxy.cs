@@ -42,15 +42,34 @@ namespace MbDotNet
 
         public void DeleteImposter(int port)
         {
-            var response = ExecuteDelete(string.Format("{0}/{1}", ImpostersResource, port));
-            HandleResponse(response, HttpStatusCode.OK, string.Format("Failed to delete the imposter with port {0}.", port));
+            var response = ExecuteDelete($"{ImpostersResource}/{port}");
+            HandleResponse(response, HttpStatusCode.OK, $"Failed to delete the imposter with port {port}.");
         }
 
         public void CreateImposter(Imposter imposter)
         {
             var json = JsonConvert.SerializeObject(imposter);
             var response = ExecutePost(ImpostersResource, json);
-            HandleResponse(response, HttpStatusCode.Created, string.Format("Failed to create the imposter with port {0} and protocol {1}.", imposter.Port, imposter.Protocol));
+            HandleResponse(response, HttpStatusCode.Created,
+                $"Failed to create the imposter with port {imposter.Port} and protocol {imposter.Protocol}.");
+        }
+
+        public RetrievedImposter GetImposter(int port)
+        {
+            var response = ExecuteGet($"{ImpostersResource}/{port}");
+            HandleResponse(response, HttpStatusCode.OK, $"Failed to retrieve imposter with port {port}");
+
+            var content = response.Content.ReadAsStringAsync().Result;
+            return JsonConvert.DeserializeObject<RetrievedImposter>(content);
+        }
+
+        private HttpResponseMessage ExecuteGet(string resource)
+        {
+            using (var client = GetClient())
+            {
+                client.BaseAddress = _baseUri;
+                return client.GetAsync(resource).Result;
+            }
         }
 
         private HttpResponseMessage ExecuteDelete(string resource)
@@ -76,7 +95,7 @@ namespace MbDotNet
             if (response.StatusCode != expectedStatusCode)
             {
                 var content = response.Content.ReadAsStringAsync().Result;
-                var errorMessage = string.Format("{0}\n\nError Message => \n{1}", failureErrorMessage, content);
+                var errorMessage = $"{failureErrorMessage}\n\nError Message => \n{content}";
                 throw new MountebankException(errorMessage);
             }
         }

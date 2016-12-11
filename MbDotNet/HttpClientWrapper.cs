@@ -39,6 +39,11 @@ namespace MbDotNet
             return await _client.PostAsync(resource, content);
         }
 
+        public async Task<HttpResponseMessage> GetAsync(string resource)
+        {
+            return await _client.GetAsync(resource);
+        }
+
         public void Dispose()
         {
             Dispose(true);
