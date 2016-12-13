@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using FluentAssertions;
 using MbDotNet.Models.Imposters;
 using RestSharp;
@@ -32,15 +33,22 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
             CallImposter();
             VerifyImposterWasCalled();
         }
-
+        
         private void VerifyImposterWasCalled()
         {
             _retrievedImposter = _client.GetImposter(ImposterPort);
 
             _retrievedImposter.NumberOfRequests.Should().Be(1);
-            _retrievedImposter.Requests[0].Path.Should().Be("/customers/123");
-            _retrievedImposter.Requests[0].Body.Should()
+            var receivedRequest = _retrievedImposter.Requests[0];
+
+            receivedRequest.Path.Should().Be("/customers/123");
+            receivedRequest.Body.Should()
                 .Be("<Customer>\r\n  <Name>Bob</Name>\r\n  <Email>bob@zmail.com</Email>\r\n</Customer>");
+            receivedRequest.Method.Should().Be(Method.Post);
+            receivedRequest.Timestamp.Should().NotBe(default(DateTime));
+            receivedRequest.RequestFrom.Should().NotBe(string.Empty);
+            receivedRequest.Headers["Content-Type"].Should().Be("text/xml");
+            receivedRequest.Headers["Content-Length"].Should().Be("75");
         }
 
         private void CallImposter()
