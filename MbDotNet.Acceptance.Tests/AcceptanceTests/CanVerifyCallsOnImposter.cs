@@ -7,11 +7,6 @@ using Method = MbDotNet.Enums.Method;
 
 namespace MbDotNet.Acceptance.Tests.AcceptanceTests
 {
-    public class TestData
-    {
-        public string Email { get; set; }
-    }
-
     internal class CanVerifyCallsOnImposter
     {
         private readonly MountebankClient _client;
@@ -43,7 +38,7 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
 
             receivedRequest.Path.Should().Be("/customers/123");
             receivedRequest.Body.Should()
-                .Be("<Customer>\r\n  <Name>Bob</Name>\r\n  <Email>bob@zmail.com</Email>\r\n</Customer>");
+                .Be("<TestData>\r\n  <Name>Bob</Name>\r\n  <Email>bob@zmail.com</Email>\r\n</TestData>");
             receivedRequest.Method.Should().Be(Method.Post);
             receivedRequest.Timestamp.Should().NotBe(default(DateTime));
             receivedRequest.RequestFrom.Should().NotBe(string.Empty);
@@ -56,8 +51,8 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
             var restClient = new RestClient("http://localhost:6000");
 
             var request1 = new RestRequest("customers/123", RestSharp.Method.POST);
-            request1.AddBody(new Customer("Bob", "bob@zmail.com"));
-            var response1 = restClient.Execute<TestData>(request1);
+            request1.AddBody(new TestData("Bob", "bob@zmail.com"));
+            var response1 = restClient.Execute(request1);
 
             response1.StatusCode.Should().Be(HttpStatusCode.OK);
         }

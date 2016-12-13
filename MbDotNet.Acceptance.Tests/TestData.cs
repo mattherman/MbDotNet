@@ -1,11 +1,11 @@
 namespace MbDotNet.Acceptance.Tests
 {
-    internal class Customer
+    internal class TestData
     {
         public string Name { get; set; }
         public string Email { get; set; }
 
-        public Customer(string name, string email)
+        public TestData(string name, string email)
         {
             Name = name;
             Email = email;
