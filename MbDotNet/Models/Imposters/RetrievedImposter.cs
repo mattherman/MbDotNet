@@ -35,5 +35,8 @@ namespace MbDotNet.Models.Imposters
     {
         [JsonProperty("path")]
         public string Path { get; private set; }
+
+        [JsonProperty("body")]
+        public string Body { get; private set; }
     }
 }

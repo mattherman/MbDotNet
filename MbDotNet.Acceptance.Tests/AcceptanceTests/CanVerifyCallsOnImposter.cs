@@ -39,6 +39,8 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
 
             _retrievedImposter.NumberOfRequests.Should().Be(1);
             _retrievedImposter.Requests[0].Path.Should().Be("/customers/123");
+            _retrievedImposter.Requests[0].Body.Should()
+                .Be("<Customer>\r\n  <Name>Bob</Name>\r\n  <Email>bob@zmail.com</Email>\r\n</Customer>");
         }
 
         private void CallImposter()
@@ -46,6 +48,7 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
             var restClient = new RestClient("http://localhost:6000");
 
             var request1 = new RestRequest("customers/123", RestSharp.Method.POST);
+            request1.AddBody(new Customer("Bob", "bob@zmail.com"));
             var response1 = restClient.Execute<TestData>(request1);
 
             response1.StatusCode.Should().Be(HttpStatusCode.OK);
