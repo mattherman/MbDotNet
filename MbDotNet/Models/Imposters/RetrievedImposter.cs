@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using MbDotNet.Enums;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace MbDotNet.Models.Imposters
 {
@@ -32,26 +29,5 @@ namespace MbDotNet.Models.Imposters
         [JsonProperty("requests")]
         public Requests[] Requests { get; private set; }
 
-    }
-
-    public class Requests
-    {
-        [JsonProperty("path")]
-        public string Path { get; private set; }
-
-        [JsonProperty("body")]
-        public string Body { get; private set; }
-
-        [JsonProperty("method")]
-        public Method Method { get; set; }
-
-        [JsonProperty("timestamp")]
-        public DateTime Timestamp { get; set; }
-
-        [JsonProperty("requestFrom")]
-        public string RequestFrom { get; set; }
-
-        [JsonProperty("headers")]
-        public Dictionary<string, string> Headers { get; set; }
     }
 }
