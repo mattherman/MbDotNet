@@ -33,8 +33,7 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
         {
             _retrievedImposter = _client.GetImposter(ImposterPort);
 
-            // TODO: Fix NumberOfRequests, see https://github.com/mattherman/MbDotNet/issues/19
-            // _retrievedImposter.NumberOfRequests.Should().Be(1);
+            _retrievedImposter.NumberOfRequests.Should().Be(1);
             var receivedRequest = _retrievedImposter.Requests[0];
 
             receivedRequest.Path.Should().Be("/customers");
