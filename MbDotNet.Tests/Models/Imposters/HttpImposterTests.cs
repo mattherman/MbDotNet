@@ -37,13 +37,6 @@ namespace MbDotNet.Tests.Imposters
         }
 
         [TestMethod]
-        public void Constructor_PendingSubmissionUponCreation()
-        {
-            var imposter = new HttpImposter(123, null);
-            Assert.IsTrue(imposter.PendingSubmission);
-        }
-
-        [TestMethod]
         public void Constructor_InitializesStubsCollection()
         {
             var imposter = new HttpImposter(123, null);
