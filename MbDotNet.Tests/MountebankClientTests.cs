@@ -120,26 +120,6 @@ namespace MbDotNet.Tests
         }
 
         [TestMethod]
-        public void Submit_SetsPendingSubmissionFalse()
-        {
-            var imposter = new HttpImposter(8080, null);
-
-            _client.Submit(imposter);
-
-            Assert.IsFalse(_client.Imposters.First().PendingSubmission);
-        }
-
-        [TestMethod]
-        public void Submit_DoesNotSubmitNonPendingImposters()
-        {
-            var imposter = new HttpImposter(123, null) {PendingSubmission = false};
-
-            _client.Submit(imposter);
-
-            _mockRequestProxy.Verify(x => x.CreateImposter(It.IsAny<HttpImposter>()), Times.Never);
-        }
-
-        [TestMethod]
         public void DeleteImposter_CallsDelete()
         {
             const int port = 8080;
@@ -219,30 +199,6 @@ namespace MbDotNet.Tests
 
             Assert.AreEqual(1, _client.Imposters.Count(x => x.Port == firstPortNumber));
             Assert.AreEqual(1, _client.Imposters.Count(x => x.Port == secondPortNumber));
-        }
-
-        [TestMethod]
-        public void SubmitCollection_WhenImposterIsNotPending_ShouldNotSubmitImposter()
-        {
-            var imposter1 = _client.CreateHttpImposter(123);
-
-            imposter1.PendingSubmission = false;
-
-            _client.Submit(new[] { imposter1 });
-
-            _mockRequestProxy.Verify(x => x.CreateImposter(It.IsAny<Imposter>()), Times.Never);
-        }
-
-        [TestMethod]
-        public void SubmitCollection_WhenImposterIsNotPending_ShouldNotAddToCollection()
-        {
-            var imposter1 = _client.CreateHttpImposter(123);
-
-            imposter1.PendingSubmission = false;
-
-            _client.Submit(new[] { imposter1 });
-
-            Assert.AreEqual(0, _client.Imposters.Count(x => x.Port == 123));
         }
     }
 }

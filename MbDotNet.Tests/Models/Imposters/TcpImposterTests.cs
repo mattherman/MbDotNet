@@ -47,13 +47,6 @@ namespace MbDotNet.Tests.Models.Imposters
         }
 
         [TestMethod]
-        public void Constructor_PendingSubmissionUponCreation()
-        {
-            var imposter = new TcpImposter(123, null, TcpMode.Text);
-            Assert.IsTrue(imposter.PendingSubmission);
-        }
-
-        [TestMethod]
         public void Constructor_InitializesStubsCollection()
         {
             var imposter = new TcpImposter(123, null, TcpMode.Text);

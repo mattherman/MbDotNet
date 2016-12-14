@@ -85,10 +85,9 @@ namespace MbDotNet
         /// </summary>
         public void Submit(ICollection<Imposter> imposters)
         {
-            foreach (var imposter in imposters.Where(imp => imp.PendingSubmission))
+            foreach (var imposter in imposters)
             {
                 _requestProxy.CreateImposter(imposter);
-                imposter.PendingSubmission = false;
                 Imposters.Add(imposter);
             }
         }
