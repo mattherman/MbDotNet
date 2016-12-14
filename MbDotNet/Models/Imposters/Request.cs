@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace MbDotNet.Models.Imposters
 {
-    public class Requests
+    public class Request
     {
         [JsonProperty("path")]
         public string Path { get; private set; }

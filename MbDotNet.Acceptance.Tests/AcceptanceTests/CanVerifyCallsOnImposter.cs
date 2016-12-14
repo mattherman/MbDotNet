@@ -50,11 +50,11 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
         {
             var restClient = new RestClient("http://localhost:6000");
 
-            var request1 = new RestRequest("customers/123", RestSharp.Method.POST);
-            request1.AddBody(new TestData("Bob", "bob@zmail.com"));
-            var response1 = restClient.Execute(request1);
+            var request = new RestRequest("customers/123", RestSharp.Method.POST);
+            request.AddBody(new TestData("Bob", "bob@zmail.com"));
+            var response = restClient.Execute(request);
 
-            response1.StatusCode.Should().Be(HttpStatusCode.OK);
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
 
         private void CreateImposter()
