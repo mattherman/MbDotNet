@@ -7,3 +7,4 @@ services:
       context: ./docker/mountebank
     ports:
     - "2525:2525"
+    - "6000:6000"

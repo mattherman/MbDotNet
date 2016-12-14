@@ -42,7 +42,7 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
             {
                 var imposter = _client.GetImposter(ImposterPort);
             }
-            catch (MountebankException e)
+            catch (ImposterNotFoundException e)
             {
                 exception = e;
 

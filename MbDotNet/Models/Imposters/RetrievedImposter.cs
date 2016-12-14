@@ -23,5 +23,11 @@ namespace MbDotNet.Models.Imposters
         [JsonProperty("name")]
         public string Name { get; private set; }
 
+        [JsonProperty("numberOfRequests")]
+        public int NumberOfRequests { get; private set; }
+
+        [JsonProperty("requests")]
+        public Requests[] Requests { get; private set; }
+
     }
 }

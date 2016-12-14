@@ -27,6 +27,7 @@ namespace MbDotNet.Acceptance.Tests
                 AcceptanceTest.CanNotGetImposterThatDoesNotExist(Client);
                 AcceptanceTest.CanCreateImposter(Client);
                 AcceptanceTest.CanDeleteImposter(Client);
+                AcceptanceTest.CanVerifyCallsOnImposter(Client);
             }
             catch (Exception ex)
             {
