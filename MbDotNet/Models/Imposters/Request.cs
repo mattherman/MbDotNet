@@ -22,6 +22,9 @@ namespace MbDotNet.Models.Imposters
         [JsonProperty("requestFrom")]
         public string RequestFrom { get; set; }
 
+        [JsonProperty("query")]
+        public Dictionary<string, string> QueryParameters { get; set; }
+
         [JsonProperty("headers")]
         public Dictionary<string, string> Headers { get; set; }
     }
