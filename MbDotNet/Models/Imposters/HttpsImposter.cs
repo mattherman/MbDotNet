@@ -23,6 +23,7 @@ namespace MbDotNet.Models.Imposters
 
         public HttpsImposter(int port, string name, string key, string cert) : base(port, MbDotNet.Enums.Protocol.Https, name)
         {
+            Cert = cert;
             Key = key;
             Stubs = new List<HttpStub>();
         }
