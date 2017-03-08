@@ -1,7 +1,5 @@
-﻿using System.Net;
 using FluentAssertions;
 using MbDotNet.Exceptions;
-using MbDotNet.Models.Imposters;
 
 namespace MbDotNet.Acceptance.Tests.AcceptanceTests
 {

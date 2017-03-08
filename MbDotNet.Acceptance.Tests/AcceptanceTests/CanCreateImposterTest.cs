@@ -1,6 +1,4 @@
-using System.Net;
 using FluentAssertions;
-using MbDotNet.Exceptions;
 
 namespace MbDotNet.Acceptance.Tests.AcceptanceTests
 {
