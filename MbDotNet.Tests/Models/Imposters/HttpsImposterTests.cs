@@ -51,6 +51,13 @@ namespace MbDotNet.Tests.Imposters
             Assert.AreEqual(imposter.Key, testKeyValue);
         }
 
+        [TestMethod]
+        public void Constructor_SetsKeyAsNullWhenMissing()
+        {
+            var imposter = new HttpsImposter(123, null);
+            Assert.IsNull(imposter.Key);
+        }
+
         #endregion
 
         #region Stub Tests
