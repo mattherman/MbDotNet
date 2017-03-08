@@ -4,7 +4,6 @@ namespace MbDotNet.Models.Imposters
 {
     public class RetrievedImposter
     {
-
         /// <summary>
         /// The port the imposter is set up to accept requests on.
         /// </summary>
@@ -28,6 +27,5 @@ namespace MbDotNet.Models.Imposters
 
         [JsonProperty("requests")]
         public Request[] Requests { get; private set; }
-
     }
 }
