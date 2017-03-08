@@ -9,6 +9,7 @@ namespace MbDotNet.Models.Imposters
         [JsonProperty("stubs")]
         public ICollection<HttpStub> Stubs { get; private set; }
         
+        // TODO Need to not include key in serialization when its null to allow mb to use self-signed certificate.
         [JsonProperty("key")]
         public string Key { get; private set; }
 
