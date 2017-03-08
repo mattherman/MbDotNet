@@ -9,8 +9,8 @@ namespace MbDotNet.Models.Imposters
         [JsonProperty("stubs")]
         public ICollection<HttpStub> Stubs { get; private set; }
         
-        // TODO Need to not include key in serialization when its null to allow mb to use self-signed certificate.
-        [JsonProperty("key")]
+        // TODO This won't serialize key, but how does a user of this imposter know it's using the self-signed cert?
+        [JsonProperty("key", NullValueHandling = NullValueHandling.Ignore)]
         public string Key { get; private set; }
 
         public HttpsImposter(int port, string name) : this(port, name, null)
