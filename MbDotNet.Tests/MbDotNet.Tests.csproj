@@ -65,6 +65,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Models\Imposters\HttpsImposterTests.cs" />
     <Compile Include="Models\Imposters\HttpImposterTests.cs" />
     <Compile Include="Models\Imposters\TcpImposterTests.cs" />
     <Compile Include="Models\Predicates\ContainsPredicateTests.cs" />
