@@ -47,7 +47,7 @@ namespace MbDotNet.Tests.Imposters
         public void Constructor_SetsKey()
         {
             var testKeyValue = "testKey";
-            var imposter = new HttpsImposter(123, null, testKeyValue);
+            var imposter = new HttpsImposter(123, null, testKeyValue, null);
             Assert.AreEqual(imposter.Key, testKeyValue);
         }
 
@@ -56,6 +56,14 @@ namespace MbDotNet.Tests.Imposters
         {
             var imposter = new HttpsImposter(123, null);
             Assert.IsNull(imposter.Key);
+        }
+
+        [TestMethod]
+        public void Constructor_SetsCert()
+        {
+            var testCertValue = "testCert";
+            var imposter = new HttpsImposter(123, null, null, testCertValue);
+            Assert.AreEqual(imposter.Cert, testCertValue);
         }
 
         #endregion
