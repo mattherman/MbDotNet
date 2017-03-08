@@ -13,9 +13,7 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
         private HttpImposter _imposter;
         private RetrievedImposter _retrievedImposter;
         const int ImposterPort = 6000;
-
-       
-
+        
         public CanVerifyCallsOnImposter(MountebankClient client)
         {
             _client = client;

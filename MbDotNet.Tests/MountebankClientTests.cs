@@ -170,7 +170,7 @@ namespace MbDotNet.Tests
 
             Assert.AreEqual(0, _client.Imposters.Count);
         }
-
+         
         [TestMethod]
         public void SubmitCollection_ShouldSubmitImpostersUsingProxy()
         {
