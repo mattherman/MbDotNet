@@ -32,6 +32,9 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
             _retrievedImposter = _client.GetImposter(ImposterPort);
 
             _retrievedImposter.NumberOfRequests.Should().Be(1);
+            
+            // For the request field to be populated, mountebank must be run with the --mock parameter
+            // http://www.mbtest.org/docs/api/overview#get-imposter
             var receivedRequest = _retrievedImposter.Requests[0];
 
             receivedRequest.Path.Should().Be("/customers");
