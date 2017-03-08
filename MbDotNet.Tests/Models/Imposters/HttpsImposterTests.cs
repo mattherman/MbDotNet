@@ -66,6 +66,13 @@ namespace MbDotNet.Tests.Imposters
             Assert.AreEqual(expectedCertValue, imposter.Cert);
         }
 
+        [TestMethod]
+        public void Constructor_SetsCertAsNullWhenMissing()
+        {
+            var imposter = new HttpsImposter(123, null);
+            Assert.IsNull(imposter.Cert);
+        }
+
         #endregion
 
         #region Stub Tests
