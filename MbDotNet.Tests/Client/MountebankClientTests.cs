@@ -1,13 +1,17 @@
-﻿using System.Collections.Generic;
+﻿
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using MbDotNet.Enums;
 using MbDotNet.Interfaces;
 using MbDotNet.Models.Imposters;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using Moq;
 
-namespace MbDotNet.Tests
+namespace MbDotNet.Tests.Client
 {
+
     [TestClass]
     public class MountebankClientTests
     {
@@ -17,8 +21,8 @@ namespace MbDotNet.Tests
         [TestInitialize]
         public void TestInitialize()
         {
-            _mockRequestProxy = new Mock<IRequestProxy>();
-            _client = new MountebankClient(_mockRequestProxy.Object);
+            this._mockRequestProxy = new Mock<IRequestProxy>();
+            this._client = new MountebankClient(this._mockRequestProxy.Object);
         }
 
         [TestMethod]
@@ -31,14 +35,14 @@ namespace MbDotNet.Tests
         [TestMethod]
         public void CreateHttpImposter_ShouldNotAddNewImposterToCollection()
         {
-            _client.CreateHttpImposter(123);
-            Assert.AreEqual(0, _client.Imposters.Count);
+            this._client.CreateHttpImposter(123);
+            Assert.AreEqual(0, this._client.Imposters.Count);
         }
 
         [TestMethod]
         public void CreateHttpImposter_WithoutName_SetsNameToNull()
         {
-            var imposter = _client.CreateHttpImposter(123);
+            var imposter = this._client.CreateHttpImposter(123);
             
             Assert.IsNotNull(imposter);
             Assert.IsNull(imposter.Name);
@@ -49,7 +53,7 @@ namespace MbDotNet.Tests
         {
             const string expectedName = "Service";
 
-            var imposter = _client.CreateHttpImposter(123, expectedName);
+            var imposter = this._client.CreateHttpImposter(123, expectedName);
             
             Assert.IsNotNull(imposter);
             Assert.AreEqual(expectedName, imposter.Name);
@@ -58,14 +62,14 @@ namespace MbDotNet.Tests
         [TestMethod]
         public void CreateTcpImposter_ShouldNotAddNewImposterToCollection()
         {
-            _client.CreateTcpImposter(123);
-            Assert.AreEqual(0, _client.Imposters.Count);
+            this._client.CreateTcpImposter(123);
+            Assert.AreEqual(0, this._client.Imposters.Count);
         }
 
         [TestMethod]
         public void CreateTcpImposter_WithoutName_SetsNameToNull()
         {
-            var imposter = _client.CreateTcpImposter(123);
+            var imposter = this._client.CreateTcpImposter(123);
 
             Assert.IsNotNull(imposter);
             Assert.IsNull(imposter.Name);
@@ -76,7 +80,7 @@ namespace MbDotNet.Tests
         {
             const string expectedName = "Service";
 
-            var imposter = _client.CreateTcpImposter(123, expectedName);
+            var imposter = this._client.CreateTcpImposter(123, expectedName);
             
             Assert.IsNotNull(imposter);
             Assert.AreEqual(expectedName, imposter.Name);
@@ -87,7 +91,7 @@ namespace MbDotNet.Tests
         {
             const string expectedMode = "text";
 
-            var imposter = _client.CreateTcpImposter(123, null);
+            var imposter = this._client.CreateTcpImposter(123, null);
             
             Assert.IsNotNull(imposter);
             Assert.AreEqual(expectedMode, imposter.Mode);
@@ -98,7 +102,7 @@ namespace MbDotNet.Tests
         {
             const string expectedMode = "binary";
 
-            var imposter = _client.CreateTcpImposter(123, null, TcpMode.Binary);
+            var imposter = this._client.CreateTcpImposter(123, null, TcpMode.Binary);
 
             Assert.IsNotNull(imposter);
             Assert.AreEqual(expectedMode, imposter.Mode);
@@ -113,10 +117,10 @@ namespace MbDotNet.Tests
             var imposter1 = new HttpImposter(firstPortNumber, null);
             var imposter2 = new HttpImposter(secondPortNumber, null);
           
-            _client.Submit(new [] { imposter1, imposter2});
+            this._client.Submit(new [] { imposter1, imposter2});
 
-            _mockRequestProxy.Verify(x => x.CreateImposter(It.Is<Imposter>(imp => imp.Port == firstPortNumber)), Times.Once);
-            _mockRequestProxy.Verify(x => x.CreateImposter(It.Is<Imposter>(imp => imp.Port == secondPortNumber)), Times.Once);
+            this._mockRequestProxy.Verify(x => x.CreateImposter(It.Is<Imposter>(imp => imp.Port == firstPortNumber)), Times.Once);
+            this._mockRequestProxy.Verify(x => x.CreateImposter(It.Is<Imposter>(imp => imp.Port == secondPortNumber)), Times.Once);
         }
 
         [TestMethod]
@@ -124,13 +128,13 @@ namespace MbDotNet.Tests
         {
             const int port = 8080;
 
-            _client.Imposters.Add(new HttpImposter(port, null));
+            this._client.Imposters.Add(new HttpImposter(port, null));
 
-            _mockRequestProxy.Setup(x => x.DeleteImposter(port));
+            this._mockRequestProxy.Setup(x => x.DeleteImposter(port));
 
-            _client.DeleteImposter(port);
+            this._client.DeleteImposter(port);
 
-            _mockRequestProxy.Verify(x => x.DeleteImposter(port), Times.Once);
+            this._mockRequestProxy.Verify(x => x.DeleteImposter(port), Times.Once);
         }
 
         [TestMethod]
@@ -138,37 +142,37 @@ namespace MbDotNet.Tests
         {
             const int port = 8080;
 
-            _client.Imposters.Add(new HttpImposter(port, null));
+            this._client.Imposters.Add(new HttpImposter(port, null));
 
-            _client.DeleteImposter(port);
+            this._client.DeleteImposter(port);
 
-            Assert.AreEqual(0, _client.Imposters.Count);
+            Assert.AreEqual(0, this._client.Imposters.Count);
         }
 
         [TestMethod]
         public void DeleteAllImposters_CallsDeleteAll()
         {
-            _mockRequestProxy.Setup(x => x.DeleteAllImposters());
+            this._mockRequestProxy.Setup(x => x.DeleteAllImposters());
 
-            _client.Imposters.Add(new HttpImposter(123, null));
-            _client.Imposters.Add(new HttpImposter(456, null));
+            this._client.Imposters.Add(new HttpImposter(123, null));
+            this._client.Imposters.Add(new HttpImposter(456, null));
 
-            _client.DeleteAllImposters();
+            this._client.DeleteAllImposters();
 
-            _mockRequestProxy.Verify(x => x.DeleteAllImposters(), Times.Once);
+            this._mockRequestProxy.Verify(x => x.DeleteAllImposters(), Times.Once);
         }
 
         [TestMethod]
         public void DeleteAllImposters_RemovesAllImpostersFromCollection()
         {
-            _mockRequestProxy.Setup(x => x.DeleteAllImposters());
+            this._mockRequestProxy.Setup(x => x.DeleteAllImposters());
 
-            _client.Imposters.Add(new HttpImposter(123, null));
-            _client.Imposters.Add(new HttpImposter(456, null));
+            this._client.Imposters.Add(new HttpImposter(123, null));
+            this._client.Imposters.Add(new HttpImposter(456, null));
 
-            _client.DeleteAllImposters();
+            this._client.DeleteAllImposters();
 
-            Assert.AreEqual(0, _client.Imposters.Count);
+            Assert.AreEqual(0, this._client.Imposters.Count);
         }
          
         [TestMethod]
@@ -177,13 +181,13 @@ namespace MbDotNet.Tests
             const int firstPortNumber = 123;
             const int secondPortNumber = 456;
 
-            var imposter1 = _client.CreateHttpImposter(firstPortNumber);
-            var imposter2 = _client.CreateHttpImposter(secondPortNumber);
+            var imposter1 = this._client.CreateHttpImposter(firstPortNumber);
+            var imposter2 = this._client.CreateHttpImposter(secondPortNumber);
             
-            _client.Submit(new[] { imposter1, imposter2 });
+            this._client.Submit(new[] { imposter1, imposter2 });
 
-            _mockRequestProxy.Verify(x => x.CreateImposter(It.Is<Imposter>(imp => imp.Port == firstPortNumber)), Times.Once);
-            _mockRequestProxy.Verify(x => x.CreateImposter(It.Is<Imposter>(imp => imp.Port == secondPortNumber)), Times.Once);
+            this._mockRequestProxy.Verify(x => x.CreateImposter(It.Is<Imposter>(imp => imp.Port == firstPortNumber)), Times.Once);
+            this._mockRequestProxy.Verify(x => x.CreateImposter(It.Is<Imposter>(imp => imp.Port == secondPortNumber)), Times.Once);
         }
 
         [TestMethod]
@@ -192,13 +196,13 @@ namespace MbDotNet.Tests
             const int firstPortNumber = 123;
             const int secondPortNumber = 456;
 
-            var imposter1 = _client.CreateHttpImposter(firstPortNumber);
-            var imposter2 = _client.CreateHttpImposter(secondPortNumber);
+            var imposter1 = this._client.CreateHttpImposter(firstPortNumber);
+            var imposter2 = this._client.CreateHttpImposter(secondPortNumber);
 
-            _client.Submit(new[] { imposter1, imposter2 });
+            this._client.Submit(new[] { imposter1, imposter2 });
 
-            Assert.AreEqual(1, _client.Imposters.Count(x => x.Port == firstPortNumber));
-            Assert.AreEqual(1, _client.Imposters.Count(x => x.Port == secondPortNumber));
+            Assert.AreEqual(1, this._client.Imposters.Count(x => x.Port == firstPortNumber));
+            Assert.AreEqual(1, this._client.Imposters.Count(x => x.Port == secondPortNumber));
         }
     }
 }

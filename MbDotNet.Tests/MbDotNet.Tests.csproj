@@ -80,7 +80,7 @@
     <Compile Include="Models\Responses\IsResponseTests.cs" />
     <Compile Include="Models\Stubs\HttpStubTests.cs" />
     <Compile Include="Models\Stubs\TcpStubTests.cs" />
-    <Compile Include="MountebankClientTests.cs" />
+    <Compile Include="Client\MountebankClientTests.cs" />
     <Compile Include="MountebankRequestProxyTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TutorialExamples.cs" />
