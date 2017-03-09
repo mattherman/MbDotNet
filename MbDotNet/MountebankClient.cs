@@ -41,6 +41,20 @@ namespace MbDotNet
         }
 
         /// <summary>
+        /// Creates a new imposter on the specified port with the HTTPS protocol. The Submit method
+        /// must be called on the client in order to submit the imposter to mountebank.
+        /// </summary>
+        /// <param name="port">The port the imposter will be set up to receive requests on</param>
+        /// <param name="name">The name the imposter will recieve, useful for debugging/logging purposes</param>
+        /// <param name="key">The private key the imposter will use</param>
+        /// <param name="cert">The public certificate the imposer will use</param>
+        /// <returns>The newly created imposter</returns>
+        public HttpsImposter CreateHttpsImposter(int port, string name = null, string key = null, string cert = null)
+        {
+            return new HttpsImposter(port, name, key, cert);
+        }
+
+        /// <summary>
         /// Creates a new imposter on the specified port with the TCP protocol. The Submit method
         /// must be called on the client in order to submit the imposter to mountebank.
         /// </summary>
