@@ -1,25 +1,12 @@
 using MbDotNet.Enums;
-using MbDotNet.Interfaces;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using Moq;
 
 namespace MbDotNet.Tests.Client
 {
     [TestClass]
-    public class CreateTcpImposterTests
+    public class CreateTcpImposterTests : MountebankClientTestBase
     {
-        private IClient _client;
-        private Mock<IRequestProxy> _mockRequestProxy;
-
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            this._mockRequestProxy = new Mock<IRequestProxy>();
-            this._client = new MountebankClient(this._mockRequestProxy.Object);
-        }
-
         [TestMethod]
         public void CreateTcpImposter_WithoutName_SetsNameToNull()
         {

@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 
-using MbDotNet.Interfaces;
 using MbDotNet.Models.Imposters;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -10,18 +9,8 @@ using Moq;
 namespace MbDotNet.Tests.Client
 {
     [TestClass]
-    public class MountebankClientTests
+    public class MountebankClientTests : MountebankClientTestBase
     {
-        private IClient _client;
-        private Mock<IRequestProxy> _mockRequestProxy;
-
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            this._mockRequestProxy = new Mock<IRequestProxy>();
-            this._client = new MountebankClient(this._mockRequestProxy.Object);
-        }
-
         [TestMethod]
         public void Constructor_InitializesImposterCollection()
         {
