@@ -60,6 +60,7 @@
     <Compile Include="AcceptanceTests\CanGetImposter.cs" />
     <Compile Include="AcceptanceTests\CanNotGetImposterThatDoesNotExist.cs" />
     <Compile Include="AcceptanceTests\CanVerifyCallsOnImposter.cs" />
+    <Compile Include="AcceptanceTests\CanCreateHttpsImposter.cs" />
     <Compile Include="TestData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
