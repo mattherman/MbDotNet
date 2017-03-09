@@ -1,5 +1,4 @@
-﻿
-using System.Linq;
+﻿using System.Linq;
 
 using MbDotNet.Enums;
 using MbDotNet.Interfaces;
@@ -11,13 +10,12 @@ using Moq;
 
 namespace MbDotNet.Tests.Client
 {
-
     [TestClass]
     public class MountebankClientTests
     {
         private IClient _client;
         private Mock<IRequestProxy> _mockRequestProxy;
-
+        
         [TestInitialize]
         public void TestInitialize()
         {
@@ -30,33 +28,6 @@ namespace MbDotNet.Tests.Client
         {
             var client = new MountebankClient();
             Assert.IsNotNull(client.Imposters);
-        }
-
-        [TestMethod]
-        public void CreateHttpImposter_ShouldNotAddNewImposterToCollection()
-        {
-            this._client.CreateHttpImposter(123);
-            Assert.AreEqual(0, this._client.Imposters.Count);
-        }
-
-        [TestMethod]
-        public void CreateHttpImposter_WithoutName_SetsNameToNull()
-        {
-            var imposter = this._client.CreateHttpImposter(123);
-            
-            Assert.IsNotNull(imposter);
-            Assert.IsNull(imposter.Name);
-        }
-
-        [TestMethod]
-        public void CreateHttpImposter_WithName_SetsName()
-        {
-            const string expectedName = "Service";
-
-            var imposter = this._client.CreateHttpImposter(123, expectedName);
-            
-            Assert.IsNotNull(imposter);
-            Assert.AreEqual(expectedName, imposter.Name);
         }
 
         [TestMethod]
