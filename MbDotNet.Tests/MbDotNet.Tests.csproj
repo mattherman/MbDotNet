@@ -66,6 +66,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Client\CreateHttpImposterTests.cs" />
+    <Compile Include="Client\CreateHttpsImposterTests.cs" />
     <Compile Include="Client\CreateTcpImposterTests.cs" />
     <Compile Include="Client\DeleteImposterTests.cs" />
     <Compile Include="Client\MountebankClientTestBase.cs" />
