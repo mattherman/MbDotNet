@@ -52,58 +52,6 @@ namespace MbDotNet.Tests.Client
         }
 
         [TestMethod]
-        public void DeleteImposter_CallsDelete()
-        {
-            const int port = 8080;
-
-            this._client.Imposters.Add(new HttpImposter(port, null));
-
-            this._mockRequestProxy.Setup(x => x.DeleteImposter(port));
-
-            this._client.DeleteImposter(port);
-
-            this._mockRequestProxy.Verify(x => x.DeleteImposter(port), Times.Once);
-        }
-
-        [TestMethod]
-        public void DeleteImposter_RemovesImposterFromCollection()
-        {
-            const int port = 8080;
-
-            this._client.Imposters.Add(new HttpImposter(port, null));
-
-            this._client.DeleteImposter(port);
-
-            Assert.AreEqual(0, this._client.Imposters.Count);
-        }
-
-        [TestMethod]
-        public void DeleteAllImposters_CallsDeleteAll()
-        {
-            this._mockRequestProxy.Setup(x => x.DeleteAllImposters());
-
-            this._client.Imposters.Add(new HttpImposter(123, null));
-            this._client.Imposters.Add(new HttpImposter(456, null));
-
-            this._client.DeleteAllImposters();
-
-            this._mockRequestProxy.Verify(x => x.DeleteAllImposters(), Times.Once);
-        }
-
-        [TestMethod]
-        public void DeleteAllImposters_RemovesAllImpostersFromCollection()
-        {
-            this._mockRequestProxy.Setup(x => x.DeleteAllImposters());
-
-            this._client.Imposters.Add(new HttpImposter(123, null));
-            this._client.Imposters.Add(new HttpImposter(456, null));
-
-            this._client.DeleteAllImposters();
-
-            Assert.AreEqual(0, this._client.Imposters.Count);
-        }
-         
-        [TestMethod]
         public void SubmitCollection_ShouldSubmitImpostersUsingProxy()
         {
             const int firstPortNumber = 123;
