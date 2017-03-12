@@ -3,7 +3,7 @@
 using MbDotNet.Enums;
 using MbDotNet.Models.Imposters;
 
-namespace MbDotNet.Interfaces
+namespace MbDotNet
 {
     public interface IClient
     {

@@ -1,6 +1,6 @@
 ﻿using MbDotNet.Models.Imposters;
 
-namespace MbDotNet.Interfaces
+namespace MbDotNet
 {
     internal interface IRequestProxy
     {

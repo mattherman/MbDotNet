@@ -2,7 +2,6 @@
 using System.Net;
 using System.Net.Http;
 using MbDotNet.Exceptions;
-using MbDotNet.Interfaces;
 using MbDotNet.Models.Imposters;
 using Newtonsoft.Json;
 

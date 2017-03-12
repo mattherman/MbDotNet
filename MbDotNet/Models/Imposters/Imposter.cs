@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using MbDotNet.Models;
-using MbDotNet.Enums;
+﻿using MbDotNet.Enums;
 using Newtonsoft.Json;
 
 namespace MbDotNet.Models.Imposters

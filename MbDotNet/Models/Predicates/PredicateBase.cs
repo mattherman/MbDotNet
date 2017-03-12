@@ -1,5 +1,4 @@
-﻿using MbDotNet.Interfaces;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace MbDotNet.Models.Predicates
 {

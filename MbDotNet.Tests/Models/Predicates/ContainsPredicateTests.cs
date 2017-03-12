@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using MbDotNet.Enums;
-using MbDotNet.Models.Predicates;
+﻿using MbDotNet.Models.Predicates;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MbDotNet.Tests.Models.Predicates
