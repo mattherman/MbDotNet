@@ -16,7 +16,7 @@ For usage examples, see the [Usage Examples (v2)](https://github.com/mattherman/
 ## Unsupported Functionality ##
 
 The following Mountebank functionality is not yet supported:
-- HTTPS and SMTP imposters
+- SMTP imposters
 - Stub behaviors
 - All response types other than "is"
 - The "exists", "or", "and", and "inject" predicates

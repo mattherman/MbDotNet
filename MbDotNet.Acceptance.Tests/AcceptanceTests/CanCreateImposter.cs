@@ -1,15 +1,13 @@
-using System.Net;
 using FluentAssertions;
-using MbDotNet.Exceptions;
 
 namespace MbDotNet.Acceptance.Tests.AcceptanceTests
 {
-    internal class CanCreateImposterTest
+    internal class CanCreateImposter
     {
         private readonly MountebankClient _client;
         const int ImposterPort = 6000;
 
-        public CanCreateImposterTest(MountebankClient client)
+        public CanCreateImposter(MountebankClient client)
         {
             _client = client;
             

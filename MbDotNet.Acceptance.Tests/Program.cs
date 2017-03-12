@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MbDotNet.Acceptance.Tests
 {
@@ -26,6 +22,7 @@ namespace MbDotNet.Acceptance.Tests
                 AcceptanceTest.CanGetImposter(Client);
                 AcceptanceTest.CanNotGetImposterThatDoesNotExist(Client);
                 AcceptanceTest.CanCreateImposter(Client);
+                AcceptanceTest.CanCreateHttpsImposter(Client);
                 AcceptanceTest.CanDeleteImposter(Client);
                 AcceptanceTest.CanVerifyCallsOnImposter(Client);
             }

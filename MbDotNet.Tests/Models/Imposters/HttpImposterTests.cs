@@ -54,7 +54,7 @@ namespace MbDotNet.Tests.Imposters
             imposter.AddStub();
             Assert.AreEqual(1, imposter.Stubs.Count);
         }
-
+                
         #endregion
     }
 }
