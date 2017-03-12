@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Net;
-using MbDotNet.Interfaces;
 using MbDotNet.Enums;
 using MbDotNet.Models;
 using MbDotNet.Models.Predicates;

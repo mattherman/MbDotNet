@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MbDotNet.Interfaces
+namespace MbDotNet
 {
     public interface IHttpClientWrapper : IDisposable
     {

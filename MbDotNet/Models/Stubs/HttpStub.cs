@@ -4,7 +4,6 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.Text;
 using MbDotNet.Enums;
-using MbDotNet.Interfaces;
 using MbDotNet.Models.Predicates;
 using MbDotNet.Models.Predicates.Fields;
 using MbDotNet.Models.Responses;

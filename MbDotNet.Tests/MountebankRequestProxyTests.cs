@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using System.Net.Http;
-using MbDotNet.Interfaces;
 using MbDotNet.Enums;
 using MbDotNet.Exceptions;
 using MbDotNet.Models;

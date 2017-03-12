@@ -1,5 +1,3 @@
-using MbDotNet.Interfaces;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;

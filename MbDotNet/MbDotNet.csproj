@@ -58,8 +58,8 @@
     <Compile Include="Exceptions\ImposterNotFoundException.cs" />
     <Compile Include="Exceptions\MountebankException.cs" />
     <Compile Include="HttpClientWrapper.cs" />
-    <Compile Include="Interfaces\IHttpClientWrapper.cs" />
-    <Compile Include="Interfaces\IRequestProxy.cs" />
+    <Compile Include="IHttpClientWrapper.cs" />
+    <Compile Include="IRequestProxy.cs" />
     <Compile Include="Models\Imposters\HttpsImposter.cs" />
     <Compile Include="Models\Imposters\Request.cs" />
     <Compile Include="Models\Imposters\RetrievedImposter.cs" />
@@ -70,7 +70,7 @@
     <Compile Include="Models\Predicates\StartsWithPredicate.cs" />
     <Compile Include="Models\Stubs\HttpStub.cs" />
     <Compile Include="Models\Imposters\HttpImposter.cs" />
-    <Compile Include="Interfaces\IClient.cs" />
+    <Compile Include="IClient.cs" />
     <Compile Include="Models\Imposters\Imposter.cs" />
     <Compile Include="Models\Predicates\ContainsPredicate.cs" />
     <Compile Include="Models\Predicates\DeepEqualsPredicate.cs" />
