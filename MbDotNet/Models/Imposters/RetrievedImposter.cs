@@ -9,30 +9,30 @@ namespace MbDotNet.Models.Imposters
         /// The port the imposter is set up to accept requests on.
         /// </summary>
         [JsonProperty("port")]
-        public int Port { get; protected set; }
+        public int Port { get; internal set; }
 
         /// <summary>
         /// The protocol the imposter is set up to accept requests through.
         /// </summary>
         [JsonProperty("protocol")]
-        public string Protocol { get; protected set; }
+        public string Protocol { get; internal set; }
 
         /// <summary>
         /// Optional name for the imposter, used in the logs.
         /// </summary>
         [JsonProperty("name")]
-        public string Name { get; protected set; }
+        public string Name { get; internal set; }
 
         /// <summary>
         /// The number of requests that have been made to this imposter
         /// </summary>
         [JsonProperty("numberOfRequests")]
-        public int NumberOfRequests { get; protected set; }
+        public int NumberOfRequests { get; internal set; }
 
         /// <summary>
         /// The requests that have been made to this imposter
         /// </summary>
         [JsonProperty("requests")]
-        public abstract T[] Requests { get; protected set; }
+        public abstract T[] Requests { get; internal set; }
     }
 }
