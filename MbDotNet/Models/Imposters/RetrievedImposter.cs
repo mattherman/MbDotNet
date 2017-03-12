@@ -3,6 +3,10 @@ using Newtonsoft.Json;
 
 namespace MbDotNet.Models.Imposters
 {
+    /// <summary>
+    /// The base class for a retrieved imposter.
+    /// </summary>
+    /// <typeparam name="T">The request type this imposter contains</typeparam>
     public abstract class RetrievedImposter<T> where T: Request
     {
         /// <summary>
@@ -33,6 +37,6 @@ namespace MbDotNet.Models.Imposters
         /// The requests that have been made to this imposter
         /// </summary>
         [JsonProperty("requests")]
-        public abstract T[] Requests { get; internal set; }
+        public T[] Requests { get; internal set; }
     }
 }

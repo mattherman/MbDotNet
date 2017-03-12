@@ -4,6 +4,6 @@ namespace MbDotNet.Models.Imposters
 {
     public class RetrievedHttpImposter : RetrievedImposter<HttpRequest>
     {
-        public override HttpRequest[] Requests { get; internal set; }
+
     }
 }
