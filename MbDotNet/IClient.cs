@@ -52,6 +52,7 @@ namespace MbDotNet
         /// <param name="port">The port number of the imposter to retrieve</param>
         /// <returns>The retrieved imposter</returns>
         /// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
+        /// <exception cref="MbDotNet.Exceptions.InvalidProtocolException">Thrown if the retrieved imposter was not an HTTP imposter</exception>
         RetrievedHttpImposter GetHttpImposter(int port);
 
         /// <summary>

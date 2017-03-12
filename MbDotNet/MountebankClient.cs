@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MbDotNet.Enums;
+using MbDotNet.Exceptions;
 using MbDotNet.Models.Imposters;
 
 namespace MbDotNet
@@ -67,6 +69,26 @@ namespace MbDotNet
         }
 
         /// <summary>
+        /// Retrieves an HttpImposter along with information about requests made to that
+        /// imposter if mountebank is running with the "--mock" flag.
+        /// </summary>
+        /// <param name="port">The port number of the imposter to retrieve</param>
+        /// <returns>The retrieved imposter</returns>
+        /// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
+        /// <exception cref="MbDotNet.Exceptions.InvalidProtocolException">Thrown if the retrieved imposter was not an HTTP imposter</exception>
+        public RetrievedHttpImposter GetHttpImposter(int port)
+        {
+            var imposter = _requestProxy.GetHttpImposter(port);
+
+            if (!string.Equals(imposter.Protocol, Protocol.Http.ToString(), StringComparison.CurrentCultureIgnoreCase))
+            {
+                throw new InvalidProtocolException($"Expected an HTTP imposter, but got a {imposter.Protocol} imposter.");
+            }
+
+            return imposter;
+        }
+
+        /// <summary>
         /// Deletes a single imposter from mountebank. Will also remove the imposter from the collection
         /// of imposters that the client maintains.
         /// </summary>
@@ -112,18 +134,6 @@ namespace MbDotNet
         public void Submit(Imposter imposter)
         {
             Submit(new [] { imposter });
-        }
-
-        /// <summary>
-        /// Retrieves an HttpImposter along with information about requests made to that
-        /// imposter if mountebank is running with the "--mock" flag.
-        /// </summary>
-        /// <param name="port">The port number of the imposter to retrieve</param>
-        /// <returns>The retrieved imposter</returns>
-        /// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
-        public RetrievedHttpImposter GetHttpImposter(int port)
-        {
-            return _requestProxy.GetHttpImposter(port);
         }
     }
 }
