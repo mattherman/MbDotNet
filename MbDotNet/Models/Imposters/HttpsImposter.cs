@@ -9,22 +9,24 @@ namespace MbDotNet.Models.Imposters
         [JsonProperty("stubs")]
         public ICollection<HttpStub> Stubs { get; private set; }
         
-        // TODO This won't serialize key, but how does a user of this imposter know it's using the self-signed cert?
         [JsonProperty("cert", NullValueHandling = NullValueHandling.Ignore)]
         public string Cert { get; private set; }
 
-        // TODO This won't serialize key, but how does a user of this imposter know it's using the self-signed cert?
         [JsonProperty("key", NullValueHandling = NullValueHandling.Ignore)]
         public string Key { get; private set; }
 
-        public HttpsImposter(int port, string name) : this(port, name, null, null)
+        [JsonProperty("mutualAuth")]
+        public bool MutualAuthRequired { get; private set; }
+
+        public HttpsImposter(int port, string name) : this(port, name, null, null, false)
         {
         }
 
-        public HttpsImposter(int port, string name, string key, string cert) : base(port, MbDotNet.Enums.Protocol.Https, name)
+        public HttpsImposter(int port, string name, string key, string cert, bool mutualAuthRequired) : base(port, Enums.Protocol.Https, name)
         {
             Cert = cert;
             Key = key;
+            MutualAuthRequired = mutualAuthRequired;
             Stubs = new List<HttpStub>();
         }
 

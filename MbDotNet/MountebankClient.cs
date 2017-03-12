@@ -48,10 +48,11 @@ namespace MbDotNet
         /// <param name="name">The name the imposter will recieve, useful for debugging/logging purposes</param>
         /// <param name="key">The private key the imposter will use</param>
         /// <param name="cert">The public certificate the imposer will use</param>
+        /// <param name="mutualAuthRequired">Whether or not the server will require mutual auth</param>
         /// <returns>The newly created imposter</returns>
-        public HttpsImposter CreateHttpsImposter(int port, string name = null, string key = null, string cert = null)
+        public HttpsImposter CreateHttpsImposter(int port, string name = null, string key = null, string cert = null, bool mutualAuthRequired = false)
         {
-            return new HttpsImposter(port, name, key, cert);
+            return new HttpsImposter(port, name, key, cert, mutualAuthRequired);
         }
 
         /// <summary>

@@ -31,8 +31,9 @@ namespace MbDotNet.Interfaces
         /// <param name="name">The name the imposter will recieve, useful for debugging/logging purposes</param>
         /// <param name="key">The private key the imposter will use</param>
         /// <param name="cert">The public certificate the imposer will use</param>
+        /// <param name="mutualAuthRequired">Whether or not the server requires mutual auth</param>
         /// <returns>The newly created imposter</returns>
-        HttpsImposter CreateHttpsImposter(int port, string name = null, string key = null, string cert = null);
+        HttpsImposter CreateHttpsImposter(int port, string name = null, string key = null, string cert = null, bool mutualAuthRequired = false);
 
         /// <summary>
         /// Creates a new imposter on the specified port with the TCP protocol. The Submit method
