@@ -55,9 +55,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AcceptanceTest.cs" />
-    <Compile Include="AcceptanceTests\CanCreateImposter.cs" />
+    <Compile Include="AcceptanceTests\CanCreateHttpImposter.cs" />
     <Compile Include="AcceptanceTests\CanDeleteImposter.cs" />
-    <Compile Include="AcceptanceTests\CanGetImposter.cs" />
+    <Compile Include="AcceptanceTests\CanGetHttpImposter.cs" />
     <Compile Include="AcceptanceTests\CanNotGetImposterThatDoesNotExist.cs" />
     <Compile Include="AcceptanceTests\CanVerifyCallsOnImposter.cs" />
     <Compile Include="AcceptanceTests\CanCreateHttpsImposter.cs" />

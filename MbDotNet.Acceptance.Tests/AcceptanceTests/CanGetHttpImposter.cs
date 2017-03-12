@@ -1,24 +1,34 @@
-using FluentAssertions;
+﻿using FluentAssertions;
+using MbDotNet.Models.Imposters;
 
 namespace MbDotNet.Acceptance.Tests.AcceptanceTests
 {
-    internal class CanCreateImposter
+    internal class CanGetHttpImposter
     {
         private readonly MountebankClient _client;
         const int ImposterPort = 6000;
+        private RetrievedHttpImposter _retrievedImposter;
 
-        public CanCreateImposter(MountebankClient client)
+        public CanGetHttpImposter(MountebankClient client)
         {
             _client = client;
-            
         }
 
         public void Run()
         {
             DeleteAllImposters();
             CreateImposter();
-            VerifyImposterHasBeenCreated();
+
+            GetImposter();
+
+            VerifyImposterWasRetrieved();
+
             DeleteAllImposters();
+        }
+
+        private void GetImposter()
+        {
+            _retrievedImposter = _client.GetHttpImposter(ImposterPort);
         }
 
         private void DeleteAllImposters()
@@ -26,10 +36,9 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
             _client.DeleteAllImposters();
         }
 
-        private void VerifyImposterHasBeenCreated()
+        private void VerifyImposterWasRetrieved()
         {
-            var imposter = _client.GetHttpImposter(ImposterPort);
-            imposter.Should().NotBeNull();
+            _retrievedImposter.Should().NotBeNull("Expected imposter to have been retrieved");
         }
 
         private void CreateImposter()
