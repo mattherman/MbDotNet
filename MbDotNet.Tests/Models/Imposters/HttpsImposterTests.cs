@@ -47,7 +47,7 @@ namespace MbDotNet.Tests.Imposters
         public void Constructor_SetsKey()
         {
             var expectedKeyValue = "testKey";
-            var imposter = new HttpsImposter(123, null, expectedKeyValue, null);
+            var imposter = new HttpsImposter(123, null, expectedKeyValue, null, false);
             Assert.AreEqual(expectedKeyValue, imposter.Key);
         }
 
@@ -62,7 +62,7 @@ namespace MbDotNet.Tests.Imposters
         public void Constructor_SetsCert()
         {
             var expectedCertValue = "testCert";
-            var imposter = new HttpsImposter(123, null, null, expectedCertValue);
+            var imposter = new HttpsImposter(123, null, null, expectedCertValue, false);
             Assert.AreEqual(expectedCertValue, imposter.Cert);
         }
 
@@ -71,6 +71,20 @@ namespace MbDotNet.Tests.Imposters
         {
             var imposter = new HttpsImposter(123, null);
             Assert.IsNull(imposter.Cert);
+        }
+
+        [TestMethod]
+        public void Constructor_SetsMutualAuth()
+        {
+            var imposter = new HttpsImposter(123, null, null, null, true);
+            Assert.IsTrue(imposter.MutualAuthRequired);
+        }
+
+        [TestMethod]
+        public void Constructor_SetsMutualAuthFalseWhenMissing()
+        {
+            var imposter = new HttpsImposter(123, null);
+            Assert.IsFalse(imposter.MutualAuthRequired);
         }
 
         #endregion
