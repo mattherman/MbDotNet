@@ -11,7 +11,7 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
     {
         private readonly MountebankClient _client;
         private HttpImposter _imposter;
-        private RetrievedImposter _retrievedImposter;
+        private RetrievedHttpImposter _retrievedImposter;
         const int ImposterPort = 6000;
         
         public CanVerifyCallsOnImposter(MountebankClient client)
@@ -29,7 +29,7 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
         
         private void VerifyImposterWasCalled()
         {
-            _retrievedImposter = _client.GetImposter(ImposterPort);
+            _retrievedImposter = _client.GetHttpImposter(ImposterPort);
 
             _retrievedImposter.NumberOfRequests.Should().Be(1);
             

@@ -8,7 +8,7 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
     internal class CanNotGetImposterThatDoesNotExist
     {
         private readonly MountebankClient _client;
-        private RetrievedImposter _retrievedImposter;
+        private RetrievedHttpImposter _retrievedImposter;
         private Exception _getImposterException;
         const int NonExistentImposterPort = 9000;
 
@@ -40,7 +40,7 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
         {
             try
             {
-                _retrievedImposter = _client.GetImposter(NonExistentImposterPort);
+                _retrievedImposter = _client.GetHttpImposter(NonExistentImposterPort);
             }
             catch (ImposterNotFoundException e)
             {

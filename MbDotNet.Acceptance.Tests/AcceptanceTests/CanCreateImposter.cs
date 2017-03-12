@@ -28,7 +28,7 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
 
         private void VerifyImposterHasBeenCreated()
         {
-            var imposter = _client.GetImposter(ImposterPort);
+            var imposter = _client.GetHttpImposter(ImposterPort);
             imposter.Should().NotBeNull();
         }
 

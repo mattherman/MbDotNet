@@ -7,7 +7,7 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
     {
         private readonly MountebankClient _client;
         const int ImposterPort = 6000;
-        private RetrievedImposter _retrievedImposter;
+        private RetrievedHttpImposter _retrievedImposter;
 
         public CanGetImposter(MountebankClient client)
         {
@@ -28,7 +28,7 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
 
         private void GetImposter()
         {
-            _retrievedImposter = _client.GetImposter(ImposterPort);
+            _retrievedImposter = _client.GetHttpImposter(ImposterPort);
         }
 
         private void DeleteAllImposters()

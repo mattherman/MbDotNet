@@ -53,7 +53,7 @@ namespace MbDotNet
                 $"Failed to create the imposter with port {imposter.Port} and protocol {imposter.Protocol}.");
         }
 
-        public RetrievedImposter GetImposter(int port)
+        public RetrievedHttpImposter GetHttpImposter(int port)
         {
             var response = ExecuteGet($"{ImpostersResource}/{port}");
 
@@ -61,7 +61,7 @@ namespace MbDotNet
                 (message) => new ImposterNotFoundException(message));
 
             var content = response.Content.ReadAsStringAsync().Result;
-            return JsonConvert.DeserializeObject<RetrievedImposter>(content);
+            return JsonConvert.DeserializeObject<RetrievedHttpImposter>(content);
         }
 
         private HttpResponseMessage ExecuteGet(string resource)

@@ -91,10 +91,10 @@ namespace MbDotNet
             _requestProxy.DeleteAllImposters();
             Imposters = new List<Imposter>();
         }
-        
+
         /// <summary>
         /// Submits all pending imposters from the supplied collection to be created in mountebank. 
-        /// Will throw a MountebankException if unable to create the imposter for any reason.
+        /// <exception cref="MbDotNet.Exceptions.MountebankException">Thrown if unable to create the imposter.</exception>
         /// </summary>
         public void Submit(ICollection<Imposter> imposters)
         {
@@ -106,17 +106,24 @@ namespace MbDotNet
         }
 
         /// <summary>
-        /// Submits imposter if pending to be created in mountebank. 
-        /// Will throw a MountebankException if unable to create the imposter for any reason.
+        /// Submits imposter to be created in mountebank. 
+        /// <exception cref="MbDotNet.Exceptions.MountebankException">Thrown if unable to create the imposter.</exception>
         /// </summary>
         public void Submit(Imposter imposter)
         {
             Submit(new [] { imposter });
         }
 
-        public RetrievedImposter GetImposter(int port)
+        /// <summary>
+        /// Retrieves an HttpImposter along with information about requests made to that
+        /// imposter if mountebank is running with the "--mock" flag.
+        /// </summary>
+        /// <param name="port">The port number of the imposter to retrieve</param>
+        /// <returns>The retrieved imposter</returns>
+        /// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
+        public RetrievedHttpImposter GetHttpImposter(int port)
         {
-            return _requestProxy.GetImposter(port);
+            return _requestProxy.GetHttpImposter(port);
         }
     }
 }

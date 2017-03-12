@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using MbDotNet.Enums;
 using Newtonsoft.Json;
 
-namespace MbDotNet.Models.Imposters
+namespace MbDotNet.Models.Requests
 {
-    public class Request
+    public class HttpRequest : Request
     {
         [JsonProperty("path")]
         public string Path { get; private set; }
@@ -18,9 +18,6 @@ namespace MbDotNet.Models.Imposters
 
         [JsonProperty("timestamp")]
         public DateTime Timestamp { get; set; }
-
-        [JsonProperty("requestFrom")]
-        public string RequestFrom { get; set; }
 
         [JsonProperty("query")]
         public Dictionary<string, string> QueryParameters { get; set; }

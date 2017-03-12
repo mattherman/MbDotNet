@@ -38,7 +38,7 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
             MountebankException exception = null;
             try
             {
-                var imposter = _client.GetImposter(ImposterPort);
+                var imposter = _client.GetHttpImposter(ImposterPort);
             }
             catch (ImposterNotFoundException e)
             {

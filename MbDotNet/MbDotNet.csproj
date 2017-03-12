@@ -61,7 +61,9 @@
     <Compile Include="IHttpClientWrapper.cs" />
     <Compile Include="IRequestProxy.cs" />
     <Compile Include="Models\Imposters\HttpsImposter.cs" />
-    <Compile Include="Models\Imposters\Request.cs" />
+    <Compile Include="Models\Requests\HttpRequest.cs" />
+    <Compile Include="Models\Requests\Request.cs" />
+    <Compile Include="Models\Imposters\RetrievedHttpImposter.cs" />
     <Compile Include="Models\Imposters\RetrievedImposter.cs" />
     <Compile Include="Models\Imposters\TcpImposter.cs" />
     <Compile Include="Models\Predicates\EndsWithPredicate.cs" />

@@ -7,6 +7,6 @@ namespace MbDotNet
         void DeleteAllImposters();
         void DeleteImposter(int port);
         void CreateImposter(Imposter imposter);
-        RetrievedImposter GetImposter(int port);
+        RetrievedHttpImposter GetHttpImposter(int port);
     }
 }
