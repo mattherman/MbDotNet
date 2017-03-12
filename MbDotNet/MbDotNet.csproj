@@ -65,7 +65,6 @@
     <Compile Include="Models\Imposters\RetrievedHttpsImposter.cs" />
     <Compile Include="Models\Imposters\RetrievedTcpImposter.cs" />
     <Compile Include="Models\Requests\HttpRequest.cs" />
-    <Compile Include="Models\Requests\HttpsRequest.cs" />
     <Compile Include="Models\Requests\Request.cs" />
     <Compile Include="Models\Imposters\RetrievedHttpImposter.cs" />
     <Compile Include="Models\Imposters\RetrievedImposter.cs" />
