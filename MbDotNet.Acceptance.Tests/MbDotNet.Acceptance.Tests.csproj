@@ -55,12 +55,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AcceptanceTest.cs" />
-    <Compile Include="AcceptanceTests\CanCreateHttpImposter.cs" />
+    <Compile Include="AcceptanceTests\CanCreateAndGetTcpImposter.cs" />
     <Compile Include="AcceptanceTests\CanDeleteImposter.cs" />
-    <Compile Include="AcceptanceTests\CanGetHttpImposter.cs" />
+    <Compile Include="AcceptanceTests\CanCreateAndGetHttpImposter.cs" />
     <Compile Include="AcceptanceTests\CanNotGetImposterThatDoesNotExist.cs" />
     <Compile Include="AcceptanceTests\CanVerifyCallsOnImposter.cs" />
-    <Compile Include="AcceptanceTests\CanCreateHttpsImposter.cs" />
+    <Compile Include="AcceptanceTests\CanCreateAndGetHttpsImposter.cs" />
     <Compile Include="TestData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

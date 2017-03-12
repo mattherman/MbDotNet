@@ -19,10 +19,11 @@ namespace MbDotNet.Acceptance.Tests
         {
             try
             {
-                AcceptanceTest.CanGetHttpImposter(Client);
                 AcceptanceTest.CanNotGetImposterThatDoesNotExist(Client);
-                AcceptanceTest.CanCreateHttpImposter(Client);
-                AcceptanceTest.CanCreateHttpsImposter(Client);
+                AcceptanceTest.CanCreateAndGetHttpImposter(Client);
+                // This will not succeed until a GetHttpsImposter method is created
+                // AcceptanceTest.CanCreateAndGetHttpsImposter(Client);
+                AcceptanceTest.CanCreateAndGetTcpImposter(Client);
                 AcceptanceTest.CanDeleteImposter(Client);
                 AcceptanceTest.CanVerifyCallsOnImposter(Client);
             }

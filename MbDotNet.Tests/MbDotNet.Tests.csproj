@@ -70,6 +70,7 @@
     <Compile Include="Client\CreateTcpImposterTests.cs" />
     <Compile Include="Client\DeleteImposterTests.cs" />
     <Compile Include="Client\GetHttpImposterTests.cs" />
+    <Compile Include="Client\GetTcpImposterTests.cs" />
     <Compile Include="Client\MountebankClientTestBase.cs" />
     <Compile Include="Client\SubmitTests.cs" />
     <Compile Include="Models\Imposters\HttpsImposterTests.cs" />

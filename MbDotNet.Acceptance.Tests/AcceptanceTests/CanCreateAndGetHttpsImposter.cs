@@ -2,15 +2,14 @@ using FluentAssertions;
 
 namespace MbDotNet.Acceptance.Tests.AcceptanceTests
 {
-    internal class CanCreateHttpImposter
+    internal class CanCreateAndGetHttpsImposter
     {
         private readonly MountebankClient _client;
         const int ImposterPort = 6000;
 
-        public CanCreateHttpImposter(MountebankClient client)
+        public CanCreateAndGetHttpsImposter(MountebankClient client)
         {
-            _client = client;
-            
+            this._client = client;
         }
 
         public void Run()
@@ -34,7 +33,7 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
 
         private void CreateImposter()
         {
-            var imposter = _client.CreateHttpImposter(ImposterPort);
+            var imposter = _client.CreateHttpsImposter(ImposterPort);
             _client.Submit(imposter);
         }
     }

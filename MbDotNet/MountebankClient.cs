@@ -4,6 +4,7 @@ using System.Linq;
 using MbDotNet.Enums;
 using MbDotNet.Exceptions;
 using MbDotNet.Models.Imposters;
+using MbDotNet.Models.Requests;
 
 namespace MbDotNet
 {
@@ -80,12 +81,34 @@ namespace MbDotNet
         {
             var imposter = _requestProxy.GetHttpImposter(port);
 
-            if (!string.Equals(imposter.Protocol, Protocol.Http.ToString(), StringComparison.CurrentCultureIgnoreCase))
-            {
-                throw new InvalidProtocolException($"Expected an HTTP imposter, but got a {imposter.Protocol} imposter.");
-            }
+            ValidateRetrievedImposterProtocol(imposter, Protocol.Http);
 
             return imposter;
+        }
+
+        /// <summary>
+        /// Retrieves a TcpImposter along with information about requests made to that
+        /// imposter if mountebank is running with the "--mock" flag.
+        /// </summary>
+        /// <param name="port">The port number of the imposter to retrieve</param>
+        /// <returns>The retrieved imposter</returns>
+        /// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
+        /// <exception cref="MbDotNet.Exceptions.InvalidProtocolException">Thrown if the retrieved imposter was not an HTTP imposter</exception>
+        public RetrievedTcpImposter GetTcpImposter(int port)
+        {
+            var imposter = _requestProxy.GetTcpImposter(port);
+
+            ValidateRetrievedImposterProtocol(imposter, Protocol.Tcp);
+
+            return imposter;
+        }
+
+        private static void ValidateRetrievedImposterProtocol<T>(RetrievedImposter<T> imposter, Protocol expectedProtocol) where T: Request
+        {
+            if (!string.Equals(imposter.Protocol, expectedProtocol.ToString(), StringComparison.CurrentCultureIgnoreCase))
+            {
+                throw new InvalidProtocolException($"Expected a {expectedProtocol} imposter, but got a {imposter.Protocol} imposter.");
+            }
         }
 
         /// <summary>
