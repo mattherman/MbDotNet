@@ -10,55 +10,55 @@ namespace MbDotNet.Tests.Client
     public class DeleteImposterTests : MountebankClientTestBase
     {
         [TestMethod]
-        public void DeleteImposter_CallsDelete()
+        public void CallsDelete()
         {
             const int port = 8080;
 
-            _client.Imposters.Add(new HttpImposter(port, null));
+            Client.Imposters.Add(new HttpImposter(port, null));
 
-            _mockRequestProxy.Setup(x => x.DeleteImposter(port));
+            MockRequestProxy.Setup(x => x.DeleteImposter(port));
 
-            _client.DeleteImposter(port);
+            Client.DeleteImposter(port);
 
-            _mockRequestProxy.Verify(x => x.DeleteImposter(port), Times.Once);
+            MockRequestProxy.Verify(x => x.DeleteImposter(port), Times.Once);
         }
 
         [TestMethod]
-        public void DeleteImposter_RemovesImposterFromCollection()
+        public void RemovesImposterFromCollection()
         {
             const int port = 8080;
 
-            _client.Imposters.Add(new HttpImposter(port, null));
+            Client.Imposters.Add(new HttpImposter(port, null));
 
-            _client.DeleteImposter(port);
+            Client.DeleteImposter(port);
 
-            Assert.AreEqual(0, _client.Imposters.Count);
+            Assert.AreEqual(0, Client.Imposters.Count);
         }
 
         [TestMethod]
         public void DeleteAllImposters_CallsDeleteAll()
         {
-            _mockRequestProxy.Setup(x => x.DeleteAllImposters());
+            MockRequestProxy.Setup(x => x.DeleteAllImposters());
 
-            _client.Imposters.Add(new HttpImposter(123, null));
-            _client.Imposters.Add(new HttpImposter(456, null));
+            Client.Imposters.Add(new HttpImposter(123, null));
+            Client.Imposters.Add(new HttpImposter(456, null));
 
-            _client.DeleteAllImposters();
+            Client.DeleteAllImposters();
 
-            _mockRequestProxy.Verify(x => x.DeleteAllImposters(), Times.Once);
+            MockRequestProxy.Verify(x => x.DeleteAllImposters(), Times.Once);
         }
 
         [TestMethod]
         public void DeleteAllImposters_RemovesAllImpostersFromCollection()
         {
-            _mockRequestProxy.Setup(x => x.DeleteAllImposters());
+            MockRequestProxy.Setup(x => x.DeleteAllImposters());
 
-            _client.Imposters.Add(new HttpImposter(123, null));
-            _client.Imposters.Add(new HttpImposter(456, null));
+            Client.Imposters.Add(new HttpImposter(123, null));
+            Client.Imposters.Add(new HttpImposter(456, null));
 
-            _client.DeleteAllImposters();
+            Client.DeleteAllImposters();
 
-            Assert.AreEqual(0, _client.Imposters.Count);
+            Assert.AreEqual(0, Client.Imposters.Count);
         }
     }
 }

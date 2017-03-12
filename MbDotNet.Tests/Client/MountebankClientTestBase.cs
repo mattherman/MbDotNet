@@ -6,14 +6,14 @@ namespace MbDotNet.Tests.Client
 {
     public class MountebankClientTestBase
     {
-        protected IClient _client;
-        internal Mock<IRequestProxy> _mockRequestProxy;
+        protected IClient Client;
+        internal Mock<IRequestProxy> MockRequestProxy;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            this._mockRequestProxy = new Mock<IRequestProxy>();
-            this._client = new MountebankClient(this._mockRequestProxy.Object);
+            MockRequestProxy = new Mock<IRequestProxy>();
+            Client = new MountebankClient(this.MockRequestProxy.Object);
         }
     }
 }
