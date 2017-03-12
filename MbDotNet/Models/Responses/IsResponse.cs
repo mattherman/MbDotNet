@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Net;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using MbDotNet.Models.Responses.Fields;
 
 namespace MbDotNet.Models.Responses

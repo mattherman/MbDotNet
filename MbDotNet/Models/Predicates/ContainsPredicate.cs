@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using MbDotNet.Enums;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using MbDotNet.Models.Predicates.Fields;
 
 namespace MbDotNet.Models.Predicates

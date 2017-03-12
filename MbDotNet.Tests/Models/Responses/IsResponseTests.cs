@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Net;
-using MbDotNet.Models.Responses;
+﻿using MbDotNet.Models.Responses;
 using MbDotNet.Models.Responses.Fields;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

@@ -1,6 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MbDotNet.Enums;
-using MbDotNet.Models;
 using MbDotNet.Models.Imposters;
 
 namespace MbDotNet.Tests.Imposters

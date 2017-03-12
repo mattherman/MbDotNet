@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using MbDotNet.Enums;
-using MbDotNet.Models;
 using MbDotNet.Models.Imposters;
 
 namespace MbDotNet

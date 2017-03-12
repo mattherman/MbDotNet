@@ -8,7 +8,6 @@ using MbDotNet.Models.Predicates;
 using MbDotNet.Models.Predicates.Fields;
 using MbDotNet.Models.Responses;
 using MbDotNet.Models.Responses.Fields;
-using Newtonsoft.Json;
 
 namespace MbDotNet.Models.Stubs
 {

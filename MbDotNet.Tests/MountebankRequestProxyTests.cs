@@ -1,8 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http;
-using MbDotNet.Enums;
 using MbDotNet.Exceptions;
-using MbDotNet.Models;
 using MbDotNet.Models.Imposters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

@@ -3,7 +3,6 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using MbDotNet.Enums;
-using MbDotNet.Models;
 using MbDotNet.Models.Predicates;
 using MbDotNet.Models.Predicates.Fields;
 using MbDotNet.Models.Responses;
