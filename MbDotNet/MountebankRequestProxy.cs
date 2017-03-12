@@ -56,24 +56,29 @@ namespace MbDotNet
 
         public RetrievedHttpImposter GetHttpImposter(int port)
         {
-            var content = GetImposterResponseContent(port);
-            return JsonConvert.DeserializeObject<RetrievedHttpImposter>(content);
+            return GetImposter<RetrievedHttpImposter>(port);
         }
 
         public RetrievedTcpImposter GetTcpImposter(int port)
         {
-            var content = GetImposterResponseContent(port);
-            return JsonConvert.DeserializeObject<RetrievedTcpImposter>(content);
+            return GetImposter<RetrievedTcpImposter>(port);
         }
 
-        private string GetImposterResponseContent(int port)
+        public RetrievedHttpsImposter GetHttpsImposter(int port)
+        {
+            return GetImposter<RetrievedHttpsImposter>(port);
+        }
+
+        private T GetImposter<T>(int port)
         {
             var response = ExecuteGet($"{ImpostersResource}/{port}");
 
             HandleResponse(response, HttpStatusCode.OK, $"Failed to retrieve imposter with port {port}",
                 (message) => new ImposterNotFoundException(message));
 
-            return response.Content.ReadAsStringAsync().Result;
+            var content = response.Content.ReadAsStringAsync().Result;
+
+            return JsonConvert.DeserializeObject<T>(content);
         }
 
         private HttpResponseMessage ExecuteGet(string resource)

@@ -18,11 +18,8 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
         {
             DeleteAllImposters();
             CreateImposter();
-
             GetImposter();
-
             VerifyImposterWasRetrieved();
-
             DeleteAllImposters();
         }
 

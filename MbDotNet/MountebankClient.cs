@@ -103,6 +103,23 @@ namespace MbDotNet
             return imposter;
         }
 
+        /// <summary>
+        /// Retrieves an HttpsImposter along with information about requests made to that
+        /// imposter if mountebank is running with the "--mock" flag.
+        /// </summary>
+        /// <param name="port">The port number of the imposter to retrieve</param>
+        /// <returns>The retrieved imposter</returns>
+        /// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
+        /// <exception cref="MbDotNet.Exceptions.InvalidProtocolException">Thrown if the retrieved imposter was not an HTTP imposter</exception>
+        public RetrievedHttpsImposter GetHttpsImposter(int port)
+        {
+            var imposter = _requestProxy.GetHttpsImposter(port);
+
+            ValidateRetrievedImposterProtocol(imposter, Protocol.Https);
+
+            return imposter;
+        }
+
         private static void ValidateRetrievedImposterProtocol<T>(RetrievedImposter<T> imposter, Protocol expectedProtocol) where T: Request
         {
             if (!string.Equals(imposter.Protocol, expectedProtocol.ToString(), StringComparison.CurrentCultureIgnoreCase))

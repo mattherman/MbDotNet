@@ -9,7 +9,7 @@ namespace MbDotNet.Tests.Client
     {
         [TestMethod]
         [ExpectedException(typeof(InvalidProtocolException))]
-        public void NonHttpImposterRetreived_ThrowsInvalidProtocolException()
+        public void NonHttpImposterRetrieved_ThrowsInvalidProtocolException()
         {
             const int port = 6000;
             MockRequestProxy.Setup(x => x.GetHttpImposter(port)).Returns(new RetrievedHttpImposter {Protocol = "Tcp"});

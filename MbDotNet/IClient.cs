@@ -66,6 +66,16 @@ namespace MbDotNet
         RetrievedTcpImposter GetTcpImposter(int port);
 
         /// <summary>
+        /// Retrieves an HttpsImposter along with information about requests made to that
+        /// imposter if mountebank is running with the "--mock" flag.
+        /// </summary>
+        /// <param name="port">The port number of the imposter to retrieve</param>
+        /// <returns>The retrieved imposter</returns>
+        /// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
+        /// <exception cref="MbDotNet.Exceptions.InvalidProtocolException">Thrown if the retrieved imposter was not an HTTP imposter</exception>
+        RetrievedHttpsImposter GetHttpsImposter(int port);
+
+        /// <summary>
         /// Deletes a single imposter from mountebank. Will also remove the imposter from the collection
         /// of imposters that the client maintains.
         /// </summary>

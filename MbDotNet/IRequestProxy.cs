@@ -9,5 +9,6 @@ namespace MbDotNet
         void CreateImposter(Imposter imposter);
         RetrievedHttpImposter GetHttpImposter(int port);
         RetrievedTcpImposter GetTcpImposter(int port);
+        RetrievedHttpsImposter GetHttpsImposter(int port);
     }
 }
