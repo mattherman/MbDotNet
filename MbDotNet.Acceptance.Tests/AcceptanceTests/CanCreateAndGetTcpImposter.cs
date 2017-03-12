@@ -6,7 +6,7 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
     public class CanCreateAndGetTcpImposter
     {
         private readonly MountebankClient _client;
-        const int ImposterPort = 6000;
+        private const int ImposterPort = 6000;
         private RetrievedTcpImposter _retrievedImposter;
 
         public CanCreateAndGetTcpImposter(MountebankClient client)

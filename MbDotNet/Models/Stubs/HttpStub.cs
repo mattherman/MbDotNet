@@ -68,7 +68,7 @@ namespace MbDotNet.Models.Stubs
         /// <returns>The stub that the response was added to</returns>
         public HttpStub ReturnsXml<T>(HttpStatusCode statusCode, T responseObject)
         {
-            return ReturnsXml<T>(statusCode, responseObject, Encoding.UTF8);
+            return ReturnsXml(statusCode, responseObject, Encoding.UTF8);
         }
 
         /// <summary>

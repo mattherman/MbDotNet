@@ -13,7 +13,7 @@ namespace MbDotNet.Tests.Client
         public void TestInitialize()
         {
             MockRequestProxy = new Mock<IRequestProxy>();
-            Client = new MountebankClient(this.MockRequestProxy.Object);
+            Client = new MountebankClient(MockRequestProxy.Object);
         }
     }
 }

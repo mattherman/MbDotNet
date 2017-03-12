@@ -6,7 +6,7 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
     internal class CanCreateAndGetHttpsImposter
     {
         private readonly MountebankClient _client;
-        const int ImposterPort = 6000;
+        private const int ImposterPort = 6000;
         private RetrievedHttpsImposter _retrievedImposter;
 
         public CanCreateAndGetHttpsImposter(MountebankClient client)

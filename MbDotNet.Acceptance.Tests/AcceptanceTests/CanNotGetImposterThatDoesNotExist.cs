@@ -10,7 +10,7 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
         private readonly MountebankClient _client;
         private RetrievedHttpImposter _retrievedImposter;
         private Exception _getImposterException;
-        const int NonExistentImposterPort = 9000;
+        private const int NonExistentImposterPort = 9000;
 
         public CanNotGetImposterThatDoesNotExist(MountebankClient client)
         {

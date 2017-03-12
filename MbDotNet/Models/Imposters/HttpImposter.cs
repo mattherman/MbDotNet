@@ -9,7 +9,7 @@ namespace MbDotNet.Models.Imposters
         [JsonProperty("stubs")]
         public ICollection<HttpStub> Stubs { get; private set; }
 
-        public HttpImposter(int port, string name) : base(port, MbDotNet.Enums.Protocol.Http, name)
+        public HttpImposter(int port, string name) : base(port, Enums.Protocol.Http, name)
         {
             Stubs = new List<HttpStub>();
         }

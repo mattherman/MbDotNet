@@ -1,7 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MbDotNet.Models.Imposters;
+﻿using MbDotNet.Models.Imposters;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace MbDotNet.Tests.Imposters
+namespace MbDotNet.Tests.Models.Imposters
 {
     /// <summary>
     /// Summary description for ImposterTests

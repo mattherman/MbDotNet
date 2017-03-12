@@ -19,7 +19,7 @@ namespace MbDotNet.Models.Predicates.Fields
         public string RequestBody { get; set; }
 
         [JsonProperty("method", NullValueHandling = NullValueHandling.Ignore)]
-        private string RawMethod { get { return Method.HasValue ? Method.Value.ToString().ToUpper() : null; } }
+        private string RawMethod => Method?.ToString().ToUpper();
 
         /// <summary>
         /// The request method

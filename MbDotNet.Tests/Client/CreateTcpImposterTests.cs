@@ -32,7 +32,7 @@ namespace MbDotNet.Tests.Client
         {
             const string expectedMode = "text";
 
-            var imposter = Client.CreateTcpImposter(123, null);
+            var imposter = Client.CreateTcpImposter(123);
             
             Assert.IsNotNull(imposter);
             Assert.AreEqual(expectedMode, imposter.Mode);
@@ -52,7 +52,7 @@ namespace MbDotNet.Tests.Client
         [TestMethod]
         public void ShouldNotAddNewImposterToCollection()
         {
-            this.Client.CreateTcpImposter(123);
+            Client.CreateTcpImposter(123);
             Assert.AreEqual(0, this.Client.Imposters.Count);
         }
     }

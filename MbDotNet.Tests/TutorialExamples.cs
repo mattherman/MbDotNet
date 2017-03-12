@@ -199,7 +199,7 @@ namespace MbDotNet.Tests
         //[TestMethod]
         public void StartsWithPredicateExample()
         {
-            var imposter = _client.CreateTcpImposter(4548, "StartsWithPredicateExample", TcpMode.Text);
+            var imposter = _client.CreateTcpImposter(4548, "StartsWithPredicateExample");
 
             // First stub
             var predicateFields = new TcpPredicateFields
@@ -277,7 +277,7 @@ namespace MbDotNet.Tests
         //[TestMethod]
         public void MatchesPredicateExample()
         {
-            var imposter = _client.CreateTcpImposter(4550, "MatchesPredicateExample", TcpMode.Text);
+            var imposter = _client.CreateTcpImposter(4550, "MatchesPredicateExample");
 
             // First stub
             var predicateFields = new TcpPredicateFields
@@ -316,7 +316,7 @@ namespace MbDotNet.Tests
         //[TestMethod]
         public void NotPredicateExample()
         {
-            var imposter = _client.CreateTcpImposter(4552, "NotPredicateExample", TcpMode.Text);
+            var imposter = _client.CreateTcpImposter(4552, "NotPredicateExample");
 
             var predicate = new EqualsPredicate<TcpPredicateFields>(new TcpPredicateFields { Data = "test\n" });
 

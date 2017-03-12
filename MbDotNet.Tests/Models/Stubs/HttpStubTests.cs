@@ -86,7 +86,6 @@ namespace MbDotNet.Tests.Models.Stubs
         [TestMethod]
         public void Returns_AddsResponse()
         {
-            var headers = new Dictionary<string, string> { { "Content-Type", "application/json" } };
             var expectedResponse = new IsResponse<HttpResponseFields>(new HttpResponseFields());
 
             var stub = new HttpStub();
@@ -242,8 +241,6 @@ namespace MbDotNet.Tests.Models.Stubs
         [TestMethod]
         public void On_AddsPredicate()
         {
-            var headers = new Dictionary<string, string> { { "Content-Type", "application/json" } };
-
             var expectedPredicate = new EqualsPredicate<HttpPredicateFields>(new HttpPredicateFields());
 
             var stub = new HttpStub();
