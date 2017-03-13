@@ -44,11 +44,13 @@ namespace MbDotNet
         /// <summary>
         /// Creates a new imposter on the specified port with the HTTPS protocol. The Submit method
         /// must be called on the client in order to submit the imposter to mountebank.
+        /// 
+        /// The key and cert parameters MUST be valid PEM-formatted strings.
         /// </summary>
         /// <param name="port">The port the imposter will be set up to receive requests on</param>
         /// <param name="name">The name the imposter will recieve, useful for debugging/logging purposes</param>
-        /// <param name="key">The private key the imposter will use</param>
-        /// <param name="cert">The public certificate the imposer will use</param>
+        /// <param name="key">The private key the imposter will use, MUST be a PEM-formatted string</param>
+        /// <param name="cert">The public certificate the imposer will use, MUST be a PEM-formatted string</param>
         /// <param name="mutualAuthRequired">Whether or not the server will require mutual auth</param>
         /// <returns>The newly created imposter</returns>
         public HttpsImposter CreateHttpsImposter(int port, string name = null, string key = null, string cert = null, bool mutualAuthRequired = false)
