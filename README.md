@@ -11,7 +11,7 @@ https://www.nuget.org/packages/MbDotNet
 
 ## Usage Examples
 
-For usage examples, see the [Usage Examples (v2)](https://github.com/mattherman/MbDotNet/wiki/Usage-Examples-%28v2%29) wiki page.
+For usage examples, see the [Usage Examples (v3)](https://github.com/mattherman/MbDotNet/wiki/Usage-Examples-%28v3%29) wiki page.
 
 ## Unsupported Functionality ##
 
