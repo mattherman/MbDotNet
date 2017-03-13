@@ -8,45 +8,52 @@ namespace MbDotNet.Tests.Client
     public class CreateTcpImposterTests : MountebankClientTestBase
     {
         [TestMethod]
-        public void CreateTcpImposter_WithoutName_SetsNameToNull()
+        public void WithoutName_SetsNameToNull()
         {
-            var imposter = _client.CreateTcpImposter(123);
+            var imposter = Client.CreateTcpImposter(123);
 
             Assert.IsNotNull(imposter);
             Assert.IsNull(imposter.Name);
         }
 
         [TestMethod]
-        public void CreateTcpImposter_WithName_SetsName()
+        public void WithName_SetsName()
         {
             const string expectedName = "Service";
 
-            var imposter = _client.CreateTcpImposter(123, expectedName);
+            var imposter = Client.CreateTcpImposter(123, expectedName);
             
             Assert.IsNotNull(imposter);
             Assert.AreEqual(expectedName, imposter.Name);
         }
 
         [TestMethod]
-        public void CreateTcpImposter_WithoutMode_SetsModeToText()
+        public void WithoutMode_SetsModeToText()
         {
             const string expectedMode = "text";
 
-            var imposter = _client.CreateTcpImposter(123, null);
+            var imposter = Client.CreateTcpImposter(123);
             
             Assert.IsNotNull(imposter);
             Assert.AreEqual(expectedMode, imposter.Mode);
         }
 
         [TestMethod]
-        public void CreateTcpImposter_WithMode_SetsMode()
+        public void WithMode_SetsMode()
         {
             const string expectedMode = "binary";
 
-            var imposter = _client.CreateTcpImposter(123, null, TcpMode.Binary);
+            var imposter = Client.CreateTcpImposter(123, null, TcpMode.Binary);
 
             Assert.IsNotNull(imposter);
             Assert.AreEqual(expectedMode, imposter.Mode);
+        }
+
+        [TestMethod]
+        public void ShouldNotAddNewImposterToCollection()
+        {
+            Client.CreateTcpImposter(123);
+            Assert.AreEqual(0, this.Client.Imposters.Count);
         }
     }
 }

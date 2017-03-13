@@ -6,7 +6,7 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
     internal class CanDeleteImposter
     {
         private readonly MountebankClient _client;
-        const int ImposterPort = 6001;
+        private const int ImposterPort = 6001;
 
         public CanDeleteImposter(MountebankClient client)
         {
@@ -38,7 +38,7 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
             MountebankException exception = null;
             try
             {
-                var imposter = _client.GetImposter(ImposterPort);
+                _client.GetHttpImposter(ImposterPort);
             }
             catch (ImposterNotFoundException e)
             {

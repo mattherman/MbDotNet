@@ -19,7 +19,7 @@ namespace MbDotNet.Models.Stubs
         [JsonProperty("responses", NullValueHandling = NullValueHandling.Ignore)]
         public ICollection<ResponseBase> Responses { get; set; }
 
-        public StubBase()
+        protected StubBase()
         {
             Responses = new List<ResponseBase>();
             Predicates = new List<PredicateBase>();

@@ -2,11 +2,11 @@
 
 namespace MbDotNet.Acceptance.Tests
 {
-    class Program
+    public class Program
     {
         public static MountebankClient Client { get; set; }
 
-        static void Main(string[] args)
+        public static void Main()
         {
             SetupTestEnvironment();
 
@@ -19,10 +19,10 @@ namespace MbDotNet.Acceptance.Tests
         {
             try
             {
-                AcceptanceTest.CanGetImposter(Client);
                 AcceptanceTest.CanNotGetImposterThatDoesNotExist(Client);
-                AcceptanceTest.CanCreateImposter(Client);
-                AcceptanceTest.CanCreateHttpsImposter(Client);
+                AcceptanceTest.CanCreateAndGetHttpImposter(Client);
+                AcceptanceTest.CanCreateAndGetHttpsImposter(Client);
+                AcceptanceTest.CanCreateAndGetTcpImposter(Client);
                 AcceptanceTest.CanDeleteImposter(Client);
                 AcceptanceTest.CanVerifyCallsOnImposter(Client);
             }

@@ -11,7 +11,7 @@ namespace MbDotNet.Models.Stubs
         /// <summary>
         /// Adds a predicate to the stub that will match when the request data equals the specified data.
         /// </summary>
-        /// <param name="path">The data to match on</param>
+        /// <param name="data">The data to match on</param>
         /// <returns>The stub that the predicate was added to</returns>
         public TcpStub OnDataEquals(string data)
         {

@@ -69,7 +69,11 @@
     <Compile Include="Client\CreateHttpsImposterTests.cs" />
     <Compile Include="Client\CreateTcpImposterTests.cs" />
     <Compile Include="Client\DeleteImposterTests.cs" />
+    <Compile Include="Client\GetHttpImposterTests.cs" />
+    <Compile Include="Client\GetHttpsImposterTests.cs" />
+    <Compile Include="Client\GetTcpImposterTests.cs" />
     <Compile Include="Client\MountebankClientTestBase.cs" />
+    <Compile Include="Client\SubmitTests.cs" />
     <Compile Include="Models\Imposters\HttpsImposterTests.cs" />
     <Compile Include="Models\Imposters\HttpImposterTests.cs" />
     <Compile Include="Models\Imposters\TcpImposterTests.cs" />
@@ -85,7 +89,7 @@
     <Compile Include="Models\Responses\IsResponseTests.cs" />
     <Compile Include="Models\Stubs\HttpStubTests.cs" />
     <Compile Include="Models\Stubs\TcpStubTests.cs" />
-    <Compile Include="Client\MountebankClientTests.cs" />
+    <Compile Include="Client\ConstructorTests.cs" />
     <Compile Include="MountebankRequestProxyTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TutorialExamples.cs" />

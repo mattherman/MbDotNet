@@ -6,49 +6,49 @@ namespace MbDotNet.Tests.Client
     public class CreateHttpsImposterTests : MountebankClientTestBase
     {
         [TestMethod]
-        public void CreateHttpsImposter_ShouldNotAddNewImposterToCollection()
+        public void ShouldNotAddNewImposterToCollection()
         {
-            _client.CreateHttpsImposter(123);
-            Assert.AreEqual(0, _client.Imposters.Count);
+            Client.CreateHttpsImposter(123);
+            Assert.AreEqual(0, Client.Imposters.Count);
         }
         
         [TestMethod]
-        public void CreateHttpsImposter_WithoutName_SetsNameToNull()
+        public void WithoutName_SetsNameToNull()
         {
-            var imposter = _client.CreateHttpsImposter(123);
+            var imposter = Client.CreateHttpsImposter(123);
             
             Assert.IsNotNull(imposter);
             Assert.IsNull(imposter.Name);
         }
 
         [TestMethod]
-        public void CreateHttpsImposter_WithName_SetsName()
+        public void WithName_SetsName()
         {
             const string expectedName = "Service";
 
-            var imposter = _client.CreateHttpsImposter(123, expectedName);
+            var imposter = Client.CreateHttpsImposter(123, expectedName);
             
             Assert.IsNotNull(imposter);
             Assert.AreEqual(expectedName, imposter.Name);
         }
 
         [TestMethod]
-        public void CreateHttpsImposter_WithKey_SetsKey()
+        public void WithKey_SetsKey()
         {
             const string expectedKey = "key";
 
-            var imposter = _client.CreateHttpsImposter(123, null, expectedKey);
+            var imposter = Client.CreateHttpsImposter(123, null, expectedKey);
 
             Assert.IsNotNull(imposter);
             Assert.AreEqual(expectedKey, imposter.Key);
         }
 
         [TestMethod]
-        public void CreateHttpsImposter_WithCert_SetsCert()
+        public void WithCert_SetsCert()
         {
             const string expectedCert = "cert";
 
-            var imposter = _client.CreateHttpsImposter(123, null, null, expectedCert);
+            var imposter = Client.CreateHttpsImposter(123, null, null, expectedCert);
 
             Assert.IsNotNull(imposter);
             Assert.AreEqual(expectedCert, imposter.Cert);
