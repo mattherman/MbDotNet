@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>MbDotNet</id>
-    <version>2.2.0</version>
+    <version>3.0.0</version>
     <title>MbDotNet</title>
     <authors>Matthew Herman</authors>
     <owners>Matthew Herman</owners>
@@ -10,8 +10,8 @@
     <projectUrl>http://github.com/mattherman/MbDotNet</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A .NET client library for interacting with mountebank (www.mbtest.org).</description>
-    <releaseNotes>Added ability to specify encoding for XML responses</releaseNotes>
-    <copyright>Copyright 2016</copyright>
+    <releaseNotes>https://github.com/mattherman/MbDotNet/releases/tag/v3.0.0</releaseNotes>
+    <copyright>Copyright 2017</copyright>
     <tags>mountebank client wrapper</tags>
   </metadata>
 </package>
