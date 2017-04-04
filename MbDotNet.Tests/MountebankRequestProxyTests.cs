@@ -112,6 +112,36 @@ namespace MbDotNet.Tests
         }
 
         [TestMethod]
+        public void CreateImposter_SendsRequest_ImposterWithNoPort()
+        {
+            var response = new HttpResponseMessage();
+            response.StatusCode = HttpStatusCode.Created;
+            response.Content = new StringContent(@"
+            {
+                ""protocol"": ""http"",
+                ""port"": 12345,
+                ""numberOfRequests"": 0,
+                ""requests"": [],
+                ""stubs"": [],
+                ""_links"": {
+                    ""self"": {
+                        ""href"": ""http://localhost:2525/imposters/64735""
+                    }
+                }
+            }
+            ");
+
+            _mockClient.Setup(x => x.PostAsync(It.IsAny<string>(), It.IsAny<HttpContent>()))
+                .ReturnsAsync(response);
+
+            var imposter = new HttpImposter(null, null);
+
+            _proxy.CreateImposter(imposter);
+
+            Assert.AreEqual(12345, imposter.Port);
+        }
+
+        [TestMethod]
         [ExpectedException(typeof(MountebankException))]
         public void CreateImposter_StatusCodeNotCreated_ThrowsMountebankException()
         {
@@ -123,7 +153,7 @@ namespace MbDotNet.Tests
             _proxy.CreateImposter(new HttpImposter(123, null));
         }
 
-        private HttpResponseMessage GetResponse(HttpStatusCode statusCode) 
+        private HttpResponseMessage GetResponse(HttpStatusCode statusCode)
         {
             var response = new HttpResponseMessage();
             response.StatusCode = statusCode;

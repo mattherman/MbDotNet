@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AcceptanceTest.cs" />
+    <Compile Include="AcceptanceTests\CanCreateAndGetHttpImposterWithNoPort.cs" />
     <Compile Include="AcceptanceTests\CanCreateAndGetTcpImposter.cs" />
     <Compile Include="AcceptanceTests\CanDeleteImposter.cs" />
     <Compile Include="AcceptanceTests\CanCreateAndGetHttpImposter.cs" />

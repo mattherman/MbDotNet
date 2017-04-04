@@ -1,4 +1,5 @@
 ﻿using MbDotNet.Enums;
+using MbDotNet.Exceptions;
 using Newtonsoft.Json;
 
 namespace MbDotNet.Models.Imposters
@@ -8,8 +9,8 @@ namespace MbDotNet.Models.Imposters
         /// <summary>
         /// The port the imposter is set up to accept requests on.
         /// </summary>
-        [JsonProperty("port")]
-        public int Port { get; private set; }
+        [JsonProperty(PropertyName = "port", NullValueHandling = NullValueHandling.Ignore)]
+        public int? Port { get; private set; }
 
         /// <summary>
         /// The protocol the imposter is set up to accept requests through.
@@ -23,8 +24,18 @@ namespace MbDotNet.Models.Imposters
         [JsonProperty("name")]
         public string Name { get; private set; }
 
+        internal void SetDynamicPort(int port)
+        {
+            if (Port != null)
+            {
+                throw new MountebankException("Cannot change imposter port once it has been set.");
+            }
+
+            Port = port;
+        }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors", Justification = "Set as virtual for testing purposes")]
-        public Imposter(int port, Protocol protocol, string name)
+        public Imposter(int? port, Protocol protocol, string name)
         {
             Port = port;
             Protocol = protocol.ToString().ToLower();

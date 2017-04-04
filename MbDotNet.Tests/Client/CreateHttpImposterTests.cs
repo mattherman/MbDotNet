@@ -31,5 +31,15 @@ namespace MbDotNet.Tests.Client
             Assert.IsNotNull(imposter);
             Assert.AreEqual(expectedName, imposter.Name);
         }
+
+        [TestMethod]
+        public void WithoutPortAndName_SetsPortAndNameToNull()
+        {
+            var imposter = Client.CreateHttpImposter();
+
+            Assert.IsNotNull(imposter);
+            Assert.IsNull(imposter.Port);
+            Assert.IsNull(imposter.Name);
+        }
     }
 }

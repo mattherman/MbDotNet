@@ -35,6 +35,13 @@ namespace MbDotNet.Tests.Models.Imposters
         }
 
         [TestMethod]
+        public void Constructor_AllowsNullPort()
+        {
+            var imposter = new HttpImposter(null, null);
+            Assert.IsNull(imposter.Port);
+        }
+
+        [TestMethod]
         public void Constructor_InitializesStubsCollection()
         {
             var imposter = new HttpImposter(123, null);

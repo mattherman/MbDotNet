@@ -25,6 +25,7 @@ namespace MbDotNet.Acceptance.Tests
                 AcceptanceTest.CanCreateAndGetTcpImposter(Client);
                 AcceptanceTest.CanDeleteImposter(Client);
                 AcceptanceTest.CanVerifyCallsOnImposter(Client);
+                AcceptanceTest.CanCreateAndGetHttpImposterWithNoPort(Client);
             }
             catch (Exception ex)
             {

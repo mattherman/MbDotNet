@@ -21,7 +21,7 @@ namespace MbDotNet
         /// <param name="port">The port the imposter will be set up to receive requests on</param>
         /// <param name="name">The name the imposter will recieve, useful for debugging/logging purposes</param>
         /// <returns>The newly created imposter</returns>
-        HttpImposter CreateHttpImposter(int port, string name = null);
+        HttpImposter CreateHttpImposter(int? port = null, string name = null);
 
         /// <summary> 
         /// Creates a new imposter on the specified port with the HTTPS protocol. The Submit method
@@ -33,7 +33,7 @@ namespace MbDotNet
         /// <param name="cert">The public certificate the imposer will use</param>
         /// <param name="mutualAuthRequired">Whether or not the server requires mutual auth</param>
         /// <returns>The newly created imposter</returns>
-        HttpsImposter CreateHttpsImposter(int port, string name = null, string key = null, string cert = null, bool mutualAuthRequired = false);
+        HttpsImposter CreateHttpsImposter(int? port = null, string name = null, string key = null, string cert = null, bool mutualAuthRequired = false);
 
         /// <summary>
         /// Creates a new imposter on the specified port with the TCP protocol. The Submit method
@@ -43,7 +43,7 @@ namespace MbDotNet
         /// <param name="name">The name the imposter will recieve, useful for debugging/logging purposes</param>
         /// <param name="mode">The mode of the imposter, text or binary. This defines the encoding for request/response data</param>
         /// <returns>The newly created imposter</returns>
-        TcpImposter CreateTcpImposter(int port, string name = null, TcpMode mode = TcpMode.Text);
+        TcpImposter CreateTcpImposter(int? port = null, string name = null, TcpMode mode = TcpMode.Text);
 
         /// <summary>
         /// Retrieves an HttpImposter along with information about requests made to that

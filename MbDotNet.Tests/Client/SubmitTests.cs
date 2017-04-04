@@ -49,8 +49,18 @@ namespace MbDotNet.Tests.Client
 
             Client.Submit(new[] { imposter1, imposter2 });
 
-            Assert.AreEqual(1, Client.Imposters.Count(x => x.Port == firstPortNumber));
-            Assert.AreEqual(1, Client.Imposters.Count(x => x.Port == secondPortNumber));
+            Assert.AreEqual(1, Client.Imposters.Count(x => x.Port.Value == firstPortNumber));
+            Assert.AreEqual(1, Client.Imposters.Count(x => x.Port.Value == secondPortNumber));
+        }
+
+        [TestMethod]
+        public void Submit_AllowsNullPort()
+        {
+            var imposter = new HttpImposter(null, null);
+
+            Client.Submit(imposter);
+
+            MockRequestProxy.Verify(x => x.CreateImposter(It.Is<Imposter>(imp => imp.Port == null)), Times.Once);
         }
     }
 }

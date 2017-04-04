@@ -55,5 +55,15 @@ namespace MbDotNet.Tests.Client
             Client.CreateTcpImposter(123);
             Assert.AreEqual(0, this.Client.Imposters.Count);
         }
+
+        [TestMethod]
+        public void WithoutPortAndName_SetsPortAndNameToNull()
+        {
+            var imposter = Client.CreateTcpImposter();
+
+            Assert.IsNotNull(imposter);
+            Assert.IsNull(imposter.Port);
+            Assert.IsNull(imposter.Name);
+        }
     }
 }
