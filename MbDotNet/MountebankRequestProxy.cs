@@ -4,6 +4,7 @@ using System.Net.Http;
 using MbDotNet.Exceptions;
 using MbDotNet.Models.Imposters;
 using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 
 namespace MbDotNet
 {
@@ -13,12 +14,12 @@ namespace MbDotNet
         private const string ImpostersResource = "imposters";
         private readonly Uri _baseUri;
         private readonly IHttpClientWrapper _httpClient;
-		
-        public MountebankRequestProxy() : this(DefaultMountebankUrl) {}
-		
-		public MountebankRequestProxy(string mountebankUrl) : this(new Uri(mountebankUrl)) { }
 
-		public MountebankRequestProxy(Uri baseAddress)
+        public MountebankRequestProxy() : this(DefaultMountebankUrl) { }
+
+        public MountebankRequestProxy(string mountebankUrl) : this(new Uri(mountebankUrl)) { }
+
+        public MountebankRequestProxy(Uri baseAddress)
         {
             _baseUri = baseAddress;
         }
@@ -51,6 +52,7 @@ namespace MbDotNet
             var response = ExecutePost(ImpostersResource, json);
             HandleResponse(response, HttpStatusCode.Created,
                 $"Failed to create the imposter with port {imposter.Port} and protocol {imposter.Protocol}.");
+            HandleDynamicPort(response, imposter);
         }
 
         public RetrievedHttpImposter GetHttpImposter(int port)
@@ -107,7 +109,7 @@ namespace MbDotNet
             }
         }
 
-        private void HandleResponse(HttpResponseMessage response, HttpStatusCode expectedStatusCode, 
+        private void HandleResponse(HttpResponseMessage response, HttpStatusCode expectedStatusCode,
             string failureErrorMessage, Func<string, Exception> exceptionFactory = null)
         {
             if (exceptionFactory == null)
@@ -118,6 +120,24 @@ namespace MbDotNet
                 var content = response.Content.ReadAsStringAsync().Result;
                 var errorMessage = $"{failureErrorMessage}\n\nError Message => \n{content}";
                 throw exceptionFactory(errorMessage);
+            }
+        }
+
+        private void HandleDynamicPort(HttpResponseMessage response, Imposter imposter)
+        {
+            if (imposter.Port == null)
+            {
+                try
+                {
+                    var content = response.Content.ReadAsStringAsync().Result;
+                    Match match = new Regex(".*\"port\": (\\d+),", RegexOptions.Multiline).Match(content);
+                    imposter.SetDynamicPort(Convert.ToInt32(match.Groups[1].Value));
+                }
+                catch (Exception e)
+                {
+                    throw new MountebankException($"Unable to retrieve port for imposter with name [{imposter.Name}]", e);
+                }
+
             }
         }
 

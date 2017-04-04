@@ -10,5 +10,6 @@ namespace MbDotNet.Acceptance.Tests
         public static void CanDeleteImposter(MountebankClient client) => new CanDeleteImposter(client).Run();
         public static void CanNotGetImposterThatDoesNotExist(MountebankClient client) => new CanNotGetImposterThatDoesNotExist(client).Run();
         public static void CanVerifyCallsOnImposter(MountebankClient client) => new CanVerifyCallsOnImposter(client).Run();
+        public static void CanCreateAndGetHttpImposterWithNoPort(MountebankClient client) => new CanCreateAndGetHttpImposterWithNoPort(client).Run();
     }
 }

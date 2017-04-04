@@ -55,6 +55,20 @@ namespace MbDotNet.Tests
         }
 
         /// <summary>
+        /// This test shows how to setup the imposter with a dynamic port chosen by Mountebank
+        /// See imposter resource at http://www.mbtest.org/docs/api/contracts for more information.
+        /// </summary>
+        //[TestMethod]
+        public void DynamicPortExample()
+        {
+            var imposter = _client.CreateHttpImposter(null, "DynamicPort");
+
+            _client.Submit(imposter);
+
+            var portAssignedByMountebank = imposter.Port;
+        }
+
+        /// <summary>
         /// This test shows how to setup the imposter in the equals predicate example
         /// at http://www.mbtest.org/docs/api/predicates.
         /// </summary>
