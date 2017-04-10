@@ -16,18 +16,26 @@ namespace MbDotNet
 
         /// <summary>
         /// Creates a new imposter on the specified port with the HTTP protocol. The Submit method
-        /// must be called on the client in order to submit the imposter to mountebank.
+        /// must be called on the client in order to submit the imposter to mountebank. If the port
+        /// is blank, Mountebank will assign one which can be retrieved after Submit.
         /// </summary>
-        /// <param name="port">The port the imposter will be set up to receive requests on</param>
+        /// <param name="port">
+        /// The port the imposter will be set up to receive requests on, or null to allow
+        /// Mountebank to set the port.
+        /// </param>
         /// <param name="name">The name the imposter will recieve, useful for debugging/logging purposes</param>
         /// <returns>The newly created imposter</returns>
         HttpImposter CreateHttpImposter(int? port = null, string name = null);
 
         /// <summary> 
         /// Creates a new imposter on the specified port with the HTTPS protocol. The Submit method
-        /// must be called on the client in order to submit the imposter to mountebank.
+        /// must be called on the client in order to submit the imposter to mountebank. If the port
+        /// is blank, Mountebank will assign one which can be retrieved after Submit.
         /// </summary>
-        /// <param name="port">The port the imposter will be set up to receive requests on</param>
+        /// <param name="port">
+        /// The port the imposter will be set up to receive requests on, or null to allow
+        /// Mountebank to set the port.
+        /// </param>
         /// <param name="name">The name the imposter will recieve, useful for debugging/logging purposes</param>
         /// <param name="key">The private key the imposter will use</param>
         /// <param name="cert">The public certificate the imposer will use</param>
@@ -37,9 +45,13 @@ namespace MbDotNet
 
         /// <summary>
         /// Creates a new imposter on the specified port with the TCP protocol. The Submit method
-        /// must be called on the client in order to submit the imposter to mountebank.
+        /// must be called on the client in order to submit the imposter to mountebank. If the port
+        /// is blank, Mountebank will assign one which can be retrieved after Submit.
         /// </summary>
-        /// <param name="port">The port the imposter will be set up to receive requests on</param>
+        /// <param name="port">
+        /// The port the imposter will be set up to receive requests on, or null to allow
+        /// Mountebank to set the port.
+        /// </param>
         /// <param name="name">The name the imposter will recieve, useful for debugging/logging purposes</param>
         /// <param name="mode">The mode of the imposter, text or binary. This defines the encoding for request/response data</param>
         /// <returns>The newly created imposter</returns>
