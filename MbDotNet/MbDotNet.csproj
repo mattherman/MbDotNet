@@ -74,6 +74,7 @@
     <Compile Include="Models\Predicates\NotPredicate.cs" />
     <Compile Include="Models\Predicates\StartsWithPredicate.cs" />
     <Compile Include="Models\Requests\TcpRequest.cs" />
+    <Compile Include="Models\Responses\CreateImposterResponse.cs" />
     <Compile Include="Models\Stubs\HttpStub.cs" />
     <Compile Include="Models\Imposters\HttpImposter.cs" />
     <Compile Include="IClient.cs" />

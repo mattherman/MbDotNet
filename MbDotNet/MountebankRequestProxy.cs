@@ -5,6 +5,7 @@ using MbDotNet.Exceptions;
 using MbDotNet.Models.Imposters;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
+using MbDotNet.Models.Responses;
 
 namespace MbDotNet
 {
@@ -130,8 +131,8 @@ namespace MbDotNet
                 try
                 {
                     var content = response.Content.ReadAsStringAsync().Result;
-                    Match match = new Regex(".*\"port\": (\\d+),", RegexOptions.Multiline).Match(content);
-                    imposter.SetDynamicPort(Convert.ToInt32(match.Groups[1].Value));
+                    var returnedImposter = JsonConvert.DeserializeObject<CreateImposterResponse>(content);
+                    imposter.SetDynamicPort(returnedImposter.Port);
                 }
                 catch (Exception e)
                 {
