@@ -126,7 +126,7 @@ namespace MbDotNet
 
         private void HandleDynamicPort(HttpResponseMessage response, Imposter imposter)
         {
-            if (imposter.Port == null)
+            if (imposter.Port == default(imposter.Port))
             {
                 try
                 {
