@@ -44,7 +44,7 @@ namespace MbDotNet.Tests.Models.Imposters
         public void Constructor_AllowsNullPort()
         {
             var imposter = new TcpImposter(null, null, TcpMode.Text);
-            Assert.IsNull(imposter.Port);
+            Assert.AreEqual(default(int), imposter.Port);
         }
 
         [TestMethod]

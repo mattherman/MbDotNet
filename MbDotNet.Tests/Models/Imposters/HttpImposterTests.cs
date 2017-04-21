@@ -38,7 +38,7 @@ namespace MbDotNet.Tests.Models.Imposters
         public void Constructor_AllowsNullPort()
         {
             var imposter = new HttpImposter(null, null);
-            Assert.IsNull(imposter.Port);
+            Assert.AreEqual(default(int), imposter.Port);
         }
 
         [TestMethod]
