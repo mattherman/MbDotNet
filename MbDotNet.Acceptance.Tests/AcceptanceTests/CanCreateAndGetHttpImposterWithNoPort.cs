@@ -25,7 +25,7 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
 
         private void GetImposter()
         {
-            _retrievedImposter = _client.GetHttpImposter(_imposter.Port.Value);
+            _retrievedImposter = _client.GetHttpImposter(_imposter.Port);
         }
 
         private void DeleteAllImposters()

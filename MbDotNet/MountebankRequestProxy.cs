@@ -4,7 +4,6 @@ using System.Net.Http;
 using MbDotNet.Exceptions;
 using MbDotNet.Models.Imposters;
 using Newtonsoft.Json;
-using System.Text.RegularExpressions;
 using MbDotNet.Models.Responses;
 
 namespace MbDotNet
@@ -126,7 +125,7 @@ namespace MbDotNet
 
         private void HandleDynamicPort(HttpResponseMessage response, Imposter imposter)
         {
-            if (imposter.Port == null)
+            if (imposter.Port == default(int))
             {
                 try
                 {

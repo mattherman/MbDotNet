@@ -9,8 +9,8 @@ namespace MbDotNet.Models.Imposters
         /// <summary>
         /// The port the imposter is set up to accept requests on.
         /// </summary>
-        [JsonProperty(PropertyName = "port", NullValueHandling = NullValueHandling.Ignore)]
-        public int? Port { get; private set; }
+        [JsonProperty(PropertyName = "port", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public int Port { get; private set; }
 
         /// <summary>
         /// The protocol the imposter is set up to accept requests through.
@@ -26,7 +26,7 @@ namespace MbDotNet.Models.Imposters
 
         internal void SetDynamicPort(int port)
         {
-            if (Port != null)
+            if (Port != default(int))
             {
                 throw new MountebankException("Cannot change imposter port once it has been set.");
             }
@@ -37,7 +37,11 @@ namespace MbDotNet.Models.Imposters
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors", Justification = "Set as virtual for testing purposes")]
         public Imposter(int? port, Protocol protocol, string name)
         {
-            Port = port;
+            if (port.HasValue)
+            {
+                Port = port.Value;
+            }
+            
             Protocol = protocol.ToString().ToLower();
             Name = name;
         }

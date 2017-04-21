@@ -60,7 +60,7 @@ namespace MbDotNet.Tests.Client
             var imposter = Client.CreateHttpsImposter();
 
             Assert.IsNotNull(imposter);
-            Assert.IsNull(imposter.Port);
+            Assert.AreEqual(default(int), imposter.Port);
             Assert.IsNull(imposter.Name);
         }
     }
