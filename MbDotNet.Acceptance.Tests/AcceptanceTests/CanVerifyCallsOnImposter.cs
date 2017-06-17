@@ -2,8 +2,9 @@
 using System.Net;
 using FluentAssertions;
 using MbDotNet.Models.Imposters;
-using RestSharp;
 using Method = MbDotNet.Enums.Method;
+using System.Net.Http;
+using System.Text;
 
 namespace MbDotNet.Acceptance.Tests.AcceptanceTests
 {
@@ -26,7 +27,6 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
             CallImposter();
             VerifyImposterWasCalled();
         }
-        
         private void VerifyImposterWasCalled()
         {
             _retrievedImposter = _client.GetHttpImposter(ImposterPort);
@@ -44,20 +44,26 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
             receivedRequest.Method.Should().Be(Method.Post);
             receivedRequest.Timestamp.Should().NotBe(default(DateTime));
             receivedRequest.RequestFrom.Should().NotBe(string.Empty);
-            receivedRequest.Headers["Content-Type"].Should().Be("text/xml");
+            receivedRequest.Headers["Content-Type"].Should().Be("text/xml; charset=utf-8");
             receivedRequest.Headers["Content-Length"].Should().Be("75");
         }
 
         private static void CallImposter()
         {
-            var restClient = new RestClient("http://localhost:6000");
+            using(var httpClient = new HttpClient())
+            {
+                var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:6000/customers?id=123")
+                {
+                    Content = new StringContent("<TestData>\r\n  <Name>Bob</Name>\r\n  <Email>bob@zmail.com</Email>\r\n</TestData>", Encoding.UTF8, "text/xml")
+                };
 
-            var request = new RestRequest("customers", RestSharp.Method.POST);
-            request.AddBody(new TestData("Bob", "bob@zmail.com"));
-            request.AddQueryParameter("id", "123");
-            var response = restClient.Execute(request);
+                var task = httpClient.SendAsync(request);
 
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
+                task.Wait();
+
+                var response = task.Result;
+                response.StatusCode.Should().Be(HttpStatusCode.OK);
+            }
         }
 
         private void CreateImposter()

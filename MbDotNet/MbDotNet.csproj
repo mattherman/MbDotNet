@@ -1,113 +1,18 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FE6F9080-0DCE-4444-8539-CFC82DD8D74B}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MbDotNet</RootNamespace>
-    <AssemblyName>MbDotNet</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
+    <TargetFramework>netstandard1.4</TargetFramework>
+    <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>MbDotNetKey.snk</AssemblyOriginatorKeyFile>
+    <Version>3.1.0</Version>
+    <AssemblyVersion>3.1.0.0</AssemblyVersion>
+    <FileVersion>3.0.0.0</FileVersion>
+    <Copyright>Copyright ©  2017</Copyright>
   </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
+    <PackageReference Include="System.Xml.XmlSerializer" Version="4.3.0" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="EncodedStringWriter.cs" />
-    <Compile Include="Enums\Method.cs" />
-    <Compile Include="Enums\Protocol.cs" />
-    <Compile Include="Enums\TcpMode.cs" />
-    <Compile Include="Exceptions\ImposterNotFoundException.cs" />
-    <Compile Include="Exceptions\InvalidProtocolException.cs" />
-    <Compile Include="Exceptions\MountebankException.cs" />
-    <Compile Include="HttpClientWrapper.cs" />
-    <Compile Include="IHttpClientWrapper.cs" />
-    <Compile Include="IRequestProxy.cs" />
-    <Compile Include="Models\Imposters\HttpsImposter.cs" />
-    <Compile Include="Models\Imposters\RetrievedHttpsImposter.cs" />
-    <Compile Include="Models\Imposters\RetrievedTcpImposter.cs" />
-    <Compile Include="Models\Requests\HttpRequest.cs" />
-    <Compile Include="Models\Requests\Request.cs" />
-    <Compile Include="Models\Imposters\RetrievedHttpImposter.cs" />
-    <Compile Include="Models\Imposters\RetrievedImposter.cs" />
-    <Compile Include="Models\Imposters\TcpImposter.cs" />
-    <Compile Include="Models\Predicates\EndsWithPredicate.cs" />
-    <Compile Include="Models\Predicates\MatchesPredicate.cs" />
-    <Compile Include="Models\Predicates\NotPredicate.cs" />
-    <Compile Include="Models\Predicates\StartsWithPredicate.cs" />
-    <Compile Include="Models\Requests\TcpRequest.cs" />
-    <Compile Include="Models\Responses\CreateImposterResponse.cs" />
-    <Compile Include="Models\Stubs\HttpStub.cs" />
-    <Compile Include="Models\Imposters\HttpImposter.cs" />
-    <Compile Include="IClient.cs" />
-    <Compile Include="Models\Imposters\Imposter.cs" />
-    <Compile Include="Models\Predicates\ContainsPredicate.cs" />
-    <Compile Include="Models\Predicates\DeepEqualsPredicate.cs" />
-    <Compile Include="Models\Predicates\Fields\HttpPredicateFields.cs" />
-    <Compile Include="Models\Predicates\Fields\PredicateFields.cs" />
-    <Compile Include="Models\Predicates\Fields\TcpPredicateFields.cs" />
-    <Compile Include="Models\Predicates\PredicateBase.cs" />
-    <Compile Include="Models\Predicates\XPathSelector.cs" />
-    <Compile Include="Models\Responses\Fields\HttpResponseFields.cs" />
-    <Compile Include="Models\Responses\Fields\ResponseFields.cs" />
-    <Compile Include="Models\Responses\Fields\TcpResponseFields.cs" />
-    <Compile Include="Models\Responses\IsResponse.cs" />
-    <Compile Include="Models\Responses\ResponseBase.cs" />
-    <Compile Include="Models\Stubs\StubBase.cs" />
-    <Compile Include="Models\Stubs\TcpStub.cs" />
-    <Compile Include="MountebankClient.cs" />
-    <Compile Include="Models\Predicates\EqualsPredicate.cs" />
-    <Compile Include="MountebankRequestProxy.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="MbDotNetKey.snk" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>
