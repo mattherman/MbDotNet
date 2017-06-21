@@ -1,2 +1,2 @@
 del *.nupkg
-nuget pack ./MbDotNet/MbDotNet.csproj -Prop Configuration=Release
+dotnet pack ./MbDotNet/MbDotNet.csproj -c Release -o ../
