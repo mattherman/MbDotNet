@@ -11,7 +11,7 @@ imposter.AddStub()
   .ReturnsXml(HttpStatusCode.OK, new Customer { Email = "customer@test.com" });
 ```
 
-The project currently targets .NET Standard 1.3.
+The project currently targets .NET Standard 1.3, which is compatible with .NET Framework 4.6. If you need to use it in a project targeting an older framework version, such as .NET Framework 4.5, please use version 3.X.X of the package.
 
 To get started, see [Usage Examples (v4)](https://github.com/mattherman/MbDotNet/wiki/Usage-Examples-%28v4%29).
 
