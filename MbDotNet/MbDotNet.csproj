@@ -4,10 +4,22 @@
     <TargetFramework>netstandard1.3</TargetFramework>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>MbDotNetKey.snk</AssemblyOriginatorKeyFile>
-    <Version>3.1.0</Version>
-    <AssemblyVersion>3.1.0.0</AssemblyVersion>
-    <FileVersion>3.0.0.0</FileVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <FileVersion>4.0.0.0</FileVersion>
+
+    <!-- NuGet Metadata-->
+    <Version>4.0.0</Version>
+    <PackageId>MbDotNet</PackageId>
+    <Title>MbDotNet</Title>
+    <Authors>Matthew Herman</Authors>
+    <Description>A .NET client library for interacting with mountebank (www.mbtest.org).</Description>
     <Copyright>Copyright ©  2017</Copyright>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageLicenseUrl>http://github.com/mattherman/MbDotNet/blob/master/LICENSE.md</PackageLicenseUrl>
+    <PackageProjectUrl>http://github.com/mattherman/MbDotNet</PackageProjectUrl>
+    <PackageReleaseNotes>https://github.com/mattherman/MbDotNet/releases/tag/v4.0.0</PackageReleaseNotes>
+    <PackageTags>mountebank client wrapper</PackageTags>
+    <BuildOutputTargetFolder>lib</BuildOutputTargetFolder>
   </PropertyGroup>
 
   <ItemGroup>
