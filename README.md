@@ -11,7 +11,9 @@ imposter.AddStub()
   .ReturnsXml(HttpStatusCode.OK, new Customer { Email = "customer@test.com" });
 ```
 
-To get started, see [Usage Examples (v3)](https://github.com/mattherman/MbDotNet/wiki/Usage-Examples-%28v3%29).
+The project currently targets .NET Standard 1.3.
+
+To get started, see [Usage Examples (v4)](https://github.com/mattherman/MbDotNet/wiki/Usage-Examples-%28v4%29).
 
 ## NuGet Package ##
 
