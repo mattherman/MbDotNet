@@ -7,7 +7,7 @@ namespace MbDotNet.Tests.Models.Predicates
     public class NotPredicateTests : PredicateTestBase
     {
         [TestMethod]
-        public void Constructor_SetsChildPredicate()
+        public void NotPredicate_Constructor_SetsChildPredicate()
         {
             var expectedChildPredicate = new EqualsPredicate<TestPredicateFields>(new TestPredicateFields());
 

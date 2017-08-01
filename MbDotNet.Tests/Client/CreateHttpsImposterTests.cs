@@ -6,14 +6,14 @@ namespace MbDotNet.Tests.Client
     public class CreateHttpsImposterTests : MountebankClientTestBase
     {
         [TestMethod]
-        public void ShouldNotAddNewImposterToCollection()
+        public void HttpsImposter_ShouldNotAddNewImposterToCollection()
         {
             Client.CreateHttpsImposter(123);
             Assert.AreEqual(0, Client.Imposters.Count);
         }
         
         [TestMethod]
-        public void WithoutName_SetsNameToNull()
+        public void HttpsImposter_WithoutName_SetsNameToNull()
         {
             var imposter = Client.CreateHttpsImposter(123);
             
@@ -22,7 +22,7 @@ namespace MbDotNet.Tests.Client
         }
 
         [TestMethod]
-        public void WithName_SetsName()
+        public void HttpsImposter_WithName_SetsName()
         {
             const string expectedName = "Service";
 
@@ -33,7 +33,7 @@ namespace MbDotNet.Tests.Client
         }
 
         [TestMethod]
-        public void WithKey_SetsKey()
+        public void HttpsImposter_WithKey_SetsKey()
         {
             const string expectedKey = "key";
 
@@ -44,7 +44,7 @@ namespace MbDotNet.Tests.Client
         }
 
         [TestMethod]
-        public void WithCert_SetsCert()
+        public void HttpsImposter_WithCert_SetsCert()
         {
             const string expectedCert = "cert";
 
@@ -55,7 +55,7 @@ namespace MbDotNet.Tests.Client
         }
 
         [TestMethod]
-        public void WithoutPortAndName_SetsPortAndNameToNull()
+        public void HttpsImposter_WithoutPortAndName_SetsPortAndNameToNull()
         {
             var imposter = Client.CreateHttpsImposter();
 

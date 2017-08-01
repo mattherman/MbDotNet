@@ -10,7 +10,7 @@ namespace MbDotNet.Tests.Models.Imposters
         #region Constructor Tests
 
         [TestMethod]
-        public void Constructor_SetsPort()
+        public void TcpImposter_Constructor_SetsPort()
         {
             const int port = 123;
             var imposter = new TcpImposter(port, null, TcpMode.Text);
@@ -18,14 +18,14 @@ namespace MbDotNet.Tests.Models.Imposters
         }
 
         [TestMethod]
-        public void Constructor_SetsProtocol()
+        public void TcpImposter_Constructor_SetsProtocol()
         {
             var imposter = new TcpImposter(123, null, TcpMode.Text);
             Assert.AreEqual("tcp", imposter.Protocol);
         }
 
         [TestMethod]
-        public void Constructor_SetsName()
+        public void TcpImposter_Constructor_SetsName()
         {
             const string expectedName = "Service";
             var imposter = new TcpImposter(123, expectedName, TcpMode.Text);
@@ -33,7 +33,7 @@ namespace MbDotNet.Tests.Models.Imposters
         }
 
         [TestMethod]
-        public void Constructor_SetsMode()
+        public void TcpImposter_Constructor_SetsMode()
         {
             const string expectedMode = "binary";
             var imposter = new TcpImposter(123, null, TcpMode.Binary);
@@ -41,14 +41,14 @@ namespace MbDotNet.Tests.Models.Imposters
         }
 
         [TestMethod]
-        public void Constructor_AllowsNullPort()
+        public void TcpImposter_Constructor_AllowsNullPort()
         {
             var imposter = new TcpImposter(null, null, TcpMode.Text);
             Assert.AreEqual(default(int), imposter.Port);
         }
 
         [TestMethod]
-        public void Constructor_InitializesStubsCollection()
+        public void TcpImposter_Constructor_InitializesStubsCollection()
         {
             var imposter = new TcpImposter(123, null, TcpMode.Text);
             Assert.IsNotNull(imposter.Stubs);
@@ -59,7 +59,7 @@ namespace MbDotNet.Tests.Models.Imposters
         #region Stub Tests
 
         [TestMethod]
-        public void AddStub_AddsStubToCollection()
+        public void TcpImposter_AddStub_AddsStubToCollection()
         {
             var imposter = new TcpImposter(123, null, TcpMode.Binary);
             imposter.AddStub();
