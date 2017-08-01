@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>MbDotNetKey.snk</AssemblyOriginatorKeyFile>
+    <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
     <Copyright>Copyright ©  2017</Copyright>
     <Version>3.1.0</Version>
     <FileVersion>3.0.0.0</FileVersion>
@@ -16,7 +17,6 @@
     <PackageReference Include="MSTest.TestAdapter" Version="1.1.18" />
     <PackageReference Include="MSTest.TestFramework" Version="1.1.18" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
-    <PackageReference Include="Refit" Version="3.1.0" />
   </ItemGroup>
 
   <ItemGroup>
