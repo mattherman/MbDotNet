@@ -16,21 +16,21 @@ namespace MbDotNet.Tests.Models.Stubs
     public class HttpStubTests
     {
         [TestMethod]
-        public void Constructor_InitializesResponsesCollection()
+        public void HttpStub_Constructor_InitializesResponsesCollection()
         {
             var stub = new HttpStub();
             Assert.IsNotNull(stub.Responses);
         }
 
         [TestMethod]
-        public void Constructor_InitializesPredicatesCollection()
+        public void HttpStub_Constructor_InitializesPredicatesCollection()
         {
             var stub = new HttpStub();
             Assert.IsNotNull(stub.Predicates);
         }
 
         [TestMethod]
-        public void ReturnsStatus_AddsResponse_StatusCodeSet()
+        public void HttpStub_ReturnsStatus_AddsResponse_StatusCodeSet()
         {
             const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
 
@@ -43,7 +43,7 @@ namespace MbDotNet.Tests.Models.Stubs
         }
 
         [TestMethod]
-        public void Returns_AddsResponse_StatusCodeSet()
+        public void HttpStub_Returns_AddsResponse_StatusCodeSet()
         {
             const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
             var headers = new Dictionary<string, string> { {"Content-Type", "application/json"} };
@@ -57,7 +57,7 @@ namespace MbDotNet.Tests.Models.Stubs
         }
 
         [TestMethod]
-        public void Returns_AddsResponse_ResponseObjectSet()
+        public void HttpStub_Returns_AddsResponse_ResponseObjectSet()
         {
             const string expectedResponseObject = "Test Response";
             var headers = new Dictionary<string, string> { { "Content-Type", "application/json" } };
@@ -71,7 +71,7 @@ namespace MbDotNet.Tests.Models.Stubs
         }
 
         [TestMethod]
-        public void Returns_AddsResponse_ContentTypeHeaderSet()
+        public void HttpStub_Returns_AddsResponse_ContentTypeHeaderSet()
         {
             var headers = new Dictionary<string, string> { { "Content-Type", "application/json" } };
 
@@ -84,7 +84,7 @@ namespace MbDotNet.Tests.Models.Stubs
         }
 
         [TestMethod]
-        public void Returns_AddsResponse()
+        public void HttpStub_Returns_AddsResponse()
         {
             var expectedResponse = new IsResponse<HttpResponseFields>(new HttpResponseFields());
 
@@ -96,7 +96,7 @@ namespace MbDotNet.Tests.Models.Stubs
         }
 
         [TestMethod]
-        public void ReturnsBody_AddsResponse_StatusCodeSet()
+        public void HttpStub_ReturnsBody_AddsResponse_StatusCodeSet()
         {
             const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
 
@@ -109,7 +109,7 @@ namespace MbDotNet.Tests.Models.Stubs
         }
 
         [TestMethod]
-        public void ReturnsBody_AddsResponse_ResponseObjectSet()
+        public void HttpStub_ReturnsBody_AddsResponse_ResponseObjectSet()
         {
             const string expectedBody = "test";
 
@@ -122,7 +122,7 @@ namespace MbDotNet.Tests.Models.Stubs
         }
 
         [TestMethod]
-        public void ReturnsXml_AddsResponse_StatusCodeSet()
+        public void HttpStub_ReturnsXml_AddsResponse_StatusCodeSet()
         {
             const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
 
@@ -135,7 +135,7 @@ namespace MbDotNet.Tests.Models.Stubs
         }
 
         [TestMethod]
-        public void ReturnsXml_AddsResponse_ResponseObjectSerializedAndSet()
+        public void HttpStub_ReturnsXml_AddsResponse_ResponseObjectSerializedAndSet()
         {
             const string expectedResponseObject = "<string>Test Response</string>";
 
@@ -148,7 +148,7 @@ namespace MbDotNet.Tests.Models.Stubs
         }
 
         [TestMethod]
-        public void ReturnsXml_AddsResponse_DefaultsToUtf8Encoding()
+        public void HttpStub_ReturnsXml_AddsResponse_DefaultsToUtf8Encoding()
         {
             const string expectedEncoding = "utf-8";
 
@@ -161,7 +161,7 @@ namespace MbDotNet.Tests.Models.Stubs
         }
 
         [TestMethod]
-        public void ReturnsXmlWithEncoding_AddsResponse_WithSpecifiedEncoding()
+        public void HttpStub_ReturnsXmlWithEncoding_AddsResponse_WithSpecifiedEncoding()
         {
             const string expectedEncoding = "utf-16";
 
@@ -174,7 +174,7 @@ namespace MbDotNet.Tests.Models.Stubs
         }
 
         [TestMethod]
-        public void ReturnsXml_AddsResponse_ContentTypeHeaderSet()
+        public void HttpStub_ReturnsXml_AddsResponse_ContentTypeHeaderSet()
         {
             var headers = new Dictionary<string, string> { { "Content-Type", "application/xml" } };
 
@@ -187,7 +187,7 @@ namespace MbDotNet.Tests.Models.Stubs
         }
 
         [TestMethod]
-        public void OnPathEquals_AddsPredicate_PathSet()
+        public void HttpStub_OnPathEquals_AddsPredicate_PathSet()
         {
             const string expectedPath = "/test";
 
@@ -200,7 +200,7 @@ namespace MbDotNet.Tests.Models.Stubs
         }
 
         [TestMethod]
-        public void OnMethodEquals_AddsPredicate_MethodSet()
+        public void HttpStub_OnMethodEquals_AddsPredicate_MethodSet()
         {
             const Method expectedMethod = Method.Post;
 
@@ -213,7 +213,7 @@ namespace MbDotNet.Tests.Models.Stubs
         }
 
         [TestMethod]
-        public void OnPathAndMethodEqual_AddsPredicate_PathSet()
+        public void HttpStub_OnPathAndMethodEqual_AddsPredicate_PathSet()
         {
             const string expectedPath = "/test";
 
@@ -226,7 +226,7 @@ namespace MbDotNet.Tests.Models.Stubs
         }
 
         [TestMethod]
-        public void OnPathAndMethodEqual_AddsPredicate_MethodSet()
+        public void HttpStub_OnPathAndMethodEqual_AddsPredicate_MethodSet()
         {
             const Method expectedMethod = Method.Post;
 
@@ -239,7 +239,7 @@ namespace MbDotNet.Tests.Models.Stubs
         }
 
         [TestMethod]
-        public void On_AddsPredicate()
+        public void HttpStub_On_AddsPredicate()
         {
             var expectedPredicate = new EqualsPredicate<HttpPredicateFields>(new HttpPredicateFields());
 

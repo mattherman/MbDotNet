@@ -12,21 +12,21 @@ namespace MbDotNet.Tests.Models.Stubs
     public class TcpStubTests
     {
         [TestMethod]
-        public void Constructor_InitializesResponsesCollection()
+        public void TcpStub_Constructor_InitializesResponsesCollection()
         {
             var stub = new TcpStub();
             Assert.IsNotNull(stub.Responses);
         }
 
         [TestMethod]
-        public void Constructor_InitializesPredicatesCollection()
+        public void TcpStub_Constructor_InitializesPredicatesCollection()
         {
             var stub = new TcpStub();
             Assert.IsNotNull(stub.Predicates);
         }
 
         [TestMethod]
-        public void ReturnsData_AddsResponse_DataSet()
+        public void TcpStub_ReturnsData_AddsResponse_DataSet()
         {
             const string expectedData = "TestData";
 
@@ -39,7 +39,7 @@ namespace MbDotNet.Tests.Models.Stubs
         }
 
         [TestMethod]
-        public void Returns_AddsResponse_SetsFields()
+        public void TcpStub_Returns_AddsResponse_SetsFields()
         {
             var expectedFields = new TcpResponseFields
             {
@@ -55,7 +55,7 @@ namespace MbDotNet.Tests.Models.Stubs
         }
 
         [TestMethod]
-        public void OnDataEquals_AddsPredicate_DataSet()
+        public void TcpStub_OnDataEquals_AddsPredicate_DataSet()
         {
             const string expectedData = "TestData";
 
@@ -68,7 +68,7 @@ namespace MbDotNet.Tests.Models.Stubs
         }
 
         [TestMethod]
-        public void On_AddsPredicate_SetsFields()
+        public void TcpStub_On_AddsPredicate_SetsFields()
         {
             var expectedFields = new TcpPredicateFields
             {

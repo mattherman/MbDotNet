@@ -8,7 +8,7 @@ namespace MbDotNet.Tests.Client
     public class CreateTcpImposterTests : MountebankClientTestBase
     {
         [TestMethod]
-        public void WithoutName_SetsNameToNull()
+        public void TcpImposter_WithoutName_SetsNameToNull()
         {
             var imposter = Client.CreateTcpImposter(123);
 
@@ -17,7 +17,7 @@ namespace MbDotNet.Tests.Client
         }
 
         [TestMethod]
-        public void WithName_SetsName()
+        public void TcpImposter_WithName_SetsName()
         {
             const string expectedName = "Service";
 
@@ -28,7 +28,7 @@ namespace MbDotNet.Tests.Client
         }
 
         [TestMethod]
-        public void WithoutMode_SetsModeToText()
+        public void TcpImposter_WithoutMode_SetsModeToText()
         {
             const string expectedMode = "text";
 
@@ -39,7 +39,7 @@ namespace MbDotNet.Tests.Client
         }
 
         [TestMethod]
-        public void WithMode_SetsMode()
+        public void TcpImposter_WithMode_SetsMode()
         {
             const string expectedMode = "binary";
 
@@ -50,14 +50,14 @@ namespace MbDotNet.Tests.Client
         }
 
         [TestMethod]
-        public void ShouldNotAddNewImposterToCollection()
+        public void TcpImposter_ShouldNotAddNewImposterToCollection()
         {
             Client.CreateTcpImposter(123);
             Assert.AreEqual(0, this.Client.Imposters.Count);
         }
 
         [TestMethod]
-        public void WithoutPortAndName_SetsPortAndNameToNull()
+        public void TcpImposter_WithoutPortAndName_SetsPortAndNameToNull()
         {
             var imposter = Client.CreateTcpImposter();
 

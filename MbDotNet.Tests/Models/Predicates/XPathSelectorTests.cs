@@ -8,7 +8,7 @@ namespace MbDotNet.Tests.Models.Predicates
     public class XPathSelectorTests
     {
         [TestMethod]
-        public void Constructor_SetsSelector()
+        public void XPathSelector_Constructor_SetsSelector()
         {
             const string expectedSelector = "//Test";
 
@@ -17,7 +17,7 @@ namespace MbDotNet.Tests.Models.Predicates
         }
 
         [TestMethod]
-        public void Constructor_WithNamespace_SetsSelector()
+        public void XPathSelector_Constructor_WithNamespace_SetsSelector()
         {
             const string expectedSelector = "//Test";
 
@@ -26,7 +26,7 @@ namespace MbDotNet.Tests.Models.Predicates
         }
 
         [TestMethod]
-        public void Constructor_WithNamespace_SetsNamespaceDictionary()
+        public void XPathSelector_Constructor_WithNamespace_SetsNamespaceDictionary()
         {
             var namespaces = new Dictionary<string, string> {{"isbn", "http://xmlnamespaces.org/isbn"}};
 

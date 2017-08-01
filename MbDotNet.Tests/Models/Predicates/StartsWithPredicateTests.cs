@@ -7,7 +7,7 @@ namespace MbDotNet.Tests.Models.Predicates
     public class StartsWithPredicateTests : PredicateTestBase
     {
         [TestMethod]
-        public void Constructor_SetsFieldObject()
+        public void StartsWithPredicate_Constructor_SetsFieldObject()
         {
             var expectedFields = new TestPredicateFields();
             var predicate = new StartsWithPredicate<TestPredicateFields>(expectedFields);
@@ -15,7 +15,7 @@ namespace MbDotNet.Tests.Models.Predicates
         }
 
         [TestMethod]
-        public void Constructor_SetsCaseSensitivity()
+        public void StartsWithPredicate_Constructor_SetsCaseSensitivity()
         {
             var fields = new TestPredicateFields();
             var predicate = new StartsWithPredicate<TestPredicateFields>(fields, true, null, null);
@@ -23,7 +23,7 @@ namespace MbDotNet.Tests.Models.Predicates
         }
 
         [TestMethod]
-        public void Constructor_SetsExceptExpression()
+        public void StartsWithPredicate_Constructor_SetsExceptExpression()
         {
             const string expectedExceptRegex = "!$";
 
@@ -33,7 +33,7 @@ namespace MbDotNet.Tests.Models.Predicates
         }
 
         [TestMethod]
-        public void Constructor_SetsXpathSelector()
+        public void StartsWithPredicate_Constructor_SetsXpathSelector()
         {
             var expectedXPathSelector = new XPathSelector("!$");
 

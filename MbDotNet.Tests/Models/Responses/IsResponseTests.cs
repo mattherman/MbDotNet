@@ -10,7 +10,7 @@ namespace MbDotNet.Tests.Models.Responses
         private class TestResponseFields : ResponseFields { }
 
         [TestMethod]
-        public void Constructor_SetsStatusCode()
+        public void TestResponse_Constructor_SetsStatusCode()
         {
             var expectedFields = new TestResponseFields();
             var response = new IsResponse<TestResponseFields>(expectedFields);
