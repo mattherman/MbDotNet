@@ -1,6 +1,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/q5rn71ncmimgg3y3?svg=true)](https://ci.appveyor.com/project/mattherman/mbdotnet)
 
 # MbDotNet
+
 A .NET client library for interacting with mountebank (www.mbtest.org). This project aims to reduce the amount of mountebank knowledge required in order to create usable stubs.
 
 A simple example:
@@ -15,13 +16,13 @@ The project currently targets .NET Standard 1.3, which is compatible with .NET F
 
 To get started, see [Usage Examples (v4)](https://github.com/mattherman/MbDotNet/wiki/Usage-Examples-%28v4%29).
 
-## NuGet Package ##
+## NuGet Package
 
 The library is available for install as a NuGet package.
 
 https://www.nuget.org/packages/MbDotNet
 
-## Unsupported Functionality ##
+## Unsupported Functionality
 
 The following Mountebank functionality is not yet supported:
 - SMTP imposters
@@ -30,3 +31,39 @@ The following Mountebank functionality is not yet supported:
 - The "exists", "or", "and", and "inject" predicates
 
 Pull requests are always welcome.
+
+## Development
+
+### Prerequisites
+
+The following items are necessary in order to build/test the project:
+* .NET Core SDK 2.0
+* .NET Core Runtime 2.0
+* Mountebank
+
+### Building
+
+To build the project, run the following from the root directory:
+```
+dotnet build
+```
+
+### Testing
+
+To run unit tests, run the following from the root directory:
+```
+dotnet test ./MbDotNet.Tests/MbDotNet.Tests.csproj
+```
+
+The solution also includes a set of acceptance tests that run
+against an actual mountebank instance. Additional instructions for
+running mountebank can be found in the README file in that project.
+
+In order to run the acceptance tests, run the following command from
+the root directory:
+
+```
+dotnet run --project ./MbDotNet.Acceptance.Tests
+```
+
+An exit code of zero specifies the tests have succeeded.
