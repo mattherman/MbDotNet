@@ -1,43 +1,50 @@
 ﻿using System;
+using MbDotNet;
+using System.Collections.Generic;
 
 namespace MbDotNet.Acceptance.Tests
 {
     public class Program
     {
-        public static MountebankClient Client { get; set; }
+        private static int _passed = 0;
+        private static int _failed = 0;
+        private static int _skipped = 0;
 
         public static void Main()
         {
-            SetupTestEnvironment();
+            var tests = new List<Type>
+            {
+                typeof(AcceptanceTests.CanNotGetImposterThatDoesNotExist),
+                typeof(AcceptanceTests.CanCreateAndGetHttpImposter),
+                typeof(AcceptanceTests.CanCreateAndGetHttpsImposter),
+                typeof(AcceptanceTests.CanCreateAndGetTcpImposter),
+                typeof(AcceptanceTests.CanDeleteImposter),
+                typeof(AcceptanceTests.CanVerifyCallsOnImposter),
+                typeof(AcceptanceTests.CanCreateAndGetHttpImposterWithNoPort)
+            };
 
-            int resultCode = RunAcceptanceTests();
+            var runner = new AcceptanceTestRunner(tests, OnTestPassing, OnTestFailing, OnTestSkipped);
+            runner.Execute();
 
-            Environment.Exit(resultCode);
+            Console.WriteLine("\nFINISHED {0} passed, {1} failed, {2} skipped", _passed, _failed, _skipped);
         }
 
-        private static int RunAcceptanceTests()
+        public static void OnTestPassing(string testName, long elapsed)
         {
-            try
-            {
-                AcceptanceTest.CanNotGetImposterThatDoesNotExist(Client);
-                AcceptanceTest.CanCreateAndGetHttpImposter(Client);
-                AcceptanceTest.CanCreateAndGetHttpsImposter(Client);
-                AcceptanceTest.CanCreateAndGetTcpImposter(Client);
-                AcceptanceTest.CanDeleteImposter(Client);
-                AcceptanceTest.CanVerifyCallsOnImposter(Client);
-                AcceptanceTest.CanCreateAndGetHttpImposterWithNoPort(Client);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-                return -1;
-            }
-            return 0;
+            Console.WriteLine("PASS {0} ({1}ms)", testName, elapsed);
+            _passed++;
         }
 
-        private static void SetupTestEnvironment()
+        public static void OnTestFailing(string testName, long elapsed, Exception ex)
         {
-            Client = new MountebankClient();
+            Console.WriteLine("FAIL {0} ({1}ms)\n\t=> {2}", testName, elapsed, ex.Message);
+            _failed++;
+        }
+
+        public static void OnTestSkipped(string testName, string reason)
+        {
+            Console.WriteLine("SKIP {0} [{1}]", testName, reason);
+            _skipped++;
         }
     }
 }

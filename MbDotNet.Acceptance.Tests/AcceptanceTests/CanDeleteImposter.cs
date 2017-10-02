@@ -3,17 +3,11 @@ using MbDotNet.Exceptions;
 
 namespace MbDotNet.Acceptance.Tests.AcceptanceTests
 {
-    internal class CanDeleteImposter
+    internal class CanDeleteImposter : AcceptanceTest
     {
-        private readonly MountebankClient _client;
         private const int ImposterPort = 6001;
 
-        public CanDeleteImposter(MountebankClient client)
-        {
-            _client = client;
-        }
-
-        public void Run()
+        public override void Run()
         {
             DeleteImposter();
             CreateImposter();

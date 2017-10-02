@@ -3,19 +3,12 @@ using MbDotNet.Models.Imposters;
 
 namespace MbDotNet.Acceptance.Tests.AcceptanceTests
 {
-    public class CanCreateAndGetTcpImposter
+    internal class CanCreateAndGetTcpImposter : AcceptanceTest
     {
-        private readonly MountebankClient _client;
         private const int ImposterPort = 6000;
         private RetrievedTcpImposter _retrievedImposter;
 
-        public CanCreateAndGetTcpImposter(MountebankClient client)
-        {
-            _client = client;
-
-        }
-
-        public void Run()
+        public override void Run()
         {
             DeleteAllImposters();
             CreateImposter();
