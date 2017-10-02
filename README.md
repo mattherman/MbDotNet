@@ -65,5 +65,3 @@ the root directory:
 ```
 dotnet run --project ./MbDotNet.Acceptance.Tests
 ```
-
-An exit code of zero specifies the tests have succeeded.
