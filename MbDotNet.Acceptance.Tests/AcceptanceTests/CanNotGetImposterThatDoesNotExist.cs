@@ -5,19 +5,13 @@ using MbDotNet.Models.Imposters;
 
 namespace MbDotNet.Acceptance.Tests.AcceptanceTests
 {
-    internal class CanNotGetImposterThatDoesNotExist
+    internal class CanNotGetImposterThatDoesNotExist : AcceptanceTest
     {
-        private readonly MountebankClient _client;
         private RetrievedHttpImposter _retrievedImposter;
         private Exception _getImposterException;
         private const int NonExistentImposterPort = 9000;
 
-        public CanNotGetImposterThatDoesNotExist(MountebankClient client)
-        {
-            _client = client;
-        }
-
-        public void Run()
+        public override void Run()
         {
             GetNonExistentImposter();
 

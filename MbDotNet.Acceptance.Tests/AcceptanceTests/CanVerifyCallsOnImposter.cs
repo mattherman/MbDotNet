@@ -8,25 +8,20 @@ using System.Text;
 
 namespace MbDotNet.Acceptance.Tests.AcceptanceTests
 {
-    internal class CanVerifyCallsOnImposter
+    internal class CanVerifyCallsOnImposter : AcceptanceTest
     {
-        private readonly MountebankClient _client;
         private HttpImposter _imposter;
         private RetrievedHttpImposter _retrievedImposter;
         private const int ImposterPort = 6000;
         
-        public CanVerifyCallsOnImposter(MountebankClient client)
-        {
-            _client = client;
-        }
-
-        public void Run()
+        public override void Run()
         {
             DeleteAllImposters();
             CreateImposter();
             CallImposter();
             VerifyImposterWasCalled();
         }
+
         private void VerifyImposterWasCalled()
         {
             _retrievedImposter = _client.GetHttpImposter(ImposterPort);
