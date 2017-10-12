@@ -344,6 +344,59 @@ namespace MbDotNet.Tests
 
             _client.Submit(imposter);
         }
+
+        /// <summary>
+        /// This test shows how to setup the imposter in the or predicate example
+        /// at http://www.mbtest.org/docs/api/predicates.
+        /// </summary>
+        //[TestMethod]
+        public void OrPredicateExample()
+        {
+            var imposter = _client.CreateTcpImposter(4553, "OrPredicateExample");
+
+            var startsWithFields = new TcpPredicateFields { Data = "start" };
+            var startsWith = new StartsWithPredicate<TcpPredicateFields>(startsWithFields); 
+
+            var endsWithFields = new TcpPredicateFields { Data = "end\n" };
+            var endsWith = new EndsWithPredicate<TcpPredicateFields>(endsWithFields);
+
+            var containsFields = new TcpPredicateFields { Data = "middle" };
+            var contains = new ContainsPredicate<TcpPredicateFields>(containsFields);
+
+            var predicate = new OrPredicate(new List<PredicateBase> { startsWith, endsWith, contains });
+
+            imposter.AddStub().On(predicate)
+                .ReturnsData("matches");
+
+            _client.Submit(imposter);
+        }
+
+        /// <summary>
+        /// This test shows how to setup the imposter in the and predicate example
+        /// at http://www.mbtest.org/docs/api/predicates.
+        /// </summary>
+        //[TestMethod]
+        public void AndPredicateExample()
+        {
+            var imposter = _client.CreateTcpImposter(4554, "AndPredicateExample");
+
+            var startsWithFields = new TcpPredicateFields { Data = "start" };
+            var startsWith = new StartsWithPredicate<TcpPredicateFields>(startsWithFields); 
+
+            var endsWithFields = new TcpPredicateFields { Data = "end\n" };
+            var endsWith = new EndsWithPredicate<TcpPredicateFields>(endsWithFields);
+
+            var containsFields = new TcpPredicateFields { Data = "middle" };
+            var contains = new ContainsPredicate<TcpPredicateFields>(containsFields);
+
+            var predicate = new AndPredicate(new List<PredicateBase> { startsWith, endsWith, contains });
+
+            imposter.AddStub().On(predicate)
+                .ReturnsData("matches");
+
+            _client.Submit(imposter);
+        }
+ 
     }
 
     public class Customer
