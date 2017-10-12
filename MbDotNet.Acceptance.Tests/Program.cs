@@ -27,6 +27,12 @@ namespace MbDotNet.Acceptance.Tests
             runner.Execute();
 
             Console.WriteLine("\nFINISHED {0} passed, {1} failed, {2} skipped", _passed, _failed, _skipped);
+
+            // Return an exit code of 1 if any tests failed
+            if (_failed > 0)
+            {
+                Environment.Exit(1);
+            }
         }
 
         public static void OnTestPassing(string testName, long elapsed)
