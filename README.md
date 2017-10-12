@@ -28,7 +28,7 @@ The following Mountebank functionality is not yet supported:
 - SMTP imposters
 - Stub behaviors
 - All response types other than "is"
-- The "exists", "or", "and", and "inject" predicates
+- The "exists" and "inject" predicates
 
 Pull requests are always welcome.
 
