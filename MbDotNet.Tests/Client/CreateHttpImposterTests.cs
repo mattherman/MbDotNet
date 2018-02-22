@@ -1,4 +1,9 @@
+using MbDotNet.Models.Predicates;
+using MbDotNet.Models.Predicates.Fields;
+using MbDotNet.Models.Responses;
+using MbDotNet.Models.Responses.Fields;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 
 namespace MbDotNet.Tests.Client
 {
@@ -41,5 +46,7 @@ namespace MbDotNet.Tests.Client
             Assert.AreEqual(default(int), imposter.Port);
             Assert.IsNull(imposter.Name);
         }
+
+       
     }
 }
