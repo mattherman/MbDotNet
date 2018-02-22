@@ -24,6 +24,12 @@ namespace MbDotNet.Models.Imposters
         [JsonProperty("name")]
         public string Name { get; private set; }
 
+        /// <summary>
+        /// Adds mock verification support by remembering the requests made to this imposter. Note that this represents a memory leak for any long running mb process, as requests are never forgotten.
+        /// </summary>
+        [JsonProperty("recordRequests")]
+        public bool RecordRequests { get; set; }
+
         internal void SetDynamicPort(int port)
         {
             if (Port != default(int))

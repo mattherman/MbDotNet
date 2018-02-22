@@ -8,6 +8,7 @@ using MbDotNet.Models.Predicates;
 using MbDotNet.Models.Predicates.Fields;
 using MbDotNet.Models.Responses;
 using MbDotNet.Models.Responses.Fields;
+using System;
 
 namespace MbDotNet.Models.Stubs
 {
@@ -127,9 +128,32 @@ namespace MbDotNet.Models.Stubs
         }
 
         /// <summary>
+        /// Adds a proxy to the stub with the specified content type
+        /// </summary>
+        /// <param name="to">endpoint address to proxy to</param>
+        /// <param name="proxyMode">proxyalways, proxyonce or proxytransparent</param>
+        /// <param name="predicateGenerators">list of predicates that a proxy repsonse will be recorded for</param>
+        /// <returns></returns>
+        public HttpStub Returns(Uri to, ProxyMode proxyMode, List<PredicateBase> predicateGenerators)
+        {
+
+            var fields = new ProxyResponseFields
+            {
+                To = to,
+                Mode = proxyMode,
+                PredicateGenerators = predicateGenerators
+            };
+
+            var response = new ProxyResponse<ProxyResponseFields>(fields);
+
+            return Returns(response);
+        }
+
+        /// <summary>
         /// Adds a response to the stub.
         /// </summary>
-        /// <param name="response">The response object designating what the stub will return</param>
+        /// <param name="response"
+        /// >The response object designating what the stub will return</param>
         /// <returns>The stub that the response was added to</returns>
         public HttpStub Returns(ResponseBase response)
         {
