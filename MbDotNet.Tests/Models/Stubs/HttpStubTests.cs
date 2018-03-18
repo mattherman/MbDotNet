@@ -259,7 +259,7 @@ namespace MbDotNet.Tests.Models.Stubs
                 Path = "/aTestPath"
             });
 
-            var proxyGeneratorPredicate = new MatchesPredicate<PredicateGeneratorFields>(new PredicateGeneratorFields
+            var proxyGeneratorPredicate = new MatchesPredicate<HttpPredicateGeneratorFields>(new HttpPredicateGeneratorFields
             {
                 Path = true,
                 Method = true,
@@ -271,13 +271,13 @@ namespace MbDotNet.Tests.Models.Stubs
 
             var stub = new HttpStub();
             stub.On(predicateInvokingProxyStub)
-                .Returns(proxyToUrl, proxyModeToUse, new List<PredicateBase>() { proxyGeneratorPredicate });
+                .ReturnsProxy(proxyToUrl, proxyModeToUse, new []{ proxyGeneratorPredicate });
 
-            var proxyRepsonse = stub.Responses.First() as ProxyResponse<ProxyResponseFields>;
+            var proxyResponse = stub.Responses.First() as ProxyResponse<HttpProxyResponseFields>;
 
-            Assert.AreEqual(proxyToUrl, proxyRepsonse.Fields.To);
-            Assert.AreEqual(proxyModeToUse, proxyRepsonse.Fields.Mode);
-            Assert.AreEqual(proxyGeneratorPredicate, proxyRepsonse.Fields.PredicateGenerators.First());
+            Assert.AreEqual(proxyToUrl, proxyResponse.Fields.To);
+            Assert.AreEqual(proxyModeToUse, proxyResponse.Fields.Mode);
+            Assert.AreEqual(proxyGeneratorPredicate, proxyResponse.Fields.PredicateGenerators.First());
         }
     }
 }

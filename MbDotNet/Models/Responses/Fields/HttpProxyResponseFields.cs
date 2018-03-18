@@ -5,10 +5,11 @@ using System;
 using MbDotNet.Enums;
 using MbDotNet.Models.Predicates;
 using Newtonsoft.Json.Converters;
+using MbDotNet.Models.Predicates.Fields;
 
 namespace MbDotNet.Models.Responses.Fields
 {
-    public class ProxyResponseFields : ResponseFields
+    public class HttpProxyResponseFields : ResponseFields
     {
         [JsonProperty("to", NullValueHandling = NullValueHandling.Ignore)]
         public Uri To { get; set; }
@@ -18,6 +19,6 @@ namespace MbDotNet.Models.Responses.Fields
         public ProxyMode Mode { get; set; }
 
         [JsonProperty("predicateGenerators", NullValueHandling = NullValueHandling.Ignore)]
-        public List<PredicateBase> PredicateGenerators { get; set; } 
+        public IList<MatchesPredicate<HttpPredicateGeneratorFields>> PredicateGenerators { get; set; } 
     }
 }

@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace MbDotNet.Models.Predicates.Fields
 {
-    public class PredicateGeneratorFields : PredicateFields
+    public class HttpPredicateGeneratorFields : PredicateFields
     {
         /// <summary>
         /// The path of the request, without the querystring

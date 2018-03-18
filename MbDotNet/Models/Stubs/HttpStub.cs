@@ -134,17 +134,16 @@ namespace MbDotNet.Models.Stubs
         /// <param name="proxyMode">proxyalways, proxyonce or proxytransparent</param>
         /// <param name="predicateGenerators">list of predicates that a proxy repsonse will be recorded for</param>
         /// <returns></returns>
-        public HttpStub Returns(Uri to, ProxyMode proxyMode, List<PredicateBase> predicateGenerators)
+        public HttpStub ReturnsProxy(Uri to, ProxyMode proxyMode, IList<MatchesPredicate<HttpPredicateGeneratorFields>> predicateGenerators)
         {
-
-            var fields = new ProxyResponseFields
+            var fields = new HttpProxyResponseFields
             {
                 To = to,
                 Mode = proxyMode,
                 PredicateGenerators = predicateGenerators
             };
 
-            var response = new ProxyResponse<ProxyResponseFields>(fields);
+            var response = new ProxyResponse<HttpProxyResponseFields>(fields);
 
             return Returns(response);
         }
