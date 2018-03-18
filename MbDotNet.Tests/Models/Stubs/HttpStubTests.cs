@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -248,6 +249,35 @@ namespace MbDotNet.Tests.Models.Stubs
 
             var predicate = stub.Predicates.First() as EqualsPredicate<HttpPredicateFields>;
             Assert.AreEqual(expectedPredicate, predicate);
+        }
+
+        [TestMethod]
+        public void HttpStub_On_ReturnsProxyStub()
+        {            
+            var predicateInvokingProxyStub = new ContainsPredicate<HttpPredicateFields>(new HttpPredicateFields
+            {
+                Path = "/aTestPath"
+            });
+
+            var proxyGeneratorPredicate = new MatchesPredicate<PredicateGeneratorFields>(new PredicateGeneratorFields
+            {
+                Path = true,
+                Method = true,
+                QueryParameters = true
+            });
+
+            var proxyToUrl = new Uri("http://someTestDestination.com");
+            var proxyModeToUse = ProxyMode.ProxyTransparent;
+
+            var stub = new HttpStub();
+            stub.On(predicateInvokingProxyStub)
+                .Returns(proxyToUrl, proxyModeToUse, new List<PredicateBase>() { proxyGeneratorPredicate });
+
+            var proxyRepsonse = stub.Responses.First() as ProxyResponse<ProxyResponseFields>;
+
+            Assert.AreEqual(proxyToUrl, proxyRepsonse.Fields.To);
+            Assert.AreEqual(proxyModeToUse, proxyRepsonse.Fields.Mode);
+            Assert.AreEqual(proxyGeneratorPredicate, proxyRepsonse.Fields.PredicateGenerators.First());
         }
     }
 }
