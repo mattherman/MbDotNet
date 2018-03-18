@@ -128,22 +128,43 @@ namespace MbDotNet.Models.Stubs
         }
 
         /// <summary>
-        /// Adds a proxy to the stub with the specified content type
+        /// Adds a proxy to the stub with predicate generators containing specific values
         /// </summary>
         /// <param name="to">endpoint address to proxy to</param>
         /// <param name="proxyMode">proxyalways, proxyonce or proxytransparent</param>
         /// <param name="predicateGenerators">list of predicates that a proxy repsonse will be recorded for</param>
         /// <returns></returns>
-        public HttpStub ReturnsProxy(Uri to, ProxyMode proxyMode, IList<MatchesPredicate<HttpPredicateGeneratorFields>> predicateGenerators)
+        public HttpStub ReturnsProxy(Uri to, ProxyMode proxyMode, IList<MatchesPredicate<HttpPredicateFields>> predicateGenerators)
         {
-            var fields = new HttpProxyResponseFields
+            var fields = new ProxyResponseFields<HttpPredicateFields>
             {
                 To = to,
                 Mode = proxyMode,
                 PredicateGenerators = predicateGenerators
             };
 
-            var response = new ProxyResponse<HttpProxyResponseFields>(fields);
+            var response = new ProxyResponse<ProxyResponseFields<HttpPredicateFields>>(fields);
+
+            return Returns(response);
+        }
+
+        /// <summary>
+        /// Adds a proxy to the stub with predicate generators containing booleans
+        /// </summary>
+        /// <param name="to">endpoint address to proxy to</param>
+        /// <param name="proxyMode">proxyalways, proxyonce or proxytransparent</param>
+        /// <param name="predicateGenerators">list of predicates that a proxy repsonse will be recorded for</param>
+        /// <returns></returns>
+        public HttpStub ReturnsProxy(Uri to, ProxyMode proxyMode, IList<MatchesPredicate<HttpBooleanPredicateFields>> predicateGenerators)
+        {
+            var fields = new ProxyResponseFields<HttpBooleanPredicateFields>
+            {
+                To = to,
+                Mode = proxyMode,
+                PredicateGenerators = predicateGenerators
+            };
+
+            var response = new ProxyResponse<ProxyResponseFields<HttpBooleanPredicateFields>>(fields);
 
             return Returns(response);
         }

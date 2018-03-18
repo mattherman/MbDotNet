@@ -3,7 +3,7 @@ using MbDotNet.Models.Predicates.Fields;
 
 namespace MbDotNet.Models.Predicates
 {
-    public class EqualsPredicate<T> : PredicateBase where T : PredicateFields, new()
+    public class EqualsPredicate<T> : PredicateBase where T : PredicateFields
     {
         [JsonProperty("equals")]
         public T Fields { get; private set; }

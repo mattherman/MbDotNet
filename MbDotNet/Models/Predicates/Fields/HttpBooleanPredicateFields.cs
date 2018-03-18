@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace MbDotNet.Models.Predicates.Fields
 {
-    public class HttpPredicateGeneratorFields : PredicateFields
+    public class HttpBooleanPredicateFields : PredicateFields
     {
         /// <summary>
         /// The path of the request, without the querystring
@@ -18,13 +18,10 @@ namespace MbDotNet.Models.Predicates.Fields
         [JsonProperty("body", NullValueHandling = NullValueHandling.Ignore)]
         public bool? RequestBody { get; set; }
 
-        [JsonProperty("method", NullValueHandling = NullValueHandling.Ignore)]
-        private bool? RawMethod => Method;
-
         /// <summary>
         /// The request method
         /// </summary>
-        [JsonIgnore]
+        [JsonProperty("method", NullValueHandling = NullValueHandling.Ignore)]
         public bool? Method { get; set; }
 
         /// <summary>

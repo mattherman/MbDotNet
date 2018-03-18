@@ -252,14 +252,14 @@ namespace MbDotNet.Tests.Models.Stubs
         }
 
         [TestMethod]
-        public void HttpStub_On_ReturnsProxyStub()
+        public void HttpStub_ReturnsProxy_ReturnsHttpBooleanProxyStub()
         {            
             var predicateInvokingProxyStub = new ContainsPredicate<HttpPredicateFields>(new HttpPredicateFields
             {
                 Path = "/aTestPath"
             });
 
-            var proxyGeneratorPredicate = new MatchesPredicate<HttpPredicateGeneratorFields>(new HttpPredicateGeneratorFields
+            var proxyGeneratorPredicate = new MatchesPredicate<HttpBooleanPredicateFields>(new HttpBooleanPredicateFields
             {
                 Path = true,
                 Method = true,
@@ -273,7 +273,36 @@ namespace MbDotNet.Tests.Models.Stubs
             stub.On(predicateInvokingProxyStub)
                 .ReturnsProxy(proxyToUrl, proxyModeToUse, new []{ proxyGeneratorPredicate });
 
-            var proxyResponse = stub.Responses.First() as ProxyResponse<HttpProxyResponseFields>;
+            var proxyResponse = stub.Responses.First() as ProxyResponse<ProxyResponseFields<HttpBooleanPredicateFields>>;
+
+            Assert.AreEqual(proxyToUrl, proxyResponse.Fields.To);
+            Assert.AreEqual(proxyModeToUse, proxyResponse.Fields.Mode);
+            Assert.AreEqual(proxyGeneratorPredicate, proxyResponse.Fields.PredicateGenerators.First());
+        }
+
+        [TestMethod]
+        public void HttpStub_ReturnsProxy_ReturnsHttpProxyStub()
+        {            
+            var predicateInvokingProxyStub = new ContainsPredicate<HttpPredicateFields>(new HttpPredicateFields
+            {
+                Path = "/aTestPath"
+            });
+
+            var proxyGeneratorPredicate = new MatchesPredicate<HttpPredicateFields>(new HttpPredicateFields
+            {
+                Path = "/aTestPath",
+                Method = Method.Get,
+                QueryParameters = new Dictionary<string, string> { { "q", "value" }}
+            });
+
+            var proxyToUrl = new Uri("http://someTestDestination.com");
+            var proxyModeToUse = ProxyMode.ProxyTransparent;
+
+            var stub = new HttpStub();
+            stub.On(predicateInvokingProxyStub)
+                .ReturnsProxy(proxyToUrl, proxyModeToUse, new []{ proxyGeneratorPredicate });
+
+            var proxyResponse = stub.Responses.First() as ProxyResponse<ProxyResponseFields<HttpPredicateFields>>;
 
             Assert.AreEqual(proxyToUrl, proxyResponse.Fields.To);
             Assert.AreEqual(proxyModeToUse, proxyResponse.Fields.Mode);

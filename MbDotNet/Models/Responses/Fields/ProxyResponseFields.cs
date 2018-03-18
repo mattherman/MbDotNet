@@ -9,7 +9,7 @@ using MbDotNet.Models.Predicates.Fields;
 
 namespace MbDotNet.Models.Responses.Fields
 {
-    public class HttpProxyResponseFields : ResponseFields
+    public class ProxyResponseFields<T> : ResponseFields where T: PredicateFields
     {
         [JsonProperty("to", NullValueHandling = NullValueHandling.Ignore)]
         public Uri To { get; set; }
@@ -19,6 +19,6 @@ namespace MbDotNet.Models.Responses.Fields
         public ProxyMode Mode { get; set; }
 
         [JsonProperty("predicateGenerators", NullValueHandling = NullValueHandling.Ignore)]
-        public IList<MatchesPredicate<HttpPredicateGeneratorFields>> PredicateGenerators { get; set; } 
+        public IList<MatchesPredicate<T>> PredicateGenerators { get; set; } 
     }
 }
