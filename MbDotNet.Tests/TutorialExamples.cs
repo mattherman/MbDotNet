@@ -20,8 +20,6 @@ namespace MbDotNet.Tests
     /// would like to try them out, start mountebank on your local machine,
     /// uncomment the [TestMethod] annotations, and run them like any of the
     /// other unit tests.
-    /// 
-    /// TODO: Create actual integration tests (SpecFlow?)
     /// </summary>
     [TestClass]
     public class TutorialExamples
