@@ -27,7 +27,7 @@ https://www.nuget.org/packages/MbDotNet
 The following Mountebank functionality is not yet supported:
 - SMTP imposters
 - Stub behaviors
-- All response types other than "is"
+- The "inject" response
 - The "exists" and "inject" predicates
 
 Pull requests are always welcome.
