@@ -99,7 +99,7 @@ namespace MbDotNet.Tests.Models.Stubs
                 Data = true
             });
 
-            var proxyToUrl = new Uri("http://someTestDestination.com");
+            var proxyToUrl = new Uri("tcp://someTestDestination.com");
             var proxyModeToUse = ProxyMode.ProxyTransparent;
 
             var stub = new TcpStub();
@@ -126,7 +126,7 @@ namespace MbDotNet.Tests.Models.Stubs
                 Data = "123345"
             });
 
-            var proxyToUrl = new Uri("http://someTestDestination.com");
+            var proxyToUrl = new Uri("tcp://someTestDestination.com");
             var proxyModeToUse = ProxyMode.ProxyTransparent;
 
             var stub = new TcpStub();
