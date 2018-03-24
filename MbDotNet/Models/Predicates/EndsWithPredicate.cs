@@ -3,7 +3,7 @@ using MbDotNet.Models.Predicates.Fields;
 
 namespace MbDotNet.Models.Predicates
 {
-    public class EndsWithPredicate<T> : PredicateBase where T : PredicateFields, new()
+    public class EndsWithPredicate<T> : PredicateBase where T : PredicateFields
     {
         [JsonProperty("endsWith")]
         public T Fields { get; private set; }

@@ -5,6 +5,8 @@ using MbDotNet.Models.Predicates.Fields;
 using MbDotNet.Models.Responses;
 using MbDotNet.Models.Responses.Fields;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MbDotNet.Enums;
+using System;
 
 namespace MbDotNet.Tests.Models.Stubs
 {
@@ -82,6 +84,60 @@ namespace MbDotNet.Tests.Models.Stubs
             var predicate = stub.Predicates.First() as EqualsPredicate<TcpPredicateFields>;
             Assert.IsNotNull(predicate);
             Assert.AreEqual(expectedFields, predicate.Fields);
+        }
+
+        [TestMethod]
+        public void TcpStub_ReturnsProxy_ReturnsTcpBooleanProxyStub()
+        {            
+            var predicateInvokingProxyStub = new ContainsPredicate<TcpPredicateFields>(new TcpPredicateFields
+            {
+                Data = "123345"
+            });
+
+            var proxyGeneratorPredicate = new MatchesPredicate<TcpBooleanPredicateFields>(new TcpBooleanPredicateFields
+            {
+                Data = true
+            });
+
+            var proxyToUrl = new Uri("tcp://someTestDestination.com");
+            var proxyModeToUse = ProxyMode.ProxyTransparent;
+
+            var stub = new TcpStub();
+            stub.On(predicateInvokingProxyStub)
+                .ReturnsProxy(proxyToUrl, proxyModeToUse, new []{ proxyGeneratorPredicate });
+
+            var proxyResponse = stub.Responses.First() as ProxyResponse<ProxyResponseFields<TcpBooleanPredicateFields>>;
+
+            Assert.AreEqual(proxyToUrl, proxyResponse.Fields.To);
+            Assert.AreEqual(proxyModeToUse, proxyResponse.Fields.Mode);
+            Assert.AreEqual(proxyGeneratorPredicate, proxyResponse.Fields.PredicateGenerators.First());
+        }
+
+        [TestMethod]
+        public void TcpStub_ReturnsProxy_ReturnsTcpProxyStub()
+        {            
+            var predicateInvokingProxyStub = new ContainsPredicate<TcpPredicateFields>(new TcpPredicateFields
+            {
+                Data = "123345"
+            });
+
+            var proxyGeneratorPredicate = new MatchesPredicate<TcpPredicateFields>(new TcpPredicateFields
+            {
+                Data = "123345"
+            });
+
+            var proxyToUrl = new Uri("tcp://someTestDestination.com");
+            var proxyModeToUse = ProxyMode.ProxyTransparent;
+
+            var stub = new TcpStub();
+            stub.On(predicateInvokingProxyStub)
+                .ReturnsProxy(proxyToUrl, proxyModeToUse, new []{ proxyGeneratorPredicate });
+
+            var proxyResponse = stub.Responses.First() as ProxyResponse<ProxyResponseFields<TcpPredicateFields>>;
+
+            Assert.AreEqual(proxyToUrl, proxyResponse.Fields.To);
+            Assert.AreEqual(proxyModeToUse, proxyResponse.Fields.Mode);
+            Assert.AreEqual(proxyGeneratorPredicate, proxyResponse.Fields.PredicateGenerators.First());
         }
     }
 }

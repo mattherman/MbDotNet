@@ -3,7 +3,7 @@ using MbDotNet.Models.Predicates.Fields;
 
 namespace MbDotNet.Models.Predicates
 {
-    public class ContainsPredicate<T> : PredicateBase where T : PredicateFields, new()
+    public class ContainsPredicate<T> : PredicateBase where T : PredicateFields
     {
         [JsonProperty("contains")]
         public T Fields { get; private set; }
