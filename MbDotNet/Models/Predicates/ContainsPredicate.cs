@@ -8,13 +8,9 @@ namespace MbDotNet.Models.Predicates
         [JsonProperty("contains")]
         public T Fields { get; private set; }
 
-        public ContainsPredicate(T fields)
-        {
-            Fields = fields;
-        }
-
-        public ContainsPredicate(T fields, bool isCaseSensitive, string exceptExpression, XPathSelector selector)
-            : base(isCaseSensitive, exceptExpression, selector)
+        public ContainsPredicate(T fields, bool isCaseSensitive = false, string exceptExpression = null, 
+                                    XPathSelector xpath = null, JsonPathSelector jsonpath = null)
+            : base(isCaseSensitive, exceptExpression, xpath, jsonpath)
         {
             Fields = fields;
         }
