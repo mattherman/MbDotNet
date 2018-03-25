@@ -4,25 +4,14 @@ using System.Threading.Tasks;
 
 namespace MbDotNet
 {
-    public class HttpClientWrapper : IHttpClientWrapper
+    internal class HttpClientWrapper : IHttpClientWrapper
     {
         private readonly HttpClient _client;
 
-        public HttpClientWrapper()
+        public HttpClientWrapper(Uri baseAddress)
         {
             _client = new HttpClient();
-        }
-
-        public Uri BaseAddress
-        {
-            get
-            {
-                return _client.BaseAddress;
-            }
-            set
-            {
-                _client.BaseAddress = value;
-            }
+            _client.BaseAddress = baseAddress;
         }
 
         public async Task<HttpResponseMessage> DeleteAsync(string resource)
