@@ -12,47 +12,50 @@ namespace MbDotNet
     {
         private const string DefaultMountebankUrl = "http://127.0.0.1:2525";
         private const string ImpostersResource = "imposters";
-        private readonly Uri _baseUri;
         private readonly IHttpClientWrapper _httpClient;
 
         public MountebankRequestProxy() : this(DefaultMountebankUrl) { }
 
-        public MountebankRequestProxy(string mountebankUrl) : this(new Uri(mountebankUrl)) { }
-
-        public MountebankRequestProxy(Uri baseAddress)
-        {
-            _baseUri = baseAddress;
-        }
+        public MountebankRequestProxy(string mountebankUrl) : this(new HttpClientWrapper(new Uri(mountebankUrl))) { }
 
         /// <summary>
         /// Internal constructor that allows injection of a client for
         /// testing purposes.
         /// </summary>
         /// <param name="httpClient">An injected client</param>
-        internal MountebankRequestProxy(IHttpClientWrapper httpClient) : this()
+        internal MountebankRequestProxy(IHttpClientWrapper httpClient)
         {
             _httpClient = httpClient;
         }
 
         public void DeleteAllImposters()
         {
-            var response = ExecuteDelete(ImpostersResource);
-            HandleResponse(response, HttpStatusCode.OK, "Failed to delete the imposters.");
+            using (var response = ExecuteDelete(ImpostersResource))
+            {
+                HandleResponse(response, HttpStatusCode.OK, "Failed to delete the imposters.");
+            }
+            
         }
 
         public void DeleteImposter(int port)
         {
-            var response = ExecuteDelete($"{ImpostersResource}/{port}");
-            HandleResponse(response, HttpStatusCode.OK, $"Failed to delete the imposter with port {port}.");
+            using (var response = ExecuteDelete($"{ImpostersResource}/{port}"))
+            {
+                HandleResponse(response, HttpStatusCode.OK, $"Failed to delete the imposter with port {port}.");
+            }
         }
 
         public void CreateImposter(Imposter imposter)
         {
             var json = JsonConvert.SerializeObject(imposter);
-            var response = ExecutePost(ImpostersResource, json);
-            HandleResponse(response, HttpStatusCode.Created,
-                $"Failed to create the imposter with port {imposter.Port} and protocol {imposter.Protocol}.");
-            HandleDynamicPort(response, imposter);
+
+            using (var response = ExecutePost(ImpostersResource, json))
+            {
+                HandleResponse(response, HttpStatusCode.Created,
+                    $"Failed to create the imposter with port {imposter.Port} and protocol {imposter.Protocol}.");
+                HandleDynamicPort(response, imposter);
+            }
+            
         }
 
         public RetrievedHttpImposter GetHttpImposter(int port)
@@ -72,42 +75,22 @@ namespace MbDotNet
 
         private T GetImposter<T>(int port)
         {
-            var response = ExecuteGet($"{ImpostersResource}/{port}");
-
-            HandleResponse(response, HttpStatusCode.OK, $"Failed to retrieve imposter with port {port}",
+            using (var response = ExecuteGet($"{ImpostersResource}/{port}")) 
+            {
+                HandleResponse(response, HttpStatusCode.OK, $"Failed to retrieve imposter with port {port}",
                 (message) => new ImposterNotFoundException(message));
 
-            var content = response.Content.ReadAsStringAsync().Result;
+                var content = response.Content.ReadAsStringAsync().Result;
 
-            return JsonConvert.DeserializeObject<T>(content);
-        }
-
-        private HttpResponseMessage ExecuteGet(string resource)
-        {
-            using (var client = GetClient())
-            {
-                client.BaseAddress = _baseUri;
-                return client.GetAsync(resource).Result;
+                return JsonConvert.DeserializeObject<T>(content);
             }
         }
 
-        private HttpResponseMessage ExecuteDelete(string resource)
-        {
-            using (var client = GetClient())
-            {
-                client.BaseAddress = _baseUri;
-                return client.DeleteAsync(resource).Result;
-            }
-        }
+        private HttpResponseMessage ExecuteGet(string resource) => _httpClient.GetAsync(resource).Result;
 
-        private HttpResponseMessage ExecutePost(string resource, string json)
-        {
-            using (var client = GetClient())
-            {
-                client.BaseAddress = _baseUri;
-                return client.PostAsync(resource, new StringContent(json)).Result;
-            }
-        }
+        private HttpResponseMessage ExecuteDelete(string resource) => _httpClient.DeleteAsync(resource).Result;
+
+        private HttpResponseMessage ExecutePost(string resource, string json) => _httpClient.PostAsync(resource, new StringContent(json)).Result;
 
         private void HandleResponse(HttpResponseMessage response, HttpStatusCode expectedStatusCode,
             string failureErrorMessage, Func<string, Exception> exceptionFactory = null)
@@ -139,11 +122,6 @@ namespace MbDotNet
                 }
 
             }
-        }
-
-        private IHttpClientWrapper GetClient()
-        {
-            return _httpClient ?? new HttpClientWrapper();
         }
     }
 }

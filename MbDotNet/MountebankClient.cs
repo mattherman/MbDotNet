@@ -13,9 +13,7 @@ namespace MbDotNet
         private readonly IRequestProxy _requestProxy;
 
         /// <summary>
-        /// A collection of all of the current imposters. The imposter in this
-        /// collection may or may not have been added to mountebank. See IImposter.PendingSubmission
-        /// for more information.
+        /// A collection of all of the submitted imposters.
         /// </summary>
         public ICollection<Imposter> Imposters { get; private set; }
 
