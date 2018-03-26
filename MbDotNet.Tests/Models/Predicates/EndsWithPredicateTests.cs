@@ -18,7 +18,7 @@ namespace MbDotNet.Tests.Models.Predicates
         public void EndsWithPredicate_Constructor_SetsCaseSensitivity()
         {
             var fields = new TestPredicateFields();
-            var predicate = new EndsWithPredicate<TestPredicateFields>(fields, true, null, null);
+            var predicate = new EndsWithPredicate<TestPredicateFields>(fields, isCaseSensitive: true);
             Assert.IsTrue(predicate.IsCaseSensitive);
         }
 
@@ -28,7 +28,7 @@ namespace MbDotNet.Tests.Models.Predicates
             const string expectedExceptRegex = "!$";
 
             var fields = new TestPredicateFields();
-            var predicate = new EndsWithPredicate<TestPredicateFields>(fields, false, expectedExceptRegex, null);
+            var predicate = new EndsWithPredicate<TestPredicateFields>(fields, exceptExpression: expectedExceptRegex);
             Assert.AreEqual(expectedExceptRegex, predicate.ExceptExpression);
         }
 
@@ -38,8 +38,18 @@ namespace MbDotNet.Tests.Models.Predicates
             var expectedXPathSelector = new XPathSelector("!$");
 
             var fields = new TestPredicateFields();
-            var predicate = new EndsWithPredicate<TestPredicateFields>(fields, false, null, expectedXPathSelector);
-            Assert.AreEqual(expectedXPathSelector, predicate.Selector);
+            var predicate = new EndsWithPredicate<TestPredicateFields>(fields, xpath: expectedXPathSelector);
+            Assert.AreEqual(expectedXPathSelector, predicate.XPathSelector);
+        }
+
+        [TestMethod]
+        public void EndsWithPredicate_Constructor_SetsJsonPathSelector()
+        {
+            var expectedJsonPathSelector = new JsonPathSelector("$..title");
+
+            var fields = new TestPredicateFields();
+            var predicate = new EndsWithPredicate<TestPredicateFields>(fields, jsonpath: expectedJsonPathSelector);
+            Assert.AreEqual(expectedJsonPathSelector, predicate.JsonPathSelector);
         }
     }
 }

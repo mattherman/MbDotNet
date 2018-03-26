@@ -11,15 +11,19 @@ namespace MbDotNet.Models.Predicates
         public string ExceptExpression { get; private set; }
 
         [JsonProperty("xpath", NullValueHandling = NullValueHandling.Ignore)]
-        public XPathSelector Selector { get; private set; }
+        public XPathSelector XPathSelector { get; private set; }
+
+        [JsonProperty("jsonpath", NullValueHandling = NullValueHandling.Ignore)]
+        public JsonPathSelector JsonPathSelector { get; private set; }
 
         public PredicateBase() { }
 
-        public PredicateBase(bool isCaseSensitive, string exceptExpression, XPathSelector selector)
+        public PredicateBase(bool isCaseSensitive, string exceptExpression, XPathSelector xpath, JsonPathSelector jsonpath)
         {
             IsCaseSensitive = isCaseSensitive;
             ExceptExpression = exceptExpression;
-            Selector = selector;
+            XPathSelector = xpath;
+            JsonPathSelector = jsonpath;
         }
     }
 }
