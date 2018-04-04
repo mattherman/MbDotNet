@@ -8,10 +8,10 @@
     <!-- See: https://github.com/dotnet/roslyn/issues/8210 -->
     <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
-    <FileVersion>4.0.0.0</FileVersion>
+    <FileVersion>4.1.0.0</FileVersion>
 
     <!-- NuGet Metadata-->
-    <Version>4.0.0</Version>
+    <Version>4.1.0</Version>
     <PackageId>MbDotNet</PackageId>
     <Title>MbDotNet</Title>
     <Authors>Matthew Herman</Authors>
@@ -20,7 +20,7 @@
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseUrl>http://github.com/mattherman/MbDotNet/blob/master/LICENSE.md</PackageLicenseUrl>
     <PackageProjectUrl>http://github.com/mattherman/MbDotNet</PackageProjectUrl>
-    <PackageReleaseNotes>https://github.com/mattherman/MbDotNet/releases/tag/v4.0.0</PackageReleaseNotes>
+    <PackageReleaseNotes>https://github.com/mattherman/MbDotNet/releases</PackageReleaseNotes>
     <PackageTags>mountebank client wrapper</PackageTags>
     <BuildOutputTargetFolder>lib</BuildOutputTargetFolder>
   </PropertyGroup>
