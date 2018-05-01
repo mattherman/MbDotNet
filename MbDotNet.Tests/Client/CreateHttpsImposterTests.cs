@@ -63,5 +63,23 @@ namespace MbDotNet.Tests.Client
             Assert.AreEqual(default(int), imposter.Port);
             Assert.IsNull(imposter.Name);
         }
+
+        [TestMethod]
+        public void HttpsImposter_WithoutRecordRequests_SetsRecordRequest()
+        {
+            var imposter = Client.CreateHttpsImposter();
+
+            Assert.IsFalse(imposter.RecordRequests);
+        }
+
+        [TestMethod]
+        public void HttpsImposter_WithRecordRequests_SetsRecordRequest()
+        {
+            const bool recordRequests = true;
+
+            var imposter = Client.CreateHttpsImposter(recordRequests: recordRequests);
+
+            Assert.IsTrue(imposter.RecordRequests);
+        }
     }
 }
