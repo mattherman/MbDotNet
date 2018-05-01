@@ -18,11 +18,11 @@ namespace MbDotNet.Models.Imposters
         [JsonProperty("mutualAuth")]
         public bool MutualAuthRequired { get; private set; }
 
-        public HttpsImposter(int? port, string name) : this(port, name, null, null, false)
+        public HttpsImposter(int? port, string name, bool recordRequests = false) : this(port, name, null, null, false, recordRequests)
         {
         }
 
-        public HttpsImposter(int? port, string name, string key, string cert, bool mutualAuthRequired) : base(port, Enums.Protocol.Https, name)
+        public HttpsImposter(int? port, string name, string key, string cert, bool mutualAuthRequired, bool recordRequests = false) : base(port, Enums.Protocol.Https, name, recordRequests)
         {
             Cert = cert;
             Key = key;

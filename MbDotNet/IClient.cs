@@ -24,8 +24,13 @@ namespace MbDotNet
         /// Mountebank to set the port.
         /// </param>
         /// <param name="name">The name the imposter will recieve, useful for debugging/logging purposes</param>
+        /// <param name="recordRequests">
+        /// Enables recording requests to use the imposter as a mock. See
+        /// <see href="http://www.mbtest.org/docs/api/mocks">here</see> for more details on Mountebank
+        /// verification.
+        /// </param>
         /// <returns>The newly created imposter</returns>
-        HttpImposter CreateHttpImposter(int? port = null, string name = null);
+        HttpImposter CreateHttpImposter(int? port = null, string name = null, bool recordRequests = false);
 
         /// <summary> 
         /// Creates a new imposter on the specified port with the HTTPS protocol. The Submit method
@@ -40,8 +45,13 @@ namespace MbDotNet
         /// <param name="key">The private key the imposter will use</param>
         /// <param name="cert">The public certificate the imposer will use</param>
         /// <param name="mutualAuthRequired">Whether or not the server requires mutual auth</param>
+        /// <param name="recordRequests">
+        /// Enables recording requests to use the imposter as a mock. See
+        /// <see href="http://www.mbtest.org/docs/api/mocks">here</see> for more details on Mountebank
+        /// verification.
+        /// </param>
         /// <returns>The newly created imposter</returns>
-        HttpsImposter CreateHttpsImposter(int? port = null, string name = null, string key = null, string cert = null, bool mutualAuthRequired = false);
+        HttpsImposter CreateHttpsImposter(int? port = null, string name = null, string key = null, string cert = null, bool mutualAuthRequired = false, bool recordRequests = false);
 
         /// <summary>
         /// Creates a new imposter on the specified port with the TCP protocol. The Submit method
@@ -54,8 +64,13 @@ namespace MbDotNet
         /// </param>
         /// <param name="name">The name the imposter will recieve, useful for debugging/logging purposes</param>
         /// <param name="mode">The mode of the imposter, text or binary. This defines the encoding for request/response data</param>
+        /// <param name="recordRequests">
+        /// Enables recording requests to use the imposter as a mock. See
+        /// <see href="http://www.mbtest.org/docs/api/mocks">here</see> for more details on Mountebank
+        /// verification.
+        /// </param>
         /// <returns>The newly created imposter</returns>
-        TcpImposter CreateTcpImposter(int? port = null, string name = null, TcpMode mode = TcpMode.Text);
+        TcpImposter CreateTcpImposter(int? port = null, string name = null, TcpMode mode = TcpMode.Text, bool recordRequests = false);
 
         /// <summary>
         /// Retrieves an HttpImposter along with information about requests made to that

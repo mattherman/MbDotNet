@@ -35,7 +35,7 @@ namespace MbDotNet.Tests.Client
             
             Assert.IsNotNull(imposter);
             Assert.AreEqual(expectedName, imposter.Name);
-        }
+        }        
 
         [TestMethod]
         public void HttpImposter_WithoutPortAndName_SetsPortAndNameToNull()
@@ -47,6 +47,22 @@ namespace MbDotNet.Tests.Client
             Assert.IsNull(imposter.Name);
         }
 
-       
+        [TestMethod]
+        public void HttpImposter_WithoutRecordRequests_SetsRecordRequest()
+        {
+            var imposter = Client.CreateHttpImposter(123, "service");
+
+            Assert.IsFalse(imposter.RecordRequests);
+        }
+
+        [TestMethod]
+        public void HttpImposter_WithRecordRequests_SetsRecordRequest()
+        {
+            const bool recordRequests = true;
+
+            var imposter = Client.CreateHttpImposter(123, "service", recordRequests);
+
+            Assert.IsTrue(imposter.RecordRequests);
+        }
     }
 }
