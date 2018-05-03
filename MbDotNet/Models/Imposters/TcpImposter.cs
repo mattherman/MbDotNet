@@ -13,7 +13,7 @@ namespace MbDotNet.Models.Imposters
         [JsonProperty("mode")]
         public string Mode { get; private set; }
 
-        public TcpImposter(int? port, string name, TcpMode mode) : base(port, Enums.Protocol.Tcp, name)
+        public TcpImposter(int? port, string name, TcpMode mode, bool recordRequests = false) : base(port, Enums.Protocol.Tcp, name, recordRequests)
         {
             Stubs = new List<TcpStub>();
             Mode = mode.ToString().ToLower();

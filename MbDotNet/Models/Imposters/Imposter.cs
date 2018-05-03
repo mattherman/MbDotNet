@@ -24,6 +24,12 @@ namespace MbDotNet.Models.Imposters
         [JsonProperty("name")]
         public string Name { get; private set; }
 
+        /// <summary>
+        /// Enables recording requests to use the imposter as a mock. See <see href="http://www.mbtest.org/docs/api/mocks">here</see> for more details on Mountebank verification.
+        /// </summary>
+        [JsonProperty("recordRequests")]
+        public bool RecordRequests { get; private set; }
+
         internal void SetDynamicPort(int port)
         {
             if (Port != default(int))
@@ -35,7 +41,7 @@ namespace MbDotNet.Models.Imposters
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors", Justification = "Set as virtual for testing purposes")]
-        public Imposter(int? port, Protocol protocol, string name)
+        public Imposter(int? port, Protocol protocol, string name, bool recordRequests)
         {
             if (port.HasValue)
             {
@@ -44,6 +50,7 @@ namespace MbDotNet.Models.Imposters
             
             Protocol = protocol.ToString().ToLower();
             Name = name;
+            RecordRequests = recordRequests;
         }
     }
 }
