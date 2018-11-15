@@ -88,6 +88,20 @@ namespace MbDotNet.Models.Stubs
 
             return Returns(statusCode, new Dictionary<string, string> { { "Content-Type", "application/xml" } }, responseObjectXml);
         }
+        
+        /// <summary>
+        /// Adds a response to the stub that will return the specified HTTP status code
+        /// along with a response represented by binary stream.
+        /// </summary>
+        /// <param name="statusCode">The status code to be returned</param>
+        /// <param name="response">Byte array representing binary stream.</param>
+        /// <param name="contentType">Content type</param>
+        /// <returns></returns>
+        public HttpStub ReturnsBinary(HttpStatusCode statusCode, byte[] response, string contentType)
+        {
+            var convertedBase64Bytes = Convert.ToBase64String(response);
+            return Returns(statusCode, new Dictionary<string, string> { { "Content-Type", contentType } }, convertedBase64Bytes, "binary");
+        }
 
         private static string ConvertResponseObjectToXml<T>(T objectToSerialize, Encoding encoding)
         {
@@ -112,14 +126,16 @@ namespace MbDotNet.Models.Stubs
         /// <param name="statusCode">The status code to be returned</param>
         /// <param name="headers">The headers for the response</param>
         /// <param name="responseObject">The response object that will be returned as the specified content type</param>
+        /// <param name="mode">Response mode: text of binary. Text mode is default</param>
         /// <returns></returns>
-        public HttpStub Returns(HttpStatusCode statusCode, IDictionary<string, string> headers, object responseObject)
+        public HttpStub Returns(HttpStatusCode statusCode, IDictionary<string, string> headers, object responseObject, string mode = "text")
         {
             var fields = new HttpResponseFields
             {
                 StatusCode = statusCode,
                 ResponseObject = responseObject,
-                Headers = headers
+                Headers = headers,
+                Mode = mode
             };
 
             var response = new IsResponse<HttpResponseFields>(fields);
