@@ -186,6 +186,18 @@ namespace MbDotNet.Tests.Models.Stubs
             Assert.IsNotNull(response);
             Assert.AreEqual(headers["Content-Type"], response.Fields.Headers["Content-Type"]);
         }
+        
+        [TestMethod]
+        public void HttpStub_ReturnsBinary_AddsResponse_ContentTypePdf()
+        {
+            var stub = new HttpStub();
+            var bytes = new byte[] {3, 3, 5, 2, 23, 5, 21, 1};
+            stub.ReturnsBinary(HttpStatusCode.OK, bytes, "application/pdf");
+
+            var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
+            Assert.IsNotNull(response);
+            Assert.AreEqual("application/pdf", response.Fields.Headers["Content-Type"]);
+        }
 
         [TestMethod]
         public void HttpStub_OnPathEquals_AddsPredicate_PathSet()
