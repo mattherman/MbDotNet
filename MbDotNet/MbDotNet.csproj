@@ -8,10 +8,10 @@
     <!-- See: https://github.com/dotnet/roslyn/issues/8210 -->
     <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
-    <FileVersion>4.2.0.0</FileVersion>
+    <FileVersion>4.3.0.0</FileVersion>
 
     <!-- NuGet Metadata-->
-    <Version>4.2.0</Version>
+    <Version>4.3.0</Version>
     <PackageId>MbDotNet</PackageId>
     <Title>MbDotNet</Title>
     <Authors>Matthew Herman</Authors>
