@@ -33,9 +33,9 @@ namespace MbDotNet.Tests
         }
 
         [TestInitialize]
-        public void TestInitialize()
+        public async Task TestInitialize()
         {
-            _client.DeleteAllImpostersAsync();
+            await _client.DeleteAllImpostersAsync().ConfigureAwait(false);
         }
 
         /// <summary>

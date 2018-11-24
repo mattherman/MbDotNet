@@ -1,8 +1,7 @@
 using MbDotNet.Models.Imposters;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using Moq;
+using System.Threading.Tasks;
 
 namespace MbDotNet.Tests.Client
 {
@@ -10,53 +9,53 @@ namespace MbDotNet.Tests.Client
     public class DeleteImposterTests : MountebankClientTestBase
     {
         [TestMethod]
-        public void CallsDelete()
+        public async Task CallsDelete()
         {
             const int port = 8080;
 
             Client.Imposters.Add(new HttpImposter(port, null));
 
-            MockRequestProxy.Setup(x => x.DeleteImposterAsync(port));
+            MockRequestProxy.Setup(x => x.DeleteImposterAsync(port)).Returns(Task.CompletedTask);
 
-            Client.DeleteImposterAsync(port);
+            await Client.DeleteImposterAsync(port).ConfigureAwait(false);
 
             MockRequestProxy.Verify(x => x.DeleteImposterAsync(port), Times.Once);
         }
 
         [TestMethod]
-        public void RemovesImposterFromCollection()
+        public async Task RemovesImposterFromCollection()
         {
             const int port = 8080;
 
             Client.Imposters.Add(new HttpImposter(port, null));
 
-            Client.DeleteImposterAsync(port);
+            await Client.DeleteImposterAsync(port).ConfigureAwait(false);
 
             Assert.AreEqual(0, Client.Imposters.Count);
         }
 
         [TestMethod]
-        public void DeleteAllImposters_CallsDeleteAll()
+        public async Task DeleteAllImposters_CallsDeleteAll()
         {
-            MockRequestProxy.Setup(x => x.DeleteAllImpostersAsync());
+            MockRequestProxy.Setup(x => x.DeleteAllImpostersAsync()).Returns(Task.CompletedTask);
 
             Client.Imposters.Add(new HttpImposter(123, null));
             Client.Imposters.Add(new HttpImposter(456, null));
 
-            Client.DeleteAllImpostersAsync();
+            await Client.DeleteAllImpostersAsync().ConfigureAwait(false);
 
             MockRequestProxy.Verify(x => x.DeleteAllImpostersAsync(), Times.Once);
         }
 
         [TestMethod]
-        public void DeleteAllImposters_RemovesAllImpostersFromCollection()
+        public async Task DeleteAllImposters_RemovesAllImpostersFromCollection()
         {
-            MockRequestProxy.Setup(x => x.DeleteAllImpostersAsync());
+            MockRequestProxy.Setup(x => x.DeleteAllImpostersAsync()).Returns(Task.CompletedTask);
 
             Client.Imposters.Add(new HttpImposter(123, null));
             Client.Imposters.Add(new HttpImposter(456, null));
 
-            Client.DeleteAllImpostersAsync();
+            await Client.DeleteAllImpostersAsync().ConfigureAwait(false);
 
             Assert.AreEqual(0, Client.Imposters.Count);
         }

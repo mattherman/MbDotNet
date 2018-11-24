@@ -1,6 +1,8 @@
 ﻿using MbDotNet.Exceptions;
 using MbDotNet.Models.Imposters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System.Threading.Tasks;
 
 namespace MbDotNet.Tests.Client
 {
@@ -9,16 +11,16 @@ namespace MbDotNet.Tests.Client
     {
         [TestMethod]
         [ExpectedException(typeof(InvalidProtocolException))]
-        public void NonHttpImposterRetrieved_ThrowsInvalidProtocolException()
+        public async Task NonHttpImposterRetrieved_ThrowsInvalidProtocolException()
         {
             const int port = 6000;
-            MockRequestProxy.Setup(x => x.GetHttpImposterAsync(port)).Returns(new RetrievedHttpImposter {Protocol = "Tcp"});
+            MockRequestProxy.Setup(x => x.GetHttpImposterAsync(port)).ReturnsAsync(new RetrievedHttpImposter {Protocol = "Tcp"});
 
-            Client.GetHttpImposterAsync(port);
+            await Client.GetHttpImposterAsync(port).ConfigureAwait(false);
         }
 
         [TestMethod]
-        public void HttpImposterRetrieved_ReturnsImposter()
+        public async Task HttpImposterRetrieved_ReturnsImposter()
         {
             const int port = 6000;
             var expectedImposter = new RetrievedHttpImposter
@@ -27,9 +29,9 @@ namespace MbDotNet.Tests.Client
                 Protocol = "Http"
             };
 
-            MockRequestProxy.Setup(x => x.GetHttpImposterAsync(port)).Returns(expectedImposter);
+            MockRequestProxy.Setup(x => x.GetHttpImposterAsync(port)).ReturnsAsync(expectedImposter);
 
-            var result = Client.GetHttpImposterAsync(port);
+            var result = await Client.GetHttpImposterAsync(port).ConfigureAwait(false);
 
             Assert.AreSame(expectedImposter, result);
         }
