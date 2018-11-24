@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 
 namespace MbDotNet.Acceptance.Tests
 {
@@ -12,6 +13,6 @@ namespace MbDotNet.Acceptance.Tests
             _client = new MountebankClient();
         }        
 
-        public abstract void Run();
+        public abstract Task Run();
     }
 }

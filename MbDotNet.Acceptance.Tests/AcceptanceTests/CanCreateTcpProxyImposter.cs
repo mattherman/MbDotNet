@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading.Tasks;
 using FluentAssertions;
 using MbDotNet.Enums;
 using MbDotNet.Models.Imposters;
@@ -15,25 +16,25 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
         private const int ProxyImposterPort = 6001;
         private RetrievedTcpImposter _retrievedImposter;
 
-        public override void Run()
+        public override async Task Run()
         {
-            DeleteAllImposters();
-            CreateSourceImposter();
-            CreateProxyImposter();
-            MakeRequestToImposter();
-            GetSourceImposter();
+            await DeleteAllImposters().ConfigureAwait(false);
+            await CreateSourceImposter().ConfigureAwait(false);
+            await CreateProxyImposter().ConfigureAwait(false);
+            await MakeRequestToImposter().ConfigureAwait(false);
+            await GetSourceImposter().ConfigureAwait(false);
             VerifyRequestProxiedToSource();
-            DeleteAllImposters();
+            await DeleteAllImposters().ConfigureAwait(false);
         }
 
-        private void GetSourceImposter()
+        private async Task GetSourceImposter()
         {
-            _retrievedImposter = _client.GetTcpImposterAsync(SourceImposterPort);
+            _retrievedImposter = await _client.GetTcpImposterAsync(SourceImposterPort).ConfigureAwait(false);
         }
 
-        private void DeleteAllImposters()
+        private async Task DeleteAllImposters()
         {
-            _client.DeleteAllImpostersAsync();
+            await _client.DeleteAllImpostersAsync().ConfigureAwait(false);
         }
 
         private void VerifyRequestProxiedToSource()
@@ -42,14 +43,14 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
             _retrievedImposter.NumberOfRequests.Should().Be(1);
         }
 
-        private void CreateSourceImposter()
+        private async Task CreateSourceImposter()
         {
             var imposter = _client.CreateTcpImposter(SourceImposterPort);
             imposter.AddStub().ReturnsData("abc123");
-            _client.SubmitAsync(imposter);
+            await _client.SubmitAsync(imposter).ConfigureAwait(false);
         }
 
-        private void CreateProxyImposter()
+        private async Task CreateProxyImposter()
         {
             var proxyImposter = _client.CreateTcpImposter(ProxyImposterPort);
 
@@ -65,17 +66,17 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
                 new System.Uri($"tcp://localhost:{SourceImposterPort}"), 
                 ProxyMode.ProxyOnce, predicateGenerators);
 
-            _client.SubmitAsync(proxyImposter);
+            await _client.SubmitAsync(proxyImposter).ConfigureAwait(false);
         }
 
-        private void MakeRequestToImposter()
+        private async Task MakeRequestToImposter()
         {
             using (var client = new TcpClient("localhost", ProxyImposterPort))
             {
                 var data = Encoding.ASCII.GetBytes("testdata");
                 using (var stream = client.GetStream())
                 {
-                    stream.Write(data, 0, data.Length);
+                    await stream.WriteAsync(data, 0, data.Length).ConfigureAwait(false);
                 }
             }
         }

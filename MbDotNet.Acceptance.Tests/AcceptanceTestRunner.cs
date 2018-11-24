@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace MbDotNet.Acceptance.Tests
 {
@@ -23,23 +24,17 @@ namespace MbDotNet.Acceptance.Tests
                 throw new ArgumentNullException("Test result handlers cannot be null.");
             }
 
-            if (tests == null)
-            {
-                throw new ArgumentNullException("Test collection cannot be null.");
-            }
-
+            _tests = tests ?? throw new ArgumentNullException("Test collection cannot be null.");
             _testPassedHandler = passHandler;
             _testFailedHandler = failHandler;
             _testSkippedHandler = skipHandler;
-            _tests = tests;
         }
 
-        public void Execute()
+        public async Task Execute()
         {
             foreach (var testClass in _tests)
             {
-                var testInstance = Activator.CreateInstance(testClass) as AcceptanceTest;
-                if (testInstance == null)
+                if (!(Activator.CreateInstance(testClass) is AcceptanceTest testInstance))
                 {
                     _testSkippedHandler(testClass.Name, "The test class did not inherit from AcceptanceTest.");
                     continue;
@@ -51,7 +46,7 @@ namespace MbDotNet.Acceptance.Tests
 
                 try
                 {
-                    testInstance.Run();
+                    await testInstance.Run().ConfigureAwait(false);
                     success = true;
                 }
                 catch (Exception ex)

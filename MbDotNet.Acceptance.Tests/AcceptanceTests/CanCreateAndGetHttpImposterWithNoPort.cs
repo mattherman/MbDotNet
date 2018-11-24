@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using MbDotNet.Models.Imposters;
+using System.Threading.Tasks;
 
 namespace MbDotNet.Acceptance.Tests.AcceptanceTests
 {
@@ -8,23 +9,23 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
         private Imposter _imposter = null;
         private RetrievedHttpImposter _retrievedImposter;
 
-        public override void Run()
+        public override async Task Run()
         {
-            DeleteAllImposters();
-            CreateImposter();
-            GetImposter();
+            await DeleteAllImposters().ConfigureAwait(false);
+            await CreateImposter().ConfigureAwait(false);
+            await GetImposter().ConfigureAwait(false);
             VerifyImposterWasRetrieved();
-            DeleteAllImposters();
+            await DeleteAllImposters().ConfigureAwait(false);
         }
 
-        private void GetImposter()
+        private async Task GetImposter()
         {
-            _retrievedImposter = _client.GetHttpImposterAsync(_imposter.Port);
+            _retrievedImposter = await _client.GetHttpImposterAsync(_imposter.Port).ConfigureAwait(false);
         }
 
-        private void DeleteAllImposters()
+        private async Task DeleteAllImposters()
         {
-            _client.DeleteAllImpostersAsync();
+            await _client.DeleteAllImpostersAsync().ConfigureAwait(false);
         }
 
         private void VerifyImposterWasRetrieved()
@@ -33,10 +34,10 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
             _retrievedImposter.Port.Should().Equals(_imposter.Port);
         }
 
-        private void CreateImposter()
+        private async Task CreateImposter()
         {
             _imposter = _client.CreateHttpImposter();
-            _client.SubmitAsync(_imposter);
+            await _client.SubmitAsync(_imposter).ConfigureAwait(false);
         }
     }
 }
