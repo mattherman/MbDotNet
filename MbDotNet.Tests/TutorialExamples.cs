@@ -6,6 +6,7 @@ using MbDotNet.Models.Predicates;
 using MbDotNet.Models.Predicates.Fields;
 using MbDotNet.Models.Responses;
 using MbDotNet.Models.Responses.Fields;
+using System.Threading.Tasks;
 
 namespace MbDotNet.Tests
 {
@@ -34,7 +35,7 @@ namespace MbDotNet.Tests
         [TestInitialize]
         public void TestInitialize()
         {
-            _client.DeleteAllImposters();
+            _client.DeleteAllImpostersAsync();
         }
 
         /// <summary>
@@ -42,14 +43,14 @@ namespace MbDotNet.Tests
         /// at http://www.mbtest.org/docs/api/stubs.
         /// </summary>
         //[TestMethod]
-        public void StubExample()
+        public async Task StubExample()
         {
             var imposter = _client.CreateHttpImposter(4545, "StubExample");
             imposter.AddStub().OnPathAndMethodEqual("/customers/123", Method.Post)
                 .ReturnsXml(HttpStatusCode.Created, new Customer { Email = "customer@test.com" })
                 .ReturnsBody(HttpStatusCode.BadRequest, "<error>Email already exists</error>");
 
-            _client.Submit(imposter);
+            await _client.SubmitAsync(imposter).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -57,11 +58,11 @@ namespace MbDotNet.Tests
         /// See imposter resource at http://www.mbtest.org/docs/api/contracts for more information.
         /// </summary>
         //[TestMethod]
-        public void DynamicPortExample()
+        public async Task DynamicPortExample()
         {
             var imposter = _client.CreateHttpImposter(null, "DynamicPort");
 
-            _client.Submit(imposter);
+            await _client.SubmitAsync(imposter).ConfigureAwait(false);
 
             var portAssignedByMountebank = imposter.Port;
         }
@@ -71,7 +72,7 @@ namespace MbDotNet.Tests
         /// at http://www.mbtest.org/docs/api/predicates.
         /// </summary>
         //[TestMethod]
-        public void EqualsPredicateExample()
+        public async Task EqualsPredicateExample()
         {
             var imposter = _client.CreateHttpImposter(4545, "EqualsPredicateExample");
 
@@ -108,7 +109,7 @@ namespace MbDotNet.Tests
             // Fourth stub
             imposter.AddStub().OnMethodEquals(Method.Put).ReturnsStatus((HttpStatusCode)500);
 
-            _client.Submit(imposter);
+            await _client.SubmitAsync(imposter).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -116,7 +117,7 @@ namespace MbDotNet.Tests
         /// at http://www.mbtest.org/docs/api/predicates.
         /// </summary>
         //[TestMethod]
-        public void DeepEqualsPredicateExample()
+        public async Task DeepEqualsPredicateExample()
         {
             var imposter = _client.CreateHttpImposter(4556, "DeepEqualsPredicateExample");
 
@@ -162,7 +163,7 @@ namespace MbDotNet.Tests
             imposter.AddStub().On(new DeepEqualsPredicate<HttpPredicateFields>(predicateFields))
                 .Returns(new IsResponse<HttpResponseFields>(responseFields));
 
-            _client.Submit(imposter);
+            await _client.SubmitAsync(imposter).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -170,7 +171,7 @@ namespace MbDotNet.Tests
         /// at http://www.mbtest.org/docs/api/predicates.
         /// </summary>
         //[TestMethod]
-        public void ContainsPredicateExample()
+        public async Task ContainsPredicateExample()
         {
             var imposter = _client.CreateTcpImposter(4547, "ContainsPredicateExample", TcpMode.Binary);
 
@@ -201,7 +202,7 @@ namespace MbDotNet.Tests
             imposter.AddStub().On(new ContainsPredicate<TcpPredicateFields>(predicateFields))
                 .ReturnsData("dGhpcmQgcmVzcG9uc2U=");
 
-            _client.Submit(imposter);
+            await _client.SubmitAsync(imposter).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -209,7 +210,7 @@ namespace MbDotNet.Tests
         /// at http://www.mbtest.org/docs/api/predicates.
         /// </summary>
         //[TestMethod]
-        public void StartsWithPredicateExample()
+        public async Task StartsWithPredicateExample()
         {
             var imposter = _client.CreateTcpImposter(4548, "StartsWithPredicateExample");
 
@@ -240,7 +241,7 @@ namespace MbDotNet.Tests
             imposter.AddStub().On(new StartsWithPredicate<TcpPredicateFields>(predicateFields))
                 .ReturnsData("third response");
 
-            _client.Submit(imposter);
+            await _client.SubmitAsync(imposter).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -248,7 +249,7 @@ namespace MbDotNet.Tests
         /// at http://www.mbtest.org/docs/api/predicates.
         /// </summary>
         //[TestMethod]
-        public void EndsWithPredicateExample()
+        public async Task EndsWithPredicateExample()
         {
             var imposter = _client.CreateTcpImposter(4549, "EndsWithPredicateExample", TcpMode.Binary);
 
@@ -279,7 +280,7 @@ namespace MbDotNet.Tests
             imposter.AddStub().On(new EndsWithPredicate<TcpPredicateFields>(predicateFields))
                 .ReturnsData("dGhpcmQgcmVzcG9uc2U=");
 
-            _client.Submit(imposter);
+            await _client.SubmitAsync(imposter).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -287,7 +288,7 @@ namespace MbDotNet.Tests
         /// at http://www.mbtest.org/docs/api/predicates.
         /// </summary>
         //[TestMethod]
-        public void MatchesPredicateExample()
+        public async Task MatchesPredicateExample()
         {
             var imposter = _client.CreateTcpImposter(4550, "MatchesPredicateExample");
 
@@ -318,7 +319,7 @@ namespace MbDotNet.Tests
             imposter.AddStub().On(new MatchesPredicate<TcpPredicateFields>(predicateFields))
                 .ReturnsData("third response");
 
-            _client.Submit(imposter);
+            await _client.SubmitAsync(imposter).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -326,7 +327,7 @@ namespace MbDotNet.Tests
         /// at http://www.mbtest.org/docs/api/predicates.
         /// </summary>
         //[TestMethod]
-        public void NotPredicateExample()
+        public async Task NotPredicateExample()
         {
             var imposter = _client.CreateTcpImposter(4552, "NotPredicateExample");
 
@@ -340,7 +341,7 @@ namespace MbDotNet.Tests
             imposter.AddStub().On(predicate)
                 .ReturnsData("test");
 
-            _client.Submit(imposter);
+            await _client.SubmitAsync(imposter).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -348,7 +349,7 @@ namespace MbDotNet.Tests
         /// at http://www.mbtest.org/docs/api/predicates.
         /// </summary>
         //[TestMethod]
-        public void OrPredicateExample()
+        public async Task OrPredicateExample()
         {
             var imposter = _client.CreateTcpImposter(4553, "OrPredicateExample");
 
@@ -366,7 +367,7 @@ namespace MbDotNet.Tests
             imposter.AddStub().On(predicate)
                 .ReturnsData("matches");
 
-            _client.Submit(imposter);
+            await _client.SubmitAsync(imposter).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -374,7 +375,7 @@ namespace MbDotNet.Tests
         /// at http://www.mbtest.org/docs/api/predicates.
         /// </summary>
         //[TestMethod]
-        public void AndPredicateExample()
+        public async Task AndPredicateExample()
         {
             var imposter = _client.CreateTcpImposter(4554, "AndPredicateExample");
 
@@ -392,7 +393,7 @@ namespace MbDotNet.Tests
             imposter.AddStub().On(predicate)
                 .ReturnsData("matches");
 
-            _client.Submit(imposter);
+            await _client.SubmitAsync(imposter).ConfigureAwait(false);
         }
  
     }

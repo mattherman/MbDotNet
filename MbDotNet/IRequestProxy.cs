@@ -1,14 +1,15 @@
 ﻿using MbDotNet.Models.Imposters;
+using System.Threading.Tasks;
 
 namespace MbDotNet
 {
     internal interface IRequestProxy
     {
-        void DeleteAllImposters();
-        void DeleteImposter(int port);
-        void CreateImposter(Imposter imposter);
-        RetrievedHttpImposter GetHttpImposter(int port);
-        RetrievedTcpImposter GetTcpImposter(int port);
-        RetrievedHttpsImposter GetHttpsImposter(int port);
+        Task DeleteAllImpostersAsync();
+        Task DeleteImposterAsync(int port);
+        Task CreateImposterAsync(Imposter imposter);
+        Task<RetrievedHttpImposter> GetHttpImposterAsync(int port);
+        Task<RetrievedTcpImposter> GetTcpImposterAsync(int port);
+        Task<RetrievedHttpsImposter> GetHttpsImposterAsync(int port);
     }
 }

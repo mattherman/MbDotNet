@@ -17,10 +17,10 @@ namespace MbDotNet.Tests.Client
             var imposter1 = new HttpImposter(firstPortNumber, null);
             var imposter2 = new HttpImposter(secondPortNumber, null);
 
-            Client.Submit(new[] { imposter1, imposter2 });
+            Client.SubmitAsync(new[] { imposter1, imposter2 });
 
-            MockRequestProxy.Verify(x => x.CreateImposter(It.Is<Imposter>(imp => imp.Port == firstPortNumber)), Times.Once);
-            MockRequestProxy.Verify(x => x.CreateImposter(It.Is<Imposter>(imp => imp.Port == secondPortNumber)), Times.Once);
+            MockRequestProxy.Verify(x => x.CreateImposterAsync(It.Is<Imposter>(imp => imp.Port == firstPortNumber)), Times.Once);
+            MockRequestProxy.Verify(x => x.CreateImposterAsync(It.Is<Imposter>(imp => imp.Port == secondPortNumber)), Times.Once);
         }
 
         [TestMethod]
@@ -32,10 +32,10 @@ namespace MbDotNet.Tests.Client
             var imposter1 = Client.CreateHttpImposter(firstPortNumber);
             var imposter2 = Client.CreateHttpImposter(secondPortNumber);
 
-            Client.Submit(new[] { imposter1, imposter2 });
+            Client.SubmitAsync(new[] { imposter1, imposter2 });
 
-            MockRequestProxy.Verify(x => x.CreateImposter(It.Is<Imposter>(imp => imp.Port == firstPortNumber)), Times.Once);
-            MockRequestProxy.Verify(x => x.CreateImposter(It.Is<Imposter>(imp => imp.Port == secondPortNumber)), Times.Once);
+            MockRequestProxy.Verify(x => x.CreateImposterAsync(It.Is<Imposter>(imp => imp.Port == firstPortNumber)), Times.Once);
+            MockRequestProxy.Verify(x => x.CreateImposterAsync(It.Is<Imposter>(imp => imp.Port == secondPortNumber)), Times.Once);
         }
 
         [TestMethod]
@@ -47,7 +47,7 @@ namespace MbDotNet.Tests.Client
             var imposter1 = Client.CreateHttpImposter(firstPortNumber);
             var imposter2 = Client.CreateHttpImposter(secondPortNumber);
 
-            Client.Submit(new[] { imposter1, imposter2 });
+            Client.SubmitAsync(new[] { imposter1, imposter2 });
 
             Assert.AreEqual(1, Client.Imposters.Count(x => x.Port == firstPortNumber));
             Assert.AreEqual(1, Client.Imposters.Count(x => x.Port == secondPortNumber));
@@ -58,9 +58,9 @@ namespace MbDotNet.Tests.Client
         {
             var imposter = new HttpImposter(null, null);
 
-            Client.Submit(imposter);
+            Client.SubmitAsync(imposter);
 
-            MockRequestProxy.Verify(x => x.CreateImposter(It.Is<Imposter>(imp => imp.Port == default(int))), Times.Once);
+            MockRequestProxy.Verify(x => x.CreateImposterAsync(It.Is<Imposter>(imp => imp.Port == default(int))), Times.Once);
         }
     }
 }

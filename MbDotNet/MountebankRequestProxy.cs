@@ -5,6 +5,7 @@ using MbDotNet.Exceptions;
 using MbDotNet.Models.Imposters;
 using Newtonsoft.Json;
 using MbDotNet.Models.Responses;
+using System.Threading.Tasks;
 
 namespace MbDotNet
 {
@@ -28,71 +29,71 @@ namespace MbDotNet
             _httpClient = httpClient;
         }
 
-        public void DeleteAllImposters()
+        public async Task DeleteAllImpostersAsync()
         {
-            using (var response = ExecuteDelete(ImpostersResource))
+            using (var response = await ExecuteDeleteAsync(ImpostersResource).ConfigureAwait(false))
             {
-                HandleResponse(response, HttpStatusCode.OK, "Failed to delete the imposters.");
+                await HandleResponse(response, HttpStatusCode.OK, "Failed to delete the imposters.").ConfigureAwait(false);
             }
             
         }
 
-        public void DeleteImposter(int port)
+        public async Task DeleteImposterAsync(int port)
         {
-            using (var response = ExecuteDelete($"{ImpostersResource}/{port}"))
+            using (var response = await ExecuteDeleteAsync($"{ImpostersResource}/{port}").ConfigureAwait(false))
             {
-                HandleResponse(response, HttpStatusCode.OK, $"Failed to delete the imposter with port {port}.");
+                await HandleResponse(response, HttpStatusCode.OK, $"Failed to delete the imposter with port {port}.").ConfigureAwait(false);
             }
         }
 
-        public void CreateImposter(Imposter imposter)
+        public async Task CreateImposterAsync(Imposter imposter)
         {
             var json = JsonConvert.SerializeObject(imposter);
 
-            using (var response = ExecutePost(ImpostersResource, json))
+            using (var response = await ExecutePostAsync(ImpostersResource, json).ConfigureAwait(false))
             {
-                HandleResponse(response, HttpStatusCode.Created,
-                    $"Failed to create the imposter with port {imposter.Port} and protocol {imposter.Protocol}.");
-                HandleDynamicPort(response, imposter);
+                await HandleResponse(response, HttpStatusCode.Created,
+                    $"Failed to create the imposter with port {imposter.Port} and protocol {imposter.Protocol}.").ConfigureAwait(false);
+                await HandleDynamicPort(response, imposter).ConfigureAwait(false);
             }
             
         }
 
-        public RetrievedHttpImposter GetHttpImposter(int port)
+        public Task<RetrievedHttpImposter> GetHttpImposterAsync(int port)
         {
-            return GetImposter<RetrievedHttpImposter>(port);
+            return GetImposterAsync<RetrievedHttpImposter>(port);
         }
 
-        public RetrievedTcpImposter GetTcpImposter(int port)
+        public Task<RetrievedTcpImposter> GetTcpImposterAsync(int port)
         {
-            return GetImposter<RetrievedTcpImposter>(port);
+            return GetImposterAsync<RetrievedTcpImposter>(port);
         }
 
-        public RetrievedHttpsImposter GetHttpsImposter(int port)
+        public Task<RetrievedHttpsImposter> GetHttpsImposterAsync(int port)
         {
-            return GetImposter<RetrievedHttpsImposter>(port);
+            return GetImposterAsync<RetrievedHttpsImposter>(port);
         }
 
-        private T GetImposter<T>(int port)
+        private async Task<T> GetImposterAsync<T>(int port)
         {
-            using (var response = ExecuteGet($"{ImpostersResource}/{port}")) 
+            using (var response = await ExecuteGetAsync($"{ImpostersResource}/{port}").ConfigureAwait(false)) 
             {
-                HandleResponse(response, HttpStatusCode.OK, $"Failed to retrieve imposter with port {port}",
-                (message) => new ImposterNotFoundException(message));
+                await HandleResponse(response, HttpStatusCode.OK, $"Failed to retrieve imposter with port {port}",
+                (message) => new ImposterNotFoundException(message)).ConfigureAwait(false);
 
-                var content = response.Content.ReadAsStringAsync().Result;
+                var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                 return JsonConvert.DeserializeObject<T>(content);
             }
         }
 
-        private HttpResponseMessage ExecuteGet(string resource) => _httpClient.GetAsync(resource).Result;
+        private Task<HttpResponseMessage> ExecuteGetAsync(string resource) => _httpClient.GetAsync(resource);
 
-        private HttpResponseMessage ExecuteDelete(string resource) => _httpClient.DeleteAsync(resource).Result;
+        private Task<HttpResponseMessage> ExecuteDeleteAsync(string resource) => _httpClient.DeleteAsync(resource);
 
-        private HttpResponseMessage ExecutePost(string resource, string json) => _httpClient.PostAsync(resource, new StringContent(json)).Result;
+        private Task<HttpResponseMessage> ExecutePostAsync(string resource, string json) => _httpClient.PostAsync(resource, new StringContent(json));
 
-        private void HandleResponse(HttpResponseMessage response, HttpStatusCode expectedStatusCode,
+        private async Task HandleResponse(HttpResponseMessage response, HttpStatusCode expectedStatusCode,
             string failureErrorMessage, Func<string, Exception> exceptionFactory = null)
         {
             if (exceptionFactory == null)
@@ -100,19 +101,19 @@ namespace MbDotNet
 
             if (response.StatusCode != expectedStatusCode)
             {
-                var content = response.Content.ReadAsStringAsync().Result;
+                var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 var errorMessage = $"{failureErrorMessage}\n\nError Message => \n{content}";
                 throw exceptionFactory(errorMessage);
             }
         }
 
-        private void HandleDynamicPort(HttpResponseMessage response, Imposter imposter)
+        private async Task HandleDynamicPort(HttpResponseMessage response, Imposter imposter)
         {
             if (imposter.Port == default(int))
             {
                 try
                 {
-                    var content = response.Content.ReadAsStringAsync().Result;
+                    var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                     var returnedImposter = JsonConvert.DeserializeObject<CreateImposterResponse>(content);
                     imposter.SetDynamicPort(returnedImposter.Port);
                 }

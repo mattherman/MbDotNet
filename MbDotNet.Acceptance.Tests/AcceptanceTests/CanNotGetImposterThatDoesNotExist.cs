@@ -34,7 +34,7 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
         {
             try
             {
-                _retrievedImposter = _client.GetHttpImposter(NonExistentImposterPort);
+                _retrievedImposter = _client.GetHttpImposterAsync(NonExistentImposterPort);
             }
             catch (ImposterNotFoundException e)
             {

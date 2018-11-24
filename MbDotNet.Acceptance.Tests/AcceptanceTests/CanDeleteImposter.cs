@@ -19,7 +19,7 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
 
         private void DeleteAllImposters()
         {
-            _client.DeleteAllImposters();
+            _client.DeleteAllImpostersAsync();
         }
 
         private void DeleteImposter()
@@ -32,7 +32,7 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
             MountebankException exception = null;
             try
             {
-                _client.GetHttpImposter(ImposterPort);
+                _client.GetHttpImposterAsync(ImposterPort);
             }
             catch (ImposterNotFoundException e)
             {
@@ -47,7 +47,7 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
         private void CreateImposter()
         {
             var imposter = _client.CreateHttpImposter(ImposterPort);
-            _client.Submit(imposter);
+            _client.SubmitAsync(imposter);
         }
     }
 }

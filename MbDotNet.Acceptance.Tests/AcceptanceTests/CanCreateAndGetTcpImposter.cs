@@ -19,12 +19,12 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
 
         private void DeleteAllImposters()
         {
-            _client.DeleteAllImposters();
+            _client.DeleteAllImpostersAsync();
         }
 
         private void GetImposter()
         {
-            _retrievedImposter = _client.GetTcpImposter(ImposterPort);
+            _retrievedImposter = _client.GetTcpImposterAsync(ImposterPort);
         }
 
         private void VerifyImposterWasRetrieved()
@@ -35,7 +35,7 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
         private void CreateImposter()
         {
             var imposter = _client.CreateTcpImposter(ImposterPort);
-            _client.Submit(imposter);
+            _client.SubmitAsync(imposter);
         }
     }
 }

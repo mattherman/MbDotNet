@@ -12,9 +12,9 @@ namespace MbDotNet.Tests.Client
         public void NonHttpImposterRetrieved_ThrowsInvalidProtocolException()
         {
             const int port = 6000;
-            MockRequestProxy.Setup(x => x.GetHttpImposter(port)).Returns(new RetrievedHttpImposter {Protocol = "Tcp"});
+            MockRequestProxy.Setup(x => x.GetHttpImposterAsync(port)).Returns(new RetrievedHttpImposter {Protocol = "Tcp"});
 
-            Client.GetHttpImposter(port);
+            Client.GetHttpImposterAsync(port);
         }
 
         [TestMethod]
@@ -27,9 +27,9 @@ namespace MbDotNet.Tests.Client
                 Protocol = "Http"
             };
 
-            MockRequestProxy.Setup(x => x.GetHttpImposter(port)).Returns(expectedImposter);
+            MockRequestProxy.Setup(x => x.GetHttpImposterAsync(port)).Returns(expectedImposter);
 
-            var result = Client.GetHttpImposter(port);
+            var result = Client.GetHttpImposterAsync(port);
 
             Assert.AreSame(expectedImposter, result);
         }

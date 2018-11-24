@@ -31,7 +31,7 @@ namespace MbDotNet.Tests
             _mockClient.Setup(x => x.DeleteAsync(expectedResource))
                 .ReturnsAsync(response);
 
-            _proxy.DeleteAllImposters();
+            _proxy.DeleteAllImpostersAsync();
 
             _mockClient.Verify(x => x.DeleteAsync(expectedResource), Times.Once);
         }
@@ -45,7 +45,7 @@ namespace MbDotNet.Tests
             _mockClient.Setup(x => x.DeleteAsync(It.IsAny<string>()))
                 .ReturnsAsync(response);
 
-            _proxy.DeleteAllImposters();
+            _proxy.DeleteAllImpostersAsync();
         }
 
         [TestMethod]
@@ -59,7 +59,7 @@ namespace MbDotNet.Tests
             _mockClient.Setup(x => x.DeleteAsync(expectedResource))
                 .ReturnsAsync(response);
 
-            _proxy.DeleteImposter(port);
+            _proxy.DeleteImposterAsync(port);
 
             _mockClient.Verify(x => x.DeleteAsync(expectedResource), Times.Once);
         }
@@ -73,7 +73,7 @@ namespace MbDotNet.Tests
             _mockClient.Setup(x => x.DeleteAsync(It.IsAny<string>()))
                 .ReturnsAsync(response);
 
-            _proxy.DeleteImposter(123);
+            _proxy.DeleteImposterAsync(123);
         }
 
         [TestMethod]
@@ -86,7 +86,7 @@ namespace MbDotNet.Tests
             _mockClient.Setup(x => x.PostAsync(expectedResource, It.IsAny<HttpContent>()))
                 .ReturnsAsync(response);
 
-            _proxy.CreateImposter(new HttpImposter(123, null));
+            _proxy.CreateImposterAsync(new HttpImposter(123, null));
 
             _mockClient.Verify(x => x.PostAsync(expectedResource, It.IsAny<HttpContent>()), Times.Once);
         }
@@ -103,7 +103,7 @@ namespace MbDotNet.Tests
                 .ReturnsAsync(response)
                 .Callback<string, HttpContent>((res, cont) => content = cont);
 
-            _proxy.CreateImposter(new HttpImposter(123, null));
+            _proxy.CreateImposterAsync(new HttpImposter(123, null));
 
             var json = content.ReadAsStringAsync().Result;
             var serializedImposter = JsonConvert.DeserializeObject<HttpImposter>(json);
@@ -136,7 +136,7 @@ namespace MbDotNet.Tests
 
             var imposter = new HttpImposter(null, null);
 
-            _proxy.CreateImposter(imposter);
+            _proxy.CreateImposterAsync(imposter);
 
             Assert.AreEqual(12345, imposter.Port);
         }
@@ -150,7 +150,7 @@ namespace MbDotNet.Tests
             _mockClient.Setup(x => x.PostAsync(It.IsAny<string>(), It.IsAny<HttpContent>()))
                 .ReturnsAsync(response);
 
-            _proxy.CreateImposter(new HttpImposter(123, null));
+            _proxy.CreateImposterAsync(new HttpImposter(123, null));
         }
 
         private HttpResponseMessage GetResponse(HttpStatusCode statusCode)

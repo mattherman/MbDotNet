@@ -28,12 +28,12 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
 
         private void GetSourceImposter()
         {
-            _retrievedImposter = _client.GetTcpImposter(SourceImposterPort);
+            _retrievedImposter = _client.GetTcpImposterAsync(SourceImposterPort);
         }
 
         private void DeleteAllImposters()
         {
-            _client.DeleteAllImposters();
+            _client.DeleteAllImpostersAsync();
         }
 
         private void VerifyRequestProxiedToSource()
@@ -46,7 +46,7 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
         {
             var imposter = _client.CreateTcpImposter(SourceImposterPort);
             imposter.AddStub().ReturnsData("abc123");
-            _client.Submit(imposter);
+            _client.SubmitAsync(imposter);
         }
 
         private void CreateProxyImposter()
@@ -65,7 +65,7 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
                 new System.Uri($"tcp://localhost:{SourceImposterPort}"), 
                 ProxyMode.ProxyOnce, predicateGenerators);
 
-            _client.Submit(proxyImposter);
+            _client.SubmitAsync(proxyImposter);
         }
 
         private void MakeRequestToImposter()
