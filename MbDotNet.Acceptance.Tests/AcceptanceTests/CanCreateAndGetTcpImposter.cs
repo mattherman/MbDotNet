@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using MbDotNet.Models.Imposters;
+using System.Threading.Tasks;
 
 namespace MbDotNet.Acceptance.Tests.AcceptanceTests
 {
@@ -8,23 +9,23 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
         private const int ImposterPort = 6000;
         private RetrievedTcpImposter _retrievedImposter;
 
-        public override void Run()
+        public override async Task Run()
         {
-            DeleteAllImposters();
-            CreateImposter();
-            GetImposter();
+            await DeleteAllImposters().ConfigureAwait(false);
+            await CreateImposter().ConfigureAwait(false);
+            await GetImposter().ConfigureAwait(false);
             VerifyImposterWasRetrieved();
-            DeleteAllImposters();
+            await DeleteAllImposters().ConfigureAwait(false);
         }
 
-        private void DeleteAllImposters()
+        private async Task DeleteAllImposters()
         {
-            _client.DeleteAllImposters();
+            await _client.DeleteAllImpostersAsync().ConfigureAwait(false);
         }
 
-        private void GetImposter()
+        private async Task GetImposter()
         {
-            _retrievedImposter = _client.GetTcpImposter(ImposterPort);
+            _retrievedImposter = await _client.GetTcpImposterAsync(ImposterPort).ConfigureAwait(false);
         }
 
         private void VerifyImposterWasRetrieved()
@@ -32,10 +33,10 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
             _retrievedImposter.Should().NotBeNull("Expected imposter to have been retrieved");
         }
 
-        private void CreateImposter()
+        private async Task CreateImposter()
         {
             var imposter = _client.CreateTcpImposter(ImposterPort);
-            _client.Submit(imposter);
+            await _client.SubmitAsync(imposter).ConfigureAwait(false);
         }
     }
 }

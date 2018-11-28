@@ -1,6 +1,6 @@
 ﻿using System;
-using MbDotNet;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MbDotNet.Acceptance.Tests
 {
@@ -10,7 +10,7 @@ namespace MbDotNet.Acceptance.Tests
         private static int _failed = 0;
         private static int _skipped = 0;
 
-        public static void Main()
+        public static async Task Main()
         {
             var tests = new List<Type>
             {
@@ -26,7 +26,7 @@ namespace MbDotNet.Acceptance.Tests
             };
 
             var runner = new AcceptanceTestRunner(tests, OnTestPassing, OnTestFailing, OnTestSkipped);
-            runner.Execute();
+            await runner.Execute().ConfigureAwait(false);
 
             Console.WriteLine("\nFINISHED {0} passed, {1} failed, {2} skipped", _passed, _failed, _skipped);
 

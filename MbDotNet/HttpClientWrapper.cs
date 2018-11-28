@@ -10,23 +10,25 @@ namespace MbDotNet
 
         public HttpClientWrapper(Uri baseAddress)
         {
-            _client = new HttpClient();
-            _client.BaseAddress = baseAddress;
+            _client = new HttpClient
+            {
+                BaseAddress = baseAddress
+            };
         }
 
         public async Task<HttpResponseMessage> DeleteAsync(string resource)
         {
-            return await _client.DeleteAsync(resource);
+            return await _client.DeleteAsync(resource).ConfigureAwait(false);
         }
 
         public async Task<HttpResponseMessage> PostAsync(string resource, HttpContent content)
         {
-            return await _client.PostAsync(resource, content);
+            return await _client.PostAsync(resource, content).ConfigureAwait(false);
         }
 
         public async Task<HttpResponseMessage> GetAsync(string resource)
         {
-            return await _client.GetAsync(resource);
+            return await _client.GetAsync(resource).ConfigureAwait(false);
         }
 
         public void Dispose()

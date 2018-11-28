@@ -1,5 +1,6 @@
 using FluentAssertions;
 using MbDotNet.Exceptions;
+using System.Threading.Tasks;
 
 namespace MbDotNet.Acceptance.Tests.AcceptanceTests
 {
@@ -7,32 +8,32 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
     {
         private const int ImposterPort = 6001;
 
-        public override void Run()
+        public override async Task Run()
         {
-            DeleteImposter();
-            CreateImposter();
-            DeleteImposter();
-            VerifyImposterHasBeenDeleted();
-
-            DeleteAllImposters();
+            await DeleteImposter().ConfigureAwait(false);
+            await CreateImposter().ConfigureAwait(false);
+            await DeleteImposter().ConfigureAwait(false);
+            await VerifyImposterHasBeenDeleted().ConfigureAwait(false);
+            
+            await DeleteAllImposters().ConfigureAwait(false);
         }
 
-        private void DeleteAllImposters()
+        private async Task DeleteAllImposters()
         {
-            _client.DeleteAllImposters();
+            await _client.DeleteAllImpostersAsync().ConfigureAwait(false);
         }
 
-        private void DeleteImposter()
+        private async Task DeleteImposter()
         {
-            _client.DeleteImposter(ImposterPort);
+            await _client.DeleteImposterAsync(ImposterPort).ConfigureAwait(false);
         }
 
-        private void VerifyImposterHasBeenDeleted()
+        private async Task VerifyImposterHasBeenDeleted()
         {
             MountebankException exception = null;
             try
             {
-                _client.GetHttpImposter(ImposterPort);
+                await _client.GetHttpImposterAsync(ImposterPort).ConfigureAwait(false);
             }
             catch (ImposterNotFoundException e)
             {
@@ -44,10 +45,10 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
             exception.Message.Should().Contain("no such resource");
         }
 
-        private void CreateImposter()
+        private async Task CreateImposter()
         {
             var imposter = _client.CreateHttpImposter(ImposterPort);
-            _client.Submit(imposter);
+            await _client.SubmitAsync(imposter).ConfigureAwait(false);
         }
     }
 }

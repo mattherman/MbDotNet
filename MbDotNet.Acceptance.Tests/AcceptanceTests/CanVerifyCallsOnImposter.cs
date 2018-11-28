@@ -5,6 +5,7 @@ using MbDotNet.Models.Imposters;
 using Method = MbDotNet.Enums.Method;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace MbDotNet.Acceptance.Tests.AcceptanceTests
 {
@@ -14,17 +15,17 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
         private RetrievedHttpImposter _retrievedImposter;
         private const int ImposterPort = 6000;
         
-        public override void Run()
+        public override async Task Run()
         {
-            DeleteAllImposters();
-            CreateImposter();
-            CallImposter();
-            VerifyImposterWasCalled();
+            await DeleteAllImposters().ConfigureAwait(false);
+            await CreateImposter().ConfigureAwait(false);
+            await CallImposter().ConfigureAwait(false);
+            await VerifyImposterWasCalled().ConfigureAwait(false);
         }
 
-        private void VerifyImposterWasCalled()
+        private async Task VerifyImposterWasCalled()
         {
-            _retrievedImposter = _client.GetHttpImposter(ImposterPort);
+            _retrievedImposter = await _client.GetHttpImposterAsync(ImposterPort).ConfigureAwait(false);
 
             _retrievedImposter.NumberOfRequests.Should().Be(1);
             
@@ -43,7 +44,7 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
             receivedRequest.Headers["Content-Length"].Should().Be("75");
         }
 
-        private static void CallImposter()
+        private static async Task CallImposter()
         {
             using(var httpClient = new HttpClient())
             {
@@ -52,24 +53,21 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
                     Content = new StringContent("<TestData>\r\n  <Name>Bob</Name>\r\n  <Email>bob@zmail.com</Email>\r\n</TestData>", Encoding.UTF8, "text/xml")
                 };
 
-                var task = httpClient.SendAsync(request);
+                var response = await httpClient.SendAsync(request).ConfigureAwait(false);
 
-                task.Wait();
-
-                var response = task.Result;
                 response.StatusCode.Should().Be(HttpStatusCode.OK);
             }
         }
 
-        private void CreateImposter()
+        private async Task CreateImposter()
         {
             _imposter = _client.CreateHttpImposter(ImposterPort);
-            _client.Submit(_imposter);
+            await _client.SubmitAsync(_imposter).ConfigureAwait(false);
         }
 
-        private void DeleteAllImposters()
+        private async Task DeleteAllImposters()
         {
-            _client.DeleteAllImposters();
+            await _client.DeleteAllImpostersAsync().ConfigureAwait(false);
         }
     }
 }

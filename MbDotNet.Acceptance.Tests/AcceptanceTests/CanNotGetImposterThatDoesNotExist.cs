@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using FluentAssertions;
 using MbDotNet.Exceptions;
 using MbDotNet.Models.Imposters;
@@ -11,9 +12,9 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
         private Exception _getImposterException;
         private const int NonExistentImposterPort = 9000;
 
-        public override void Run()
+        public override async Task Run()
         {
-            GetNonExistentImposter();
+            await GetNonExistentImposter().ConfigureAwait(false);
 
             VerifyNoImposterWasRetrieved();
             VerifyExceptionForNoSuchResourceWasThrown();
@@ -30,11 +31,11 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
             _retrievedImposter.Should().BeNull();
         }
 
-        private void GetNonExistentImposter()
+        private async Task GetNonExistentImposter()
         {
             try
             {
-                _retrievedImposter = _client.GetHttpImposter(NonExistentImposterPort);
+                _retrievedImposter = await _client.GetHttpImposterAsync(NonExistentImposterPort).ConfigureAwait(false);
             }
             catch (ImposterNotFoundException e)
             {
