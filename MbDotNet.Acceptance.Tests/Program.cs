@@ -23,6 +23,7 @@ namespace MbDotNet.Acceptance.Tests
                 typeof(AcceptanceTests.CanCreateAndGetHttpImposterWithNoPort),
                 typeof(AcceptanceTests.CanCreateHttpProxyImposter),
                 typeof(AcceptanceTests.CanCreateTcpProxyImposter),
+                typeof(AcceptanceTests.DocumentationTests)
             };
 
             var runner = new AcceptanceTestRunner(tests, OnTestPassing, OnTestFailing, OnTestSkipped);
