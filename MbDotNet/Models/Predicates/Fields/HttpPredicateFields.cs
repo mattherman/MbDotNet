@@ -16,7 +16,7 @@ namespace MbDotNet.Models.Predicates.Fields
         /// The request body
         /// </summary>
         [JsonProperty("body", NullValueHandling = NullValueHandling.Ignore)]
-        public string RequestBody { get; set; }
+        public object RequestBody { get; set; }
 
         [JsonProperty("method", NullValueHandling = NullValueHandling.Ignore)]
         private string RawMethod => Method?.ToString().ToUpper();
