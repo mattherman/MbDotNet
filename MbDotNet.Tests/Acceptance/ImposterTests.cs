@@ -16,6 +16,13 @@ namespace MbDotNet.Tests.Acceptance
 	[TestClass, TestCategory("Acceptance")]
 	public class ImposterTests : AcceptanceTestBase
 	{
+		private HttpClient _httpClient;
+
+		public ImposterTests()
+		{
+			_httpClient = new HttpClient();
+		}
+
 		[TestInitialize]
 		public async Task TestInitialize()
 		{
@@ -84,12 +91,9 @@ namespace MbDotNet.Tests.Acceptance
 			await _client.SubmitAsync(proxyImposter).ConfigureAwait(false);
 
 			// Make a request to the imposter to trigger the proxy
-			using (var client = new HttpClient())
-			{
-				client.BaseAddress = new System.Uri($"http://localhost:{proxyImposterPort}");
-				var response = await client.GetAsync("test?param=value");
-				Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "Request to proxy imposter failed");
-			}
+			var request = new HttpRequestMessage(HttpMethod.Get, $"http://localhost:{proxyImposterPort}/test?param=value");
+			var response = await _httpClient.SendAsync(request);
+			Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "Request to proxy imposter failed");
 
 			var retrievedSourceImposter = await _client.GetHttpImposterAsync(sourceImposterPort);
 			Assert.IsNotNull(retrievedSourceImposter);
@@ -166,16 +170,12 @@ namespace MbDotNet.Tests.Acceptance
 			var imposter = _client.CreateHttpImposter(port);
 			await _client.SubmitAsync(imposter);
 
-			using (var httpClient = new HttpClient())
+			var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:6000/customers?id=123")
 			{
-				var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:6000/customers?id=123")
-				{
-					Content = new StringContent("<TestData>\r\n  <Name>Bob</Name>\r\n  <Email>bob@zmail.com</Email>\r\n</TestData>", Encoding.UTF8, "text/xml")
-				};
-
-				var response = await httpClient.SendAsync(request);
-				Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "Request to proxy imposter failed");
-			}
+				Content = new StringContent("<TestData>\r\n  <Name>Bob</Name>\r\n  <Email>bob@zmail.com</Email>\r\n</TestData>", Encoding.UTF8, "text/xml")
+			};
+			var response = await _httpClient.SendAsync(request);
+			Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "Request to proxy imposter failed");
 
 			var retrievedImposter = await _client.GetHttpImposterAsync(port);
 
