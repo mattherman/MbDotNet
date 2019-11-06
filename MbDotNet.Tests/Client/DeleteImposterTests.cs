@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MbDotNet.Tests.Client
 {
-    [TestClass]
+    [TestClass, TestCategory("Unit")]
     public class DeleteImposterTests : MountebankClientTestBase
     {
         [TestMethod]

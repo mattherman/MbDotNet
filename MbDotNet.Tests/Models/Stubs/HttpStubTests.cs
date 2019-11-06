@@ -13,7 +13,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MbDotNet.Tests.Models.Stubs
 {
-    [TestClass]
+    [TestClass, TestCategory("Unit")]
     public class HttpStubTests
     {
         [TestMethod]

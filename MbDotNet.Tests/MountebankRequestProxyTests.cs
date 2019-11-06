@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace MbDotNet.Tests
 {
-    [TestClass]
+    [TestClass, TestCategory("Unit")]
     public class MountebankRequestProxyTests
     {
         private Mock<IHttpClientWrapper> _mockClient;

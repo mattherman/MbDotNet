@@ -2,7 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MbDotNet.Tests.Client
 {
-    [TestClass]
+    [TestClass, TestCategory("Unit")]
     public class CreateHttpsImposterTests : MountebankClientTestBase
     {
         [TestMethod]

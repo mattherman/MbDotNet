@@ -10,7 +10,7 @@ using System;
 
 namespace MbDotNet.Tests.Models.Stubs
 {
-    [TestClass]
+    [TestClass, TestCategory("Unit")]
     public class TcpStubTests
     {
         [TestMethod]

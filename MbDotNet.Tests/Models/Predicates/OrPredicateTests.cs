@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace MbDotNet.Tests.Models.Predicates
 {
-    [TestClass]
+    [TestClass, TestCategory("Unit")]
     public class OrPredicateTests : PredicateTestBase
     {
         [TestMethod]

@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MbDotNet.Tests.Models.Responses
 {
-    [TestClass]
+    [TestClass, TestCategory("Unit")]
     public class ProxyResponseTests
     {
         private class TestResponseFields : ResponseFields { }
