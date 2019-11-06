@@ -132,6 +132,8 @@ namespace MbDotNet.Tests.Acceptance
 				using (var stream = client.GetStream())
 				{
 					await stream.WriteAsync(data, 0, data.Length);
+					await stream.FlushAsync();
+					await stream.ReadAsync(new byte[6], 0, 6);
 				}
 			}
 
