@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MbDotNet.Tests.Client
 {
-    [TestClass]
+    [TestClass, TestCategory("Unit")]
     public class GetTcpImposterTests : MountebankClientTestBase
     {
         [TestMethod]

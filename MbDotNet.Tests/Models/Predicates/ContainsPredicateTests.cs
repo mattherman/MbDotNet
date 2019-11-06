@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MbDotNet.Tests.Models.Predicates
 {
-    [TestClass]
+    [TestClass, TestCategory("Unit")]
     public class ContainsPredicateTests : PredicateTestBase
     {
         [TestMethod]

@@ -6,7 +6,7 @@ namespace MbDotNet.Tests.Models.Imposters
     /// <summary>
     /// Summary description for ImposterTests
     /// </summary>
-    [TestClass]
+    [TestClass, TestCategory("Unit")]
     public class HttpsImposterTests
     {
         #region Constructor Tests

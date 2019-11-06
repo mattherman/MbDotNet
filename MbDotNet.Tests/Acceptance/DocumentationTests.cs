@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
@@ -7,51 +6,32 @@ using MbDotNet.Models.Predicates;
 using MbDotNet.Models.Predicates.Fields;
 using MbDotNet.Models.Responses;
 using MbDotNet.Models.Responses.Fields;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace MbDotNet.Acceptance.Tests.AcceptanceTests
+namespace MbDotNet.Tests.Acceptance
 {
-    /// <summary>
-    /// This file contains unit tests that show how to setup the same
-    /// imposters described in the examples in the mountebank documentation.
-    /// See the comment above each individual test to figure out which 
-    /// example it is describing.
-    /// 
-    /// The [TestMethod] annotations are commented out because each of these
-    /// requires mountebank to be running in order to run the tests. If you
-    /// would like to try them out, start mountebank on your local machine,
-    /// uncomment the [TestMethod] annotations, and run them like any of the
-    /// other unit tests.
-    /// </summary>
-    internal class DocumentationTests : AcceptanceTest
+	/// <summary>
+	/// This file contain acceptance tests that show how to setup the same
+	/// imposters described in the examples in the mountebank documentation.
+	/// See the comment above each individual test to figure out which 
+	/// example it is describing.
+	/// </summary>
+	[TestClass, TestCategory("Acceptance")]
+    public class DocumentationTests : AcceptanceTestBase
     {
         private const int ImposterPort = 6000;
 
-        public override async Task Run()
-        {
-            await RunExample(StubExample).ConfigureAwait(false);
-            await RunExample(DynamicPortExample).ConfigureAwait(false);
-            await RunExample(EqualsPredicateExample).ConfigureAwait(false);
-            await RunExample(DeepEqualsPredicateExample).ConfigureAwait(false);
-            await RunExample(ContainsPredicateExample).ConfigureAwait(false);
-            await RunExample(StartsWithPredicateExample).ConfigureAwait(false);
-            await RunExample(EndsWithPredicateExample).ConfigureAwait(false);
-            await RunExample(MatchesPredicateExample).ConfigureAwait(false);
-            await RunExample(NotPredicateExample).ConfigureAwait(false);
-            await RunExample(AndPredicateExample).ConfigureAwait(false);
-            await RunExample(OrPredicateExample).ConfigureAwait(false);
-            await RunExample(JsonExample).ConfigureAwait(false);
-        }
-
-        private async Task RunExample(Func<Task> example)
-        {
-            await _client.DeleteAllImpostersAsync().ConfigureAwait(false);
-            await example().ConfigureAwait(false);
-        }
+		[TestInitialize]
+		public async Task TestInitialize()
+		{
+			await _client.DeleteAllImpostersAsync();
+		}
 
         /// <summary>
         /// This test shows how to setup the imposter in the stub example
         /// at http://www.mbtest.org/docs/api/stubs.
         /// </summary>
+		[TestMethod]
         public async Task StubExample()
         {
             var imposter = _client.CreateHttpImposter(4545, "StubExample");
@@ -62,24 +42,26 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
             await _client.SubmitAsync(imposter);
         }
 
-        /// <summary>
-        /// This test shows how to setup the imposter with a dynamic port chosen by Mountebank
-        /// See imposter resource at http://www.mbtest.org/docs/api/contracts for more information.
-        /// </summary>
-        public async Task DynamicPortExample()
+		/// <summary>
+		/// This test shows how to setup the imposter with a dynamic port chosen by Mountebank
+		/// See imposter resource at http://www.mbtest.org/docs/api/contracts for more information.
+		/// </summary>
+		[TestMethod]
+		public async Task DynamicPortExample()
         {
             var imposter = _client.CreateHttpImposter(null, "DynamicPort");
 
-            await _client.SubmitAsync(imposter).ConfigureAwait(false);
+            await _client.SubmitAsync(imposter);
 
             var portAssignedByMountebank = imposter.Port;
         }
 
-        /// <summary>
-        /// This test shows how to setup the imposter in the equals predicate example
-        /// at http://www.mbtest.org/docs/api/predicates.
-        /// </summary>
-        public async Task EqualsPredicateExample()
+		/// <summary>
+		/// This test shows how to setup the imposter in the equals predicate example
+		/// at http://www.mbtest.org/docs/api/predicates.
+		/// </summary>
+		[TestMethod]
+		public async Task EqualsPredicateExample()
         {
             var imposter = _client.CreateHttpImposter(4545, "EqualsPredicateExample");
 
@@ -116,14 +98,15 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
             // Fourth stub
             imposter.AddStub().OnMethodEquals(Method.Put).ReturnsStatus((HttpStatusCode)500);
 
-            await _client.SubmitAsync(imposter).ConfigureAwait(false);
+            await _client.SubmitAsync(imposter);
         }
 
-        /// <summary>
-        /// This test shows how to setup the imposter in the deepEquals predicate example
-        /// at http://www.mbtest.org/docs/api/predicates.
-        /// </summary>
-        public async Task DeepEqualsPredicateExample()
+		/// <summary>
+		/// This test shows how to setup the imposter in the deepEquals predicate example
+		/// at http://www.mbtest.org/docs/api/predicates.
+		/// </summary>
+		[TestMethod]
+		public async Task DeepEqualsPredicateExample()
         {
             var imposter = _client.CreateHttpImposter(4556, "DeepEqualsPredicateExample");
 
@@ -169,14 +152,15 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
             imposter.AddStub().On(new DeepEqualsPredicate<HttpPredicateFields>(predicateFields))
                 .Returns(new IsResponse<HttpResponseFields>(responseFields));
 
-            await _client.SubmitAsync(imposter).ConfigureAwait(false);
+            await _client.SubmitAsync(imposter);
         }
 
-        /// <summary>
-        /// This test shows how to setup the imposter in the contains predicate example
-        /// at http://www.mbtest.org/docs/api/predicates.
-        /// </summary>
-        public async Task ContainsPredicateExample()
+		/// <summary>
+		/// This test shows how to setup the imposter in the contains predicate example
+		/// at http://www.mbtest.org/docs/api/predicates.
+		/// </summary>
+		[TestMethod]
+		public async Task ContainsPredicateExample()
         {
             var imposter = _client.CreateTcpImposter(4547, "ContainsPredicateExample", TcpMode.Binary);
 
@@ -207,14 +191,15 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
             imposter.AddStub().On(new ContainsPredicate<TcpPredicateFields>(predicateFields))
                 .ReturnsData("dGhpcmQgcmVzcG9uc2U=");
 
-            await _client.SubmitAsync(imposter).ConfigureAwait(false);
+            await _client.SubmitAsync(imposter);
         }
 
-        /// <summary>
-        /// This test shows how to setup the imposter in the startsWith predicate example
-        /// at http://www.mbtest.org/docs/api/predicates.
-        /// </summary>
-        public async Task StartsWithPredicateExample()
+		/// <summary>
+		/// This test shows how to setup the imposter in the startsWith predicate example
+		/// at http://www.mbtest.org/docs/api/predicates.
+		/// </summary>
+		[TestMethod]
+		public async Task StartsWithPredicateExample()
         {
             var imposter = _client.CreateTcpImposter(4548, "StartsWithPredicateExample");
 
@@ -245,14 +230,15 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
             imposter.AddStub().On(new StartsWithPredicate<TcpPredicateFields>(predicateFields))
                 .ReturnsData("third response");
 
-            await _client.SubmitAsync(imposter).ConfigureAwait(false);
+            await _client.SubmitAsync(imposter);
         }
 
-        /// <summary>
-        /// This test shows how to setup the imposter in the endsWith predicate example
-        /// at http://www.mbtest.org/docs/api/predicates.
-        /// </summary>
-        public async Task EndsWithPredicateExample()
+		/// <summary>
+		/// This test shows how to setup the imposter in the endsWith predicate example
+		/// at http://www.mbtest.org/docs/api/predicates.
+		/// </summary>
+		[TestMethod]
+		public async Task EndsWithPredicateExample()
         {
             var imposter = _client.CreateTcpImposter(4549, "EndsWithPredicateExample", TcpMode.Binary);
 
@@ -283,14 +269,15 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
             imposter.AddStub().On(new EndsWithPredicate<TcpPredicateFields>(predicateFields))
                 .ReturnsData("dGhpcmQgcmVzcG9uc2U=");
 
-            await _client.SubmitAsync(imposter).ConfigureAwait(false);
+            await _client.SubmitAsync(imposter);
         }
 
-        /// <summary>
-        /// This test shows how to setup the imposter in the matches predicate example
-        /// at http://www.mbtest.org/docs/api/predicates.
-        /// </summary>
-        public async Task MatchesPredicateExample()
+		/// <summary>
+		/// This test shows how to setup the imposter in the matches predicate example
+		/// at http://www.mbtest.org/docs/api/predicates.
+		/// </summary>
+		[TestMethod]
+		public async Task MatchesPredicateExample()
         {
             var imposter = _client.CreateTcpImposter(4550, "MatchesPredicateExample");
 
@@ -321,14 +308,15 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
             imposter.AddStub().On(new MatchesPredicate<TcpPredicateFields>(predicateFields))
                 .ReturnsData("third response");
 
-            await _client.SubmitAsync(imposter).ConfigureAwait(false);
+            await _client.SubmitAsync(imposter);
         }
 
-        /// <summary>
-        /// This test shows how to setup the imposter in the not predicate example
-        /// at http://www.mbtest.org/docs/api/predicates.
-        /// </summary>
-        public async Task NotPredicateExample()
+		/// <summary>
+		/// This test shows how to setup the imposter in the not predicate example
+		/// at http://www.mbtest.org/docs/api/predicates.
+		/// </summary>
+		[TestMethod]
+		public async Task NotPredicateExample()
         {
             var imposter = _client.CreateTcpImposter(4552, "NotPredicateExample");
 
@@ -342,14 +330,15 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
             imposter.AddStub().On(predicate)
                 .ReturnsData("test");
 
-            await _client.SubmitAsync(imposter).ConfigureAwait(false);
+            await _client.SubmitAsync(imposter);
         }
 
-        /// <summary>
-        /// This test shows how to setup the imposter in the or predicate example
-        /// at http://www.mbtest.org/docs/api/predicates.
-        /// </summary>
-        public async Task OrPredicateExample()
+		/// <summary>
+		/// This test shows how to setup the imposter in the or predicate example
+		/// at http://www.mbtest.org/docs/api/predicates.
+		/// </summary>
+		[TestMethod]
+		public async Task OrPredicateExample()
         {
             var imposter = _client.CreateTcpImposter(4553, "OrPredicateExample");
 
@@ -367,14 +356,15 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
             imposter.AddStub().On(predicate)
                 .ReturnsData("matches");
 
-            await _client.SubmitAsync(imposter).ConfigureAwait(false);
+            await _client.SubmitAsync(imposter);
         }
 
-        /// <summary>
-        /// This test shows how to setup the imposter in the and predicate example
-        /// at http://www.mbtest.org/docs/api/predicates.
-        /// </summary>
-        public async Task AndPredicateExample()
+		/// <summary>
+		/// This test shows how to setup the imposter in the and predicate example
+		/// at http://www.mbtest.org/docs/api/predicates.
+		/// </summary>
+		[TestMethod]
+		public async Task AndPredicateExample()
         {
             var imposter = _client.CreateTcpImposter(4554, "AndPredicateExample");
 
@@ -392,14 +382,15 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
             imposter.AddStub().On(predicate)
                 .ReturnsData("matches");
 
-            await _client.SubmitAsync(imposter).ConfigureAwait(false);
+            await _client.SubmitAsync(imposter);
         }
 
-        /// <summary>
-        /// This test shows how to setup the imposter in the json example
-        /// at http://localhost:2525/docs/api/json.
-        /// </summary>
-        public async Task JsonExample()
+		/// <summary>
+		/// This test shows how to setup the imposter in the json example
+		/// at http://localhost:2525/docs/api/json.
+		/// </summary>
+		[TestMethod]
+		public async Task JsonExample()
         {
             var imposter = _client.CreateHttpImposter(4545, "JsonExample");
 
@@ -420,7 +411,7 @@ namespace MbDotNet.Acceptance.Tests.AcceptanceTests
                 .On(matchesPredicate)
                 .ReturnsJson(HttpStatusCode.OK, new BookResponse { Code = "SUCCESS", Author = "J.K. Rowling"});
 
-            await _client.SubmitAsync(imposter).ConfigureAwait(false);
+            await _client.SubmitAsync(imposter);
         }
     }
 

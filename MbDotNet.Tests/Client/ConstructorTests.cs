@@ -2,7 +2,7 @@
 
 namespace MbDotNet.Tests.Client
 {
-    [TestClass]
+    [TestClass, TestCategory("Unit")]
     public class ConstructorTests : MountebankClientTestBase
     {
         [TestMethod]

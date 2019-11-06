@@ -4,7 +4,7 @@ using MbDotNet.Enums;
 
 namespace MbDotNet.Tests.Models.Imposters
 {
-    [TestClass]
+    [TestClass, TestCategory("Unit")]
     public class TcpImposterTests
     {
         #region Constructor Tests

@@ -50,18 +50,21 @@ dotnet build
 
 ### Testing
 
-To run unit tests, run the following from the root directory:
+To run all tests, run the following from the root directory:
 ```
-dotnet test ./MbDotNet.Tests/MbDotNet.Tests.csproj
+dotnet test 
 ```
 
-The solution also includes a set of acceptance tests that run
-against an actual mountebank instance. Additional instructions for
-running mountebank can be found in the README file in that project.
+This includes a set of acceptance tests that run
+against an actual mountebank instance. In order for those tests to succeed, mountebank 
+will need to be run with the `--mock` option provided. See http://www.mbtest.org/docs/api/overview#get-imposter.
 
-In order to run the acceptance tests, run the following command from
-the root directory:
+If you would prefer to run mountebank via docker, please execute the following command from the root directory:
+```docker-compose up```
 
+If you would like to just run the unit tests (which do not require mountebank), run the following:
 ```
-dotnet run --project ./MbDotNet.Acceptance.Tests
+dotnet test --filter TestCategory=Unit
 ```
+
+Similarly, you can filter to only the acceptance tests using `--filter TestCategory=Acceptance`.

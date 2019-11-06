@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace MbDotNet.Tests.Client
 {
-    [TestClass]
+    [TestClass, TestCategory("Unit")]
     public class CreateHttpImposterTests : MountebankClientTestBase
     {
         [TestMethod]
