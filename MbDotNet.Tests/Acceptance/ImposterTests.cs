@@ -88,7 +88,7 @@ namespace MbDotNet.Tests.Acceptance
 				new System.Uri($"http://localhost:{sourceImposterPort}"),
 				ProxyMode.ProxyOnce, predicateGenerators);
 
-			await _client.SubmitAsync(proxyImposter).ConfigureAwait(false);
+			await _client.SubmitAsync(proxyImposter);
 
 			// Make a request to the imposter to trigger the proxy
 			var request = new HttpRequestMessage(HttpMethod.Get, $"http://localhost:{proxyImposterPort}/test?param=value");
@@ -123,7 +123,7 @@ namespace MbDotNet.Tests.Acceptance
 				new System.Uri($"tcp://localhost:{sourceImposterPort}"),
 				ProxyMode.ProxyOnce, predicateGenerators);
 
-			await _client.SubmitAsync(proxyImposter).ConfigureAwait(false);
+			await _client.SubmitAsync(proxyImposter);
 
 			// Make a request to the imposter to trigger the proxy
 			using (var client = new TcpClient("localhost", proxyImposterPort))
@@ -131,7 +131,7 @@ namespace MbDotNet.Tests.Acceptance
 				var data = Encoding.ASCII.GetBytes("testdata");
 				using (var stream = client.GetStream())
 				{
-					await stream.WriteAsync(data, 0, data.Length).ConfigureAwait(false);
+					await stream.WriteAsync(data, 0, data.Length);
 				}
 			}
 
