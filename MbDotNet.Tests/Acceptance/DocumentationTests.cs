@@ -311,11 +311,47 @@ namespace MbDotNet.Tests.Acceptance
             await _client.SubmitAsync(imposter);
         }
 
-		/// <summary>
-		/// This test shows how to setup the imposter in the not predicate example
-		/// at http://www.mbtest.org/docs/api/predicates.
-		/// </summary>
-		[TestMethod]
+        /// <summary>
+        /// This test shows how to setup the imposter in the exists predicate example
+        /// at http://www.mbtest.org/docs/api/predicates.
+        /// </summary>
+        [TestMethod]
+        public async Task ExistsPredicateExample()
+        {
+            var imposter = _client.CreateHttpImposter(4550, "ExistsPredicateExample");
+
+            // First stub
+            var predicateFields = new HttpPredicateFields
+            {
+                RequestBody = new
+                {
+                    Message = true
+                }
+            };
+
+            imposter.AddStub().On(new ExistsPredicate<HttpPredicateFields>(predicateFields))
+                .ReturnsBody(HttpStatusCode.OK, "Success");
+
+            // Second stub
+            predicateFields = new HttpPredicateFields
+            {
+                RequestBody = new
+                {
+                    Message = false
+                }
+            };
+
+            imposter.AddStub().On(new ExistsPredicate<HttpPredicateFields>(predicateFields))
+                .ReturnsBody(HttpStatusCode.BadRequest, "You need to add a message parameter");
+
+            await _client.SubmitAsync(imposter);
+        }
+
+        /// <summary>
+        /// This test shows how to setup the imposter in the not predicate example
+        /// at http://www.mbtest.org/docs/api/predicates.
+        /// </summary>
+        [TestMethod]
 		public async Task NotPredicateExample()
         {
             var imposter = _client.CreateTcpImposter(4552, "NotPredicateExample");
