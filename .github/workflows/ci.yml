@@ -1,4 +1,4 @@
-name: .NET Core
+name: CI
 
 on: [push]
 
@@ -12,8 +12,12 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 2.2.108
+        dotnet-version: 2.2.402
     - name: Build
       run: dotnet build --configuration Release
+    - name: Run Mountebank
+      run: |
+        npm install -g mountebank
+        mb --mock &
     - name: Test
       run: dotnet test --configuration Release --no-build
