@@ -120,12 +120,21 @@ namespace MbDotNet
         /// Submits all pending imposters from the supplied collection to be created in mountebank. 
         /// <exception cref="MbDotNet.Exceptions.MountebankException">Thrown if unable to create the imposter.</exception>
         /// </summary>
+        /// <param name="imposters">The imposters being submitted to mountebank</param>
         Task SubmitAsync(ICollection<Imposter> imposters, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Submits imposter to be created in mountebank. 
         /// <exception cref="MbDotNet.Exceptions.MountebankException">Thrown if unable to create the imposter.</exception>
         /// </summary>
+        /// <param name="imposter">The imposter being submitted to mountebank</param>
         Task SubmitAsync(Imposter imposter, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Overwrites the stubs of an existing imposter without restarting it.
+        /// </summary>
+        /// <param name="imposter">The imposter to be updated with new stubs</param>
+        /// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
+        Task UpdateImposterAsync(Imposter imposter, CancellationToken cancellationToken = default);
     }
 }

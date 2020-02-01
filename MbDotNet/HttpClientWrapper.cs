@@ -32,6 +32,11 @@ namespace MbDotNet
             return await _client.GetAsync(resource, cancellationToken).ConfigureAwait(false);
         }
 
+        public async Task<HttpResponseMessage> PutAsync(string resource, HttpContent content, CancellationToken cancellationToken = default)
+        {
+            return await _client.PutAsync(resource, content, cancellationToken).ConfigureAwait(false);
+        }
+
         public void Dispose()
         {
             Dispose(true);

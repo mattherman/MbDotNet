@@ -36,7 +36,6 @@ namespace MbDotNet
             {
                 await HandleResponse(response, HttpStatusCode.OK, "Failed to delete the imposters.").ConfigureAwait(false);
             }
-            
         }
 
         public async Task DeleteImposterAsync(int port, CancellationToken cancellationToken = default)
@@ -57,7 +56,18 @@ namespace MbDotNet
                     $"Failed to create the imposter with port {imposter.Port} and protocol {imposter.Protocol}.").ConfigureAwait(false);
                 await HandleDynamicPort(response, imposter).ConfigureAwait(false);
             }
-            
+        }
+
+        public async Task UpdateImposterAsync(Imposter imposter, CancellationToken cancellationToken = default)
+        {
+            var json = JsonConvert.SerializeObject(imposter);
+
+            using (var response = await ExecutePutAsync($"{ImpostersResource}/{imposter.Port}/stubs", json, cancellationToken).ConfigureAwait(false))
+            {
+                await HandleResponse(response, HttpStatusCode.OK,
+                    $"Failed to replace stubs for the imposter with port {imposter.Port}.",
+                    (message) => new ImposterNotFoundException(message)).ConfigureAwait(false);
+            }
         }
 
         public async Task<RetrievedHttpImposter> GetHttpImposterAsync(int port, CancellationToken cancellationToken = default)
@@ -109,6 +119,13 @@ namespace MbDotNet
             CancellationToken cancellationToken = default
         )
             => _httpClient.PostAsync(resource, new StringContent(json), cancellationToken);
+
+        private Task<HttpResponseMessage> ExecutePutAsync(
+            string resource,
+            string json,
+            CancellationToken cancellationToken = default
+        )
+            => _httpClient.PutAsync(resource, new StringContent(json), cancellationToken);
 
         private async Task HandleResponse(HttpResponseMessage response, HttpStatusCode expectedStatusCode,
             string failureErrorMessage, Func<string, Exception> exceptionFactory = null)

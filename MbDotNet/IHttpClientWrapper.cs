@@ -10,5 +10,6 @@ namespace MbDotNet
         Task<HttpResponseMessage> DeleteAsync(string resource, CancellationToken cancellationToken = default);
         Task<HttpResponseMessage> PostAsync(string resource, HttpContent content, CancellationToken cancellationToken = default);
         Task<HttpResponseMessage> GetAsync(string resource, CancellationToken cancellationToken = default);
+        Task<HttpResponseMessage> PutAsync(string resource, HttpContent content, CancellationToken cancellationToken = default);
     }
 }
