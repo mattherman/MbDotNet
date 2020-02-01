@@ -20,8 +20,8 @@ namespace MbDotNet.Tests.Client
 
             await Client.SubmitAsync(new[] { imposter1, imposter2 }).ConfigureAwait(false);
 
-            MockRequestProxy.Verify(x => x.CreateImposterAsync(It.Is<Imposter>(imp => imp.Port == firstPortNumber)), Times.Once);
-            MockRequestProxy.Verify(x => x.CreateImposterAsync(It.Is<Imposter>(imp => imp.Port == secondPortNumber)), Times.Once);
+            MockRequestProxy.Verify(x => x.CreateImposterAsync(It.Is<Imposter>(imp => imp.Port == firstPortNumber), default), Times.Once);
+            MockRequestProxy.Verify(x => x.CreateImposterAsync(It.Is<Imposter>(imp => imp.Port == secondPortNumber), default), Times.Once);
         }
 
         [TestMethod]
@@ -35,8 +35,8 @@ namespace MbDotNet.Tests.Client
 
             await Client.SubmitAsync(new[] { imposter1, imposter2 }).ConfigureAwait(false);
 
-            MockRequestProxy.Verify(x => x.CreateImposterAsync(It.Is<Imposter>(imp => imp.Port == firstPortNumber)), Times.Once);
-            MockRequestProxy.Verify(x => x.CreateImposterAsync(It.Is<Imposter>(imp => imp.Port == secondPortNumber)), Times.Once);
+            MockRequestProxy.Verify(x => x.CreateImposterAsync(It.Is<Imposter>(imp => imp.Port == firstPortNumber), default), Times.Once);
+            MockRequestProxy.Verify(x => x.CreateImposterAsync(It.Is<Imposter>(imp => imp.Port == secondPortNumber), default), Times.Once);
         }
 
         [TestMethod]
@@ -61,7 +61,7 @@ namespace MbDotNet.Tests.Client
 
             await Client.SubmitAsync(imposter).ConfigureAwait(false);
 
-            MockRequestProxy.Verify(x => x.CreateImposterAsync(It.Is<Imposter>(imp => imp.Port == default(int))), Times.Once);
+            MockRequestProxy.Verify(x => x.CreateImposterAsync(It.Is<Imposter>(imp => imp.Port == default), default), Times.Once);
         }
     }
 }

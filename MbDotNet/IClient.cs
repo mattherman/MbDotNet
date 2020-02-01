@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using MbDotNet.Enums;
 using MbDotNet.Models.Imposters;
@@ -80,7 +81,7 @@ namespace MbDotNet
         /// <returns>The retrieved imposter</returns>
         /// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
         /// <exception cref="MbDotNet.Exceptions.InvalidProtocolException">Thrown if the retrieved imposter was not an HTTP imposter</exception>
-        Task<RetrievedHttpImposter> GetHttpImposterAsync(int port);
+        Task<RetrievedHttpImposter> GetHttpImposterAsync(int port, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Retrieves a TcpImposter along with information about requests made to that
@@ -90,7 +91,7 @@ namespace MbDotNet
         /// <returns>The retrieved imposter</returns>
         /// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
         /// <exception cref="MbDotNet.Exceptions.InvalidProtocolException">Thrown if the retrieved imposter was not an HTTP imposter</exception>
-        Task<RetrievedTcpImposter> GetTcpImposterAsync(int port);
+        Task<RetrievedTcpImposter> GetTcpImposterAsync(int port, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Retrieves an HttpsImposter along with information about requests made to that
@@ -100,31 +101,31 @@ namespace MbDotNet
         /// <returns>The retrieved imposter</returns>
         /// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
         /// <exception cref="MbDotNet.Exceptions.InvalidProtocolException">Thrown if the retrieved imposter was not an HTTP imposter</exception>
-        Task<RetrievedHttpsImposter> GetHttpsImposterAsync(int port);
+        Task<RetrievedHttpsImposter> GetHttpsImposterAsync(int port, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Deletes a single imposter from mountebank. Will also remove the imposter from the collection
         /// of imposters that the client maintains.
         /// </summary>
         /// <param name="port">The port number of the imposter to be removed</param>
-        Task DeleteImposterAsync(int port);
+        Task DeleteImposterAsync(int port, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Deletes all imposters from mountebank. Will also remove the imposters from the collection
         /// of imposters that the client maintains.
         /// </summary>
-        Task DeleteAllImpostersAsync();
+        Task DeleteAllImpostersAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Submits all pending imposters from the supplied collection to be created in mountebank. 
         /// <exception cref="MbDotNet.Exceptions.MountebankException">Thrown if unable to create the imposter.</exception>
         /// </summary>
-        Task SubmitAsync(ICollection<Imposter> imposters);
+        Task SubmitAsync(ICollection<Imposter> imposters, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Submits imposter to be created in mountebank. 
         /// <exception cref="MbDotNet.Exceptions.MountebankException">Thrown if unable to create the imposter.</exception>
         /// </summary>
-        Task SubmitAsync(Imposter imposter);
+        Task SubmitAsync(Imposter imposter, CancellationToken cancellationToken = default);
     }
 }

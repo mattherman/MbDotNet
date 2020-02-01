@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MbDotNet
@@ -16,19 +17,19 @@ namespace MbDotNet
             };
         }
 
-        public async Task<HttpResponseMessage> DeleteAsync(string resource)
+        public async Task<HttpResponseMessage> DeleteAsync(string resource, CancellationToken cancellationToken = default)
         {
-            return await _client.DeleteAsync(resource).ConfigureAwait(false);
+            return await _client.DeleteAsync(resource, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<HttpResponseMessage> PostAsync(string resource, HttpContent content)
+        public async Task<HttpResponseMessage> PostAsync(string resource, HttpContent content, CancellationToken cancellationToken = default)
         {
-            return await _client.PostAsync(resource, content).ConfigureAwait(false);
+            return await _client.PostAsync(resource, content, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<HttpResponseMessage> GetAsync(string resource)
+        public async Task<HttpResponseMessage> GetAsync(string resource, CancellationToken cancellationToken = default)
         {
-            return await _client.GetAsync(resource).ConfigureAwait(false);
+            return await _client.GetAsync(resource, cancellationToken).ConfigureAwait(false);
         }
 
         public void Dispose()

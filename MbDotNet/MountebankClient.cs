@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using MbDotNet.Enums;
 using MbDotNet.Exceptions;
@@ -93,9 +94,9 @@ namespace MbDotNet
         /// <returns>The retrieved imposter</returns>
         /// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
         /// <exception cref="MbDotNet.Exceptions.InvalidProtocolException">Thrown if the retrieved imposter was not an HTTP imposter</exception>
-        public async Task<RetrievedHttpImposter> GetHttpImposterAsync(int port)
+        public async Task<RetrievedHttpImposter> GetHttpImposterAsync(int port, CancellationToken cancellationToken = default)
         {
-            var imposter = await _requestProxy.GetHttpImposterAsync(port).ConfigureAwait(false);
+            var imposter = await _requestProxy.GetHttpImposterAsync(port, cancellationToken).ConfigureAwait(false);
 
             ValidateRetrievedImposterProtocol(imposter, Protocol.Http);
 
@@ -110,9 +111,9 @@ namespace MbDotNet
         /// <returns>The retrieved imposter</returns>
         /// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
         /// <exception cref="MbDotNet.Exceptions.InvalidProtocolException">Thrown if the retrieved imposter was not an HTTP imposter</exception>
-        public async Task<RetrievedTcpImposter> GetTcpImposterAsync(int port)
+        public async Task<RetrievedTcpImposter> GetTcpImposterAsync(int port, CancellationToken cancellationToken = default)
         {
-            var imposter = await _requestProxy.GetTcpImposterAsync(port).ConfigureAwait(false);
+            var imposter = await _requestProxy.GetTcpImposterAsync(port, cancellationToken).ConfigureAwait(false);
 
             ValidateRetrievedImposterProtocol(imposter, Protocol.Tcp);
 
@@ -127,9 +128,9 @@ namespace MbDotNet
         /// <returns>The retrieved imposter</returns>
         /// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
         /// <exception cref="MbDotNet.Exceptions.InvalidProtocolException">Thrown if the retrieved imposter was not an HTTP imposter</exception>
-        public async Task<RetrievedHttpsImposter> GetHttpsImposterAsync(int port)
+        public async Task<RetrievedHttpsImposter> GetHttpsImposterAsync(int port, CancellationToken cancellationToken = default)
         {
-            var imposter = await _requestProxy.GetHttpsImposterAsync(port).ConfigureAwait(false);
+            var imposter = await _requestProxy.GetHttpsImposterAsync(port, cancellationToken).ConfigureAwait(false);
 
             ValidateRetrievedImposterProtocol(imposter, Protocol.Https);
 
@@ -149,10 +150,10 @@ namespace MbDotNet
         /// of imposters that the client maintains.
         /// </summary>
         /// <param name="port">The port number of the imposter to be removed</param>
-        public async Task DeleteImposterAsync(int port)
+        public async Task DeleteImposterAsync(int port, CancellationToken cancellationToken = default)
         {
             var imposter = Imposters.FirstOrDefault(imp => imp.Port == port);
-            await _requestProxy.DeleteImposterAsync(port).ConfigureAwait(false);
+            await _requestProxy.DeleteImposterAsync(port, cancellationToken).ConfigureAwait(false);
 
             if (imposter != null)
             {
@@ -164,9 +165,9 @@ namespace MbDotNet
         /// Deletes all imposters from mountebank. Will also remove the imposter from the collection
         /// of imposters that the client maintains.
         /// </summary>
-        public async Task DeleteAllImpostersAsync()
+        public async Task DeleteAllImpostersAsync(CancellationToken cancellationToken = default)
         {
-            await _requestProxy.DeleteAllImpostersAsync().ConfigureAwait(false);
+            await _requestProxy.DeleteAllImpostersAsync(cancellationToken).ConfigureAwait(false);
             Imposters = new List<Imposter>();
         }
 
@@ -174,11 +175,11 @@ namespace MbDotNet
         /// Submits all pending imposters from the supplied collection to be created in mountebank. 
         /// <exception cref="MbDotNet.Exceptions.MountebankException">Thrown if unable to create the imposter.</exception>
         /// </summary>
-        public async Task SubmitAsync(ICollection<Imposter> imposters)
+        public async Task SubmitAsync(ICollection<Imposter> imposters, CancellationToken cancellationToken = default)
         {
             foreach (var imposter in imposters)
             {
-                await _requestProxy.CreateImposterAsync(imposter).ConfigureAwait(false);
+                await _requestProxy.CreateImposterAsync(imposter, cancellationToken).ConfigureAwait(false);
                 Imposters.Add(imposter);
             }
         }
@@ -187,9 +188,9 @@ namespace MbDotNet
         /// Submits imposter to be created in mountebank. 
         /// <exception cref="MbDotNet.Exceptions.MountebankException">Thrown if unable to create the imposter.</exception>
         /// </summary>
-        public async Task SubmitAsync(Imposter imposter)
+        public async Task SubmitAsync(Imposter imposter, CancellationToken cancellationToken = default)
         {
-            await SubmitAsync(new [] { imposter }).ConfigureAwait(false);
+            await SubmitAsync(new [] { imposter }, cancellationToken).ConfigureAwait(false);
         }
     }
 }

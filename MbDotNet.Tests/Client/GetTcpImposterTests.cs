@@ -14,7 +14,7 @@ namespace MbDotNet.Tests.Client
         public async Task NonTcpImposterRetrieved_ThrowsInvalidProtocolException()
         {
             const int port = 6000;
-            MockRequestProxy.Setup(x => x.GetTcpImposterAsync(port)).ReturnsAsync(new RetrievedTcpImposter { Protocol = "Http" });
+            MockRequestProxy.Setup(x => x.GetTcpImposterAsync(port, default)).ReturnsAsync(new RetrievedTcpImposter { Protocol = "Http" });
 
             await Client.GetTcpImposterAsync(port).ConfigureAwait(false);
         }
@@ -29,7 +29,7 @@ namespace MbDotNet.Tests.Client
                 Protocol = "Tcp"
             };
 
-            MockRequestProxy.Setup(x => x.GetTcpImposterAsync(port)).ReturnsAsync(expectedImposter);
+            MockRequestProxy.Setup(x => x.GetTcpImposterAsync(port, default)).ReturnsAsync(expectedImposter);
 
             var result = await Client.GetTcpImposterAsync(port).ConfigureAwait(false);
 
