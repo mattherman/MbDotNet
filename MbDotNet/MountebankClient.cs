@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using MbDotNet.Enums;
@@ -65,8 +66,20 @@ namespace MbDotNet
         /// <returns>The newly created imposter</returns>
         public HttpsImposter CreateHttpsImposter(int? port = null, string name = null, string key = null, string cert = null, bool mutualAuthRequired = false, bool recordRequests = false)
         {
+            if (key != null && !IsPEMFormatted(key))
+            {
+                throw new InvalidOperationException("Provided key must be PEM-formatted");
+            }
+            if (cert != null && !IsPEMFormatted(cert))
+            {
+                throw new InvalidOperationException("Provided certificate must be PEM-formatted");
+            }
+
             return new HttpsImposter(port, name, key, cert, mutualAuthRequired, recordRequests);
         }
+
+        private bool IsPEMFormatted(string value)
+            => Regex.IsMatch(value, @"-----BEGIN CERTIFICATE-----[\S\s]*-----END CERTIFICATE-----");
 
         /// <summary>
         /// Creates a new imposter on the specified port with the TCP protocol. The Submit method
