@@ -15,11 +15,11 @@ namespace MbDotNet.Tests.Client
 
             Client.Imposters.Add(new HttpImposter(port, null));
 
-            MockRequestProxy.Setup(x => x.DeleteImposterAsync(port)).Returns(Task.CompletedTask);
+            MockRequestProxy.Setup(x => x.DeleteImposterAsync(port, default)).Returns(Task.CompletedTask);
 
             await Client.DeleteImposterAsync(port).ConfigureAwait(false);
 
-            MockRequestProxy.Verify(x => x.DeleteImposterAsync(port), Times.Once);
+            MockRequestProxy.Verify(x => x.DeleteImposterAsync(port, default), Times.Once);
         }
 
         [TestMethod]
@@ -37,20 +37,20 @@ namespace MbDotNet.Tests.Client
         [TestMethod]
         public async Task DeleteAllImposters_CallsDeleteAll()
         {
-            MockRequestProxy.Setup(x => x.DeleteAllImpostersAsync()).Returns(Task.CompletedTask);
+            MockRequestProxy.Setup(x => x.DeleteAllImpostersAsync(default)).Returns(Task.CompletedTask);
 
             Client.Imposters.Add(new HttpImposter(123, null));
             Client.Imposters.Add(new HttpImposter(456, null));
 
             await Client.DeleteAllImpostersAsync().ConfigureAwait(false);
 
-            MockRequestProxy.Verify(x => x.DeleteAllImpostersAsync(), Times.Once);
+            MockRequestProxy.Verify(x => x.DeleteAllImpostersAsync(default), Times.Once);
         }
 
         [TestMethod]
         public async Task DeleteAllImposters_RemovesAllImpostersFromCollection()
         {
-            MockRequestProxy.Setup(x => x.DeleteAllImpostersAsync()).Returns(Task.CompletedTask);
+            MockRequestProxy.Setup(x => x.DeleteAllImpostersAsync(default)).Returns(Task.CompletedTask);
 
             Client.Imposters.Add(new HttpImposter(123, null));
             Client.Imposters.Add(new HttpImposter(456, null));

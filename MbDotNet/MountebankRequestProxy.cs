@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net;
 using System.Net.Http;
 using MbDotNet.Exceptions;
@@ -6,6 +6,7 @@ using MbDotNet.Models.Imposters;
 using Newtonsoft.Json;
 using MbDotNet.Models.Responses;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace MbDotNet
 {
@@ -29,28 +30,28 @@ namespace MbDotNet
             _httpClient = httpClient;
         }
 
-        public async Task DeleteAllImpostersAsync()
+        public async Task DeleteAllImpostersAsync(CancellationToken cancellationToken = default)
         {
-            using (var response = await ExecuteDeleteAsync(ImpostersResource).ConfigureAwait(false))
+            using (var response = await ExecuteDeleteAsync(ImpostersResource, cancellationToken).ConfigureAwait(false))
             {
                 await HandleResponse(response, HttpStatusCode.OK, "Failed to delete the imposters.").ConfigureAwait(false);
             }
             
         }
 
-        public async Task DeleteImposterAsync(int port)
+        public async Task DeleteImposterAsync(int port, CancellationToken cancellationToken = default)
         {
-            using (var response = await ExecuteDeleteAsync($"{ImpostersResource}/{port}").ConfigureAwait(false))
+            using (var response = await ExecuteDeleteAsync($"{ImpostersResource}/{port}", cancellationToken).ConfigureAwait(false))
             {
                 await HandleResponse(response, HttpStatusCode.OK, $"Failed to delete the imposter with port {port}.").ConfigureAwait(false);
             }
         }
 
-        public async Task CreateImposterAsync(Imposter imposter)
+        public async Task CreateImposterAsync(Imposter imposter, CancellationToken cancellationToken = default)
         {
             var json = JsonConvert.SerializeObject(imposter);
 
-            using (var response = await ExecutePostAsync(ImpostersResource, json).ConfigureAwait(false))
+            using (var response = await ExecutePostAsync(ImpostersResource, json, cancellationToken).ConfigureAwait(false))
             {
                 await HandleResponse(response, HttpStatusCode.Created,
                     $"Failed to create the imposter with port {imposter.Port} and protocol {imposter.Protocol}.").ConfigureAwait(false);
@@ -59,24 +60,27 @@ namespace MbDotNet
             
         }
 
-        public Task<RetrievedHttpImposter> GetHttpImposterAsync(int port)
+        public async Task<RetrievedHttpImposter> GetHttpImposterAsync(int port, CancellationToken cancellationToken = default)
         {
-            return GetImposterAsync<RetrievedHttpImposter>(port);
+            return await GetImposterAsync<RetrievedHttpImposter>(port, cancellationToken)
+                .ConfigureAwait(false);
         }
 
-        public Task<RetrievedTcpImposter> GetTcpImposterAsync(int port)
+        public async Task<RetrievedTcpImposter> GetTcpImposterAsync(int port, CancellationToken cancellationToken = default)
         {
-            return GetImposterAsync<RetrievedTcpImposter>(port);
+            return await GetImposterAsync<RetrievedTcpImposter>(port, cancellationToken)
+                .ConfigureAwait(false);
         }
 
-        public Task<RetrievedHttpsImposter> GetHttpsImposterAsync(int port)
+        public async Task<RetrievedHttpsImposter> GetHttpsImposterAsync(int port, CancellationToken cancellationToken = default)
         {
-            return GetImposterAsync<RetrievedHttpsImposter>(port);
+            return await GetImposterAsync<RetrievedHttpsImposter>(port, cancellationToken)
+                .ConfigureAwait(false);
         }
 
-        private async Task<T> GetImposterAsync<T>(int port)
+        private async Task<T> GetImposterAsync<T>(int port, CancellationToken cancellationToken = default)
         {
-            using (var response = await ExecuteGetAsync($"{ImpostersResource}/{port}").ConfigureAwait(false)) 
+            using (var response = await ExecuteGetAsync($"{ImpostersResource}/{port}", cancellationToken).ConfigureAwait(false)) 
             {
                 await HandleResponse(response, HttpStatusCode.OK, $"Failed to retrieve imposter with port {port}",
                 (message) => new ImposterNotFoundException(message)).ConfigureAwait(false);
@@ -87,11 +91,24 @@ namespace MbDotNet
             }
         }
 
-        private Task<HttpResponseMessage> ExecuteGetAsync(string resource) => _httpClient.GetAsync(resource);
+        private Task<HttpResponseMessage> ExecuteGetAsync(
+            string resource,
+            CancellationToken cancellationToken = default
+        )
+            => _httpClient.GetAsync(resource, cancellationToken);
 
-        private Task<HttpResponseMessage> ExecuteDeleteAsync(string resource) => _httpClient.DeleteAsync(resource);
+        private Task<HttpResponseMessage> ExecuteDeleteAsync(
+            string resource,
+            CancellationToken cancellationToken = default
+        )
+            => _httpClient.DeleteAsync(resource, cancellationToken);
 
-        private Task<HttpResponseMessage> ExecutePostAsync(string resource, string json) => _httpClient.PostAsync(resource, new StringContent(json));
+        private Task<HttpResponseMessage> ExecutePostAsync(
+            string resource,
+            string json,
+            CancellationToken cancellationToken = default
+        )
+            => _httpClient.PostAsync(resource, new StringContent(json), cancellationToken);
 
         private async Task HandleResponse(HttpResponseMessage response, HttpStatusCode expectedStatusCode,
             string failureErrorMessage, Func<string, Exception> exceptionFactory = null)
@@ -109,7 +126,7 @@ namespace MbDotNet
 
         private async Task HandleDynamicPort(HttpResponseMessage response, Imposter imposter)
         {
-            if (imposter.Port == default(int))
+            if (imposter.Port == default)
             {
                 try
                 {
