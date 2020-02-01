@@ -1,4 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace MbDotNet.Tests.Client
 {
@@ -33,9 +34,9 @@ namespace MbDotNet.Tests.Client
         }
 
         [TestMethod]
-        public void HttpsImposter_WithKey_SetsKey()
+        public void HttpsImposter_WithPEMFormattedKey_SetsKey()
         {
-            const string expectedKey = "key";
+            const string expectedKey = "-----BEGIN CERTIFICATE-----base64_encoded_junk-----END CERTIFICATE-----";
 
             var imposter = Client.CreateHttpsImposter(123, null, expectedKey);
 
@@ -44,14 +45,28 @@ namespace MbDotNet.Tests.Client
         }
 
         [TestMethod]
-        public void HttpsImposter_WithCert_SetsCert()
+        public void HttpsImposter_WithInvalidKey_ThrowsInvalidOperationException()
         {
-            const string expectedCert = "cert";
+            Assert.ThrowsException<InvalidOperationException>(() => 
+                Client.CreateHttpsImposter(123, null, "invalid key"));
+        }
+
+        [TestMethod]
+        public void HttpsImposter_WithPEMFormattedCert_SetsCert()
+        {
+            const string expectedCert = "-----BEGIN CERTIFICATE-----base64_encoded_junk-----END CERTIFICATE-----";
 
             var imposter = Client.CreateHttpsImposter(123, null, null, expectedCert);
 
             Assert.IsNotNull(imposter);
             Assert.AreEqual(expectedCert, imposter.Cert);
+        }
+
+        [TestMethod]
+        public void HttpsImposter_WithInvalidCert_ThrowsInvalidOperationException()
+        {
+            Assert.ThrowsException<InvalidOperationException>(() =>
+                Client.CreateHttpsImposter(123, null, null, "invalid cert"));
         }
 
         [TestMethod]
