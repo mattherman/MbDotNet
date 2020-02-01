@@ -15,7 +15,7 @@ jobs:
         dotnet-version: 2.2.402
     - name: Build
       run: dotnet build --configuration Release
-    - name: Run Mountebank
+    - name: Start Mountebank
       run: |
         mkdir ~/.npm-global
         npm config set prefix '~/.npm-global'
