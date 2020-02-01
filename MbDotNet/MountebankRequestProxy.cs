@@ -32,7 +32,7 @@ namespace MbDotNet
 
         public async Task DeleteAllImpostersAsync(CancellationToken cancellationToken = default)
         {
-            using (var response = await ExecuteDeleteAsync(ImpostersResource, cancellationToken).ConfigureAwait(false))
+            using (var response = await _httpClient.DeleteAsync(ImpostersResource, cancellationToken).ConfigureAwait(false))
             {
                 await HandleResponse(response, HttpStatusCode.OK, "Failed to delete the imposters.").ConfigureAwait(false);
             }
@@ -40,7 +40,7 @@ namespace MbDotNet
 
         public async Task DeleteImposterAsync(int port, CancellationToken cancellationToken = default)
         {
-            using (var response = await ExecuteDeleteAsync($"{ImpostersResource}/{port}", cancellationToken).ConfigureAwait(false))
+            using (var response = await _httpClient.DeleteAsync($"{ImpostersResource}/{port}", cancellationToken).ConfigureAwait(false))
             {
                 await HandleResponse(response, HttpStatusCode.OK, $"Failed to delete the imposter with port {port}.").ConfigureAwait(false);
             }
@@ -50,7 +50,12 @@ namespace MbDotNet
         {
             var json = JsonConvert.SerializeObject(imposter);
 
-            using (var response = await ExecutePostAsync(ImpostersResource, json, cancellationToken).ConfigureAwait(false))
+            using (
+                var response = await _httpClient.PostAsync(
+                    ImpostersResource,
+                    new StringContent(json),
+                    cancellationToken
+                ).ConfigureAwait(false))
             {
                 await HandleResponse(response, HttpStatusCode.Created,
                     $"Failed to create the imposter with port {imposter.Port} and protocol {imposter.Protocol}.").ConfigureAwait(false);
@@ -62,7 +67,12 @@ namespace MbDotNet
         {
             var json = JsonConvert.SerializeObject(imposter);
 
-            using (var response = await ExecutePutAsync($"{ImpostersResource}/{imposter.Port}/stubs", json, cancellationToken).ConfigureAwait(false))
+            using (
+                var response = await _httpClient.PutAsync(
+                    $"{ImpostersResource}/{imposter.Port}/stubs",
+                    new StringContent(json),
+                    cancellationToken
+                ).ConfigureAwait(false))
             {
                 await HandleResponse(response, HttpStatusCode.OK,
                     $"Failed to replace stubs for the imposter with port {imposter.Port}.",
@@ -90,7 +100,7 @@ namespace MbDotNet
 
         private async Task<T> GetImposterAsync<T>(int port, CancellationToken cancellationToken = default)
         {
-            using (var response = await ExecuteGetAsync($"{ImpostersResource}/{port}", cancellationToken).ConfigureAwait(false)) 
+            using (var response = await _httpClient.GetAsync($"{ImpostersResource}/{port}", cancellationToken).ConfigureAwait(false)) 
             {
                 await HandleResponse(response, HttpStatusCode.OK, $"Failed to retrieve imposter with port {port}",
                 (message) => new ImposterNotFoundException(message)).ConfigureAwait(false);
@@ -100,32 +110,6 @@ namespace MbDotNet
                 return JsonConvert.DeserializeObject<T>(content);
             }
         }
-
-        private Task<HttpResponseMessage> ExecuteGetAsync(
-            string resource,
-            CancellationToken cancellationToken = default
-        )
-            => _httpClient.GetAsync(resource, cancellationToken);
-
-        private Task<HttpResponseMessage> ExecuteDeleteAsync(
-            string resource,
-            CancellationToken cancellationToken = default
-        )
-            => _httpClient.DeleteAsync(resource, cancellationToken);
-
-        private Task<HttpResponseMessage> ExecutePostAsync(
-            string resource,
-            string json,
-            CancellationToken cancellationToken = default
-        )
-            => _httpClient.PostAsync(resource, new StringContent(json), cancellationToken);
-
-        private Task<HttpResponseMessage> ExecutePutAsync(
-            string resource,
-            string json,
-            CancellationToken cancellationToken = default
-        )
-            => _httpClient.PutAsync(resource, new StringContent(json), cancellationToken);
 
         private async Task HandleResponse(HttpResponseMessage response, HttpStatusCode expectedStatusCode,
             string failureErrorMessage, Func<string, Exception> exceptionFactory = null)
