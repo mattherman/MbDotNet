@@ -1,4 +1,4 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/q5rn71ncmimgg3y3?svg=true)](https://ci.appveyor.com/project/mattherman/mbdotnet)
+![](https://github.com/mattherman/mbdotnet/workflows/ci/badge.svg)
 
 # MbDotNet
 
