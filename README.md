@@ -1,4 +1,4 @@
-![](https://github.com/mattherman/mbdotnet/workflows/ci/badge.svg)
+![](https://github.com/mattherman/mbdotnet/workflows/CI/badge.svg)
 
 # MbDotNet
 
