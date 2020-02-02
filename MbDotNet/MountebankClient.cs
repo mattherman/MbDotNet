@@ -152,7 +152,7 @@ namespace MbDotNet
 
         private static void ValidateRetrievedImposterProtocol<T>(RetrievedImposter<T> imposter, Protocol expectedProtocol) where T: Request
         {
-            if (!string.Equals(imposter.Protocol, expectedProtocol.ToString(), StringComparison.CurrentCultureIgnoreCase))
+            if (!string.Equals(imposter.Protocol, expectedProtocol.ToString(), StringComparison.OrdinalIgnoreCase))
             {
                 throw new InvalidProtocolException($"Expected a {expectedProtocol} imposter, but got a {imposter.Protocol} imposter.");
             }
