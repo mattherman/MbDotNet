@@ -55,7 +55,7 @@ namespace MbDotNet.Models.Stubs
         /// <returns>The stub that the response was added to</returns>
         public HttpStub ReturnsJson<T>(HttpStatusCode statusCode, T responseObject)
         {
-            return Returns(statusCode, new Dictionary<string, string> { { "Content-Type", "application/json" } }, responseObject);
+            return Returns(statusCode, new Dictionary<string, object> { { "Content-Type", "application/json" } }, responseObject);
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace MbDotNet.Models.Stubs
         {
             var responseObjectXml = ConvertResponseObjectToXml(responseObject, encoding);
 
-            return Returns(statusCode, new Dictionary<string, string> { { "Content-Type", "application/xml" } }, responseObjectXml);
+            return Returns(statusCode, new Dictionary<string, object> { { "Content-Type", "application/xml" } }, responseObjectXml);
         }
         
         /// <summary>
@@ -100,7 +100,7 @@ namespace MbDotNet.Models.Stubs
         public HttpStub ReturnsBinary(HttpStatusCode statusCode, byte[] response, string contentType)
         {
             var convertedBase64Bytes = Convert.ToBase64String(response);
-            return Returns(statusCode, new Dictionary<string, string> { { "Content-Type", contentType } }, convertedBase64Bytes, "binary");
+            return Returns(statusCode, new Dictionary<string, object> { { "Content-Type", contentType } }, convertedBase64Bytes, "binary");
         }
 
         private static string ConvertResponseObjectToXml<T>(T objectToSerialize, Encoding encoding)
@@ -128,7 +128,7 @@ namespace MbDotNet.Models.Stubs
         /// <param name="responseObject">The response object that will be returned as the specified content type</param>
         /// <param name="mode">Response mode: text of binary. Text mode is default</param>
         /// <returns></returns>
-        public HttpStub Returns(HttpStatusCode statusCode, IDictionary<string, string> headers, object responseObject, string mode = "text")
+        public HttpStub Returns(HttpStatusCode statusCode, IDictionary<string, object> headers, object responseObject, string mode = "text")
         {
             var fields = new HttpResponseFields
             {

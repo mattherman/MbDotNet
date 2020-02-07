@@ -40,13 +40,13 @@ namespace MbDotNet.Models.Predicates.Fields
         /// The HTTP headers
         /// </summary>
         [JsonProperty("headers", NullValueHandling = NullValueHandling.Ignore)]
-        public IDictionary<string, string> Headers { get; set; }
+        public IDictionary<string, object> Headers { get; set; }
 
         /// <summary>
         /// The querystring of the request
         /// </summary>
         [JsonProperty("query", NullValueHandling = NullValueHandling.Ignore)]
-        public IDictionary<string, string> QueryParameters { get; set; }
+        public IDictionary<string, object> QueryParameters { get; set; }
 
         /// <summary>
         /// The client socket, primarily used for logging and debugging

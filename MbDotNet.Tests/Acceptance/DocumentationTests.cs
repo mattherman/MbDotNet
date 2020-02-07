@@ -76,8 +76,8 @@ namespace MbDotNet.Tests.Acceptance
             {
                 Method = Method.Post,
                 Path = "/test",
-                QueryParameters = new Dictionary<string, string> { { "first", "1" }, { "second", "2" } },
-                Headers = new Dictionary<string, string> { { "Accept", "text/plain" } }
+                QueryParameters = new Dictionary<string, object> { { "first", "1" }, { "second", "2" } },
+                Headers = new Dictionary<string, object> { { "Accept", "text/plain" } }
             };
 
             var complexPredicate = new EqualsPredicate<HttpPredicateFields>(complexPredicateFields);
@@ -87,7 +87,7 @@ namespace MbDotNet.Tests.Acceptance
             // Second stub
             var fields = new HttpPredicateFields
             {
-                Headers = new Dictionary<string, string> { { "Accept", "application/xml" } }
+                Headers = new Dictionary<string, object> { { "Accept", "application/xml" } }
             };
 
             imposter.AddStub().On(new EqualsPredicate<HttpPredicateFields>(fields)).ReturnsStatus(HttpStatusCode.NotAcceptable);
@@ -113,7 +113,7 @@ namespace MbDotNet.Tests.Acceptance
             // First stub
             var predicateFields = new HttpPredicateFields
             {
-                QueryParameters = new Dictionary<string, string>()
+                QueryParameters = new Dictionary<string, object>()
             };
 
             var responseFields = new HttpResponseFields
@@ -127,7 +127,7 @@ namespace MbDotNet.Tests.Acceptance
             // Second stub
             predicateFields = new HttpPredicateFields
             {
-                QueryParameters = new Dictionary<string, string> { { "first", "1" } }
+                QueryParameters = new Dictionary<string, object> { { "first", "1" } }
             };
 
             responseFields = new HttpResponseFields
@@ -141,7 +141,7 @@ namespace MbDotNet.Tests.Acceptance
             // Third stub
             predicateFields = new HttpPredicateFields
             {
-                QueryParameters = new Dictionary<string, string> { { "first", "1" }, { "second", "2" } }
+                QueryParameters = new Dictionary<string, object> { { "first", "1" }, { "second", "2" } }
             };
 
             responseFields = new HttpResponseFields

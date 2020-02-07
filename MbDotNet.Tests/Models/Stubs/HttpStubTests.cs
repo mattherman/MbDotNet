@@ -47,7 +47,7 @@ namespace MbDotNet.Tests.Models.Stubs
         public void HttpStub_Returns_AddsResponse_StatusCodeSet()
         {
             const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
-            var headers = new Dictionary<string, string> { {"Content-Type", "application/json"} };
+            var headers = new Dictionary<string, object> { {"Content-Type", "application/json"} };
 
             var stub = new HttpStub();
             stub.Returns(expectedStatusCode, headers, "test");
@@ -61,7 +61,7 @@ namespace MbDotNet.Tests.Models.Stubs
         public void HttpStub_Returns_AddsResponse_ResponseObjectSet()
         {
             const string expectedResponseObject = "Test Response";
-            var headers = new Dictionary<string, string> { { "Content-Type", "application/json" } };
+            var headers = new Dictionary<string, object> { { "Content-Type", "application/json" } };
 
             var stub = new HttpStub();
             stub.Returns(HttpStatusCode.OK, headers, expectedResponseObject);
@@ -74,7 +74,7 @@ namespace MbDotNet.Tests.Models.Stubs
         [TestMethod]
         public void HttpStub_Returns_AddsResponse_ContentTypeHeaderSet()
         {
-            var headers = new Dictionary<string, string> { { "Content-Type", "application/json" } };
+            var headers = new Dictionary<string, object> { { "Content-Type", "application/json" } };
 
             var stub = new HttpStub();
             stub.Returns(HttpStatusCode.OK, headers, "test");
@@ -304,7 +304,7 @@ namespace MbDotNet.Tests.Models.Stubs
             {
                 Path = "/aTestPath",
                 Method = Method.Get,
-                QueryParameters = new Dictionary<string, string> { { "q", "value" }}
+                QueryParameters = new Dictionary<string, object> { { "q", "value" }}
             });
 
             var proxyToUrl = new Uri("http://someTestDestination.com");
