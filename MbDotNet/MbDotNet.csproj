@@ -20,7 +20,7 @@
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>http://github.com/mattherman/MbDotNet</PackageProjectUrl>
-    <PackageReleaseNotes>https://github.com/mattherman/MbDotNet/releases/tag/v5.0.0-rc2</PackageReleaseNotes>
+    <PackageReleaseNotes>https://github.com/mattherman/MbDotNet/releases/tag/v5.0.0-rc3</PackageReleaseNotes>
     <PackageTags>mountebank client wrapper</PackageTags>
     <BuildOutputTargetFolder>lib</BuildOutputTargetFolder>
   </PropertyGroup>
