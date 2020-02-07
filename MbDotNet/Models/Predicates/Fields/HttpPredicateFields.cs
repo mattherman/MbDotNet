@@ -18,6 +18,15 @@ namespace MbDotNet.Models.Predicates.Fields
         [JsonProperty("body", NullValueHandling = NullValueHandling.Ignore)]
         public object RequestBody { get; set; }
 
+        /// <summary>
+        /// Form-encoded key-value pairs in the body. 
+        /// Supports key-specific predicates. 
+        /// For example, with a body of "firstname=bob&lastname=smith", you
+        /// could set a predicate on just "lastname".
+        /// </summary>
+        [JsonProperty("form", NullValueHandling = NullValueHandling.Ignore)]
+        public Dictionary<string, string> FormContent { get; set; }
+
         [JsonProperty("method", NullValueHandling = NullValueHandling.Ignore)]
         private string RawMethod => Method?.ToString().ToUpper();
 
