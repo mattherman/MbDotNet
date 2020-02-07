@@ -13,7 +13,7 @@ namespace MbDotNet.Models.Responses.Fields
         public object ResponseObject { get; set; }
 
         [JsonProperty("headers", NullValueHandling = NullValueHandling.Ignore)]
-        public IDictionary<string, string> Headers { get; set; }
+        public IDictionary<string, object> Headers { get; set; }
         
         [JsonProperty("_mode", NullValueHandling = NullValueHandling.Ignore)]
         public string Mode { get; set; } 
