@@ -1,9 +1,6 @@
 name: NuGet
 
-on:
-  create:
-    tags:
-    - 'v*'
+on: [create]
 
 jobs:
   package:
