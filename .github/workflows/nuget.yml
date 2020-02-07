@@ -6,7 +6,7 @@ on:
     - 'v*'
 
 jobs:
-  build:
+  package:
 
     runs-on: ubuntu-latest
 
@@ -17,7 +17,7 @@ jobs:
       with:
         dotnet-version: 2.2.402
     - name: Create Package
-      run: dotnet pack ./MbDotNet/MbDotNet.csproj -c Release -o packages
+      run: dotnet pack ./MbDotNet/MbDotNet.csproj -c Release -o ./packages
     - name: Archive production artifacts
       uses: actions/upload-artifact@v1
       with:
