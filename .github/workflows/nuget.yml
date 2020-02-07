@@ -3,7 +3,7 @@ name: NuGet
 on:
   create:
     tags:
-    - '*'
+    - 'v*'
 
 jobs:
   build:
@@ -15,7 +15,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 2.2.108
+        dotnet-version: 2.2.402
     - name: Create Package
       run: dotnet pack ./MbDotNet/MbDotNet.csproj -c Release -o packages
     - name: Archive production artifacts
