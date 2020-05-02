@@ -20,7 +20,7 @@ namespace MbDotNet.Models.Requests
         public DateTime Timestamp { get; internal set; }
 
         [JsonProperty("query")]
-        public Dictionary<string, string> QueryParameters { get; internal set; }
+        public Dictionary<string, object> QueryParameters { get; internal set; }
 
         [JsonProperty("headers")]
         public Dictionary<string, string> Headers { get; internal set; }
