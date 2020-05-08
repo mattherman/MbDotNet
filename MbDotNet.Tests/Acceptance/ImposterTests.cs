@@ -3,6 +3,7 @@ using MbDotNet.Exceptions;
 using MbDotNet.Models.Predicates;
 using MbDotNet.Models.Predicates.Fields;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -249,6 +250,31 @@ namespace MbDotNet.Tests.Acceptance
             Assert.AreNotEqual(string.Empty, receivedRequest.RequestFrom);
             Assert.AreEqual("text/xml; charset=utf-8", receivedRequest.Headers["Content-Type"]);
             Assert.AreEqual("75", receivedRequest.Headers["Content-Length"]);
+        }
+
+        [TestMethod]
+        public async Task CanVerifyCallsOnImposterWithDuplicateQueryStringKey()
+        {
+            const int port = 6000;
+
+            var imposter = _client.CreateHttpImposter(port);
+            await _client.SubmitAsync(imposter);
+
+            var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:6000/customers?id=123&id=456");
+            var response = await _httpClient.SendAsync(request);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "Request to proxy imposter failed");
+
+            var retrievedImposter = await _client.GetHttpImposterAsync(port);
+
+            Assert.AreEqual(1, retrievedImposter.NumberOfRequests);
+
+            // For the request field to be populated, mountebank must be run with the --mock parameter
+            // http://www.mbtest.org/docs/api/overview#get-imposter
+            var receivedRequest = retrievedImposter.Requests[0];
+            var idQueryParameters = (JArray)receivedRequest.QueryParameters["id"];
+
+            Assert.AreEqual("123", idQueryParameters[0]);
+            Assert.AreEqual("456", idQueryParameters[1]);
         }
     }
 }
