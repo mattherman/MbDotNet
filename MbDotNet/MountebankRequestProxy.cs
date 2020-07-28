@@ -98,6 +98,14 @@ namespace MbDotNet
                 .ConfigureAwait(false);
         }
 
+        public async Task DeleteSavedRequestsAsync(int port, CancellationToken cancellationToken = default)
+        {
+            using (var response = await _httpClient.DeleteAsync($"{ImpostersResource}/{port}/savedRequests", cancellationToken).ConfigureAwait(false))
+            {
+                await HandleResponse(response, HttpStatusCode.OK, "Failed to delete the imposters saved requests.").ConfigureAwait(false);
+            }
+        }
+
         private async Task<T> GetImposterAsync<T>(int port, CancellationToken cancellationToken = default)
         {
             using (var response = await _httpClient.GetAsync($"{ImpostersResource}/{port}", cancellationToken).ConfigureAwait(false)) 

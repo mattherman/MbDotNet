@@ -276,5 +276,31 @@ namespace MbDotNet.Tests.Acceptance
             Assert.AreEqual("123", idQueryParameters[0]);
             Assert.AreEqual("456", idQueryParameters[1]);
         }
+
+        [TestMethod]
+        public async Task CanDeleteSavedRequestsForImposter()
+        {
+            const int port = 6000;
+            var imposter = _client.CreateHttpImposter(port);
+            imposter.AddStub()
+                .OnMethodEquals(Method.Get)
+                .ReturnsStatus(HttpStatusCode.OK);
+
+            await _client.SubmitAsync(imposter);
+
+            // Make a request to the imposter to record a request
+            var request = new HttpRequestMessage(HttpMethod.Get, $"http://localhost:{port}/test");
+            _ = await _httpClient.SendAsync(request);
+
+            var retrievedImposter = await _client.GetHttpImposterAsync(port);
+
+            Assert.AreEqual(retrievedImposter.Requests.Length, 1);
+
+            await _client.DeleteSavedRequestsAsync(port);
+
+            retrievedImposter = await _client.GetHttpImposterAsync(port);
+
+            Assert.AreEqual(retrievedImposter.Requests.Length, 0);
+        }
     }
 }

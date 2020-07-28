@@ -13,5 +13,6 @@ namespace MbDotNet
         Task<RetrievedHttpImposter> GetHttpImposterAsync(int port, CancellationToken cancellationToken = default);
         Task<RetrievedTcpImposter> GetTcpImposterAsync(int port, CancellationToken cancellationToken = default);
         Task<RetrievedHttpsImposter> GetHttpsImposterAsync(int port, CancellationToken cancellationToken = default);
+        Task DeleteSavedRequestsAsync(int port, CancellationToken cancellationToken = default);
     }
 }

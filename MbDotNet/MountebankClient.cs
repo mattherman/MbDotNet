@@ -215,5 +215,15 @@ namespace MbDotNet
         {
             await _requestProxy.UpdateImposterAsync(imposter, cancellationToken);
         }
+
+        /// <summary>
+        /// Deletes previously saved requests for an imposter
+        /// </summary>
+        /// <param name="port">The port of the imposter to delete request history</param>
+        /// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
+        public async Task DeleteSavedRequestsAsync(int port, CancellationToken cancellationToken = default)
+        {
+            await _requestProxy.DeleteSavedRequestsAsync(port, cancellationToken);
+        }
     }
 }
