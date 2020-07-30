@@ -306,6 +306,34 @@ namespace MbDotNet.Tests
             await _proxy.GetTcpImposterAsync(9999).ConfigureAwait(false);
         }
 
+        [TestMethod]
+        public async Task DeleteSavedRequests_SendsRequest()
+        {
+            const int port = 123;
+            var expectedResource = $"imposters/{port}/savedRequests";
+
+            var response = GetResponse(HttpStatusCode.OK);
+
+            _mockClient.Setup(x => x.DeleteAsync(expectedResource, default))
+                .ReturnsAsync(response);
+
+            await _proxy.DeleteSavedRequestsAsync(port).ConfigureAwait(false);
+
+            _mockClient.Verify(x => x.DeleteAsync(expectedResource, default), Times.Once);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(MountebankException))]
+        public async Task DeleteSavedRequests_StatusCodeNotOk_ThrowsMountebankException()
+        {
+            var response = GetResponse(HttpStatusCode.BadRequest);
+
+            _mockClient.Setup(x => x.DeleteAsync(It.IsAny<string>(), default))
+                .ReturnsAsync(response);
+
+            await _proxy.DeleteSavedRequestsAsync(123).ConfigureAwait(false);
+        }
+
         private HttpResponseMessage GetResponse(HttpStatusCode statusCode, string content = null)
         {
             return new HttpResponseMessage
