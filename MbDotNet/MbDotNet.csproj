@@ -18,7 +18,7 @@
     <Description>A .NET client library for interacting with mountebank (www.mbtest.org).</Description>
     <Copyright>Copyright ©  2020</Copyright>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageLicenseUrl>http://github.com/mattherman/MbDotNet/blob/master/LICENSE.md</PackageLicenseUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>http://github.com/mattherman/MbDotNet</PackageProjectUrl>
     <PackageReleaseNotes>https://github.com/mattherman/MbDotNet/releases</PackageReleaseNotes>
     <PackageTags>mountebank client wrapper</PackageTags>
