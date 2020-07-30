@@ -82,6 +82,13 @@ namespace MbDotNet
             return JsonConvert.DeserializeObject<T>(content);
         }
 
+        public void DeleteSavedRequests(int port)
+        {
+            var response = ExecuteDelete($"{ImpostersResource}/{port}/savedRequests");
+
+            HandleResponse(response, HttpStatusCode.OK, "Failed to delete the imposters saved requests.");
+        }
+
         private HttpResponseMessage ExecuteGet(string resource)
         {
             using (var client = GetClient())

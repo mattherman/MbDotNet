@@ -116,6 +116,13 @@ namespace MbDotNet
         void DeleteAllImposters();
 
         /// <summary>
+        /// Deletes previously saved requests for an imposter
+        /// </summary>
+        /// <param name="port">The port of the imposter to delete request history</param>
+        /// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
+        void DeleteSavedRequests(int port);
+
+        /// <summary>
         /// Submits all pending imposters from the supplied collection to be created in mountebank. 
         /// <exception cref="MbDotNet.Exceptions.MountebankException">Thrown if unable to create the imposter.</exception>
         /// </summary>

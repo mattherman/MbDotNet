@@ -10,5 +10,6 @@ namespace MbDotNet
         RetrievedHttpImposter GetHttpImposter(int port);
         RetrievedTcpImposter GetTcpImposter(int port);
         RetrievedHttpsImposter GetHttpsImposter(int port);
+        void DeleteSavedRequests(int port);
     }
 }
