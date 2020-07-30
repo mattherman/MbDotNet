@@ -136,5 +136,12 @@ namespace MbDotNet
         /// <param name="imposter">The imposter to be updated with new stubs</param>
         /// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
         Task UpdateImposterAsync(Imposter imposter, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Deletes previously saved requests for an imposter
+        /// </summary>
+        /// <param name="port">The port of the imposter to delete request history</param>
+        /// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
+        Task DeleteSavedRequestsAsync(int port, CancellationToken cancellationToken = default);
     }
 }
