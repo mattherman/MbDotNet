@@ -16,7 +16,7 @@
     <Title>MbDotNet</Title>
     <Authors>Matthew Herman</Authors>
     <Description>A .NET client library for interacting with mountebank (www.mbtest.org).</Description>
-    <Copyright>Copyright ©  2017</Copyright>
+    <Copyright>Copyright ©  2020</Copyright>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseUrl>http://github.com/mattherman/MbDotNet/blob/master/LICENSE.md</PackageLicenseUrl>
     <PackageProjectUrl>http://github.com/mattherman/MbDotNet</PackageProjectUrl>
