@@ -320,5 +320,18 @@ namespace MbDotNet.Tests.Models.Stubs
             Assert.AreEqual(proxyModeToUse, proxyResponse.Fields.Mode);
             Assert.AreEqual(proxyGeneratorPredicate, proxyResponse.Fields.PredicateGenerators.First());
         }
+
+        [TestMethod]
+        public void HttpStub_OnJavaScriptFunction_AddsPredicate_JavaScriptFunctionSet()
+        {
+            const string javaScriptFunction = "function(config) { return true; }";
+
+            var stub = new HttpStub();
+            stub.OnJavaScriptFunction(javaScriptFunction);
+
+            var predicate = stub.Predicates.First() as InjectPredicate;
+            Assert.IsNotNull(predicate);
+            Assert.AreEqual(javaScriptFunction, predicate.JavaScriptFunction);
+        }
     }
 }

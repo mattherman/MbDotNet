@@ -449,6 +449,36 @@ namespace MbDotNet.Tests.Acceptance
 
             await _client.SubmitAsync(imposter);
         }
+
+        /// <summary>
+        /// This test shows how to setup the imposter in the inject predicate example
+        /// at http://www.mbtest.org/docs/api/predicates.
+        /// </summary>
+        [TestMethod]
+        public async Task HttpInjectPredicateExample()
+        {
+            var imposter = _client.CreateHttpImposter(4546, "HttpInjectPredicateExample");
+
+            const string javaScriptFunction = "function(config) { return true; }";
+            imposter.AddStub().OnJavaScriptFunction(javaScriptFunction).ReturnsBody(HttpStatusCode.OK, "matches");
+
+            await _client.SubmitAsync(imposter);
+        }
+
+        /// <summary>
+        /// This test shows how to setup the imposter in the inject predicate example
+        /// at http://www.mbtest.org/docs/api/predicates.
+        /// </summary>
+        [TestMethod]
+        public async Task TcpInjectPredicateExample()
+        {
+            var imposter = _client.CreateTcpImposter(4547, "TcpInjectPredicateExample");
+
+            const string javaScriptFunction = "function(config) { return true; }";
+            imposter.AddStub().OnJavaScriptFunction(javaScriptFunction).ReturnsData("matches");
+
+            await _client.SubmitAsync(imposter);
+        }
     }
 
     public class Book
