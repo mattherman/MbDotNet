@@ -8,9 +8,13 @@ namespace MbDotNet.Models.Responses
         [JsonProperty("proxy")]
         public T Fields { get; set; }
 
-        public ProxyResponse(T fields)
+        [JsonProperty("_behaviors", NullValueHandling = NullValueHandling.Ignore)]
+        public Behavior Behavior { get; set; }
+
+        public ProxyResponse(T fields, Behavior behavior = null)
         {
             Fields = fields;
+            Behavior = behavior;
         }
     }
 }

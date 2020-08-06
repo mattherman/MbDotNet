@@ -43,15 +43,23 @@ namespace MbDotNet.Models.Stubs
         /// Adds a response to the stub that will return the specified data.
         /// </summary>
         /// <param name="data">The data to be returned</param>
+        /// <param name="latencyInMilliseconds">The number of milliseconds to be waiting before response will be returned</param>
         /// <returns>The stub that the response was added to</returns>
-        public TcpStub ReturnsData(string data)
+        public TcpStub ReturnsData(string data, int? latencyInMilliseconds = null)
         {
             var fields = new TcpResponseFields
             {
                 Data = data
             };
 
-            var response = new IsResponse<TcpResponseFields>(fields);
+            var behavior = latencyInMilliseconds.HasValue
+                ? new Behavior
+                {
+                    LatencyInMilliseconds = latencyInMilliseconds
+                }
+                : null;
+
+            var response = new IsResponse<TcpResponseFields>(fields, behavior);
 
             return Returns(response);
         }
@@ -73,8 +81,10 @@ namespace MbDotNet.Models.Stubs
         /// <param name="to">endpoint address to proxy to</param>
         /// <param name="proxyMode">proxyalways, proxyonce or proxytransparent</param>
         /// <param name="predicateGenerators">list of predicates that a proxy repsonse will be recorded for</param>
-        /// <returns></returns>
-        public TcpStub ReturnsProxy(Uri to, ProxyMode proxyMode, IList<MatchesPredicate<TcpPredicateFields>> predicateGenerators)
+        /// <param name="latencyInMilliseconds">The number of milliseconds to be waiting before response will be returned</param>
+        /// <returns>The stub that the response was added to</returns>
+        public TcpStub ReturnsProxy(Uri to, ProxyMode proxyMode,
+            IList<MatchesPredicate<TcpPredicateFields>> predicateGenerators, int? latencyInMilliseconds = null)
         {
             var fields = new ProxyResponseFields<TcpPredicateFields>
             {
@@ -83,7 +93,14 @@ namespace MbDotNet.Models.Stubs
                 PredicateGenerators = predicateGenerators
             };
 
-            var response = new ProxyResponse<ProxyResponseFields<TcpPredicateFields>>(fields);
+            var behavior = latencyInMilliseconds.HasValue
+                ? new Behavior
+                {
+                    LatencyInMilliseconds = latencyInMilliseconds
+                }
+                : null;
+
+            var response = new ProxyResponse<ProxyResponseFields<TcpPredicateFields>>(fields, behavior);
 
             return Returns(response);
         }
@@ -94,8 +111,9 @@ namespace MbDotNet.Models.Stubs
         /// <param name="to">endpoint address to proxy to</param>
         /// <param name="proxyMode">proxyalways, proxyonce or proxytransparent</param>
         /// <param name="predicateGenerators">list of predicates that a proxy repsonse will be recorded for</param>
-        /// <returns></returns>
-        public TcpStub ReturnsProxy(Uri to, ProxyMode proxyMode, IList<MatchesPredicate<TcpBooleanPredicateFields>> predicateGenerators)
+        /// <returns>The stub that the response was added to</returns>
+        public TcpStub ReturnsProxy(Uri to, ProxyMode proxyMode,
+            IList<MatchesPredicate<TcpBooleanPredicateFields>> predicateGenerators, int? latencyInMilliseconds = null)
         {
             var fields = new ProxyResponseFields<TcpBooleanPredicateFields>
             {
@@ -104,7 +122,14 @@ namespace MbDotNet.Models.Stubs
                 PredicateGenerators = predicateGenerators
             };
 
-            var response = new ProxyResponse<ProxyResponseFields<TcpBooleanPredicateFields>>(fields);
+            var behavior = latencyInMilliseconds.HasValue
+                ? new Behavior
+                {
+                    LatencyInMilliseconds = latencyInMilliseconds
+                }
+                : null;
+
+            var response = new ProxyResponse<ProxyResponseFields<TcpBooleanPredicateFields>>(fields, behavior);
 
             return Returns(response);
         }
