@@ -1,4 +1,5 @@
 ﻿using MbDotNet.Models.Requests;
+using MbDotNet.Models.Responses.Fields;
 using Newtonsoft.Json;
 
 namespace MbDotNet.Models.Imposters
@@ -7,7 +8,10 @@ namespace MbDotNet.Models.Imposters
     /// The base class for a retrieved imposter.
     /// </summary>
     /// <typeparam name="T">The request type this imposter contains</typeparam>
-    public abstract class RetrievedImposter<T> where T: Request
+    /// <typeparam name="TDefaultResponse">The request type this imposter contains</typeparam>
+    public abstract class RetrievedImposter<T, TDefaultResponse>
+        where T : Request
+        where TDefaultResponse : ResponseFields
     {
         /// <summary>
         /// The port the imposter is set up to accept requests on.
@@ -38,5 +42,11 @@ namespace MbDotNet.Models.Imposters
         /// </summary>
         [JsonProperty("requests")]
         public T[] Requests { get; internal set; }
+
+        /// <summary>
+        /// Optional default response that imposter sends back if no predicate matches a request
+        /// </summary>
+        [JsonProperty("defaultResponse", NullValueHandling = NullValueHandling.Ignore)]
+        public TDefaultResponse DefaultResponse { get; set; }
     }
 }

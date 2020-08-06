@@ -8,6 +8,7 @@ using MbDotNet.Enums;
 using MbDotNet.Exceptions;
 using MbDotNet.Models.Imposters;
 using MbDotNet.Models.Requests;
+using MbDotNet.Models.Responses.Fields;
 
 namespace MbDotNet
 {
@@ -41,10 +42,11 @@ namespace MbDotNet
         /// <see href="http://www.mbtest.org/docs/api/mocks">here</see> for more details on Mountebank
         /// verification.
         /// </param>
+        /// <param name="defaultResponse">The default response to send if no predicate matches</param>
         /// <returns>The newly created imposter</returns>
-        public HttpImposter CreateHttpImposter(int? port = null, string name = null, bool recordRequests = false)
+        public HttpImposter CreateHttpImposter(int? port = null, string name = null, bool recordRequests = false, HttpResponseFields defaultResponse = null)
         {
-            return new HttpImposter(port, name, recordRequests);
+            return new HttpImposter(port, name, recordRequests, defaultResponse);
         }
 
         /// <summary>
@@ -63,19 +65,23 @@ namespace MbDotNet
         /// <see href="http://www.mbtest.org/docs/api/mocks">here</see> for more details on Mountebank
         /// verification.
         /// </param>
+        /// <param name="defaultResponse">The default response to send if no predicate matches</param>
         /// <returns>The newly created imposter</returns>
-        public HttpsImposter CreateHttpsImposter(int? port = null, string name = null, string key = null, string cert = null, bool mutualAuthRequired = false, bool recordRequests = false)
+        public HttpsImposter CreateHttpsImposter(int? port = null, string name = null, string key = null,
+            string cert = null, bool mutualAuthRequired = false, bool recordRequests = false,
+            HttpResponseFields defaultResponse = null)
         {
             if (key != null && !IsPEMFormatted(key))
             {
                 throw new InvalidOperationException("Provided key must be PEM-formatted");
             }
+
             if (cert != null && !IsPEMFormatted(cert))
             {
                 throw new InvalidOperationException("Provided certificate must be PEM-formatted");
             }
 
-            return new HttpsImposter(port, name, key, cert, mutualAuthRequired, recordRequests);
+            return new HttpsImposter(port, name, key, cert, mutualAuthRequired, recordRequests, defaultResponse);
         }
 
         private bool IsPEMFormatted(string value)
@@ -93,10 +99,12 @@ namespace MbDotNet
         /// <see href="http://www.mbtest.org/docs/api/mocks">here</see> for more details on Mountebank
         /// verification.
         /// </param>
+        /// <param name="defaultResponse">The default response to send if no predicate matches</param>
         /// <returns>The newly created imposter</returns>
-        public TcpImposter CreateTcpImposter(int? port = null, string name = null, TcpMode mode = TcpMode.Text, bool recordRequests = false)
+        public TcpImposter CreateTcpImposter(int? port = null, string name = null, TcpMode mode = TcpMode.Text,
+            bool recordRequests = false, TcpResponseFields defaultResponse = null)
         {
-            return new TcpImposter(port, name, mode, recordRequests);
+            return new TcpImposter(port, name, mode, recordRequests, defaultResponse);
         }
 
         /// <summary>
@@ -150,7 +158,10 @@ namespace MbDotNet
             return imposter;
         }
 
-        private static void ValidateRetrievedImposterProtocol<T>(RetrievedImposter<T> imposter, Protocol expectedProtocol) where T: Request
+        private static void ValidateRetrievedImposterProtocol<T, TDefaultResponse>(
+            RetrievedImposter<T, TDefaultResponse> imposter, Protocol expectedProtocol)
+            where T : Request
+            where TDefaultResponse : ResponseFields
         {
             if (!string.Equals(imposter.Protocol, expectedProtocol.ToString(), StringComparison.OrdinalIgnoreCase))
             {
