@@ -57,7 +57,7 @@ dotnet test
 
 This includes a set of acceptance tests that run
 against an actual mountebank instance. In order for those tests to succeed, mountebank 
-will need to be run with the `--mock` option provided. See http://www.mbtest.org/docs/api/overview#get-imposter.
+will need to be run with the `--mock --debug` option provided. See http://www.mbtest.org/docs/api/overview#get-imposter.
 
 If you would prefer to run mountebank via docker, please execute the following command from the root directory:
 ```docker-compose up```
