@@ -449,6 +449,20 @@ namespace MbDotNet.Tests.Acceptance
 
             await _client.SubmitAsync(imposter);
         }
+
+        /// <summary>
+        /// This test shows how to setup the imposter in the stub with latency example
+        /// at http://www.mbtest.org/docs/api/stubs.
+        /// </summary>
+        [TestMethod]
+        public async Task AddLatencyExample()
+        {
+            var imposter = _client.CreateHttpImposter(4545, "StubExample");
+            imposter.AddStub().OnPathAndMethodEqual("/customers/123", Method.Post)
+                .ReturnsStatus(HttpStatusCode.OK, 1000);
+
+            await _client.SubmitAsync(imposter);
+        }
     }
 
     public class Book

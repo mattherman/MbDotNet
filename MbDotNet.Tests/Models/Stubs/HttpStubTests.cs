@@ -44,6 +44,22 @@ namespace MbDotNet.Tests.Models.Stubs
         }
 
         [TestMethod]
+        public void HttpStub_ReturnsStatus_AddsResponse_LatencySet()
+        {
+            const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
+            const int expectedLatencyInMilliseconds = 1000;
+
+            var stub = new HttpStub();
+            stub.ReturnsStatus(expectedStatusCode, expectedLatencyInMilliseconds);
+
+            var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
+            Assert.IsNotNull(response);
+            Assert.IsNotNull(response.Behavior);
+            Assert.IsNotNull(response.Behavior.LatencyInMilliseconds);
+            Assert.AreEqual(expectedLatencyInMilliseconds, response.Behavior.LatencyInMilliseconds);
+        }
+
+        [TestMethod]
         public void HttpStub_Returns_AddsResponse_StatusCodeSet()
         {
             const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
@@ -55,6 +71,23 @@ namespace MbDotNet.Tests.Models.Stubs
             var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
             Assert.IsNotNull(response);
             Assert.AreEqual(expectedStatusCode, response.Fields.StatusCode);
+        }
+
+        [TestMethod]
+        public void HttpStub_Returns_AddsResponse_LatencySet()
+        {
+            const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
+            const int expectedLatencyInMilliseconds = 1000;
+            var headers = new Dictionary<string, object> { { "Content-Type", "application/json" } };
+
+            var stub = new HttpStub();
+            stub.Returns(expectedStatusCode, headers, "test", latencyInMilliseconds: expectedLatencyInMilliseconds);
+
+            var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
+            Assert.IsNotNull(response);
+            Assert.IsNotNull(response.Behavior);
+            Assert.IsNotNull(response.Behavior.LatencyInMilliseconds);
+            Assert.AreEqual(expectedLatencyInMilliseconds, response.Behavior.LatencyInMilliseconds);
         }
 
         [TestMethod]
@@ -97,6 +130,18 @@ namespace MbDotNet.Tests.Models.Stubs
         }
 
         [TestMethod]
+        public void HttpStub_Returns_AddsBehavior()
+        {
+            var expectedResponse = new IsResponse<HttpResponseFields>(new HttpResponseFields(), new Behavior());
+
+            var stub = new HttpStub();
+            stub.Returns(expectedResponse);
+
+            var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
+            Assert.AreEqual(expectedResponse.Behavior, response?.Behavior);
+        }
+
+        [TestMethod]
         public void HttpStub_ReturnsBody_AddsResponse_StatusCodeSet()
         {
             const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
@@ -107,6 +152,22 @@ namespace MbDotNet.Tests.Models.Stubs
             var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
             Assert.IsNotNull(response);
             Assert.AreEqual(expectedStatusCode, response.Fields.StatusCode);
+        }
+
+        [TestMethod]
+        public void HttpStub_ReturnsBody_AddsResponse_LatencySet()
+        {
+            const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
+            const int expectedLatencyInMilliseconds = 1000;
+
+            var stub = new HttpStub();
+            stub.ReturnsBody(expectedStatusCode, "test", expectedLatencyInMilliseconds);
+
+            var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
+            Assert.IsNotNull(response);
+            Assert.IsNotNull(response.Behavior);
+            Assert.IsNotNull(response.Behavior.LatencyInMilliseconds);
+            Assert.AreEqual(expectedLatencyInMilliseconds, response.Behavior.LatencyInMilliseconds);
         }
 
         [TestMethod]
@@ -133,6 +194,22 @@ namespace MbDotNet.Tests.Models.Stubs
             var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
             Assert.IsNotNull(response);
             Assert.AreEqual(expectedStatusCode, response.Fields.StatusCode);
+        }
+
+        [TestMethod]
+        public void HttpStub_ReturnsXml_AddsResponse_LatencySet()
+        {
+            const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
+            const int expectedLatencyInMilliseconds = 1000;
+
+            var stub = new HttpStub();
+            stub.ReturnsXml(expectedStatusCode, "test", expectedLatencyInMilliseconds);
+
+            var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
+            Assert.IsNotNull(response);
+            Assert.IsNotNull(response.Behavior);
+            Assert.IsNotNull(response.Behavior.LatencyInMilliseconds);
+            Assert.AreEqual(expectedLatencyInMilliseconds, response.Behavior.LatencyInMilliseconds);
         }
 
         [TestMethod]
@@ -197,6 +274,21 @@ namespace MbDotNet.Tests.Models.Stubs
             var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
             Assert.IsNotNull(response);
             Assert.AreEqual("application/pdf", response.Fields.Headers["Content-Type"]);
+        }
+
+        [TestMethod]
+        public void HttpStub_ReturnsBinary_AddsResponse_LatencySet()
+        {
+            const int expectedLatencyInMilliseconds = 1000;
+            var stub = new HttpStub();
+            var bytes = new byte[] { 3, 3, 5, 2, 23, 5, 21, 1 };
+            stub.ReturnsBinary(HttpStatusCode.OK, bytes, "application/pdf", expectedLatencyInMilliseconds);
+
+            var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
+            Assert.IsNotNull(response);
+            Assert.IsNotNull(response.Behavior);
+            Assert.IsNotNull(response.Behavior.LatencyInMilliseconds);
+            Assert.AreEqual(expectedLatencyInMilliseconds, response.Behavior.LatencyInMilliseconds);
         }
 
         [TestMethod]
@@ -290,6 +382,38 @@ namespace MbDotNet.Tests.Models.Stubs
             Assert.AreEqual(proxyToUrl, proxyResponse.Fields.To);
             Assert.AreEqual(proxyModeToUse, proxyResponse.Fields.Mode);
             Assert.AreEqual(proxyGeneratorPredicate, proxyResponse.Fields.PredicateGenerators.First());
+        }
+
+        [TestMethod]
+        public void HttpStub_ReturnsProxy_ReturnsProxyStub_LatencySet()
+        {
+            var predicateInvokingProxyStub = new ContainsPredicate<HttpPredicateFields>(new HttpPredicateFields
+            {
+                Path = "/aTestPath"
+            });
+
+            var proxyGeneratorPredicate = new MatchesPredicate<HttpBooleanPredicateFields>(new HttpBooleanPredicateFields
+            {
+                Path = true,
+                Method = true,
+                QueryParameters = true
+            });
+
+            var proxyToUrl = new Uri("http://someTestDestination.com");
+            const ProxyMode proxyModeToUse = ProxyMode.ProxyTransparent;
+            const int expectedLatencyInMilliseconds = 1000;
+
+            var stub = new HttpStub();
+            stub.On(predicateInvokingProxyStub)
+                .ReturnsProxy(proxyToUrl, proxyModeToUse, new[] {proxyGeneratorPredicate},
+                    expectedLatencyInMilliseconds);
+
+            var proxyResponse = stub.Responses.First() as ProxyResponse<ProxyResponseFields<HttpBooleanPredicateFields>>;
+
+            Assert.IsNotNull(proxyResponse);
+            Assert.IsNotNull(proxyResponse.Behavior);
+            Assert.IsNotNull(proxyResponse.Behavior.LatencyInMilliseconds);
+            Assert.AreEqual(expectedLatencyInMilliseconds, proxyResponse.Behavior.LatencyInMilliseconds);
         }
 
         [TestMethod]
