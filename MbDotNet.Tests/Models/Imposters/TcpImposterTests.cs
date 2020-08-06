@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MbDotNet.Models.Imposters;
 using MbDotNet.Enums;
+using MbDotNet.Models.Responses.Fields;
 
 namespace MbDotNet.Tests.Models.Imposters
 {
@@ -52,6 +53,13 @@ namespace MbDotNet.Tests.Models.Imposters
         {
             var imposter = new TcpImposter(123, null, TcpMode.Text);
             Assert.IsNotNull(imposter.Stubs);
+        }
+
+        [TestMethod]
+        public void TcpImposter_Constructor_InitializesDefaultResponse()
+        {
+            var imposter = new TcpImposter(123, null, TcpMode.Text, defaultResponse: new TcpResponseFields());
+            Assert.IsNotNull(imposter.DefaultResponse);
         }
 
         #endregion
