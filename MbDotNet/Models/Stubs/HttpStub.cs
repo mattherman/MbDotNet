@@ -255,12 +255,12 @@ namespace MbDotNet.Models.Stubs
         /// Adds a predicate to the stub that allows you to inject JavaScript to determine if the
         /// predicate should match or not.
         /// </summary>
-        /// <param name="javaScriptFunction">JavaScript function that accepts the request object (and
+        /// <param name="injectedFunction">JavaScript function that accepts the request object (and
         /// optionally a logger) and returns true or false</param>
         /// <returns>The stub that the predicate was added to</returns>
-        public HttpStub OnJavaScriptFunction(string javaScriptFunction)
+        public HttpStub OnInjectedFunction(string injectedFunction)
         {
-            var predicate = new InjectPredicate(javaScriptFunction);
+            var predicate = new InjectPredicate(injectedFunction);
 
             return On(predicate);
         }

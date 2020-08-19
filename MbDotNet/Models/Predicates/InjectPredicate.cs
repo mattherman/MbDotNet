@@ -5,11 +5,11 @@ namespace MbDotNet.Models.Predicates
     public class InjectPredicate : PredicateBase
     {
         [JsonProperty("inject")]
-        public string JavaScriptFunction { get; private set; }
+        public string InjectedFunction { get; private set; }
 
-        public InjectPredicate(string javaScriptFunction)
+        public InjectPredicate(string injectedFunction)
         {
-            JavaScriptFunction = javaScriptFunction;
+            InjectedFunction = injectedFunction;
         }
     }
 }

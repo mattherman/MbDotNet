@@ -322,16 +322,16 @@ namespace MbDotNet.Tests.Models.Stubs
         }
 
         [TestMethod]
-        public void HttpStub_OnJavaScriptFunction_AddsPredicate_JavaScriptFunctionSet()
+        public void HttpStub_InjectedFunction_AddsPredicate_InjectedFunctionSet()
         {
-            const string javaScriptFunction = "function(config) { return true; }";
+            const string injectedFunction = "function(config) { return true; }";
 
             var stub = new HttpStub();
-            stub.OnJavaScriptFunction(javaScriptFunction);
+            stub.OnInjectedFunction(injectedFunction);
 
             var predicate = stub.Predicates.First() as InjectPredicate;
             Assert.IsNotNull(predicate);
-            Assert.AreEqual(javaScriptFunction, predicate.JavaScriptFunction);
+            Assert.AreEqual(injectedFunction, predicate.InjectedFunction);
         }
     }
 }

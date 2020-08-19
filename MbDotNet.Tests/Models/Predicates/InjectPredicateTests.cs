@@ -7,11 +7,11 @@ namespace MbDotNet.Tests.Models.Predicates
     public class InjectPredicateTests : PredicateTestBase
     {
         [TestMethod]
-        public void InjectPredicate_Constructor_SetsJavaScriptFunction()
+        public void InjectPredicate_Constructor_SetsInjectedFunction()
         {
-            const string javaScriptFunction = "function(config) { return true; }";
-            var predicate = new InjectPredicate(javaScriptFunction);
-            Assert.AreEqual(javaScriptFunction, predicate.JavaScriptFunction);
+            const string injectedFunction = "function(config) { return true; }";
+            var predicate = new InjectPredicate(injectedFunction);
+            Assert.AreEqual(injectedFunction, predicate.InjectedFunction);
         }
     }
 }
