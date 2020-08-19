@@ -449,19 +449,6 @@ namespace MbDotNet.Tests.Acceptance
 
             await _client.SubmitAsync(imposter);
         }
-
-
-        /// <summary>
-        /// This test shows how to setup the imposter with default response example
-        /// at http://www.mbtest.org/docs/api/predicates.
-        /// </summary>
-        [TestMethod]
-        public async Task DefaultResponseExample()
-        {
-            var imposter = _client.CreateTcpImposter(4556, "DefaultResponseExample", defaultResponse: new TcpResponseFields{Data = "data"});
-
-            await _client.SubmitAsync(imposter);
-        }
     }
 
     public class Book
