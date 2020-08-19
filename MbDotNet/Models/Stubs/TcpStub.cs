@@ -81,10 +81,9 @@ namespace MbDotNet.Models.Stubs
         /// <param name="to">endpoint address to proxy to</param>
         /// <param name="proxyMode">proxyalways, proxyonce or proxytransparent</param>
         /// <param name="predicateGenerators">list of predicates that a proxy repsonse will be recorded for</param>
-        /// <param name="latencyInMilliseconds">The number of milliseconds to be waiting before response will be returned</param>
         /// <returns>The stub that the response was added to</returns>
         public TcpStub ReturnsProxy(Uri to, ProxyMode proxyMode,
-            IList<MatchesPredicate<TcpPredicateFields>> predicateGenerators, int? latencyInMilliseconds = null)
+            IList<MatchesPredicate<TcpPredicateFields>> predicateGenerators)
         {
             var fields = new ProxyResponseFields<TcpPredicateFields>
             {
@@ -93,14 +92,7 @@ namespace MbDotNet.Models.Stubs
                 PredicateGenerators = predicateGenerators
             };
 
-            var behavior = latencyInMilliseconds.HasValue
-                ? new Behavior
-                {
-                    LatencyInMilliseconds = latencyInMilliseconds
-                }
-                : null;
-
-            var response = new ProxyResponse<ProxyResponseFields<TcpPredicateFields>>(fields, behavior);
+            var response = new ProxyResponse<ProxyResponseFields<TcpPredicateFields>>(fields);
 
             return Returns(response);
         }
@@ -113,7 +105,7 @@ namespace MbDotNet.Models.Stubs
         /// <param name="predicateGenerators">list of predicates that a proxy repsonse will be recorded for</param>
         /// <returns>The stub that the response was added to</returns>
         public TcpStub ReturnsProxy(Uri to, ProxyMode proxyMode,
-            IList<MatchesPredicate<TcpBooleanPredicateFields>> predicateGenerators, int? latencyInMilliseconds = null)
+            IList<MatchesPredicate<TcpBooleanPredicateFields>> predicateGenerators)
         {
             var fields = new ProxyResponseFields<TcpBooleanPredicateFields>
             {
@@ -122,14 +114,7 @@ namespace MbDotNet.Models.Stubs
                 PredicateGenerators = predicateGenerators
             };
 
-            var behavior = latencyInMilliseconds.HasValue
-                ? new Behavior
-                {
-                    LatencyInMilliseconds = latencyInMilliseconds
-                }
-                : null;
-
-            var response = new ProxyResponse<ProxyResponseFields<TcpBooleanPredicateFields>>(fields, behavior);
+            var response = new ProxyResponse<ProxyResponseFields<TcpBooleanPredicateFields>>(fields);
 
             return Returns(response);
         }

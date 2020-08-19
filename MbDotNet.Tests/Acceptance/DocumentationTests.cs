@@ -451,15 +451,15 @@ namespace MbDotNet.Tests.Acceptance
         }
 
         /// <summary>
-        /// This test shows how to setup the imposter in the stub with latency example
-        /// at http://www.mbtest.org/docs/api/stubs.
+        /// This test shows how to setup the imposter in the stub with wait behavior
+        /// at https://www.mbtest.org/docs/api/behaviors#behavior-wait
         /// </summary>
         [TestMethod]
-        public async Task AddLatencyExample()
+        public async Task WaitBehaviorExample()
         {
-            var imposter = _client.CreateHttpImposter(4545, "StubExample");
-            imposter.AddStub().OnPathAndMethodEqual("/customers/123", Method.Post)
-                .ReturnsStatus(HttpStatusCode.OK, 1000);
+            var imposter = _client.CreateHttpImposter(4546, "WaitBehaviorExample");
+            imposter.AddStub().Returns(HttpStatusCode.OK, new Dictionary<string, object>(),
+                "This took at least half a second to send", latencyInMilliseconds: 500);
 
             await _client.SubmitAsync(imposter);
         }
