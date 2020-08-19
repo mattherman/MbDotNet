@@ -452,30 +452,15 @@ namespace MbDotNet.Tests.Acceptance
 
         /// <summary>
         /// This test shows how to setup the imposter in the inject predicate example
-        /// at http://www.mbtest.org/docs/api/predicates.
+        /// at http://www.mbtest.org/docs/api/injection.
         /// </summary>
         [TestMethod]
         public async Task HttpInjectPredicateExample()
         {
             var imposter = _client.CreateHttpImposter(4546, "HttpInjectPredicateExample");
 
-            const string javaScriptFunction = "function(config) { return true; }";
-            imposter.AddStub().OnJavaScriptFunction(javaScriptFunction).ReturnsBody(HttpStatusCode.OK, "matches");
-
-            await _client.SubmitAsync(imposter);
-        }
-
-        /// <summary>
-        /// This test shows how to setup the imposter in the inject predicate example
-        /// at http://www.mbtest.org/docs/api/predicates.
-        /// </summary>
-        [TestMethod]
-        public async Task TcpInjectPredicateExample()
-        {
-            var imposter = _client.CreateTcpImposter(4547, "TcpInjectPredicateExample");
-
-            const string javaScriptFunction = "function(config) { return true; }";
-            imposter.AddStub().OnJavaScriptFunction(javaScriptFunction).ReturnsData("matches");
+            const string injectedFunction = "function (config) {\r\n\r\n    function hasXMLProlog () {\r\n        return config.request.body.indexOf('<?xml') === 0;\r\n    }\r\n\r\n    if (config.request.headers['Content-Type'] === 'application/xml') {\r\n        return !hasXMLProlog();\r\n    }\r\n    else {\r\n        return hasXMLProlog();\r\n    }\r\n}";
+            imposter.AddStub().OnInjectedFunction(injectedFunction).ReturnsStatus(HttpStatusCode.BadRequest);
 
             await _client.SubmitAsync(imposter);
         }
