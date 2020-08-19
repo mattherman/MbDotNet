@@ -41,22 +41,6 @@ namespace MbDotNet.Tests.Models.Stubs
         }
 
         [TestMethod]
-        public void TcpStub_ReturnsData_AddsResponse_LatencySet()
-        {
-            const string expectedData = "TestData";
-            const int expectedLatencyInMilliseconds = 1000;
-
-            var stub = new TcpStub();
-            stub.ReturnsData(expectedData, expectedLatencyInMilliseconds);
-
-            var response = stub.Responses.First() as IsResponse<TcpResponseFields>;
-            Assert.IsNotNull(response);
-            Assert.IsNotNull(response.Behavior);
-            Assert.IsNotNull(response.Behavior.LatencyInMilliseconds);
-            Assert.AreEqual(expectedLatencyInMilliseconds, response.Behavior.LatencyInMilliseconds);
-        }
-
-        [TestMethod]
         public void TcpStub_Returns_AddsResponse_SetsFields()
         {
             var expectedFields = new TcpResponseFields

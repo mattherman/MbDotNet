@@ -43,23 +43,15 @@ namespace MbDotNet.Models.Stubs
         /// Adds a response to the stub that will return the specified data.
         /// </summary>
         /// <param name="data">The data to be returned</param>
-        /// <param name="latencyInMilliseconds">The number of milliseconds to be waiting before response will be returned</param>
         /// <returns>The stub that the response was added to</returns>
-        public TcpStub ReturnsData(string data, int? latencyInMilliseconds = null)
+        public TcpStub ReturnsData(string data)
         {
             var fields = new TcpResponseFields
             {
                 Data = data
             };
 
-            var behavior = latencyInMilliseconds.HasValue
-                ? new Behavior
-                {
-                    LatencyInMilliseconds = latencyInMilliseconds
-                }
-                : null;
-
-            var response = new IsResponse<TcpResponseFields>(fields, behavior);
+            var response = new IsResponse<TcpResponseFields>(fields);
 
             return Returns(response);
         }
