@@ -173,35 +173,6 @@ namespace MbDotNet.Tests.Models.Stubs
         }
 
         [TestMethod]
-        public void TcpStub_ReturnsProxy_ReturnsTcpBooleanProxyStub_LatencySet()
-        {
-            var predicateInvokingProxyStub = new ContainsPredicate<TcpPredicateFields>(new TcpPredicateFields
-            {
-                Data = "123345"
-            });
-
-            var proxyGeneratorPredicate = new MatchesPredicate<TcpBooleanPredicateFields>(new TcpBooleanPredicateFields
-            {
-                Data = true
-            });
-
-            var proxyToUrl = new Uri("tcp://someTestDestination.com");
-            const ProxyMode proxyModeToUse = ProxyMode.ProxyTransparent;
-            const int expectedLatencyInMilliseconds = 1000;
-
-            var stub = new TcpStub();
-            stub.On(predicateInvokingProxyStub)
-                .ReturnsProxy(proxyToUrl, proxyModeToUse, new[] { proxyGeneratorPredicate }, expectedLatencyInMilliseconds);
-
-            var proxyResponse = stub.Responses.First() as ProxyResponse<ProxyResponseFields<TcpBooleanPredicateFields>>;
-
-            Assert.IsNotNull(proxyResponse);
-            Assert.IsNotNull(proxyResponse.Behavior);
-            Assert.IsNotNull(proxyResponse.Behavior.LatencyInMilliseconds);
-            Assert.AreEqual(expectedLatencyInMilliseconds, proxyResponse.Behavior.LatencyInMilliseconds);
-        }
-
-        [TestMethod]
         public void TcpStub_ReturnsProxy_ReturnsTcpProxyStub()
         {            
             var predicateInvokingProxyStub = new ContainsPredicate<TcpPredicateFields>(new TcpPredicateFields
@@ -226,36 +197,6 @@ namespace MbDotNet.Tests.Models.Stubs
             Assert.AreEqual(proxyToUrl, proxyResponse.Fields.To);
             Assert.AreEqual(proxyModeToUse, proxyResponse.Fields.Mode);
             Assert.AreEqual(proxyGeneratorPredicate, proxyResponse.Fields.PredicateGenerators.First());
-        }
-
-        [TestMethod]
-        public void TcpStub_ReturnsProxy_ReturnsTcpProxyStub_LatencySet()
-        {
-            var predicateInvokingProxyStub = new ContainsPredicate<TcpPredicateFields>(new TcpPredicateFields
-            {
-                Data = "123345"
-            });
-
-            var proxyGeneratorPredicate = new MatchesPredicate<TcpPredicateFields>(new TcpPredicateFields
-            {
-                Data = "123345"
-            });
-
-            var proxyToUrl = new Uri("tcp://someTestDestination.com");
-            const ProxyMode proxyModeToUse = ProxyMode.ProxyTransparent;
-            const int expectedLatencyInMilliseconds = 1000;
-
-            var stub = new TcpStub();
-            stub.On(predicateInvokingProxyStub)
-                .ReturnsProxy(proxyToUrl, proxyModeToUse, new[] {proxyGeneratorPredicate},
-                    expectedLatencyInMilliseconds);
-
-            var proxyResponse = stub.Responses.First() as ProxyResponse<ProxyResponseFields<TcpPredicateFields>>;
-
-            Assert.IsNotNull(proxyResponse);
-            Assert.IsNotNull(proxyResponse.Behavior);
-            Assert.IsNotNull(proxyResponse.Behavior.LatencyInMilliseconds);
-            Assert.AreEqual(expectedLatencyInMilliseconds, proxyResponse.Behavior.LatencyInMilliseconds);
         }
     }
 }

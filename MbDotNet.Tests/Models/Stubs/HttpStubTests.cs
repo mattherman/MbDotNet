@@ -385,38 +385,6 @@ namespace MbDotNet.Tests.Models.Stubs
         }
 
         [TestMethod]
-        public void HttpStub_ReturnsProxy_ReturnsProxyStub_LatencySet()
-        {
-            var predicateInvokingProxyStub = new ContainsPredicate<HttpPredicateFields>(new HttpPredicateFields
-            {
-                Path = "/aTestPath"
-            });
-
-            var proxyGeneratorPredicate = new MatchesPredicate<HttpBooleanPredicateFields>(new HttpBooleanPredicateFields
-            {
-                Path = true,
-                Method = true,
-                QueryParameters = true
-            });
-
-            var proxyToUrl = new Uri("http://someTestDestination.com");
-            const ProxyMode proxyModeToUse = ProxyMode.ProxyTransparent;
-            const int expectedLatencyInMilliseconds = 1000;
-
-            var stub = new HttpStub();
-            stub.On(predicateInvokingProxyStub)
-                .ReturnsProxy(proxyToUrl, proxyModeToUse, new[] {proxyGeneratorPredicate},
-                    expectedLatencyInMilliseconds);
-
-            var proxyResponse = stub.Responses.First() as ProxyResponse<ProxyResponseFields<HttpBooleanPredicateFields>>;
-
-            Assert.IsNotNull(proxyResponse);
-            Assert.IsNotNull(proxyResponse.Behavior);
-            Assert.IsNotNull(proxyResponse.Behavior.LatencyInMilliseconds);
-            Assert.AreEqual(expectedLatencyInMilliseconds, proxyResponse.Behavior.LatencyInMilliseconds);
-        }
-
-        [TestMethod]
         public void HttpStub_ReturnsProxy_ReturnsHttpProxyStub()
         {            
             var predicateInvokingProxyStub = new ContainsPredicate<HttpPredicateFields>(new HttpPredicateFields
