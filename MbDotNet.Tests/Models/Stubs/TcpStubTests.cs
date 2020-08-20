@@ -182,5 +182,18 @@ namespace MbDotNet.Tests.Models.Stubs
             Assert.AreEqual(proxyModeToUse, proxyResponse.Fields.Mode);
             Assert.AreEqual(proxyGeneratorPredicate, proxyResponse.Fields.PredicateGenerators.First());
         }
+
+        [TestMethod]
+        public void TcpStub_InjectedFunction_AddsPredicate_InjectedFunctionSet()
+        {
+            const string injectedFunction = "function(config) { return true; }";
+
+            var stub = new TcpStub();
+            stub.OnInjectedFunction(injectedFunction);
+
+            var predicate = stub.Predicates.First() as InjectPredicate;
+            Assert.IsNotNull(predicate);
+            Assert.AreEqual(injectedFunction, predicate.InjectedFunction);
+        }
     }
 }
