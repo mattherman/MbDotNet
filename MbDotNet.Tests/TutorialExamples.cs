@@ -396,6 +396,20 @@ namespace MbDotNet.Tests
         }
 
         /// <summary>
+        /// This test shows how to setup the imposter in the stub with wait behavior
+        /// at https://www.mbtest.org/docs/api/behaviors#behavior-wait
+        /// </summary>
+        [TestMethod]
+        public void WaitBehaviorExample()
+        {
+            var imposter = _client.CreateHttpImposter(4546, "WaitBehaviorExample");
+            imposter.AddStub().Returns(HttpStatusCode.OK, new Dictionary<string, string>(),
+                "This took at least half a second to send", latencyInMilliseconds: 500);
+
+            _client.Submit(imposter);
+        }
+
+        /// <summary>
         /// This test shows how to setup the imposter in the inject predicate example
         /// at http://www.mbtest.org/docs/api/injection.
         /// </summary>
