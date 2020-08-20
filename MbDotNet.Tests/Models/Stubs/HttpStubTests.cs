@@ -58,6 +58,23 @@ namespace MbDotNet.Tests.Models.Stubs
         }
 
         [TestMethod]
+        public void HttpStub_Returns_AddsResponse_LatencySet()
+        {
+            const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
+            const int expectedLatencyInMilliseconds = 1000;
+            var headers = new Dictionary<string, object> { { "Content-Type", "application/json" } };
+
+            var stub = new HttpStub();
+            stub.Returns(expectedStatusCode, headers, "test", latencyInMilliseconds: expectedLatencyInMilliseconds);
+
+            var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
+            Assert.IsNotNull(response);
+            Assert.IsNotNull(response.Behavior);
+            Assert.IsNotNull(response.Behavior.LatencyInMilliseconds);
+            Assert.AreEqual(expectedLatencyInMilliseconds, response.Behavior.LatencyInMilliseconds);
+        }
+
+        [TestMethod]
         public void HttpStub_Returns_AddsResponse_ResponseObjectSet()
         {
             const string expectedResponseObject = "Test Response";
@@ -94,6 +111,18 @@ namespace MbDotNet.Tests.Models.Stubs
 
             var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
             Assert.AreEqual(expectedResponse, response);
+        }
+
+        [TestMethod]
+        public void HttpStub_Returns_AddsBehavior()
+        {
+            var expectedResponse = new IsResponse<HttpResponseFields>(new HttpResponseFields(), new Behavior());
+
+            var stub = new HttpStub();
+            stub.Returns(expectedResponse);
+
+            var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
+            Assert.AreEqual(expectedResponse.Behavior, response?.Behavior);
         }
 
         [TestMethod]

@@ -87,8 +87,9 @@ namespace MbDotNet.Models.Stubs
         /// <param name="to">endpoint address to proxy to</param>
         /// <param name="proxyMode">proxyalways, proxyonce or proxytransparent</param>
         /// <param name="predicateGenerators">list of predicates that a proxy repsonse will be recorded for</param>
-        /// <returns></returns>
-        public TcpStub ReturnsProxy(Uri to, ProxyMode proxyMode, IList<MatchesPredicate<TcpPredicateFields>> predicateGenerators)
+        /// <returns>The stub that the response was added to</returns>
+        public TcpStub ReturnsProxy(Uri to, ProxyMode proxyMode,
+            IList<MatchesPredicate<TcpPredicateFields>> predicateGenerators)
         {
             var fields = new ProxyResponseFields<TcpPredicateFields>
             {
@@ -108,8 +109,9 @@ namespace MbDotNet.Models.Stubs
         /// <param name="to">endpoint address to proxy to</param>
         /// <param name="proxyMode">proxyalways, proxyonce or proxytransparent</param>
         /// <param name="predicateGenerators">list of predicates that a proxy repsonse will be recorded for</param>
-        /// <returns></returns>
-        public TcpStub ReturnsProxy(Uri to, ProxyMode proxyMode, IList<MatchesPredicate<TcpBooleanPredicateFields>> predicateGenerators)
+        /// <returns>The stub that the response was added to</returns>
+        public TcpStub ReturnsProxy(Uri to, ProxyMode proxyMode,
+            IList<MatchesPredicate<TcpBooleanPredicateFields>> predicateGenerators)
         {
             var fields = new ProxyResponseFields<TcpBooleanPredicateFields>
             {

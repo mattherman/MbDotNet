@@ -8,9 +8,13 @@ namespace MbDotNet.Models.Responses
         [JsonProperty("is")]
         public T Fields { get; set; }
 
-        public IsResponse(T fields)
+        [JsonProperty("_behaviors", NullValueHandling = NullValueHandling.Ignore)]
+        public Behavior Behavior { get; set; }
+
+        public IsResponse(T fields, Behavior behavior = null)
         {
             Fields = fields;
+            Behavior = behavior;
         }
     }
 }
