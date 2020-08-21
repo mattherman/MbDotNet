@@ -449,6 +449,35 @@ namespace MbDotNet.Tests.Acceptance
 
             await _client.SubmitAsync(imposter);
         }
+
+        /// <summary>
+        /// This test shows how to setup the imposter in the stub with wait behavior
+        /// at https://www.mbtest.org/docs/api/behaviors#behavior-wait
+        /// </summary>
+        [TestMethod]
+        public async Task WaitBehaviorExample()
+        {
+            var imposter = _client.CreateHttpImposter(4546, "WaitBehaviorExample");
+            imposter.AddStub().Returns(HttpStatusCode.OK, new Dictionary<string, object>(),
+                "This took at least half a second to send", latencyInMilliseconds: 500);
+
+            await _client.SubmitAsync(imposter);
+        }
+
+        /// <summary>
+        /// This test shows how to setup the imposter in the inject predicate example
+        /// at http://www.mbtest.org/docs/api/injection.
+        /// </summary>
+        [TestMethod]
+        public async Task HttpInjectPredicateExample()
+        {
+            var imposter = _client.CreateHttpImposter(4546, "HttpInjectPredicateExample");
+
+            const string injectedFunction = "function (config) {\r\n\r\n    function hasXMLProlog () {\r\n        return config.request.body.indexOf('<?xml') === 0;\r\n    }\r\n\r\n    if (config.request.headers['Content-Type'] === 'application/xml') {\r\n        return !hasXMLProlog();\r\n    }\r\n    else {\r\n        return hasXMLProlog();\r\n    }\r\n}";
+            imposter.AddStub().OnInjectedFunction(injectedFunction).ReturnsStatus(HttpStatusCode.BadRequest);
+
+            await _client.SubmitAsync(imposter);
+        }
     }
 
     public class Book

@@ -16,5 +16,13 @@ namespace MbDotNet.Tests.Models.Responses
             var response = new IsResponse<TestResponseFields>(expectedFields);
             Assert.AreSame(expectedFields, response.Fields);
         }
+
+        [TestMethod]
+        public void TestResponse_Constructor_SetsBehavior()
+        {
+            var behavior = new Behavior();
+            var response = new IsResponse<TestResponseFields>(new TestResponseFields(), behavior);
+            Assert.AreSame(behavior, response.Behavior);
+        }
     }
 }

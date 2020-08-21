@@ -22,6 +22,6 @@ jobs:
         export PATH=~/.npm-global/bin:$PATH
         source ~/.profile
         npm install -g mountebank
-        mb --mock &
+        mb --mock --allowInjection --debug &
     - name: Test
       run: dotnet test --configuration Release --no-build

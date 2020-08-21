@@ -58,6 +58,23 @@ namespace MbDotNet.Tests.Models.Stubs
         }
 
         [TestMethod]
+        public void HttpStub_Returns_AddsResponse_LatencySet()
+        {
+            const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
+            const int expectedLatencyInMilliseconds = 1000;
+            var headers = new Dictionary<string, object> { { "Content-Type", "application/json" } };
+
+            var stub = new HttpStub();
+            stub.Returns(expectedStatusCode, headers, "test", latencyInMilliseconds: expectedLatencyInMilliseconds);
+
+            var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
+            Assert.IsNotNull(response);
+            Assert.IsNotNull(response.Behavior);
+            Assert.IsNotNull(response.Behavior.LatencyInMilliseconds);
+            Assert.AreEqual(expectedLatencyInMilliseconds, response.Behavior.LatencyInMilliseconds);
+        }
+
+        [TestMethod]
         public void HttpStub_Returns_AddsResponse_ResponseObjectSet()
         {
             const string expectedResponseObject = "Test Response";
@@ -94,6 +111,18 @@ namespace MbDotNet.Tests.Models.Stubs
 
             var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
             Assert.AreEqual(expectedResponse, response);
+        }
+
+        [TestMethod]
+        public void HttpStub_Returns_AddsBehavior()
+        {
+            var expectedResponse = new IsResponse<HttpResponseFields>(new HttpResponseFields(), new Behavior());
+
+            var stub = new HttpStub();
+            stub.Returns(expectedResponse);
+
+            var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
+            Assert.AreEqual(expectedResponse.Behavior, response?.Behavior);
         }
 
         [TestMethod]
@@ -319,6 +348,19 @@ namespace MbDotNet.Tests.Models.Stubs
             Assert.AreEqual(proxyToUrl, proxyResponse.Fields.To);
             Assert.AreEqual(proxyModeToUse, proxyResponse.Fields.Mode);
             Assert.AreEqual(proxyGeneratorPredicate, proxyResponse.Fields.PredicateGenerators.First());
+        }
+
+        [TestMethod]
+        public void HttpStub_InjectedFunction_AddsPredicate_InjectedFunctionSet()
+        {
+            const string injectedFunction = "function(config) { return true; }";
+
+            var stub = new HttpStub();
+            stub.OnInjectedFunction(injectedFunction);
+
+            var predicate = stub.Predicates.First() as InjectPredicate;
+            Assert.IsNotNull(predicate);
+            Assert.AreEqual(injectedFunction, predicate.InjectedFunction);
         }
     }
 }
