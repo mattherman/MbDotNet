@@ -26,7 +26,7 @@ namespace MbDotNet.Models.Stubs
             {
                 StatusCode = statusCode
             };
-
+            
             var response = new IsResponse<HttpResponseFields>(fields);
 
             return Returns(response);
@@ -55,7 +55,7 @@ namespace MbDotNet.Models.Stubs
         /// <returns>The stub that the response was added to</returns>
         public HttpStub ReturnsJson<T>(HttpStatusCode statusCode, T responseObject)
         {
-            return Returns(statusCode, new Dictionary<string, object> { { "Content-Type", "application/json" } }, responseObject);
+            return Returns(statusCode, new Dictionary<string, object> {{"Content-Type", "application/json"}}, responseObject);
         }
 
         /// <summary>
@@ -81,14 +81,14 @@ namespace MbDotNet.Models.Stubs
         /// <param name="statusCode">The status code to be returned</param>
         /// <param name="responseObject">The response object of type T that will be returned as XML</param>
         /// <param name="encoding">The encoding with which to serialize the XML</param>
-        /// <returns></returns>
+        /// <returns>The stub that the response was added to</returns>
         public HttpStub ReturnsXml<T>(HttpStatusCode statusCode, T responseObject, Encoding encoding)
         {
             var responseObjectXml = ConvertResponseObjectToXml(responseObject, encoding);
 
-            return Returns(statusCode, new Dictionary<string, object> { { "Content-Type", "application/xml" } }, responseObjectXml);
+            return Returns(statusCode, new Dictionary<string, object> {{"Content-Type", "application/xml"}}, responseObjectXml);
         }
-        
+
         /// <summary>
         /// Adds a response to the stub that will return the specified HTTP status code
         /// along with a response represented by binary stream.
@@ -96,11 +96,12 @@ namespace MbDotNet.Models.Stubs
         /// <param name="statusCode">The status code to be returned</param>
         /// <param name="response">Byte array representing binary stream.</param>
         /// <param name="contentType">Content type</param>
-        /// <returns></returns>
+        /// <returns>The stub that the response was added to</returns>
         public HttpStub ReturnsBinary(HttpStatusCode statusCode, byte[] response, string contentType)
         {
             var convertedBase64Bytes = Convert.ToBase64String(response);
-            return Returns(statusCode, new Dictionary<string, object> { { "Content-Type", contentType } }, convertedBase64Bytes, "binary");
+
+            return Returns(statusCode, new Dictionary<string, object> {{"Content-Type", contentType}}, convertedBase64Bytes, "binary");
         }
 
         private static string ConvertResponseObjectToXml<T>(T objectToSerialize, Encoding encoding)
@@ -127,8 +128,10 @@ namespace MbDotNet.Models.Stubs
         /// <param name="headers">The headers for the response</param>
         /// <param name="responseObject">The response object that will be returned as the specified content type</param>
         /// <param name="mode">Response mode: text of binary. Text mode is default</param>
-        /// <returns></returns>
-        public HttpStub Returns(HttpStatusCode statusCode, IDictionary<string, object> headers, object responseObject, string mode = "text")
+        /// <param name="latencyInMilliseconds">The number of milliseconds to be waiting before response will be returned</param>
+        /// <returns>The stub that the response was added to</returns>
+        public HttpStub Returns(HttpStatusCode statusCode, IDictionary<string, object> headers, object responseObject,
+            string mode = "text", int? latencyInMilliseconds = null)
         {
             var fields = new HttpResponseFields
             {
@@ -138,7 +141,14 @@ namespace MbDotNet.Models.Stubs
                 Mode = mode
             };
 
-            var response = new IsResponse<HttpResponseFields>(fields);
+            var behavior = latencyInMilliseconds.HasValue
+                ? new Behavior
+                {
+                    LatencyInMilliseconds = latencyInMilliseconds
+                }
+                : null;
+
+            var response = new IsResponse<HttpResponseFields>(fields, behavior);
 
             return Returns(response);
         }
@@ -149,8 +159,9 @@ namespace MbDotNet.Models.Stubs
         /// <param name="to">endpoint address to proxy to</param>
         /// <param name="proxyMode">proxyalways, proxyonce or proxytransparent</param>
         /// <param name="predicateGenerators">list of predicates that a proxy repsonse will be recorded for</param>
-        /// <returns></returns>
-        public HttpStub ReturnsProxy(Uri to, ProxyMode proxyMode, IList<MatchesPredicate<HttpPredicateFields>> predicateGenerators)
+        /// <returns>The stub that the response was added to</returns>
+        public HttpStub ReturnsProxy(Uri to, ProxyMode proxyMode,
+            IList<MatchesPredicate<HttpPredicateFields>> predicateGenerators)
         {
             var fields = new ProxyResponseFields<HttpPredicateFields>
             {
@@ -158,7 +169,7 @@ namespace MbDotNet.Models.Stubs
                 Mode = proxyMode,
                 PredicateGenerators = predicateGenerators
             };
-
+            
             var response = new ProxyResponse<ProxyResponseFields<HttpPredicateFields>>(fields);
 
             return Returns(response);
@@ -170,8 +181,9 @@ namespace MbDotNet.Models.Stubs
         /// <param name="to">endpoint address to proxy to</param>
         /// <param name="proxyMode">proxyalways, proxyonce or proxytransparent</param>
         /// <param name="predicateGenerators">list of predicates that a proxy repsonse will be recorded for</param>
-        /// <returns></returns>
-        public HttpStub ReturnsProxy(Uri to, ProxyMode proxyMode, IList<MatchesPredicate<HttpBooleanPredicateFields>> predicateGenerators)
+        /// <returns>The stub that the response was added to</returns>
+        public HttpStub ReturnsProxy(Uri to, ProxyMode proxyMode,
+            IList<MatchesPredicate<HttpBooleanPredicateFields>> predicateGenerators)
         {
             var fields = new ProxyResponseFields<HttpBooleanPredicateFields>
             {
@@ -247,6 +259,20 @@ namespace MbDotNet.Models.Stubs
             };
 
             var predicate = new EqualsPredicate<HttpPredicateFields>(fields);
+
+            return On(predicate);
+        }
+
+        /// <summary>
+        /// Adds a predicate to the stub that allows you to inject JavaScript to determine if the
+        /// predicate should match or not.
+        /// </summary>
+        /// <param name="injectedFunction">JavaScript function that accepts the request object (and
+        /// optionally a logger) and returns true or false</param>
+        /// <returns>The stub that the predicate was added to</returns>
+        public HttpStub OnInjectedFunction(string injectedFunction)
+        {
+            var predicate = new InjectPredicate(injectedFunction);
 
             return On(predicate);
         }

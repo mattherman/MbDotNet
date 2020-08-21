@@ -57,6 +57,49 @@ namespace MbDotNet.Tests.Models.Stubs
         }
 
         [TestMethod]
+        public void TcpStub_Returns_AddsResponse_LatencySet()
+        {
+            var expectedFields = new TcpResponseFields
+            {
+                Data = "TestData"
+            };
+            const int expectedLatencyInMilliseconds = 1000;
+
+            var behavior = new Behavior
+            {
+                LatencyInMilliseconds = expectedLatencyInMilliseconds
+            };
+
+            var stub = new TcpStub();
+            stub.Returns(new IsResponse<TcpResponseFields>(expectedFields, behavior));
+
+            var response = stub.Responses.First() as IsResponse<TcpResponseFields>;
+            Assert.IsNotNull(response);
+            Assert.IsNotNull(response.Behavior);
+            Assert.IsNotNull(response.Behavior.LatencyInMilliseconds);
+            Assert.AreEqual(expectedLatencyInMilliseconds, response.Behavior.LatencyInMilliseconds);
+        }
+        
+        [TestMethod]
+        public void TcpStub_Returns_AddsResponse_BehaviorSet()
+        {
+            var expectedFields = new TcpResponseFields
+            {
+                Data = "TestData"
+            };
+
+            var behavior = new Behavior();
+
+            var stub = new TcpStub();
+            stub.Returns(new IsResponse<TcpResponseFields>(expectedFields, behavior));
+
+            var response = stub.Responses.First() as IsResponse<TcpResponseFields>;
+            Assert.IsNotNull(response);
+            Assert.IsNotNull(response.Behavior);
+            Assert.AreEqual(behavior, response.Behavior);
+        }
+
+        [TestMethod]
         public void TcpStub_OnDataEquals_AddsPredicate_DataSet()
         {
             const string expectedData = "TestData";
@@ -138,6 +181,19 @@ namespace MbDotNet.Tests.Models.Stubs
             Assert.AreEqual(proxyToUrl, proxyResponse.Fields.To);
             Assert.AreEqual(proxyModeToUse, proxyResponse.Fields.Mode);
             Assert.AreEqual(proxyGeneratorPredicate, proxyResponse.Fields.PredicateGenerators.First());
+        }
+
+        [TestMethod]
+        public void TcpStub_InjectedFunction_AddsPredicate_InjectedFunctionSet()
+        {
+            const string injectedFunction = "function(config) { return true; }";
+
+            var stub = new TcpStub();
+            stub.OnInjectedFunction(injectedFunction);
+
+            var predicate = stub.Predicates.First() as InjectPredicate;
+            Assert.IsNotNull(predicate);
+            Assert.AreEqual(injectedFunction, predicate.InjectedFunction);
         }
     }
 }
