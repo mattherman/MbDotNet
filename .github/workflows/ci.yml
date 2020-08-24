@@ -25,3 +25,5 @@ jobs:
         mb --mock --allowInjection --debug &
     - name: Test
       run: dotnet test --configuration Release --no-build
+    - name: Acceptance Tests
+      run: dotnet run --project MbDotNet.Acceptance.Tests
