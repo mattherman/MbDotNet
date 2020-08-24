@@ -24,6 +24,7 @@ namespace MbDotNet.Acceptance.Tests
                 typeof(AcceptanceTests.CanCreateHttpProxyImposter),
                 typeof(AcceptanceTests.CanCreateTcpProxyImposter),
                 typeof(AcceptanceTests.CanDeleteSavedRequests),
+                typeof(AcceptanceTests.CanCheckMatchesForImposter)
             };
 
             var runner = new AcceptanceTestRunner(tests, OnTestPassing, OnTestFailing, OnTestSkipped);
