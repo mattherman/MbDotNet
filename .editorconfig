@@ -1,0 +1,9 @@
+# http://editorconfig.org
+
+# This file is the top-most EditorConfig file
+root = true
+
+# All Files
+[*]
+indent_style = space
+indent_size = 4

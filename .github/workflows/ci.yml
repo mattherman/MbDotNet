@@ -1,0 +1,27 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 2.2.402
+    - name: Build
+      run: dotnet build --configuration Release
+    - name: Start Mountebank
+      run: |
+        mkdir ~/.npm-global
+        npm config set prefix '~/.npm-global'
+        export PATH=~/.npm-global/bin:$PATH
+        source ~/.profile
+        npm install -g mountebank
+        mb --mock --allowInjection --debug &
+    - name: Test
+      run: dotnet test --configuration Release --no-build

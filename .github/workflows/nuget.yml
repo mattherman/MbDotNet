@@ -1,0 +1,22 @@
+name: NuGet
+
+on: [create]
+
+jobs:
+  package:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 2.2.402
+    - name: Create Package
+      run: dotnet pack ./MbDotNet/MbDotNet.csproj -c Release -o packages
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: packages
+        path: MbDotNet/packages
