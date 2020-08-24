@@ -8,6 +8,7 @@ using MbDotNet.Enums;
 using MbDotNet.Exceptions;
 using MbDotNet.Models.Imposters;
 using MbDotNet.Models.Requests;
+using MbDotNet.Models.Responses.Fields;
 
 namespace MbDotNet
 {
@@ -150,11 +151,15 @@ namespace MbDotNet
             return imposter;
         }
 
-        private static void ValidateRetrievedImposterProtocol<T>(RetrievedImposter<T> imposter, Protocol expectedProtocol) where T: Request
+        private static void ValidateRetrievedImposterProtocol<TRequest, TResponseFields>(
+            RetrievedImposter<TRequest, TResponseFields> imposter, Protocol expectedProtocol)
+            where TRequest : Request
+            where TResponseFields : ResponseFields, new()
         {
             if (!string.Equals(imposter.Protocol, expectedProtocol.ToString(), StringComparison.OrdinalIgnoreCase))
             {
-                throw new InvalidProtocolException($"Expected a {expectedProtocol} imposter, but got a {imposter.Protocol} imposter.");
+                throw new InvalidProtocolException(
+                    $"Expected a {expectedProtocol} imposter, but got a {imposter.Protocol} imposter.");
             }
         }
 

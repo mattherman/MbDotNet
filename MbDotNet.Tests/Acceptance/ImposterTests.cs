@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Sockets;
@@ -301,6 +302,29 @@ namespace MbDotNet.Tests.Acceptance
             retrievedImposter = await _client.GetHttpImposterAsync(port);
 
             Assert.AreEqual(retrievedImposter.Requests.Length, 0);
+        }
+
+        [TestMethod]
+        public async Task CanCheckMatchesForImposter()
+        {
+            const int port = 6000;
+            var imposter = _client.CreateHttpImposter(port);
+            imposter.AddStub()
+                .OnMethodEquals(Method.Get)
+                .ReturnsStatus(HttpStatusCode.OK);
+
+            await _client.SubmitAsync(imposter);
+
+            // Make a request to the imposter to record a match
+            var request = new HttpRequestMessage(HttpMethod.Get, $"http://localhost:{port}");
+            _ = await _httpClient.SendAsync(request);
+
+            var retrievedImposter = await _client.GetHttpImposterAsync(port);
+
+            // For the request field to be populated, mountebank must be run with the --debug parameter
+            // http://www.mbtest.org/docs/api/overview#get-imposter
+            Assert.AreEqual(retrievedImposter.Stubs.Count, 1);
+            Assert.AreEqual(retrievedImposter.Stubs.ElementAt(0).Matches.Count, 1);
         }
     }
 }
