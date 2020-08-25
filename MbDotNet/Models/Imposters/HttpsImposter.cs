@@ -23,7 +23,7 @@ namespace MbDotNet.Models.Imposters
         /// Optional default response that imposter sends back if no predicate matches a request
         /// </summary>
         [JsonProperty("defaultResponse", NullValueHandling = NullValueHandling.Ignore)]
-        public HttpResponseFields DefaultResponse { get; set; }
+        public HttpResponseFields DefaultResponse { get; private set; }
 
         public HttpsImposter(int? port, string name, bool recordRequests = false, HttpResponseFields defaultResponse = null) 
             : this(port, name, null, null, false, recordRequests, defaultResponse)

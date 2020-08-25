@@ -47,6 +47,6 @@ namespace MbDotNet.Models.Imposters
         /// Optional default response that imposter sends back if no predicate matches a request
         /// </summary>
         [JsonProperty("defaultResponse", NullValueHandling = NullValueHandling.Ignore)]
-        public TDefaultResponse DefaultResponse { get; set; }
+        public TDefaultResponse DefaultResponse { get; internal set; }
     }
 }
