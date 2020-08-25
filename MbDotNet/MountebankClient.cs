@@ -158,14 +158,16 @@ namespace MbDotNet
             return imposter;
         }
 
-        private static void ValidateRetrievedImposterProtocol<T, TDefaultResponse>(
-            RetrievedImposter<T, TDefaultResponse> imposter, Protocol expectedProtocol)
-            where T : Request
+        private static void ValidateRetrievedImposterProtocol<TRequest, TResponseFields, TDefaultResponse>(
+            RetrievedImposter<TRequest, TResponseFields, TDefaultResponse> imposter, Protocol expectedProtocol)
+            where TRequest : Request
+            where TResponseFields : ResponseFields, new()
             where TDefaultResponse : ResponseFields
         {
             if (!string.Equals(imposter.Protocol, expectedProtocol.ToString(), StringComparison.OrdinalIgnoreCase))
             {
-                throw new InvalidProtocolException($"Expected a {expectedProtocol} imposter, but got a {imposter.Protocol} imposter.");
+                throw new InvalidProtocolException(
+                    $"Expected a {expectedProtocol} imposter, but got a {imposter.Protocol} imposter.");
             }
         }
 

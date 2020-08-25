@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace MbDotNet.Models.Imposters
 {
-    public class RetrievedTcpImposter : RetrievedImposter<TcpRequest, TcpResponseFields>
+    public class RetrievedTcpImposter : RetrievedImposter<TcpRequest, TcpResponseFields, TcpResponseFields>
     {
         [JsonProperty("mode")]
         internal string RawMode { get; set; }

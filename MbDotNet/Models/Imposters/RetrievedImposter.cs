@@ -1,5 +1,7 @@
-﻿using MbDotNet.Models.Requests;
+﻿using System.Collections.Generic;
+using MbDotNet.Models.Requests;
 using MbDotNet.Models.Responses.Fields;
+using MbDotNet.Models.Stubs;
 using Newtonsoft.Json;
 
 namespace MbDotNet.Models.Imposters
@@ -7,10 +9,12 @@ namespace MbDotNet.Models.Imposters
     /// <summary>
     /// The base class for a retrieved imposter.
     /// </summary>
-    /// <typeparam name="T">The request type this imposter contains</typeparam>
+    /// <typeparam name="TRequest">The request type this imposter contains</typeparam>
+    /// <typeparam name="TResponseFields">The response fields type this imposter contains</typeparam>
     /// <typeparam name="TDefaultResponse">The request type this imposter contains</typeparam>
-    public abstract class RetrievedImposter<T, TDefaultResponse>
-        where T : Request
+    public abstract class RetrievedImposter<TRequest, TResponseFields, TDefaultResponse>
+        where TRequest : Request
+        where TResponseFields : ResponseFields, new()
         where TDefaultResponse : ResponseFields
     {
         /// <summary>
@@ -41,12 +45,18 @@ namespace MbDotNet.Models.Imposters
         /// The requests that have been made to this imposter
         /// </summary>
         [JsonProperty("requests")]
-        public T[] Requests { get; internal set; }
+        public TRequest[] Requests { get; internal set; }
 
+        /// <summary>
+        /// A set of behaviors used to generate a response for an imposter
+        /// </summary>
+        [JsonProperty("stubs")]
+        public ICollection<RetrievedStub<TRequest, TResponseFields>> Stubs { get; internal set; }
+        
         /// <summary>
         /// Optional default response that imposter sends back if no predicate matches a request
         /// </summary>
         [JsonProperty("defaultResponse", NullValueHandling = NullValueHandling.Ignore)]
-        public TDefaultResponse DefaultResponse { get; internal set; }
+        public TDefaultResponse DefaultResponse { get; internal set; }   
     }
 }
