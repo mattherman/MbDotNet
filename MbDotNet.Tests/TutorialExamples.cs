@@ -416,7 +416,7 @@ namespace MbDotNet.Tests
         //[TestMethod]
         public void HttpInjectPredicateExample()
         {
-            var imposter = _client.CreateHttpImposter(4546, "HttpInjectPredicateExample");
+            var imposter = _client.CreateHttpImposter(4547, "HttpInjectPredicateExample");
 
             const string injectedFunction = "function (config) {\r\n\r\n    function hasXMLProlog () {\r\n        return config.request.body.indexOf('<?xml') === 0;\r\n    }\r\n\r\n    if (config.request.headers['Content-Type'] === 'application/xml') {\r\n        return !hasXMLProlog();\r\n    }\r\n    else {\r\n        return hasXMLProlog();\r\n    }\r\n}";
             imposter.AddStub().OnInjectedFunction(injectedFunction).ReturnsStatus(HttpStatusCode.BadRequest);

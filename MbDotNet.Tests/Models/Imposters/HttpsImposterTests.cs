@@ -1,4 +1,5 @@
 ﻿using MbDotNet.Models.Imposters;
+using MbDotNet.Models.Responses.Fields;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MbDotNet.Tests.Models.Imposters
@@ -90,6 +91,13 @@ namespace MbDotNet.Tests.Models.Imposters
         {
             var imposter = new HttpsImposter(123, null);
             Assert.IsFalse(imposter.MutualAuthRequired);
+        }
+
+        [TestMethod]
+        public void HttpsImposter_Constructor_SetsDefaultResponse()
+        {
+            var imposter = new HttpsImposter(123, null, defaultResponse: new HttpResponseFields());
+            Assert.IsNotNull(imposter.DefaultResponse);
         }
 
         #endregion

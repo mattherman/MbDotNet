@@ -1,10 +1,11 @@
 ﻿using MbDotNet.Models.Stubs;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using MbDotNet.Models.Responses.Fields;
 
 namespace MbDotNet.Models.Imposters
 {
-    public class HttpsImposter : Imposter 
+    public class HttpsImposter : Imposter
     {
         [JsonProperty("stubs")]
         public ICollection<HttpStub> Stubs { get; private set; }
@@ -18,16 +19,25 @@ namespace MbDotNet.Models.Imposters
         [JsonProperty("mutualAuth")]
         public bool MutualAuthRequired { get; private set; }
 
-        public HttpsImposter(int? port, string name, bool recordRequests = false) : this(port, name, null, null, false, recordRequests)
+        /// <summary>
+        /// Optional default response that imposter sends back if no predicate matches a request
+        /// </summary>
+        [JsonProperty("defaultResponse", NullValueHandling = NullValueHandling.Ignore)]
+        public HttpResponseFields DefaultResponse { get; private set; }
+
+        public HttpsImposter(int? port, string name, bool recordRequests = false, HttpResponseFields defaultResponse = null) 
+            : this(port, name, null, null, false, recordRequests, defaultResponse)
         {
         }
 
-        public HttpsImposter(int? port, string name, string key, string cert, bool mutualAuthRequired, bool recordRequests = false) : base(port, Enums.Protocol.Https, name, recordRequests)
+        public HttpsImposter(int? port, string name, string key, string cert, bool mutualAuthRequired,
+            bool recordRequests = false, HttpResponseFields defaultResponse = null) : base(port, Enums.Protocol.Https, name, recordRequests)
         {
             Cert = cert;
             Key = key;
             MutualAuthRequired = mutualAuthRequired;
             Stubs = new List<HttpStub>();
+            DefaultResponse = defaultResponse;
         }
 
         public HttpStub AddStub()

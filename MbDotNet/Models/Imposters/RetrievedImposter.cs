@@ -50,5 +50,11 @@ namespace MbDotNet.Models.Imposters
         /// </summary>
         [JsonProperty("stubs")]
         public ICollection<RetrievedStub<TRequest, TResponseFields>> Stubs { get; internal set; }
+        
+        /// <summary>
+        /// Optional default response that imposter sends back if no predicate matches a request
+        /// </summary>
+        [JsonProperty("defaultResponse", NullValueHandling = NullValueHandling.Ignore)]
+        public TResponseFields DefaultResponse { get; internal set; }   
     }
 }
