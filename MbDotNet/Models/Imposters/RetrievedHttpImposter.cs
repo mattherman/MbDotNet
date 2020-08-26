@@ -3,7 +3,7 @@ using MbDotNet.Models.Responses.Fields;
 
 namespace MbDotNet.Models.Imposters
 {
-    public class RetrievedHttpImposter : RetrievedImposter<HttpRequest, HttpResponseFields, HttpResponseFields>
+    public class RetrievedHttpImposter : RetrievedImposter<HttpRequest, HttpResponseFields>
     {
 
     }

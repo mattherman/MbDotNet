@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace MbDotNet.Models.Imposters
 {
-    public class RetrievedHttpsImposter : RetrievedImposter<HttpRequest, HttpResponseFields, HttpResponseFields>
+    public class RetrievedHttpsImposter : RetrievedImposter<HttpRequest, HttpResponseFields>
     {
         [JsonProperty("key")]
         public string Key { get; internal set; }

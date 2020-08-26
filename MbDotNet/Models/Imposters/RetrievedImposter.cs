@@ -11,11 +11,9 @@ namespace MbDotNet.Models.Imposters
     /// </summary>
     /// <typeparam name="TRequest">The request type this imposter contains</typeparam>
     /// <typeparam name="TResponseFields">The response fields type this imposter contains</typeparam>
-    /// <typeparam name="TDefaultResponse">The request type this imposter contains</typeparam>
-    public abstract class RetrievedImposter<TRequest, TResponseFields, TDefaultResponse>
+    public abstract class RetrievedImposter<TRequest, TResponseFields>
         where TRequest : Request
         where TResponseFields : ResponseFields, new()
-        where TDefaultResponse : ResponseFields
     {
         /// <summary>
         /// The port the imposter is set up to accept requests on.
@@ -57,6 +55,6 @@ namespace MbDotNet.Models.Imposters
         /// Optional default response that imposter sends back if no predicate matches a request
         /// </summary>
         [JsonProperty("defaultResponse", NullValueHandling = NullValueHandling.Ignore)]
-        public TDefaultResponse DefaultResponse { get; internal set; }   
+        public TResponseFields DefaultResponse { get; internal set; }   
     }
 }

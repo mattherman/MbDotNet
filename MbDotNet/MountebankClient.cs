@@ -158,11 +158,10 @@ namespace MbDotNet
             return imposter;
         }
 
-        private static void ValidateRetrievedImposterProtocol<TRequest, TResponseFields, TDefaultResponse>(
-            RetrievedImposter<TRequest, TResponseFields, TDefaultResponse> imposter, Protocol expectedProtocol)
+        private static void ValidateRetrievedImposterProtocol<TRequest, TResponseFields>(
+            RetrievedImposter<TRequest, TResponseFields> imposter, Protocol expectedProtocol)
             where TRequest : Request
             where TResponseFields : ResponseFields, new()
-            where TDefaultResponse : ResponseFields
         {
             if (!string.Equals(imposter.Protocol, expectedProtocol.ToString(), StringComparison.OrdinalIgnoreCase))
             {
