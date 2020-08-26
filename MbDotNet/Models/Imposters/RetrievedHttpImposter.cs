@@ -1,5 +1,4 @@
 ﻿using MbDotNet.Models.Requests;
-using MbDotNet.Models.Responses;
 using MbDotNet.Models.Responses.Fields;
 
 namespace MbDotNet.Models.Imposters

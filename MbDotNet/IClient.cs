@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MbDotNet.Enums;
 using MbDotNet.Models.Imposters;
+using MbDotNet.Models.Responses.Fields;
 
 namespace MbDotNet
 {
@@ -30,8 +31,9 @@ namespace MbDotNet
         /// <see href="http://www.mbtest.org/docs/api/mocks">here</see> for more details on Mountebank
         /// verification.
         /// </param>
+        /// <param name="defaultResponse">The default response to send if no predicate matches</param>
         /// <returns>The newly created imposter</returns>
-        HttpImposter CreateHttpImposter(int? port = null, string name = null, bool recordRequests = false);
+        HttpImposter CreateHttpImposter(int? port = null, string name = null, bool recordRequests = false, HttpResponseFields defaultResponse = null);
 
         /// <summary> 
         /// Creates a new imposter on the specified port with the HTTPS protocol. The Submit method
@@ -51,8 +53,10 @@ namespace MbDotNet
         /// <see href="http://www.mbtest.org/docs/api/mocks">here</see> for more details on Mountebank
         /// verification.
         /// </param>
+        /// <param name="defaultResponse">The default response to send if no predicate matches</param>
         /// <returns>The newly created imposter</returns>
-        HttpsImposter CreateHttpsImposter(int? port = null, string name = null, string key = null, string cert = null, bool mutualAuthRequired = false, bool recordRequests = false);
+        HttpsImposter CreateHttpsImposter(int? port = null, string name = null, string key = null, string cert = null,
+            bool mutualAuthRequired = false, bool recordRequests = false, HttpResponseFields defaultResponse = null);
 
         /// <summary>
         /// Creates a new imposter on the specified port with the TCP protocol. The Submit method
@@ -70,8 +74,10 @@ namespace MbDotNet
         /// <see href="http://www.mbtest.org/docs/api/mocks">here</see> for more details on Mountebank
         /// verification.
         /// </param>
+        /// <param name="defaultResponse">The default response to send if no predicate matches</param>
         /// <returns>The newly created imposter</returns>
-        TcpImposter CreateTcpImposter(int? port = null, string name = null, TcpMode mode = TcpMode.Text, bool recordRequests = false);
+        TcpImposter CreateTcpImposter(int? port = null, string name = null, TcpMode mode = TcpMode.Text,
+            bool recordRequests = false, TcpResponseFields defaultResponse = null);
 
         /// <summary>
         /// Retrieves an HttpImposter along with information about requests made to that

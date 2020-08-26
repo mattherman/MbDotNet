@@ -1,5 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using MbDotNet.Models.Responses.Fields;
 
 namespace MbDotNet.Tests.Client
 {
@@ -95,6 +96,24 @@ namespace MbDotNet.Tests.Client
             var imposter = Client.CreateHttpsImposter(recordRequests: recordRequests);
 
             Assert.IsTrue(imposter.RecordRequests);
+        }
+
+        [TestMethod]
+        public void HttpImposter_WithoutDefaultRequest_SetsDefaultRequest()
+        {
+            var imposter = Client.CreateHttpsImposter(123, "service");
+
+            Assert.IsNull(imposter.DefaultResponse);
+        }
+
+        [TestMethod]
+        public void HttpImposter_WithDefaultRequest_SetsDefaultRequest()
+        {
+            var defaultResponse = new HttpResponseFields();
+            var imposter = Client.CreateHttpsImposter(123, "service", defaultResponse: defaultResponse);
+
+            Assert.IsNotNull(imposter.DefaultResponse);
+            Assert.AreEqual(defaultResponse, imposter.DefaultResponse);
         }
     }
 }
