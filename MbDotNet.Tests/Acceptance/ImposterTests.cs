@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Mail;
+using System.Net.Mime;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -64,12 +66,15 @@ namespace MbDotNet.Tests.Acceptance
         [TestMethod]
         public async Task CanCreateAndGetHttpsImposter()
         {
+            // Arrange
             const int port = 6000;
             var imposter = _client.CreateHttpsImposter(port);
 
+            // Act
             await _client.SubmitAsync(imposter);
-
             var retrievedImposter = await _client.GetHttpsImposterAsync(port);
+
+            // Assert
             Assert.IsNotNull(retrievedImposter);
         }
 
@@ -266,6 +271,58 @@ namespace MbDotNet.Tests.Acceptance
             Assert.AreNotEqual(string.Empty, receivedRequest.RequestFrom);
             Assert.AreEqual("text/xml; charset=utf-8", receivedRequest.Headers["Content-Type"]);
             Assert.AreEqual("75", receivedRequest.Headers["Content-Length"]);
+        }
+
+        [TestMethod]
+        public async Task CanVerifyCallsOnSmtpImposter()
+        {
+            // Arrange
+            const int port = 6000;
+            const string from = "sender@test.com";
+            const string to1 = "recipient1@test.com";
+            const string to2 = "recipient2@test.com";
+            const string subject = "Test Subject";
+            const string body = "Test Body";
+            const string attachmentContent1 = "Test Content1";
+            const string attachmentContent2 = "Test Content2";
+
+            var imposter = _client.CreateSmtpImposter(port, recordRequests: true);
+            await _client.SubmitAsync(imposter);
+
+            var mail = new MailMessage
+            {
+                From = new MailAddress(from),
+                Subject = subject,
+                Body = body
+            };
+            mail.To.Add(to1);
+            mail.To.Add(to2);
+
+            var attachment1 = Attachment.CreateAttachmentFromString(attachmentContent1, new ContentType("text/plain"));
+            var attachment2 = Attachment.CreateAttachmentFromString(attachmentContent2, new ContentType("text/plain"));
+
+            mail.Attachments.Add(attachment1);
+            mail.Attachments.Add(attachment2);
+
+            var smtpClient = new SmtpClient("localhost")
+            {
+                Port = port
+            };
+
+            await smtpClient.SendMailAsync(mail);
+
+            // Act
+            var retrievedImposter = await _client.GetSmtpImposterAsync(port);
+
+            // Assert
+            Assert.AreEqual(1, retrievedImposter.NumberOfRequests);
+            Assert.AreEqual(from, retrievedImposter.Requests.First().EnvelopeFrom);
+            Assert.AreEqual(to1, retrievedImposter.Requests.First().EnvelopeTo.First());
+            Assert.AreEqual(to2, retrievedImposter.Requests.First().EnvelopeTo.Last());
+            Assert.AreEqual(subject, retrievedImposter.Requests.First().Subject);
+            Assert.AreEqual(body, retrievedImposter.Requests.First().Text);
+            Assert.AreEqual(attachmentContent1, Encoding.UTF8.GetString(retrievedImposter.Requests.First().Attachments.First().Content.Data));
+            Assert.AreEqual(attachmentContent2, Encoding.UTF8.GetString(retrievedImposter.Requests.First().Attachments.Last().Content.Data));
         }
 
         [TestMethod]
