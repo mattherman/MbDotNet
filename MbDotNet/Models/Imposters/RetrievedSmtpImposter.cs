@@ -6,7 +6,7 @@ using System.Text;
 
 namespace MbDotNet.Models.Imposters
 {
-    public class RetrievedSmtpImposter: RetrievedImposter<HttpRequest, HttpResponseFields>
+    public class RetrievedSmtpImposter: RetrievedImposter<SmtpRequest, HttpResponseFields>
     {
     }
 }
