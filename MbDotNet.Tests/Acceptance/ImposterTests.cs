@@ -66,15 +66,13 @@ namespace MbDotNet.Tests.Acceptance
         [TestMethod]
         public async Task CanCreateAndGetHttpsImposter()
         {
-            // Arrange
             const int port = 6000;
             var imposter = _client.CreateHttpsImposter(port);
 
-            // Act
             await _client.SubmitAsync(imposter);
+
             var retrievedImposter = await _client.GetHttpsImposterAsync(port);
 
-            // Assert
             Assert.IsNotNull(retrievedImposter);
         }
 
@@ -276,7 +274,6 @@ namespace MbDotNet.Tests.Acceptance
         [TestMethod]
         public async Task CanVerifyCallsOnSmtpImposter()
         {
-            // Arrange
             const int port = 6000;
             const string from = "sender@test.com";
             const string to1 = "recipient1@test.com";
@@ -311,10 +308,8 @@ namespace MbDotNet.Tests.Acceptance
 
             await smtpClient.SendMailAsync(mail);
 
-            // Act
             var retrievedImposter = await _client.GetSmtpImposterAsync(port);
 
-            // Assert
             Assert.AreEqual(1, retrievedImposter.NumberOfRequests);
             Assert.AreEqual(from, retrievedImposter.Requests.First().EnvelopeFrom);
             Assert.AreEqual(to1, retrievedImposter.Requests.First().EnvelopeTo.First());
