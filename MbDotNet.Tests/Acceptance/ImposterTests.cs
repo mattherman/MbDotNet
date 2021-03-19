@@ -124,7 +124,7 @@ namespace MbDotNet.Tests.Acceptance
         [TestMethod]
         public async Task CanCreateAndGetSmtpImposter()
         {
-            const int port = 587;
+            const int port = 6000;
             const string name = "TestSmtp";
 
             var imposter = _client.CreateSmtpImposter(port, name, true);
