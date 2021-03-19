@@ -122,6 +122,21 @@ namespace MbDotNet.Tests.Acceptance
         }
 
         [TestMethod]
+        public async Task CanCreateAndGetSmtpImposter()
+        {
+            const int port = 587;
+            const string name = "TestSmtp";
+
+            var imposter = _client.CreateSmtpImposter(port, name, true);
+
+            await _client.SubmitAsync(imposter);
+
+            var retrievedImposter = await _client.GetSmtpImposterAsync(port);
+            Assert.IsNotNull(retrievedImposter);
+            Assert.AreEqual(name, retrievedImposter.Name);
+        }
+
+        [TestMethod]
         public async Task CanCreateHttpProxyImposter()
         {
             const int sourceImposterPort = 6000;
