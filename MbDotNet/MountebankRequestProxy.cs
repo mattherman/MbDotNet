@@ -98,6 +98,12 @@ namespace MbDotNet
                 .ConfigureAwait(false);
         }
 
+        public async Task<RetrievedSmtpImposter> GetSmtpImposterAsync(int port, CancellationToken cancellationToken = default)
+        {
+            return await GetImposterAsync<RetrievedSmtpImposter>(port, cancellationToken)
+               .ConfigureAwait(false);
+        }
+
         public async Task DeleteSavedRequestsAsync(int port, CancellationToken cancellationToken = default)
         {
             using (var response = await _httpClient.DeleteAsync($"{ImpostersResource}/{port}/savedRequests", cancellationToken).ConfigureAwait(false))

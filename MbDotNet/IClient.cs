@@ -80,6 +80,25 @@ namespace MbDotNet
             bool recordRequests = false, TcpResponseFields defaultResponse = null);
 
         /// <summary>
+        /// Creates a new imposter on the specified port with the SMTP protocol. The Submit method
+        /// must be called on the client in order to submit the imposter to Mountebank. If the port
+        /// is blank, Mountebank will assign one which can be retrieved after Submit. Note that Mountebank does not yet support
+        /// stubs for SMTP imposters.
+        /// </summary>
+        /// <param name="port">
+        /// The port the imposter will be set up to receive requests on, or null to allow
+        /// Mountebank to set the port.
+        /// </param>
+        /// <param name="name">The name the imposter will recieve, useful for debugging/logging purposes</param>
+        /// <param name="recordRequests">
+        /// Enables recording requests to use the imposter as a mock. See
+        /// <see href="http://www.mbtest.org/docs/api/mocks">here</see> for more details on Mountebank
+        /// verification.
+        /// </param>
+        /// <returns>The newly created imposter</returns>
+        SmtpImposter CreateSmtpImposter(int? port = null, string name = null, bool recordRequests = false);
+
+        /// <summary>
         /// Retrieves an HttpImposter along with information about requests made to that
         /// imposter if mountebank is running with the "--mock" flag.
         /// </summary>
@@ -108,6 +127,16 @@ namespace MbDotNet
         /// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
         /// <exception cref="MbDotNet.Exceptions.InvalidProtocolException">Thrown if the retrieved imposter was not an HTTP imposter</exception>
         Task<RetrievedHttpsImposter> GetHttpsImposterAsync(int port, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Retrieves a SmtpImposter along with information about requests made to that
+        /// imposter if Mountebank is running with the "--mock" flag.
+        /// </summary>
+        /// <param name="port">The port number of the imposter to retrieve</param>
+        /// <returns>The retrieved imposter</returns>
+        /// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
+        /// <exception cref="MbDotNet.Exceptions.InvalidProtocolException">Thrown if the retrieved imposter was not an SMTP imposter</exception>
+        Task<RetrievedSmtpImposter> GetSmtpImposterAsync(int port, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Deletes a single imposter from mountebank. Will also remove the imposter from the collection
