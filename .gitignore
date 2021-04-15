@@ -240,3 +240,5 @@ _Pvt_Extensions
 # mountebank files
 mb.pid
 mb*.log
+
+.ionide/
