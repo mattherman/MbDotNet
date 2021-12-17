@@ -9,6 +9,7 @@
     <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
     <AssemblyVersion>5.0.0.0</AssemblyVersion>
     <FileVersion>5.0.0.0</FileVersion>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
 
     <!-- NuGet Metadata-->
     <Version>5.0.0-rc7</Version>
