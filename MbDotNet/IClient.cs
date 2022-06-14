@@ -98,6 +98,14 @@ namespace MbDotNet
         /// <returns>The newly created imposter</returns>
         SmtpImposter CreateSmtpImposter(int? port = null, string name = null, bool recordRequests = false);
 
+        //todo
+        /// <summary>
+        /// Retrieves the list of imposters
+        /// </summary>
+        /// <returns>The list of retrieved imposters</returns>
+
+        Task<List<RetrievedImposters>> GetImpostersAsync(CancellationToken cancellationToken = default);
+
         /// <summary>
         /// Retrieves an HttpImposter along with information about requests made to that
         /// imposter if mountebank is running with the "--mock" flag.

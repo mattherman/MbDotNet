@@ -129,6 +129,19 @@ namespace MbDotNet
             return new SmtpImposter(port, name, recordRequests);
         }
 
+
+        /// <summary>
+        /// Retrieves a list of imposers 
+        /// imposter if mountebank is running with the "--mock" flag.
+        /// </summary>
+        /// <returns>The list of retrieved imposters</returns>
+        public async Task<List<RetrievedImposters>> GetImpostersAsync(CancellationToken cancellationToken = default)
+        {
+            var imposters = await _requestProxy.GetImpostersAsync(cancellationToken).ConfigureAwait(false);
+
+            return imposters;
+        }
+
         /// <summary>
         /// Retrieves an HttpImposter along with information about requests made to that
         /// imposter if mountebank is running with the "--mock" flag.

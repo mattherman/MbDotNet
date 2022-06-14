@@ -8,6 +8,11 @@ using MbDotNet.Models.Responses;
 using System.Threading.Tasks;
 using System.Threading;
 
+using Newtonsoft.Json.Linq;
+
+using System.Collections.Generic;
+
+
 namespace MbDotNet
 {
     internal class MountebankRequestProxy : IRequestProxy
@@ -30,6 +35,7 @@ namespace MbDotNet
             _httpClient = httpClient;
         }
 
+        
         public async Task DeleteAllImpostersAsync(CancellationToken cancellationToken = default)
         {
             using (var response = await _httpClient.DeleteAsync(ImpostersResource, cancellationToken).ConfigureAwait(false))
@@ -80,6 +86,18 @@ namespace MbDotNet
             }
         }
 
+    
+
+
+
+        public async Task<List<RetrievedImposters>> GetImpostersAsync(CancellationToken cancellationToken = default)
+        {
+            return await GetImpostersAsync<List<RetrievedImposters>>(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+
+
         public async Task<RetrievedHttpImposter> GetHttpImposterAsync(int port, CancellationToken cancellationToken = default)
         {
             return await GetImposterAsync<RetrievedHttpImposter>(port, cancellationToken)
@@ -109,6 +127,23 @@ namespace MbDotNet
             using (var response = await _httpClient.DeleteAsync($"{ImpostersResource}/{port}/savedRequests", cancellationToken).ConfigureAwait(false))
             {
                 await HandleResponse(response, HttpStatusCode.OK, "Failed to delete the imposters saved requests.").ConfigureAwait(false);
+            }
+        }
+
+        private async Task<List> GetImpostersAsync<List>(CancellationToken cancellationToken = default)
+        {
+            using (var response = await _httpClient.GetAsync($"{ImpostersResource}", cancellationToken).ConfigureAwait(false))
+            {
+ 
+                await HandleResponse(response, HttpStatusCode.OK, $"Failed to retrieve the list of imposters ",
+                (message) => new ImposterNotFoundException(message)).ConfigureAwait(false);
+
+                var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                
+                var list = JObject.Parse(content)["imposters"].ToString();
+
+              
+                return JsonConvert.DeserializeObject<List>(list);
             }
         }
 
