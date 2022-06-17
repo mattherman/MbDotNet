@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MbDotNet.Enums;
 using MbDotNet.Models.Imposters;
 using MbDotNet.Models.Responses.Fields;
+using MbDotNet.Models.Others;
 
 namespace MbDotNet
 {
@@ -178,5 +179,11 @@ namespace MbDotNet
         /// <param name="port">The port of the imposter to delete request history</param>
         /// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
         Task DeleteSavedRequestsAsync(int port, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Gets the configuration information of Mountebank
+        /// </summary>
+        /// <returns>A Config object containing the configuration of Mountebank</returns> 
+        Task<Config> GetConfigAsync(CancellationToken cancellationToken = default);
     }
 }

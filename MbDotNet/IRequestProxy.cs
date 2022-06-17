@@ -1,6 +1,7 @@
 ﻿using MbDotNet.Models.Imposters;
 using System.Threading;
 using System.Threading.Tasks;
+using MbDotNet.Models.Others;
 
 namespace MbDotNet
 {
@@ -15,5 +16,7 @@ namespace MbDotNet
         Task<RetrievedHttpsImposter> GetHttpsImposterAsync(int port, CancellationToken cancellationToken = default);
         Task<RetrievedSmtpImposter> GetSmtpImposterAsync(int port, CancellationToken cancellationToken = default);
         Task DeleteSavedRequestsAsync(int port, CancellationToken cancellationToken = default);
+
+        Task<Config> GetConfigAsync(CancellationToken cancellationToken = default);
     }
 }
