@@ -32,10 +32,15 @@ namespace MbDotNet
             _requestProxy = requestProxy;
         }
 
-        //todo
+        
         public async Task<Home> GetEntryHypermediaAsync(CancellationToken cancellationToken = default)
         {
             var result= await _requestProxy.GetEntryHypermediaAsync(cancellationToken).ConfigureAwait(false);
+            return result;
+        }
+
+        public async Task<List<Log>> GetLogsAsync(CancellationToken cancellationToken = default){
+             var result= await _requestProxy.GetLogsAsync(cancellationToken).ConfigureAwait(false);
             return result;
         }
 

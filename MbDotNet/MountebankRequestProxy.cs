@@ -86,13 +86,18 @@ namespace MbDotNet
             }
         }
 
-        //todo
+        
         public async Task<Home> GetEntryHypermediaAsync( CancellationToken cancellationToken = default)
         {
             return await GetEntryHypermediaAsync<Home>( cancellationToken)
                 .ConfigureAwait(false);
         }
 
+         public async Task<List<Log>> GetLogsAsync(CancellationToken cancellationToken = default)
+        {
+            return await GetLogsAsync<List<Log>>(cancellationToken)
+                .ConfigureAwait(false);
+        }
 
 
 
@@ -141,12 +146,30 @@ namespace MbDotNet
         {
             using (var response = await _httpClient.GetAsync("/", cancellationToken).ConfigureAwait(false))
             {
-                await HandleResponse(response, HttpStatusCode.OK, $"Failed to get entry hypermedia ",
+                await HandleResponse(response, HttpStatusCode.OK, $"Failed to get the entry hypermedia ",
                     (message) => new Exception(message)).ConfigureAwait(false);
                 var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                Console.WriteLine("reqproxy"+content);
-                Console.WriteLine(JsonConvert.DeserializeObject<T>(content));
+                
+                //Console.WriteLine(JsonConvert.DeserializeObject<T>(content));
                 return JsonConvert.DeserializeObject<T>(content);
+
+            }
+
+        }
+
+         private async Task<List> GetLogsAsync<List>(CancellationToken cancellationToken = default)
+        {
+            using (var response = await _httpClient.GetAsync("/logs", cancellationToken).ConfigureAwait(false))
+            {
+                await HandleResponse(response, HttpStatusCode.OK, $"Failed to get the logs ",
+                    (message) => new Exception(message)).ConfigureAwait(false);
+                var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                
+                
+                var list = JObject.Parse(content)["logs"].ToString();
+                Console.WriteLine(list);
+                //Console.WriteLine(JsonConvert.DeserializeObject<T>(content));
+                return JsonConvert.DeserializeObject<List>(list);
 
             }
 

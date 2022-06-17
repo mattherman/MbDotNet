@@ -22,6 +22,6 @@ namespace MbDotNet
       
         Task<List<RetrievedImposters>> GetImpostersAsync(CancellationToken cancellationToken = default);
         Task<Home> GetEntryHypermediaAsync(CancellationToken cancellationToken = default);
-
+        Task<List<Log>> GetLogsAsync(CancellationToken cancellationToken = default);
     }
 }

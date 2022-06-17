@@ -18,9 +18,20 @@ namespace MbDotNet
         ICollection<Imposter> Imposters { get; }
 
 
-        //todo
+        /// <summary>
+        /// Get the entry hypermedia
+        /// </summary>
+        /// <returns>The Home object which contains entry hypermedia</returns>
 
         Task<Home> GetEntryHypermediaAsync(CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Get the logs
+        /// </summary>
+    
+        /// <returns>The list of logs</returns>
+        Task<List<Log>> GetLogsAsync(CancellationToken cancellationToken=default);
+
 
         /// <summary>
         /// Creates a new imposter on the specified port with the HTTP protocol. The Submit method
