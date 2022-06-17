@@ -21,6 +21,7 @@ namespace MbDotNet
         Task DeleteSavedRequestsAsync(int port, CancellationToken cancellationToken = default);
       
         Task<List<RetrievedImposters>> GetImpostersAsync(CancellationToken cancellationToken = default);
+        Task<Home> GetEntryHypermediaAsync(CancellationToken cancellationToken = default);
 
     }
 }

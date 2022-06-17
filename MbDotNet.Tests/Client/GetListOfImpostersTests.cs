@@ -5,8 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-
-
+using Newtonsoft.Json;
 
 namespace MbDotNet.Tests.Client
 {
@@ -30,7 +29,6 @@ namespace MbDotNet.Tests.Client
             MockRequestProxy.Setup(x => x.GetImpostersAsync(default)).ReturnsAsync(expectedImposters);
 
             var result = await Client.GetImpostersAsync().ConfigureAwait(false);
-
 
             Assert.AreSame(expectedImposters, result);
 

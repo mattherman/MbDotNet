@@ -86,7 +86,13 @@ namespace MbDotNet
             }
         }
 
-    
+        //todo
+        public async Task<Home> GetEntryHypermediaAsync( CancellationToken cancellationToken = default)
+        {
+            return await GetEntryHypermediaAsync<Home>( cancellationToken)
+                .ConfigureAwait(false);
+        }
+
 
 
 
@@ -128,6 +134,22 @@ namespace MbDotNet
             {
                 await HandleResponse(response, HttpStatusCode.OK, "Failed to delete the imposters saved requests.").ConfigureAwait(false);
             }
+        }
+
+        //todo
+        private async Task<T> GetEntryHypermediaAsync<T>(CancellationToken cancellationToken = default)
+        {
+            using (var response = await _httpClient.GetAsync("/", cancellationToken).ConfigureAwait(false))
+            {
+                await HandleResponse(response, HttpStatusCode.OK, $"Failed to get entry hypermedia ",
+                    (message) => new Exception(message)).ConfigureAwait(false);
+                var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                Console.WriteLine("reqproxy"+content);
+                Console.WriteLine(JsonConvert.DeserializeObject<T>(content));
+                return JsonConvert.DeserializeObject<T>(content);
+
+            }
+
         }
 
         private async Task<List> GetImpostersAsync<List>(CancellationToken cancellationToken = default)

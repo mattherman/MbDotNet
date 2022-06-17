@@ -8,6 +8,7 @@ using MbDotNet.Enums;
 using MbDotNet.Exceptions;
 using MbDotNet.Models.Imposters;
 using MbDotNet.Models.Requests;
+using MbDotNet.Models.Responses;
 using MbDotNet.Models.Responses.Fields;
 
 namespace MbDotNet
@@ -29,6 +30,13 @@ namespace MbDotNet
         {
             Imposters = new List<Imposter>();
             _requestProxy = requestProxy;
+        }
+
+        //todo
+        public async Task<Home> GetEntryHypermediaAsync(CancellationToken cancellationToken = default)
+        {
+            var result= await _requestProxy.GetEntryHypermediaAsync(cancellationToken).ConfigureAwait(false);
+            return result;
         }
 
         /// <summary>
