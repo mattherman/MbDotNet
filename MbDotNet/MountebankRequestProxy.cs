@@ -150,7 +150,6 @@ namespace MbDotNet
                     (message) => new Exception(message)).ConfigureAwait(false);
                 var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 
-                //Console.WriteLine(JsonConvert.DeserializeObject<T>(content));
                 return JsonConvert.DeserializeObject<T>(content);
 
             }
@@ -168,7 +167,6 @@ namespace MbDotNet
                 
                 var list = JObject.Parse(content)["logs"].ToString();
                 Console.WriteLine(list);
-                //Console.WriteLine(JsonConvert.DeserializeObject<T>(content));
                 return JsonConvert.DeserializeObject<List>(list);
 
             }
