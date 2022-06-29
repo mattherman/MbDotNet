@@ -15,12 +15,19 @@ namespace MbDotNet.Models.Imposters
         /// </summary>
         [JsonProperty("defaultResponse", NullValueHandling = NullValueHandling.Ignore)]
         public HttpResponseFields DefaultResponse { get; private set; }
+        
+        /// <summary>
+        /// Enables CORS requests when set to true, false by default
+        /// </summary>
+        [JsonProperty("allowCORS")]
+        public bool AllowCORS { get; private set; }
 
-        public HttpImposter(int? port, string name, bool recordRequests = false, HttpResponseFields defaultResponse = null) 
+        public HttpImposter(int? port, string name, bool recordRequests = false, HttpResponseFields defaultResponse = null, bool allowCORS = false) 
             : base(port, Enums.Protocol.Http, name, recordRequests)
         {
             Stubs = new List<HttpStub>();
             DefaultResponse = defaultResponse;
+            AllowCORS = allowCORS;
         }
 
         public HttpStub AddStub()
