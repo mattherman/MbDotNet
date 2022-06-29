@@ -32,8 +32,9 @@ namespace MbDotNet
         /// verification.
         /// </param>
         /// <param name="defaultResponse">The default response to send if no predicate matches</param>
+        /// <param name="allowCORS">Will allow all CORS preflight requests if set to true</param>
         /// <returns>The newly created imposter</returns>
-        HttpImposter CreateHttpImposter(int? port = null, string name = null, bool recordRequests = false, HttpResponseFields defaultResponse = null);
+        HttpImposter CreateHttpImposter(int? port = null, string name = null, bool recordRequests = false, HttpResponseFields defaultResponse = null, bool allowCORS = false);
 
         /// <summary> 
         /// Creates a new imposter on the specified port with the HTTPS protocol. The Submit method
@@ -54,10 +55,10 @@ namespace MbDotNet
         /// verification.
         /// </param>
         /// <param name="defaultResponse">The default response to send if no predicate matches</param>
+        /// <param name="allowCORS">Will allow all CORS preflight requests if set to true</param>
         /// <returns>The newly created imposter</returns>
         HttpsImposter CreateHttpsImposter(int? port = null, string name = null, string key = null, string cert = null,
-            bool mutualAuthRequired = false, bool recordRequests = false, HttpResponseFields defaultResponse = null);
-
+            bool mutualAuthRequired = false, bool recordRequests = false, HttpResponseFields defaultResponse = null, bool allowCORS = false);
         /// <summary>
         /// Creates a new imposter on the specified port with the TCP protocol. The Submit method
         /// must be called on the client in order to submit the imposter to mountebank. If the port

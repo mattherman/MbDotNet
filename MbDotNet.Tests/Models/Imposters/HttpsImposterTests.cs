@@ -100,6 +100,30 @@ namespace MbDotNet.Tests.Models.Imposters
             Assert.IsNotNull(imposter.DefaultResponse);
         }
 
+        [TestMethod]
+        public void Constructor_InitialAllowCORS()
+        {
+            const bool allowCORS = false;
+            var imposter = new HttpsImposter(null, null);
+            Assert.AreEqual(allowCORS, imposter.AllowCORS);
+        }
+
+        [TestMethod]
+        public void Constructor_AllowCORSTrue()
+        {
+            const bool allowCORS = true;
+            var imposter = new HttpsImposter(null, null, false, null, true);
+            Assert.AreEqual(allowCORS, imposter.AllowCORS);
+        }
+
+        [TestMethod]
+        public void Constructor_AllowCORSFalse()
+        {
+            const bool allowCORS = false;
+            var imposter = new HttpsImposter(null, null, false, null, false);
+            Assert.AreEqual(allowCORS, imposter.AllowCORS);
+        }
+
         #endregion
 
         #region Stub Tests
