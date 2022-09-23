@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MbDotNet.Enums;
 using MbDotNet.Exceptions;
+using MbDotNet.Models;
 using MbDotNet.Models.Imposters;
 using MbDotNet.Models.Requests;
 using MbDotNet.Models.Responses;
@@ -56,10 +57,11 @@ namespace MbDotNet
         /// verification.
         /// </param>
         /// <param name="defaultResponse">The default response to send if no predicate matches</param>
+        /// <param name="allowCORS">Will allow all CORS preflight requests if set to true</param>
         /// <returns>The newly created imposter</returns>
-        public HttpImposter CreateHttpImposter(int? port = null, string name = null, bool recordRequests = false, HttpResponseFields defaultResponse = null)
+        public HttpImposter CreateHttpImposter(int? port = null, string name = null, bool recordRequests = false, HttpResponseFields defaultResponse = null, bool allowCORS = false)
         {
-            return new HttpImposter(port, name, recordRequests, defaultResponse);
+            return new HttpImposter(port, name, recordRequests, defaultResponse, allowCORS);
         }
 
         /// <summary>
@@ -79,10 +81,11 @@ namespace MbDotNet
         /// verification.
         /// </param>
         /// <param name="defaultResponse">The default response to send if no predicate matches</param>
+        /// <param name="allowCORS">Will allow all CORS preflight requests if set to true</param>
         /// <returns>The newly created imposter</returns>
         public HttpsImposter CreateHttpsImposter(int? port = null, string name = null, string key = null,
             string cert = null, bool mutualAuthRequired = false, bool recordRequests = false,
-            HttpResponseFields defaultResponse = null)
+            HttpResponseFields defaultResponse = null, bool allowCORS = false)
         {
             if (key != null && !IsPEMFormatted(key))
             {
@@ -94,7 +97,7 @@ namespace MbDotNet
                 throw new InvalidOperationException("Provided certificate must be PEM-formatted");
             }
 
-            return new HttpsImposter(port, name, key, cert, mutualAuthRequired, recordRequests, defaultResponse);
+            return new HttpsImposter(port, name, key, cert, mutualAuthRequired, recordRequests, defaultResponse, allowCORS);
         }
 
         private bool IsPEMFormatted(string value)
@@ -301,6 +304,15 @@ namespace MbDotNet
         public async Task DeleteSavedRequestsAsync(int port, CancellationToken cancellationToken = default)
         {
             await _requestProxy.DeleteSavedRequestsAsync(port, cancellationToken);
+        }
+
+        /// <summary>
+        /// Gets the configuration information of Mountebank
+        /// </summary>
+        /// <returns>A Config object containing the configuration of Mountebank</returns> 
+        public async Task<Config> GetConfigAsync(CancellationToken cancellationToken = default)
+        {
+            return await _requestProxy.GetConfigAsync(cancellationToken);
         }
     }
 }

@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using MbDotNet.Models.Responses;
 using System.Threading.Tasks;
 using System.Threading;
+using MbDotNet.Models;
 
 using Newtonsoft.Json.Linq;
 
@@ -232,6 +233,16 @@ namespace MbDotNet
                     throw new MountebankException($"Unable to retrieve port for imposter with name [{imposter.Name}]", e);
                 }
 
+            }
+        }
+
+        public async Task<Config> GetConfigAsync(CancellationToken cancellationToken = default)
+        {   
+            using (var response = await _httpClient.GetAsync("/config", cancellationToken).ConfigureAwait(false))
+            {
+                await HandleResponse(response, HttpStatusCode.OK, $"Failed to get config").ConfigureAwait(false);
+                var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                return JsonConvert.DeserializeObject<Config>(content);
             }
         }
     }

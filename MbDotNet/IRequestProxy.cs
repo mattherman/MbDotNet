@@ -2,9 +2,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-
 using MbDotNet.Models.Responses;
-
+using MbDotNet.Models;
 
 namespace MbDotNet
 {
@@ -18,10 +17,10 @@ namespace MbDotNet
         Task<RetrievedTcpImposter> GetTcpImposterAsync(int port, CancellationToken cancellationToken = default);
         Task<RetrievedHttpsImposter> GetHttpsImposterAsync(int port, CancellationToken cancellationToken = default);
         Task<RetrievedSmtpImposter> GetSmtpImposterAsync(int port, CancellationToken cancellationToken = default);
-        Task DeleteSavedRequestsAsync(int port, CancellationToken cancellationToken = default);
-      
+        Task DeleteSavedRequestsAsync(int port, CancellationToken cancellationToken = default)
         Task<List<RetrievedImposters>> GetImpostersAsync(CancellationToken cancellationToken = default);
         Task<Home> GetEntryHypermediaAsync(CancellationToken cancellationToken = default);
         Task<List<Log>> GetLogsAsync(CancellationToken cancellationToken = default);
+        Task<Config> GetConfigAsync(CancellationToken cancellationToken = default);
     }
 }
