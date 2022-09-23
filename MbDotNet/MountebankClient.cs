@@ -9,6 +9,7 @@ using MbDotNet.Exceptions;
 using MbDotNet.Models;
 using MbDotNet.Models.Imposters;
 using MbDotNet.Models.Requests;
+using MbDotNet.Models.Responses;
 using MbDotNet.Models.Responses.Fields;
 
 namespace MbDotNet
@@ -30,6 +31,18 @@ namespace MbDotNet
         {
             Imposters = new List<Imposter>();
             _requestProxy = requestProxy;
+        }
+
+        
+        public async Task<Home> GetEntryHypermediaAsync(CancellationToken cancellationToken = default)
+        {
+            var result= await _requestProxy.GetEntryHypermediaAsync(cancellationToken).ConfigureAwait(false);
+            return result;
+        }
+
+        public async Task<List<Log>> GetLogsAsync(CancellationToken cancellationToken = default){
+             var result= await _requestProxy.GetLogsAsync(cancellationToken).ConfigureAwait(false);
+            return result;
         }
 
         /// <summary>
@@ -130,6 +143,19 @@ namespace MbDotNet
         public SmtpImposter CreateSmtpImposter(int? port = null, string name = null, bool recordRequests = false)
         {
             return new SmtpImposter(port, name, recordRequests);
+        }
+
+
+        /// <summary>
+        /// Retrieves a list of imposers 
+        /// imposter if mountebank is running with the "--mock" flag.
+        /// </summary>
+        /// <returns>The list of retrieved imposters</returns>
+        public async Task<List<RetrievedImposters>> GetImpostersAsync(CancellationToken cancellationToken = default)
+        {
+            var imposters = await _requestProxy.GetImpostersAsync(cancellationToken).ConfigureAwait(false);
+
+            return imposters;
         }
 
         /// <summary>

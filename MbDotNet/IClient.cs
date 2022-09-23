@@ -5,6 +5,7 @@ using MbDotNet.Enums;
 using MbDotNet.Models;
 using MbDotNet.Models.Imposters;
 using MbDotNet.Models.Responses.Fields;
+using MbDotNet.Models.Responses;
 
 namespace MbDotNet
 {
@@ -16,6 +17,22 @@ namespace MbDotNet
         /// for more information.
         /// </summary>
         ICollection<Imposter> Imposters { get; }
+
+
+        /// <summary>
+        /// Get the entry hypermedia
+        /// </summary>
+        /// <returns>The Home object which contains entry hypermedia</returns>
+
+        Task<Home> GetEntryHypermediaAsync(CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Get the logs
+        /// </summary>
+    
+        /// <returns>The list of logs</returns>
+        Task<List<Log>> GetLogsAsync(CancellationToken cancellationToken=default);
+
 
         /// <summary>
         /// Creates a new imposter on the specified port with the HTTP protocol. The Submit method
@@ -99,6 +116,14 @@ namespace MbDotNet
         /// </param>
         /// <returns>The newly created imposter</returns>
         SmtpImposter CreateSmtpImposter(int? port = null, string name = null, bool recordRequests = false);
+
+        
+        /// <summary>
+        /// Retrieves the list of imposters
+        /// </summary>
+        /// <returns>The list of retrieved imposters</returns>
+
+        Task<List<RetrievedImposters>> GetImpostersAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Retrieves an HttpImposter along with information about requests made to that

@@ -9,6 +9,11 @@ using System.Threading.Tasks;
 using System.Threading;
 using MbDotNet.Models;
 
+using Newtonsoft.Json.Linq;
+
+using System.Collections.Generic;
+
+
 namespace MbDotNet
 {
     internal class MountebankRequestProxy : IRequestProxy
@@ -31,6 +36,7 @@ namespace MbDotNet
             _httpClient = httpClient;
         }
 
+        
         public async Task DeleteAllImpostersAsync(CancellationToken cancellationToken = default)
         {
             using (var response = await _httpClient.DeleteAsync(ImpostersResource, cancellationToken).ConfigureAwait(false))
@@ -81,6 +87,29 @@ namespace MbDotNet
             }
         }
 
+        
+        public async Task<Home> GetEntryHypermediaAsync( CancellationToken cancellationToken = default)
+        {
+            return await GetEntryHypermediaAsync<Home>( cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+         public async Task<List<Log>> GetLogsAsync(CancellationToken cancellationToken = default)
+        {
+            return await GetLogsAsync<List<Log>>(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+
+
+        public async Task<List<RetrievedImposters>> GetImpostersAsync(CancellationToken cancellationToken = default)
+        {
+            return await GetImpostersAsync<List<RetrievedImposters>>(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+
+
         public async Task<RetrievedHttpImposter> GetHttpImposterAsync(int port, CancellationToken cancellationToken = default)
         {
             return await GetImposterAsync<RetrievedHttpImposter>(port, cancellationToken)
@@ -110,6 +139,55 @@ namespace MbDotNet
             using (var response = await _httpClient.DeleteAsync($"{ImpostersResource}/{port}/savedRequests", cancellationToken).ConfigureAwait(false))
             {
                 await HandleResponse(response, HttpStatusCode.OK, "Failed to delete the imposters saved requests.").ConfigureAwait(false);
+            }
+        }
+
+        //todo
+        private async Task<T> GetEntryHypermediaAsync<T>(CancellationToken cancellationToken = default)
+        {
+            using (var response = await _httpClient.GetAsync("/", cancellationToken).ConfigureAwait(false))
+            {
+                await HandleResponse(response, HttpStatusCode.OK, $"Failed to get the entry hypermedia ",
+                    (message) => new Exception(message)).ConfigureAwait(false);
+                var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                
+                return JsonConvert.DeserializeObject<T>(content);
+
+            }
+
+        }
+
+         private async Task<List> GetLogsAsync<List>(CancellationToken cancellationToken = default)
+        {
+            using (var response = await _httpClient.GetAsync("/logs", cancellationToken).ConfigureAwait(false))
+            {
+                await HandleResponse(response, HttpStatusCode.OK, $"Failed to get the logs ",
+                    (message) => new Exception(message)).ConfigureAwait(false);
+                var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                
+                
+                var list = JObject.Parse(content)["logs"].ToString();
+                Console.WriteLine(list);
+                return JsonConvert.DeserializeObject<List>(list);
+
+            }
+
+        }
+
+        private async Task<List> GetImpostersAsync<List>(CancellationToken cancellationToken = default)
+        {
+            using (var response = await _httpClient.GetAsync($"{ImpostersResource}", cancellationToken).ConfigureAwait(false))
+            {
+ 
+                await HandleResponse(response, HttpStatusCode.OK, $"Failed to retrieve the list of imposters ",
+                (message) => new ImposterNotFoundException(message)).ConfigureAwait(false);
+
+                var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                
+                var list = JObject.Parse(content)["imposters"].ToString();
+
+              
+                return JsonConvert.DeserializeObject<List>(list);
             }
         }
 
