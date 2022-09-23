@@ -9,6 +9,7 @@ using MbDotNet.Exceptions;
 using MbDotNet.Models.Imposters;
 using MbDotNet.Models.Requests;
 using MbDotNet.Models.Responses.Fields;
+using MbDotNet.Models.Others;
 
 namespace MbDotNet
 {
@@ -277,6 +278,16 @@ namespace MbDotNet
         public async Task DeleteSavedRequestsAsync(int port, CancellationToken cancellationToken = default)
         {
             await _requestProxy.DeleteSavedRequestsAsync(port, cancellationToken);
+        }
+
+        /// <summary>
+        /// Gets the configuration information of Mountebank
+        /// </summary>
+        /// <returns>A Config object containing the configuration of Mountebank</returns> 
+        public async Task<Config> GetConfigAsync(CancellationToken cancellationToken = default)
+        {
+            var result = await _requestProxy.GetConfigAsync(cancellationToken);
+            return result;
         }
     }
 }
