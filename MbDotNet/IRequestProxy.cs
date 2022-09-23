@@ -1,7 +1,7 @@
 ﻿using MbDotNet.Models.Imposters;
 using System.Threading;
 using System.Threading.Tasks;
-using MbDotNet.Models.Others;
+using MbDotNet.Models;
 
 namespace MbDotNet
 {
