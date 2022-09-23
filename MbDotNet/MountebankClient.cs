@@ -6,10 +6,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using MbDotNet.Enums;
 using MbDotNet.Exceptions;
+using MbDotNet.Models;
 using MbDotNet.Models.Imposters;
 using MbDotNet.Models.Requests;
 using MbDotNet.Models.Responses.Fields;
-using MbDotNet.Models.Others;
 
 namespace MbDotNet
 {
@@ -286,8 +286,7 @@ namespace MbDotNet
         /// <returns>A Config object containing the configuration of Mountebank</returns> 
         public async Task<Config> GetConfigAsync(CancellationToken cancellationToken = default)
         {
-            var result = await _requestProxy.GetConfigAsync(cancellationToken);
-            return result;
+            return await _requestProxy.GetConfigAsync(cancellationToken);
         }
     }
 }

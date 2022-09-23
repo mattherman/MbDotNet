@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 using MbDotNet.Models.Responses;
 using System.Threading.Tasks;
 using System.Threading;
-using MbDotNet.Models.Others;
+using MbDotNet.Models;
 
 namespace MbDotNet
 {
