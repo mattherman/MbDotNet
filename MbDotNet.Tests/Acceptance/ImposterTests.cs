@@ -34,8 +34,6 @@ namespace MbDotNet.Tests.Acceptance
             await _client.DeleteAllImpostersAsync();
         }
 
-
-
         [TestMethod]
         public async Task CanCreateAndGetHttpImposter()
         {
@@ -48,10 +46,6 @@ namespace MbDotNet.Tests.Acceptance
             Assert.IsNotNull(retrievedImposter);
         }
 
-      
-
-
-
         [TestMethod]
         public async Task CanGetListOfImposters()
         {
@@ -63,12 +57,11 @@ namespace MbDotNet.Tests.Acceptance
             var imposter2 = _client.CreateHttpsImposter(port2);
             await _client.SubmitAsync(imposter2);
 
-           
-            var list=await _client.GetImpostersAsync();
-            
-            Assert.IsNotNull(list);
-        }
+            var result = await _client.GetImpostersAsync();
 
+            Assert.IsNotNull(result);
+            Assert.AreEqual(2, result.Count());
+        }
 
         [TestMethod]
         public async Task CanUpdateHttpImposter()

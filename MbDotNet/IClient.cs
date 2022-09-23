@@ -29,10 +29,8 @@ namespace MbDotNet
         /// <summary>
         /// Get the logs
         /// </summary>
-    
         /// <returns>The list of logs</returns>
-        Task<List<Log>> GetLogsAsync(CancellationToken cancellationToken=default);
-
+        Task<IEnumerable<Log>> GetLogsAsync(CancellationToken cancellationToken=default);
 
         /// <summary>
         /// Creates a new imposter on the specified port with the HTTP protocol. The Submit method
@@ -123,7 +121,7 @@ namespace MbDotNet
         /// </summary>
         /// <returns>The list of retrieved imposters</returns>
 
-        Task<List<RetrievedImposters>> GetImpostersAsync(CancellationToken cancellationToken = default);
+        Task<IEnumerable<RetrievedImposters>> GetImpostersAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Retrieves an HttpImposter along with information about requests made to that
