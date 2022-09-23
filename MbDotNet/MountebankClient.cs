@@ -33,16 +33,14 @@ namespace MbDotNet
             _requestProxy = requestProxy;
         }
 
-        
         public async Task<Home> GetEntryHypermediaAsync(CancellationToken cancellationToken = default)
         {
-            var result= await _requestProxy.GetEntryHypermediaAsync(cancellationToken).ConfigureAwait(false);
-            return result;
+            return await _requestProxy.GetEntryHypermediaAsync(cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<List<Log>> GetLogsAsync(CancellationToken cancellationToken = default){
-             var result= await _requestProxy.GetLogsAsync(cancellationToken).ConfigureAwait(false);
-            return result;
+        public async Task<IEnumerable<Log>> GetLogsAsync(CancellationToken cancellationToken = default)
+        {
+            return await _requestProxy.GetLogsAsync(cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -151,11 +149,9 @@ namespace MbDotNet
         /// imposter if mountebank is running with the "--mock" flag.
         /// </summary>
         /// <returns>The list of retrieved imposters</returns>
-        public async Task<List<RetrievedImposters>> GetImpostersAsync(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<RetrievedImposters>> GetImpostersAsync(CancellationToken cancellationToken = default)
         {
-            var imposters = await _requestProxy.GetImpostersAsync(cancellationToken).ConfigureAwait(false);
-
-            return imposters;
+            return await _requestProxy.GetImpostersAsync(cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>

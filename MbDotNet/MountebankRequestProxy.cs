@@ -19,7 +19,6 @@ namespace MbDotNet
     internal class MountebankRequestProxy : IRequestProxy
     {
         private const string DefaultMountebankUrl = "http://127.0.0.1:2525";
-        private const string ImpostersResource = "imposters";
         private readonly IHttpClientWrapper _httpClient;
 
         public MountebankRequestProxy() : this(DefaultMountebankUrl) { }
@@ -39,7 +38,7 @@ namespace MbDotNet
         
         public async Task DeleteAllImpostersAsync(CancellationToken cancellationToken = default)
         {
-            using (var response = await _httpClient.DeleteAsync(ImpostersResource, cancellationToken).ConfigureAwait(false))
+            using (var response = await _httpClient.DeleteAsync("imposters", cancellationToken).ConfigureAwait(false))
             {
                 await HandleResponse(response, HttpStatusCode.OK, "Failed to delete the imposters.").ConfigureAwait(false);
             }
@@ -47,7 +46,7 @@ namespace MbDotNet
 
         public async Task DeleteImposterAsync(int port, CancellationToken cancellationToken = default)
         {
-            using (var response = await _httpClient.DeleteAsync($"{ImpostersResource}/{port}", cancellationToken).ConfigureAwait(false))
+            using (var response = await _httpClient.DeleteAsync($"imposters/{port}", cancellationToken).ConfigureAwait(false))
             {
                 await HandleResponse(response, HttpStatusCode.OK, $"Failed to delete the imposter with port {port}.").ConfigureAwait(false);
             }
@@ -59,7 +58,7 @@ namespace MbDotNet
 
             using (
                 var response = await _httpClient.PostAsync(
-                    ImpostersResource,
+                    "imposters",
                     new StringContent(json),
                     cancellationToken
                 ).ConfigureAwait(false))
@@ -76,7 +75,7 @@ namespace MbDotNet
 
             using (
                 var response = await _httpClient.PutAsync(
-                    $"{ImpostersResource}/{imposter.Port}/stubs",
+                    $"imposters/{imposter.Port}/stubs",
                     new StringContent(json),
                     cancellationToken
                 ).ConfigureAwait(false))
@@ -90,25 +89,35 @@ namespace MbDotNet
         
         public async Task<Home> GetEntryHypermediaAsync( CancellationToken cancellationToken = default)
         {
-            return await GetEntryHypermediaAsync<Home>( cancellationToken)
-                .ConfigureAwait(false);
+            using (var response = await _httpClient.GetAsync("", cancellationToken).ConfigureAwait(false))
+            {
+                await HandleResponse(response, HttpStatusCode.OK, $"Failed to get the entry hypermedia");
+                var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                return JsonConvert.DeserializeObject<Home>(content);
+            }
         }
 
-         public async Task<List<Log>> GetLogsAsync(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<Log>> GetLogsAsync(CancellationToken cancellationToken = default)
         {
-            return await GetLogsAsync<List<Log>>(cancellationToken)
-                .ConfigureAwait(false);
+            using (var response = await _httpClient.GetAsync("logs", cancellationToken).ConfigureAwait(false))
+            {
+                await HandleResponse(response, HttpStatusCode.OK, $"Failed to get the logs");
+                var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                var list = JObject.Parse(content)["logs"].ToString();
+                return JsonConvert.DeserializeObject<List<Log>>(list);
+            }
         }
 
-
-
-        public async Task<List<RetrievedImposters>> GetImpostersAsync(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<RetrievedImposters>> GetImpostersAsync(CancellationToken cancellationToken = default)
         {
-            return await GetImpostersAsync<List<RetrievedImposters>>(cancellationToken)
-                .ConfigureAwait(false);
+            using (var response = await _httpClient.GetAsync("imposters", cancellationToken).ConfigureAwait(false))
+            {
+                await HandleResponse(response, HttpStatusCode.OK, $"Failed to retrieve the list of imposters");
+                var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                var list = JObject.Parse(content)["imposters"].ToString();
+                return JsonConvert.DeserializeObject<List<RetrievedImposters>>(list);
+            }
         }
-
-
 
         public async Task<RetrievedHttpImposter> GetHttpImposterAsync(int port, CancellationToken cancellationToken = default)
         {
@@ -136,64 +145,15 @@ namespace MbDotNet
 
         public async Task DeleteSavedRequestsAsync(int port, CancellationToken cancellationToken = default)
         {
-            using (var response = await _httpClient.DeleteAsync($"{ImpostersResource}/{port}/savedRequests", cancellationToken).ConfigureAwait(false))
+            using (var response = await _httpClient.DeleteAsync($"imposters/{port}/savedRequests", cancellationToken).ConfigureAwait(false))
             {
                 await HandleResponse(response, HttpStatusCode.OK, "Failed to delete the imposters saved requests.").ConfigureAwait(false);
             }
         }
 
-        //todo
-        private async Task<T> GetEntryHypermediaAsync<T>(CancellationToken cancellationToken = default)
-        {
-            using (var response = await _httpClient.GetAsync("/", cancellationToken).ConfigureAwait(false))
-            {
-                await HandleResponse(response, HttpStatusCode.OK, $"Failed to get the entry hypermedia ",
-                    (message) => new Exception(message)).ConfigureAwait(false);
-                var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                
-                return JsonConvert.DeserializeObject<T>(content);
-
-            }
-
-        }
-
-         private async Task<List> GetLogsAsync<List>(CancellationToken cancellationToken = default)
-        {
-            using (var response = await _httpClient.GetAsync("/logs", cancellationToken).ConfigureAwait(false))
-            {
-                await HandleResponse(response, HttpStatusCode.OK, $"Failed to get the logs ",
-                    (message) => new Exception(message)).ConfigureAwait(false);
-                var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                
-                
-                var list = JObject.Parse(content)["logs"].ToString();
-                Console.WriteLine(list);
-                return JsonConvert.DeserializeObject<List>(list);
-
-            }
-
-        }
-
-        private async Task<List> GetImpostersAsync<List>(CancellationToken cancellationToken = default)
-        {
-            using (var response = await _httpClient.GetAsync($"{ImpostersResource}", cancellationToken).ConfigureAwait(false))
-            {
- 
-                await HandleResponse(response, HttpStatusCode.OK, $"Failed to retrieve the list of imposters ",
-                (message) => new ImposterNotFoundException(message)).ConfigureAwait(false);
-
-                var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                
-                var list = JObject.Parse(content)["imposters"].ToString();
-
-              
-                return JsonConvert.DeserializeObject<List>(list);
-            }
-        }
-
         private async Task<T> GetImposterAsync<T>(int port, CancellationToken cancellationToken = default)
         {
-            using (var response = await _httpClient.GetAsync($"{ImpostersResource}/{port}", cancellationToken).ConfigureAwait(false)) 
+            using (var response = await _httpClient.GetAsync($"imposters/{port}", cancellationToken).ConfigureAwait(false)) 
             {
                 await HandleResponse(response, HttpStatusCode.OK, $"Failed to retrieve imposter with port {port}",
                 (message) => new ImposterNotFoundException(message)).ConfigureAwait(false);
@@ -238,7 +198,7 @@ namespace MbDotNet
 
         public async Task<Config> GetConfigAsync(CancellationToken cancellationToken = default)
         {   
-            using (var response = await _httpClient.GetAsync("/config", cancellationToken).ConfigureAwait(false))
+            using (var response = await _httpClient.GetAsync("config", cancellationToken).ConfigureAwait(false))
             {
                 await HandleResponse(response, HttpStatusCode.OK, $"Failed to get config").ConfigureAwait(false);
                 var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);

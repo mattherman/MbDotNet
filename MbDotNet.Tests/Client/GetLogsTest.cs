@@ -18,12 +18,11 @@ namespace MbDotNet.Tests.Client
         public async Task ReturnsLogs()
         {
 
-            var expectedResult = new List<Log>()
+            var expectedResult = new List<Log>
             {
-                new Log(){Level="info",Message="[mb:2525] DELETE /imposters",Timestamp=""},
-                new Log(){Level="warn",Message="",Timestamp=""},
-                new Log(){Level="info",Message="[mb:2525] GET /imposters",Timestamp=""},
-               
+                new Log { Level = "info", Message = "[mb:2525] DELETE /imposters", Timestamp = new DateTime(2022, 9, 21, 5, 0, 0) },
+                new Log { Level = "warn", Message = "", Timestamp = new DateTime(2022, 9, 21, 5, 0, 1) },
+                new Log { Level = "info", Message = "[mb:2525] GET /imposters", Timestamp = new DateTime(2022, 9, 21, 5, 0, 2) }
             };
            
            
