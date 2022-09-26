@@ -12,7 +12,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
 
     <!-- NuGet Metadata-->
-    <Version>5.0.0-rc7</Version>
+    <Version>5.0.0-rc8</Version>
     <PackageId>MbDotNet</PackageId>
     <Title>MbDotNet</Title>
     <Authors>Matthew Herman</Authors>
@@ -20,7 +20,7 @@
     <Copyright>Copyright ©  2020</Copyright>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>http://github.com/mattherman/MbDotNet</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/mattherman/MbDotNet</PackageProjectUrl>
     <PackageReleaseNotes>https://github.com/mattherman/MbDotNet/releases/tag/v5.0.0-rc7</PackageReleaseNotes>
     <PackageTags>mountebank client wrapper</PackageTags>
     <BuildOutputTargetFolder>lib</BuildOutputTargetFolder>
