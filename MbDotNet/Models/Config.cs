@@ -3,15 +3,15 @@ using Newtonsoft.Json;
 
 namespace MbDotNet.Models
 {
-    public class Config
-    {
-        [JsonProperty("version")]
-        public string Version { get; set; }
+	public class Config
+	{
+		[JsonProperty("version")]
+		public string Version { get; set; }
 
-        [JsonProperty("options")]
-        public Dictionary<string, dynamic> Options { get; set; }
+		[JsonProperty("options")]
+		public Dictionary<string, dynamic> Options { get; set; }
 
-        [JsonProperty("process")]
-        public Dictionary<string, dynamic> Process { get; set; }
-    }
-} 
+		[JsonProperty("process")]
+		public Dictionary<string, dynamic> Process { get; set; }
+	}
+}

@@ -1,15 +1,15 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 
 namespace MbDotNet.Models.Predicates
 {
-    public class NotPredicate : PredicateBase
-    {
-        [JsonProperty("not")]
-        public PredicateBase ChildPredicate { get; private set; }
+	public class NotPredicate : PredicateBase
+	{
+		[JsonProperty("not")]
+		public PredicateBase ChildPredicate { get; private set; }
 
-        public NotPredicate(PredicateBase childPredicate)
-        {
-            ChildPredicate = childPredicate;
-        }
-    }
+		public NotPredicate(PredicateBase childPredicate)
+		{
+			ChildPredicate = childPredicate;
+		}
+	}
 }

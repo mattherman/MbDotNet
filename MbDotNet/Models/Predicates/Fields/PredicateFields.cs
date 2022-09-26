@@ -1,6 +1,6 @@
-﻿namespace MbDotNet.Models.Predicates.Fields
+namespace MbDotNet.Models.Predicates.Fields
 {
-    public abstract class PredicateFields
-    {
-    }
+	public abstract class PredicateFields
+	{
+	}
 }

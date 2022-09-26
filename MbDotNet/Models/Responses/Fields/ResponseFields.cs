@@ -1,6 +1,6 @@
-﻿namespace MbDotNet.Models.Responses.Fields
+namespace MbDotNet.Models.Responses.Fields
 {
-    public abstract class ResponseFields
-    {
-    }
+	public abstract class ResponseFields
+	{
+	}
 }

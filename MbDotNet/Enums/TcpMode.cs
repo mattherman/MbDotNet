@@ -1,8 +1,8 @@
-﻿namespace MbDotNet.Enums
+namespace MbDotNet.Enums
 {
-    public enum TcpMode
-    {
-        Text,
-        Binary
-    }
+	public enum TcpMode
+	{
+		Text,
+		Binary
+	}
 }

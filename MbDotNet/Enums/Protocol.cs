@@ -1,10 +1,10 @@
-﻿namespace MbDotNet.Enums
+namespace MbDotNet.Enums
 {
-    public enum Protocol
-    {
-        Http,
-        Https,
-        Tcp,
-        Smtp
-    }
+	public enum Protocol
+	{
+		Http,
+		Https,
+		Tcp,
+		Smtp
+	}
 }
