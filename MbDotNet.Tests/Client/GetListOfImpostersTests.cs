@@ -14,10 +14,10 @@ namespace MbDotNet.Tests.Client
         {
             await Client.DeleteAllImpostersAsync();
            
-            var expectedImposters = new List<RetrievedImposters>
+            var expectedImposters = new List<SimpleRetrievedImposter>
             {
-                new RetrievedImposters { Port=123, Protocol = "Http" },
-                new RetrievedImposters { Port=456, Protocol = "Http" }
+                new SimpleRetrievedImposter { Port=123, Protocol = "Http" },
+                new SimpleRetrievedImposter { Port=456, Protocol = "Http" }
             };
             MockRequestProxy.Setup(x => x.GetImpostersAsync(default)).ReturnsAsync(expectedImposters);
 

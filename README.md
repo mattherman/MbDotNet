@@ -25,7 +25,6 @@ https://www.nuget.org/packages/MbDotNet
 ## Unsupported Functionality
 
 The following Mountebank functionality is not yet supported:
-- SMTP imposters
 - Stub behaviors except wait behavior
 - The "inject" response
 
