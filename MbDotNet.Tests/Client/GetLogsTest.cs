@@ -1,10 +1,10 @@
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using MbDotNet.Models.Responses;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 
 namespace MbDotNet.Tests.Client
 

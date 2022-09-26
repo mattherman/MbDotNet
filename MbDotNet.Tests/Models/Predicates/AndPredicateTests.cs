@@ -1,6 +1,6 @@
+using System.Collections.Generic;
 using MbDotNet.Models.Predicates;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
 
 namespace MbDotNet.Tests.Models.Predicates
 {

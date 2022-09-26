@@ -1,5 +1,5 @@
-using Newtonsoft.Json;
 using MbDotNet.Models.Responses.Fields;
+using Newtonsoft.Json;
 
 namespace MbDotNet.Models.Responses
 {

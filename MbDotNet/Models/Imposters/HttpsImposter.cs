@@ -1,7 +1,7 @@
-using MbDotNet.Models.Stubs;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using MbDotNet.Models.Responses.Fields;
+using MbDotNet.Models.Stubs;
+using Newtonsoft.Json;
 
 namespace MbDotNet.Models.Imposters
 {

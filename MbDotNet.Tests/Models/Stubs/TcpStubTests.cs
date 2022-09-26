@@ -1,12 +1,12 @@
+using System;
 using System.Linq;
-using MbDotNet.Models.Stubs;
+using MbDotNet.Enums;
 using MbDotNet.Models.Predicates;
 using MbDotNet.Models.Predicates.Fields;
 using MbDotNet.Models.Responses;
 using MbDotNet.Models.Responses.Fields;
+using MbDotNet.Models.Stubs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MbDotNet.Enums;
-using System;
 
 namespace MbDotNet.Tests.Models.Stubs
 {

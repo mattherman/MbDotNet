@@ -1,9 +1,3 @@
-using MbDotNet.Enums;
-using MbDotNet.Exceptions;
-using MbDotNet.Models.Predicates;
-using MbDotNet.Models.Predicates.Fields;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +8,12 @@ using System.Net.Mime;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using MbDotNet.Enums;
+using MbDotNet.Exceptions;
+using MbDotNet.Models.Predicates;
+using MbDotNet.Models.Predicates.Fields;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json.Linq;
 
 namespace MbDotNet.Tests.Acceptance
 {

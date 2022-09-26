@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using MbDotNet.Enums;
 using MbDotNet.Models;
 using MbDotNet.Models.Imposters;
-using MbDotNet.Models.Responses.Fields;
 using MbDotNet.Models.Responses;
+using MbDotNet.Models.Responses.Fields;
 
 namespace MbDotNet
 {

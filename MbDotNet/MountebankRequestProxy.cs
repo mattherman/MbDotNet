@@ -1,17 +1,15 @@
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using MbDotNet.Exceptions;
-using MbDotNet.Models.Imposters;
-using Newtonsoft.Json;
-using MbDotNet.Models.Responses;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
+using MbDotNet.Exceptions;
 using MbDotNet.Models;
-
+using MbDotNet.Models.Imposters;
+using MbDotNet.Models.Responses;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-
-using System.Collections.Generic;
 
 
 namespace MbDotNet

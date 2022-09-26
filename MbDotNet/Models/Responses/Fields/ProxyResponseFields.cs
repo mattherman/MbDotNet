@@ -1,11 +1,11 @@
-using System.Collections.Generic;
-using Newtonsoft.Json;
-using System.Net;
 using System;
+using System.Collections.Generic;
+using System.Net;
 using MbDotNet.Enums;
 using MbDotNet.Models.Predicates;
-using Newtonsoft.Json.Converters;
 using MbDotNet.Models.Predicates.Fields;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace MbDotNet.Models.Responses.Fields
 {

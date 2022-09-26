@@ -1,7 +1,7 @@
+using System.Threading.Tasks;
 using MbDotNet.Models.Imposters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System.Threading.Tasks;
 
 namespace MbDotNet.Tests.Client
 {

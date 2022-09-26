@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using Newtonsoft.Json;
 using System.Net;
+using Newtonsoft.Json;
 
 namespace MbDotNet.Models.Responses.Fields
 {

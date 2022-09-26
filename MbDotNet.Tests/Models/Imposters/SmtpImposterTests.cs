@@ -1,8 +1,8 @@
-using MbDotNet.Models.Imposters;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using MbDotNet.Models.Imposters;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MbDotNet.Tests.Models.Imposters
 {

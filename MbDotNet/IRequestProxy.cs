@@ -1,9 +1,9 @@
-using MbDotNet.Models.Imposters;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using MbDotNet.Models.Responses;
 using MbDotNet.Models;
+using MbDotNet.Models.Imposters;
+using MbDotNet.Models.Responses;
 
 namespace MbDotNet
 {

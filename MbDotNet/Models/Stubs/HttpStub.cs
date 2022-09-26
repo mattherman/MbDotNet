@@ -1,14 +1,14 @@
+using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
-using System.Text;
 using MbDotNet.Enums;
 using MbDotNet.Models.Predicates;
 using MbDotNet.Models.Predicates.Fields;
 using MbDotNet.Models.Responses;
 using MbDotNet.Models.Responses.Fields;
-using System;
 
 namespace MbDotNet.Models.Stubs
 {
