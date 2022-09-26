@@ -4,102 +4,102 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MbDotNet.Tests.Client
 {
-    [TestClass, TestCategory("Unit")]
-    public class CreateTcpImposterTests : MountebankClientTestBase
-    {
-        [TestMethod]
-        public void TcpImposter_WithoutName_SetsNameToNull()
-        {
-            var imposter = Client.CreateTcpImposter(123);
+	[TestClass, TestCategory("Unit")]
+	public class CreateTcpImposterTests : MountebankClientTestBase
+	{
+		[TestMethod]
+		public void TcpImposter_WithoutName_SetsNameToNull()
+		{
+			var imposter = Client.CreateTcpImposter(123);
 
-            Assert.IsNotNull(imposter);
-            Assert.IsNull(imposter.Name);
-        }
+			Assert.IsNotNull(imposter);
+			Assert.IsNull(imposter.Name);
+		}
 
-        [TestMethod]
-        public void TcpImposter_WithName_SetsName()
-        {
-            const string expectedName = "Service";
+		[TestMethod]
+		public void TcpImposter_WithName_SetsName()
+		{
+			const string expectedName = "Service";
 
-            var imposter = Client.CreateTcpImposter(123, expectedName);
-            
-            Assert.IsNotNull(imposter);
-            Assert.AreEqual(expectedName, imposter.Name);
-        }
+			var imposter = Client.CreateTcpImposter(123, expectedName);
 
-        [TestMethod]
-        public void TcpImposter_WithoutMode_SetsModeToText()
-        {
-            const string expectedMode = "text";
+			Assert.IsNotNull(imposter);
+			Assert.AreEqual(expectedName, imposter.Name);
+		}
 
-            var imposter = Client.CreateTcpImposter(123);
-            
-            Assert.IsNotNull(imposter);
-            Assert.AreEqual(expectedMode, imposter.Mode);
-        }
+		[TestMethod]
+		public void TcpImposter_WithoutMode_SetsModeToText()
+		{
+			const string expectedMode = "text";
 
-        [TestMethod]
-        public void TcpImposter_WithMode_SetsMode()
-        {
-            const string expectedMode = "binary";
+			var imposter = Client.CreateTcpImposter(123);
 
-            var imposter = Client.CreateTcpImposter(123, null, TcpMode.Binary);
+			Assert.IsNotNull(imposter);
+			Assert.AreEqual(expectedMode, imposter.Mode);
+		}
 
-            Assert.IsNotNull(imposter);
-            Assert.AreEqual(expectedMode, imposter.Mode);
-        }
+		[TestMethod]
+		public void TcpImposter_WithMode_SetsMode()
+		{
+			const string expectedMode = "binary";
 
-        [TestMethod]
-        public void TcpImposter_ShouldNotAddNewImposterToCollection()
-        {
-            Client.CreateTcpImposter(123);
-            Assert.AreEqual(0, this.Client.Imposters.Count);
-        }
+			var imposter = Client.CreateTcpImposter(123, null, TcpMode.Binary);
 
-        [TestMethod]
-        public void TcpImposter_WithoutPortAndName_SetsPortAndNameToNull()
-        {
-            var imposter = Client.CreateTcpImposter();
+			Assert.IsNotNull(imposter);
+			Assert.AreEqual(expectedMode, imposter.Mode);
+		}
 
-            Assert.IsNotNull(imposter);
-            Assert.AreEqual(default(int), imposter.Port);
-            Assert.IsNull(imposter.Name);
-        }
+		[TestMethod]
+		public void TcpImposter_ShouldNotAddNewImposterToCollection()
+		{
+			Client.CreateTcpImposter(123);
+			Assert.AreEqual(0, this.Client.Imposters.Count);
+		}
 
-        [TestMethod]
-        public void TcpImposter_WithoutRecordRequests_SetsRecordRequest()
-        {
-            var imposter = Client.CreateTcpImposter();
+		[TestMethod]
+		public void TcpImposter_WithoutPortAndName_SetsPortAndNameToNull()
+		{
+			var imposter = Client.CreateTcpImposter();
 
-            Assert.IsFalse(imposter.RecordRequests);
-        }
+			Assert.IsNotNull(imposter);
+			Assert.AreEqual(default(int), imposter.Port);
+			Assert.IsNull(imposter.Name);
+		}
 
-        [TestMethod]
-        public void TcpImposter_WithRecordRequests_SetsRecordRequest()
-        {
-            const bool recordRequests = true;
+		[TestMethod]
+		public void TcpImposter_WithoutRecordRequests_SetsRecordRequest()
+		{
+			var imposter = Client.CreateTcpImposter();
 
-            var imposter = Client.CreateTcpImposter(recordRequests: recordRequests);
+			Assert.IsFalse(imposter.RecordRequests);
+		}
 
-            Assert.IsTrue(imposter.RecordRequests);
-        }
+		[TestMethod]
+		public void TcpImposter_WithRecordRequests_SetsRecordRequest()
+		{
+			const bool recordRequests = true;
 
-        [TestMethod]
-        public void HttpImposter_WithoutDefaultRequest_SetsDefaultRequest()
-        {
-            var imposter = Client.CreateTcpImposter(123, "service");
+			var imposter = Client.CreateTcpImposter(recordRequests: recordRequests);
 
-            Assert.IsNull(imposter.DefaultResponse);
-        }
+			Assert.IsTrue(imposter.RecordRequests);
+		}
 
-        [TestMethod]
-        public void HttpImposter_WithDefaultRequest_SetsDefaultRequest()
-        {
-            var defaultResponse = new TcpResponseFields();
-            var imposter = Client.CreateTcpImposter(123, "service", defaultResponse: defaultResponse);
+		[TestMethod]
+		public void HttpImposter_WithoutDefaultRequest_SetsDefaultRequest()
+		{
+			var imposter = Client.CreateTcpImposter(123, "service");
 
-            Assert.IsNotNull(imposter.DefaultResponse);
-            Assert.AreEqual(defaultResponse, imposter.DefaultResponse);
-        }
-    }
+			Assert.IsNull(imposter.DefaultResponse);
+		}
+
+		[TestMethod]
+		public void HttpImposter_WithDefaultRequest_SetsDefaultRequest()
+		{
+			var defaultResponse = new TcpResponseFields();
+			var imposter = Client.CreateTcpImposter(123, "service", defaultResponse: defaultResponse);
+
+			Assert.IsNotNull(imposter.DefaultResponse);
+			Assert.AreEqual(defaultResponse, imposter.DefaultResponse);
+		}
+	}
 }

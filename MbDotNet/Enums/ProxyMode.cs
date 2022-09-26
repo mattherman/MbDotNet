@@ -1,16 +1,16 @@
-﻿using System.Runtime.Serialization;
+using System.Runtime.Serialization;
 
 namespace MbDotNet.Enums
 {
-    public enum ProxyMode
-    {
-        [EnumMember(Value = "proxyOnce")]
-        ProxyOnce,
+	public enum ProxyMode
+	{
+		[EnumMember(Value = "proxyOnce")]
+		ProxyOnce,
 
-        [EnumMember(Value = "proxyAlways")]
-        ProxyAlways,
+		[EnumMember(Value = "proxyAlways")]
+		ProxyAlways,
 
-        [EnumMember(Value = "proxyTransparent")]
-        ProxyTransparent
-    }
+		[EnumMember(Value = "proxyTransparent")]
+		ProxyTransparent
+	}
 }

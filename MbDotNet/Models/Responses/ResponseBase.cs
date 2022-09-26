@@ -1,6 +1,6 @@
-﻿namespace MbDotNet.Models.Responses
+namespace MbDotNet.Models.Responses
 {
-    public abstract class ResponseBase
-    {
-    }
+	public abstract class ResponseBase
+	{
+	}
 }

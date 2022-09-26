@@ -3,80 +3,80 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MbDotNet.Tests.Client
 {
-    [TestClass, TestCategory("Unit")]
-    public class CreateHttpImposterTests : MountebankClientTestBase
-    {
-        [TestMethod]
-        public void HttpImposter_ShouldNotAddNewImposterToCollection()
-        {
-            Client.CreateHttpImposter(123);
-            Assert.AreEqual(0, Client.Imposters.Count);
-        }
-        
-        [TestMethod]
-        public void HttpImposter_WithoutName_SetsNameToNull()
-        {
-            var imposter = Client.CreateHttpImposter(123);
-            
-            Assert.IsNotNull(imposter);
-            Assert.IsNull(imposter.Name);
-        }
+	[TestClass, TestCategory("Unit")]
+	public class CreateHttpImposterTests : MountebankClientTestBase
+	{
+		[TestMethod]
+		public void HttpImposter_ShouldNotAddNewImposterToCollection()
+		{
+			Client.CreateHttpImposter(123);
+			Assert.AreEqual(0, Client.Imposters.Count);
+		}
 
-        [TestMethod]
-        public void HttpImposter_WithName_SetsName()
-        {
-            const string expectedName = "Service";
+		[TestMethod]
+		public void HttpImposter_WithoutName_SetsNameToNull()
+		{
+			var imposter = Client.CreateHttpImposter(123);
 
-            var imposter = Client.CreateHttpImposter(123, expectedName);
-            
-            Assert.IsNotNull(imposter);
-            Assert.AreEqual(expectedName, imposter.Name);
-        }        
+			Assert.IsNotNull(imposter);
+			Assert.IsNull(imposter.Name);
+		}
 
-        [TestMethod]
-        public void HttpImposter_WithoutPortAndName_SetsPortAndNameToNull()
-        {
-            var imposter = Client.CreateHttpImposter();
+		[TestMethod]
+		public void HttpImposter_WithName_SetsName()
+		{
+			const string expectedName = "Service";
 
-            Assert.IsNotNull(imposter);
-            Assert.AreEqual(default(int), imposter.Port);
-            Assert.IsNull(imposter.Name);
-        }
+			var imposter = Client.CreateHttpImposter(123, expectedName);
 
-        [TestMethod]
-        public void HttpImposter_WithoutRecordRequests_SetsRecordRequest()
-        {
-            var imposter = Client.CreateHttpImposter(123, "service");
+			Assert.IsNotNull(imposter);
+			Assert.AreEqual(expectedName, imposter.Name);
+		}
 
-            Assert.IsFalse(imposter.RecordRequests);
-        }
+		[TestMethod]
+		public void HttpImposter_WithoutPortAndName_SetsPortAndNameToNull()
+		{
+			var imposter = Client.CreateHttpImposter();
 
-        [TestMethod]
-        public void HttpImposter_WithRecordRequests_SetsRecordRequest()
-        {
-            const bool recordRequests = true;
+			Assert.IsNotNull(imposter);
+			Assert.AreEqual(default(int), imposter.Port);
+			Assert.IsNull(imposter.Name);
+		}
 
-            var imposter = Client.CreateHttpImposter(123, "service", recordRequests);
+		[TestMethod]
+		public void HttpImposter_WithoutRecordRequests_SetsRecordRequest()
+		{
+			var imposter = Client.CreateHttpImposter(123, "service");
 
-            Assert.IsTrue(imposter.RecordRequests);
-        }
+			Assert.IsFalse(imposter.RecordRequests);
+		}
 
-        [TestMethod]
-        public void HttpImposter_WithoutDefaultRequest_SetsDefaultRequest()
-        {
-            var imposter = Client.CreateHttpImposter(123, "service");
+		[TestMethod]
+		public void HttpImposter_WithRecordRequests_SetsRecordRequest()
+		{
+			const bool recordRequests = true;
 
-            Assert.IsNull(imposter.DefaultResponse);
-        }
+			var imposter = Client.CreateHttpImposter(123, "service", recordRequests);
 
-        [TestMethod]
-        public void HttpImposter_WithDefaultRequest_SetsDefaultRequest()
-        {
-            var defaultResponse = new HttpResponseFields();
-            var imposter = Client.CreateHttpImposter(123, "service", defaultResponse: defaultResponse);
+			Assert.IsTrue(imposter.RecordRequests);
+		}
 
-            Assert.IsNotNull(imposter.DefaultResponse);
-            Assert.AreEqual(defaultResponse, imposter.DefaultResponse);
-        }
-    }
+		[TestMethod]
+		public void HttpImposter_WithoutDefaultRequest_SetsDefaultRequest()
+		{
+			var imposter = Client.CreateHttpImposter(123, "service");
+
+			Assert.IsNull(imposter.DefaultResponse);
+		}
+
+		[TestMethod]
+		public void HttpImposter_WithDefaultRequest_SetsDefaultRequest()
+		{
+			var defaultResponse = new HttpResponseFields();
+			var imposter = Client.CreateHttpImposter(123, "service", defaultResponse: defaultResponse);
+
+			Assert.IsNotNull(imposter.DefaultResponse);
+			Assert.AreEqual(defaultResponse, imposter.DefaultResponse);
+		}
+	}
 }

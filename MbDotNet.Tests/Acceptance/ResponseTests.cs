@@ -18,37 +18,38 @@ using System.Threading.Tasks;
 namespace MbDotNet.Tests.Acceptance
 
 {
-    [TestClass, TestCategory("Acceptance")]
-    public class ResponseTests : AcceptanceTestBase{
-         private HttpClient _httpClient;
-         public ResponseTests()
-        {
-            _httpClient = new HttpClient();
-        }
+	[TestClass, TestCategory("Acceptance")]
+	public class ResponseTests : AcceptanceTestBase
+	{
+		private HttpClient _httpClient;
+		public ResponseTests()
+		{
+			_httpClient = new HttpClient();
+		}
 
-        [TestInitialize]
-        public async Task TestInitialize()
-        {
-            await _client.DeleteAllImpostersAsync();
-        }
+		[TestInitialize]
+		public async Task TestInitialize()
+		{
+			await _client.DeleteAllImpostersAsync();
+		}
 
-        [TestMethod]
-        public async Task CanGetEntryHypermedia()
-        {
-            var result=await _client.GetEntryHypermediaAsync();
-            Assert.IsNotNull(result);
+		[TestMethod]
+		public async Task CanGetEntryHypermedia()
+		{
+			var result = await _client.GetEntryHypermediaAsync();
+			Assert.IsNotNull(result);
 
-        }
+		}
 
-         [TestMethod]
-        public async Task CanGetLogs()
-        {
-            var result=await _client.GetLogsAsync();
-            Assert.IsNotNull(result);
+		[TestMethod]
+		public async Task CanGetLogs()
+		{
+			var result = await _client.GetLogsAsync();
+			Assert.IsNotNull(result);
 
-        }
+		}
 
 
-    }
+	}
 
 }
