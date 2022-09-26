@@ -13,6 +13,8 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 2.2.402
+    - name: Verify Formatting
+      run: dotnet format --verify-no-changes
     - name: Build
       run: dotnet build --configuration Release
     - name: Start Mountebank
