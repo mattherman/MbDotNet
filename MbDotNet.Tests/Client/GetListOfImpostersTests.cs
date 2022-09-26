@@ -1,30 +1,30 @@
-﻿using MbDotNet.Models.Imposters;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using MbDotNet.Models.Imposters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 
 namespace MbDotNet.Tests.Client
 {
-    [TestClass, TestCategory("Unit")]
-    public class GetListOfImpostersTests : MountebankClientTestBase
-    {
-        [TestMethod]
-        public async Task ImpostersRetrieved_ReturnsImposters()
-        {
-            await Client.DeleteAllImpostersAsync();
-           
-            var expectedImposters = new List<RetrievedImposters>
-            {
-                new RetrievedImposters { Port=123, Protocol = "Http" },
-                new RetrievedImposters { Port=456, Protocol = "Http" }
-            };
-            MockRequestProxy.Setup(x => x.GetImpostersAsync(default)).ReturnsAsync(expectedImposters);
+	[TestClass, TestCategory("Unit")]
+	public class GetListOfImpostersTests : MountebankClientTestBase
+	{
+		[TestMethod]
+		public async Task ImpostersRetrieved_ReturnsImposters()
+		{
+			await Client.DeleteAllImpostersAsync();
 
-            var result = await Client.GetImpostersAsync().ConfigureAwait(false);
+			var expectedImposters = new List<RetrievedImposters>
+			{
+				new RetrievedImposters { Port=123, Protocol = "Http" },
+				new RetrievedImposters { Port=456, Protocol = "Http" }
+			};
+			MockRequestProxy.Setup(x => x.GetImpostersAsync(default)).ReturnsAsync(expectedImposters);
 
-            Assert.AreSame(expectedImposters, result);
-        }
-    }
+			var result = await Client.GetImpostersAsync().ConfigureAwait(false);
+
+			Assert.AreSame(expectedImposters, result);
+		}
+	}
 }
 
