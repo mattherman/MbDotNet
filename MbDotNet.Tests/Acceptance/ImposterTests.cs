@@ -3,7 +3,6 @@ using MbDotNet.Exceptions;
 using MbDotNet.Models.Predicates;
 using MbDotNet.Models.Predicates.Fields;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;

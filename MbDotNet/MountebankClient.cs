@@ -149,7 +149,7 @@ namespace MbDotNet
         /// imposter if mountebank is running with the "--mock" flag.
         /// </summary>
         /// <returns>The list of retrieved imposters</returns>
-        public async Task<IEnumerable<RetrievedImposters>> GetImpostersAsync(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<SimpleRetrievedImposter>> GetImpostersAsync(CancellationToken cancellationToken = default)
         {
             return await _requestProxy.GetImpostersAsync(cancellationToken).ConfigureAwait(false);
         }

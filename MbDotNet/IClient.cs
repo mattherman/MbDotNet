@@ -121,7 +121,7 @@ namespace MbDotNet
         /// </summary>
         /// <returns>The list of retrieved imposters</returns>
 
-        Task<IEnumerable<RetrievedImposters>> GetImpostersAsync(CancellationToken cancellationToken = default);
+        Task<IEnumerable<SimpleRetrievedImposter>> GetImpostersAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Retrieves an HttpImposter along with information about requests made to that

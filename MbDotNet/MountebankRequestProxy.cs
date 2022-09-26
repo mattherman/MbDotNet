@@ -103,19 +103,21 @@ namespace MbDotNet
             {
                 await HandleResponse(response, HttpStatusCode.OK, $"Failed to get the logs");
                 var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                var list = JObject.Parse(content)["logs"].ToString();
-                return JsonConvert.DeserializeObject<List<Log>>(list);
+                var logs = JObject.Parse(content)["logs"]?.ToString();
+                if (logs == null) throw new Exception("Expected response to include a \"logs\" property");
+                return JsonConvert.DeserializeObject<List<Log>>(logs);
             }
         }
 
-        public async Task<IEnumerable<RetrievedImposters>> GetImpostersAsync(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<SimpleRetrievedImposter>> GetImpostersAsync(CancellationToken cancellationToken = default)
         {
             using (var response = await _httpClient.GetAsync("imposters", cancellationToken).ConfigureAwait(false))
             {
                 await HandleResponse(response, HttpStatusCode.OK, $"Failed to retrieve the list of imposters");
                 var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                var list = JObject.Parse(content)["imposters"].ToString();
-                return JsonConvert.DeserializeObject<List<RetrievedImposters>>(list);
+                var imposters = JObject.Parse(content)["imposters"]?.ToString();
+                if (imposters == null) throw new Exception("Expected response to include an \"imposters\" property");
+                return JsonConvert.DeserializeObject<List<SimpleRetrievedImposter>>(imposters);
             }
         }
 

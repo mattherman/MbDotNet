@@ -18,7 +18,7 @@ namespace MbDotNet
         Task<RetrievedHttpsImposter> GetHttpsImposterAsync(int port, CancellationToken cancellationToken = default);
         Task<RetrievedSmtpImposter> GetSmtpImposterAsync(int port, CancellationToken cancellationToken = default);
         Task DeleteSavedRequestsAsync(int port, CancellationToken cancellationToken = default);
-        Task<IEnumerable<RetrievedImposters>> GetImpostersAsync(CancellationToken cancellationToken = default);
+        Task<IEnumerable<SimpleRetrievedImposter>> GetImpostersAsync(CancellationToken cancellationToken = default);
         Task<Home> GetEntryHypermediaAsync(CancellationToken cancellationToken = default);
         Task<IEnumerable<Log>> GetLogsAsync(CancellationToken cancellationToken = default);
         Task<Config> GetConfigAsync(CancellationToken cancellationToken = default);
