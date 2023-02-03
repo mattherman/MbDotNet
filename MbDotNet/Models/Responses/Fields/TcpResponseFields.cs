@@ -2,6 +2,9 @@ using Newtonsoft.Json;
 
 namespace MbDotNet.Models.Responses.Fields
 {
+	/// <summary>
+	/// Response fields that can be set for TCP requests
+	/// </summary>
 	public class TcpResponseFields : ResponseFields
 	{
 		/// <summary>

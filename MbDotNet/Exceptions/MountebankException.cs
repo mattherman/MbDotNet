@@ -8,7 +8,10 @@ namespace MbDotNet.Exceptions
 	[Serializable]
 	public class MountebankException : Exception
 	{
+		/// <inheritdoc />
 		public MountebankException(string message) : base(message) { }
+
+		/// <inheritdoc />
 		public MountebankException(string message, Exception innerException) : base(message, innerException) { }
 	}
 }
