@@ -4,6 +4,9 @@ using Newtonsoft.Json;
 
 namespace MbDotNet.Models.Imposters
 {
+	/// <summary>
+	/// Abstract representation of an imposter. All protocol-specific imposters derive from this type.
+	/// </summary>
 	public abstract class Imposter
 	{
 		/// <summary>
@@ -32,7 +35,7 @@ namespace MbDotNet.Models.Imposters
 
 		internal void SetDynamicPort(int port)
 		{
-			if (Port != default(int))
+			if (Port != default)
 			{
 				throw new MountebankException("Cannot change imposter port once it has been set.");
 			}

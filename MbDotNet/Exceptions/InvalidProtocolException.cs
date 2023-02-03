@@ -8,7 +8,10 @@ namespace MbDotNet.Exceptions
 	[Serializable]
 	public class InvalidProtocolException : MountebankException
 	{
+		/// <inheritdoc />
 		public InvalidProtocolException(string message) : base(message) { }
+
+		/// <inheritdoc />
 		public InvalidProtocolException(string message, Exception innerException) : base(message, innerException) { }
 	}
 }
