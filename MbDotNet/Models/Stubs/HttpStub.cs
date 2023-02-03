@@ -12,6 +12,9 @@ using MbDotNet.Models.Responses.Fields;
 
 namespace MbDotNet.Models.Stubs
 {
+	/// <summary>
+	/// A HTTP imposter stub
+	/// </summary>
 	public class HttpStub : StubBase
 	{
 
@@ -74,7 +77,7 @@ namespace MbDotNet.Models.Stubs
 
 		/// <summary>
 		/// Adds a response to the stub that will return the specified HTTP status code
-		/// along with a response object serialized as XML. Automatically adds an appropriate 
+		/// along with a response object serialized as XML. Automatically adds an appropriate
 		/// Content-Type header to the response. Serializes the XML with the specified encoding.
 		/// </summary>
 		/// <typeparam name="T">The type of the response object being serialized</typeparam>

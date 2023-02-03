@@ -21,6 +21,9 @@ namespace MbDotNet.Models.Stubs
 		[JsonProperty("matches", NullValueHandling = NullValueHandling.Ignore)]
 		public ICollection<Match<TRequest, TResponseFields>> Matches { get; set; }
 
+		/// <summary>
+		/// Create a new RetrievedStub instance
+		/// </summary>
 		public RetrievedStub()
 		{
 			Matches = new List<Match<TRequest, TResponseFields>>();

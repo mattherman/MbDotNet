@@ -5,6 +5,9 @@ using Newtonsoft.Json;
 
 namespace MbDotNet.Models.Stubs
 {
+	/// <summary>
+	/// An abstract representation of a stub without a specific protocol
+	/// </summary>
 	public abstract class StubBase
 	{
 		/// <summary>
@@ -19,6 +22,9 @@ namespace MbDotNet.Models.Stubs
 		[JsonProperty("responses", NullValueHandling = NullValueHandling.Ignore)]
 		public ICollection<ResponseBase> Responses { get; set; }
 
+		/// <summary>
+		/// Create a new StubBase instance
+		/// </summary>
 		protected StubBase()
 		{
 			Responses = new List<ResponseBase>();

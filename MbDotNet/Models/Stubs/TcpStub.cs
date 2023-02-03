@@ -8,6 +8,9 @@ using MbDotNet.Models.Responses.Fields;
 
 namespace MbDotNet.Models.Stubs
 {
+	/// <summary>
+	/// A TCP imposter stub
+	/// </summary>
 	public class TcpStub : StubBase
 	{
 
