@@ -6,6 +6,9 @@ using MbDotNet.Models.Responses.Fields;
 
 namespace MbDotNet.Models.Imposters
 {
+	/// <summary>
+	/// A retrieved imposters using the SMTP protocol
+	/// </summary>
 	public class RetrievedSmtpImposter : RetrievedImposter<SmtpRequest, SmtpResponseFields>
 	{
 	}

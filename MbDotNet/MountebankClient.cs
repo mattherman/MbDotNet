@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -14,17 +15,24 @@ using MbDotNet.Models.Responses.Fields;
 
 namespace MbDotNet
 {
+	/// <inheritdoc />
+	[SuppressMessage("ReSharper", "InconsistentNaming", Justification = "CORS is an abbreviation")]
 	public class MountebankClient : IClient
 	{
 		private readonly IRequestProxy _requestProxy;
 
-		/// <summary>
-		/// A collection of all of the submitted imposters.
-		/// </summary>
+		/// <inheritdoc />
 		public ICollection<Imposter> Imposters { get; private set; }
 
+		/// <summary>
+		/// Create a new MountebankClient instance for a server at the default address of http://127.0.0.1:2525
+		/// </summary>
 		public MountebankClient() : this(new MountebankRequestProxy()) { }
 
+		/// <summary>
+		/// Create a new MountebankClient instance for a specific server URL
+		/// </summary>
+		/// <param name="mountebankUrl"></param>
 		public MountebankClient(string mountebankUrl) : this(new MountebankRequestProxy(mountebankUrl)) { }
 
 		internal MountebankClient(IRequestProxy requestProxy)
@@ -33,54 +41,25 @@ namespace MbDotNet
 			_requestProxy = requestProxy;
 		}
 
+		/// <inheritdoc />
 		public async Task<Home> GetEntryHypermediaAsync(CancellationToken cancellationToken = default)
 		{
 			return await _requestProxy.GetEntryHypermediaAsync(cancellationToken).ConfigureAwait(false);
 		}
 
+		/// <inheritdoc />
 		public async Task<IEnumerable<Log>> GetLogsAsync(CancellationToken cancellationToken = default)
 		{
 			return await _requestProxy.GetLogsAsync(cancellationToken).ConfigureAwait(false);
 		}
 
-		/// <summary>
-		/// Creates a new imposter on the specified port with the HTTP protocol. The Submit method
-		/// must be called on the client in order to submit the imposter to mountebank.
-		/// </summary>
-		/// <param name="port">The port the imposter will be set up to receive requests on</param>
-		/// <param name="name">The name the imposter will recieve, useful for debugging/logging purposes</param>
-		/// <param name="recordRequests">
-		/// Enables recording requests to use the imposter as a mock. See
-		/// <see href="http://www.mbtest.org/docs/api/mocks">here</see> for more details on Mountebank
-		/// verification.
-		/// </param>
-		/// <param name="defaultResponse">The default response to send if no predicate matches</param>
-		/// <param name="allowCORS">Will allow all CORS preflight requests if set to true</param>
-		/// <returns>The newly created imposter</returns>
+		/// <inheritdoc />
 		public HttpImposter CreateHttpImposter(int? port = null, string name = null, bool recordRequests = false, HttpResponseFields defaultResponse = null, bool allowCORS = false)
 		{
 			return new HttpImposter(port, name, recordRequests, defaultResponse, allowCORS);
 		}
 
-		/// <summary>
-		/// Creates a new imposter on the specified port with the HTTPS protocol. The Submit method
-		/// must be called on the client in order to submit the imposter to mountebank.
-		/// 
-		/// The key and cert parameters MUST be valid PEM-formatted strings.
-		/// </summary>
-		/// <param name="port">The port the imposter will be set up to receive requests on</param>
-		/// <param name="name">The name the imposter will recieve, useful for debugging/logging purposes</param>
-		/// <param name="key">The private key the imposter will use, MUST be a PEM-formatted string</param>
-		/// <param name="cert">The public certificate the imposer will use, MUST be a PEM-formatted string</param>
-		/// <param name="mutualAuthRequired">Whether or not the server will require mutual auth</param>
-		/// <param name="recordRequests">
-		/// Enables recording requests to use the imposter as a mock. See
-		/// <see href="http://www.mbtest.org/docs/api/mocks">here</see> for more details on Mountebank
-		/// verification.
-		/// </param>
-		/// <param name="defaultResponse">The default response to send if no predicate matches</param>
-		/// <param name="allowCORS">Will allow all CORS preflight requests if set to true</param>
-		/// <returns>The newly created imposter</returns>
+		/// <inheritdoc />
 		public HttpsImposter CreateHttpsImposter(int? port = null, string name = null, string key = null,
 			string cert = null, bool mutualAuthRequired = false, bool recordRequests = false,
 			HttpResponseFields defaultResponse = null, bool allowCORS = false)
@@ -98,70 +77,29 @@ namespace MbDotNet
 			return new HttpsImposter(port, name, key, cert, mutualAuthRequired, recordRequests, defaultResponse, allowCORS);
 		}
 
-		private bool IsPEMFormatted(string value)
+		private static bool IsPEMFormatted(string value)
 			=> Regex.IsMatch(value, @"-----BEGIN CERTIFICATE-----[\S\s]*-----END CERTIFICATE-----");
 
-		/// <summary>
-		/// Creates a new imposter on the specified port with the TCP protocol. The Submit method
-		/// must be called on the client in order to submit the imposter to mountebank.
-		/// </summary>
-		/// <param name="port">The port the imposter will be set up to receive requests on</param>
-		/// <param name="name">The name the imposter will recieve, useful for debugging/logging purposes</param>
-		/// <param name="mode">The mode of the imposter, text or binary. This defines the encoding for request/response data</param>
-		/// <param name="recordRequests">
-		/// Enables recording requests to use the imposter as a mock. See
-		/// <see href="http://www.mbtest.org/docs/api/mocks">here</see> for more details on Mountebank
-		/// verification.
-		/// </param>
-		/// <param name="defaultResponse">The default response to send if no predicate matches</param>
-		/// <returns>The newly created imposter</returns>
+		/// <inheritdoc />
 		public TcpImposter CreateTcpImposter(int? port = null, string name = null, TcpMode mode = TcpMode.Text,
 			bool recordRequests = false, TcpResponseFields defaultResponse = null)
 		{
 			return new TcpImposter(port, name, mode, recordRequests, defaultResponse);
 		}
 
-		/// <summary>
-		/// Creates a new imposter on the specified port with the SMTP protocol. The Submit method
-		/// must be called on the client in order to submit the imposter to Mountebank. If the port
-		/// is blank, Mountebank will assign one which can be retrieved after Submit. Note that Mountebank does not yet support
-		/// stubs for SMTP imposters.
-		/// </summary>
-		/// <param name="port">
-		/// The port the imposter will be set up to receive requests on, or null to allow
-		/// Mountebank to set the port.
-		/// </param>
-		/// <param name="name">The name the imposter will recieve, useful for debugging/logging purposes</param>
-		/// <param name="recordRequests">
-		/// Enables recording requests to use the imposter as a mock. See
-		/// <see href="http://www.mbtest.org/docs/api/mocks">here</see> for more details on Mountebank
-		/// verification.
-		/// </param>
-		/// <returns>The newly created imposter</returns>
+		/// <inheritdoc />
 		public SmtpImposter CreateSmtpImposter(int? port = null, string name = null, bool recordRequests = false)
 		{
 			return new SmtpImposter(port, name, recordRequests);
 		}
 
-
-		/// <summary>
-		/// Retrieves a list of imposers 
-		/// imposter if mountebank is running with the "--mock" flag.
-		/// </summary>
-		/// <returns>The list of retrieved imposters</returns>
+		/// <inheritdoc />
 		public async Task<IEnumerable<SimpleRetrievedImposter>> GetImpostersAsync(CancellationToken cancellationToken = default)
 		{
 			return await _requestProxy.GetImpostersAsync(cancellationToken).ConfigureAwait(false);
 		}
 
-		/// <summary>
-		/// Retrieves an HttpImposter along with information about requests made to that
-		/// imposter if mountebank is running with the "--mock" flag.
-		/// </summary>
-		/// <param name="port">The port number of the imposter to retrieve</param>
-		/// <returns>The retrieved imposter</returns>
-		/// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
-		/// <exception cref="MbDotNet.Exceptions.InvalidProtocolException">Thrown if the retrieved imposter was not an HTTP imposter</exception>
+		/// <inheritdoc />
 		public async Task<RetrievedHttpImposter> GetHttpImposterAsync(int port, CancellationToken cancellationToken = default)
 		{
 			var imposter = await _requestProxy.GetHttpImposterAsync(port, cancellationToken).ConfigureAwait(false);
@@ -171,14 +109,7 @@ namespace MbDotNet
 			return imposter;
 		}
 
-		/// <summary>
-		/// Retrieves a TcpImposter along with information about requests made to that
-		/// imposter if mountebank is running with the "--mock" flag.
-		/// </summary>
-		/// <param name="port">The port number of the imposter to retrieve</param>
-		/// <returns>The retrieved imposter</returns>
-		/// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
-		/// <exception cref="MbDotNet.Exceptions.InvalidProtocolException">Thrown if the retrieved imposter was not an HTTP imposter</exception>
+		/// <inheritdoc />
 		public async Task<RetrievedTcpImposter> GetTcpImposterAsync(int port, CancellationToken cancellationToken = default)
 		{
 			var imposter = await _requestProxy.GetTcpImposterAsync(port, cancellationToken).ConfigureAwait(false);
@@ -188,14 +119,7 @@ namespace MbDotNet
 			return imposter;
 		}
 
-		/// <summary>
-		/// Retrieves an HttpsImposter along with information about requests made to that
-		/// imposter if mountebank is running with the "--mock" flag.
-		/// </summary>
-		/// <param name="port">The port number of the imposter to retrieve</param>
-		/// <returns>The retrieved imposter</returns>
-		/// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
-		/// <exception cref="MbDotNet.Exceptions.InvalidProtocolException">Thrown if the retrieved imposter was not an HTTP imposter</exception>
+		/// <inheritdoc />
 		public async Task<RetrievedHttpsImposter> GetHttpsImposterAsync(int port, CancellationToken cancellationToken = default)
 		{
 			var imposter = await _requestProxy.GetHttpsImposterAsync(port, cancellationToken).ConfigureAwait(false);
@@ -205,14 +129,7 @@ namespace MbDotNet
 			return imposter;
 		}
 
-		/// <summary>
-		/// Retrieves a SmtpImposter along with information about requests made to that
-		/// imposter if Mountebank is running with the "--mock" flag.
-		/// </summary>
-		/// <param name="port">The port number of the imposter to retrieve</param>
-		/// <returns>The retrieved imposter</returns>
-		/// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
-		/// <exception cref="MbDotNet.Exceptions.InvalidProtocolException">Thrown if the retrieved imposter was not an SMTP imposter</exception>
+		/// <inheritdoc />
 		public async Task<RetrievedSmtpImposter> GetSmtpImposterAsync(int port, CancellationToken cancellationToken = default)
 		{
 			var imposter = await _requestProxy.GetSmtpImposterAsync(port, cancellationToken).ConfigureAwait(false);
@@ -234,11 +151,7 @@ namespace MbDotNet
 			}
 		}
 
-		/// <summary>
-		/// Deletes a single imposter from mountebank. Will also remove the imposter from the collection
-		/// of imposters that the client maintains.
-		/// </summary>
-		/// <param name="port">The port number of the imposter to be removed</param>
+		/// <inheritdoc />
 		public async Task DeleteImposterAsync(int port, CancellationToken cancellationToken = default)
 		{
 			var imposter = Imposters.FirstOrDefault(imp => imp.Port == port);
@@ -250,20 +163,14 @@ namespace MbDotNet
 			}
 		}
 
-		/// <summary>
-		/// Deletes all imposters from mountebank. Will also remove the imposter from the collection
-		/// of imposters that the client maintains.
-		/// </summary>
+		/// <inheritdoc />
 		public async Task DeleteAllImpostersAsync(CancellationToken cancellationToken = default)
 		{
 			await _requestProxy.DeleteAllImpostersAsync(cancellationToken).ConfigureAwait(false);
 			Imposters = new List<Imposter>();
 		}
 
-		/// <summary>
-		/// Submits all pending imposters from the supplied collection to be created in mountebank. 
-		/// <exception cref="MbDotNet.Exceptions.MountebankException">Thrown if unable to create the imposter.</exception>
-		/// </summary>
+		/// <inheritdoc />
 		public async Task SubmitAsync(ICollection<Imposter> imposters, CancellationToken cancellationToken = default)
 		{
 			foreach (var imposter in imposters)
@@ -273,39 +180,25 @@ namespace MbDotNet
 			}
 		}
 
-		/// <summary>
-		/// Submits imposter to be created in mountebank. 
-		/// <exception cref="MbDotNet.Exceptions.MountebankException">Thrown if unable to create the imposter.</exception>
-		/// </summary>
+		/// <inheritdoc />
 		public async Task SubmitAsync(Imposter imposter, CancellationToken cancellationToken = default)
 		{
 			await SubmitAsync(new[] { imposter }, cancellationToken).ConfigureAwait(false);
 		}
 
-		/// <summary>
-		/// Overwrites the stubs of an existing imposter without restarting it.
-		/// </summary>
-		/// <param name="imposter">The imposter to be updated with new stubs</param>
-		/// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
+		/// <inheritdoc />
 		public async Task UpdateImposterAsync(Imposter imposter, CancellationToken cancellationToken = default)
 		{
 			await _requestProxy.UpdateImposterAsync(imposter, cancellationToken);
 		}
 
-		/// <summary>
-		/// Deletes previously saved requests for an imposter
-		/// </summary>
-		/// <param name="port">The port of the imposter to delete request history</param>
-		/// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
+		/// <inheritdoc />
 		public async Task DeleteSavedRequestsAsync(int port, CancellationToken cancellationToken = default)
 		{
 			await _requestProxy.DeleteSavedRequestsAsync(port, cancellationToken);
 		}
 
-		/// <summary>
-		/// Gets the configuration information of Mountebank
-		/// </summary>
-		/// <returns>A Config object containing the configuration of Mountebank</returns> 
+		/// <inheritdoc />
 		public async Task<Config> GetConfigAsync(CancellationToken cancellationToken = default)
 		{
 			return await _requestProxy.GetConfigAsync(cancellationToken);

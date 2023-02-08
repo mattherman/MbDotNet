@@ -4,6 +4,9 @@ using Newtonsoft.Json;
 
 namespace MbDotNet.Models.Predicates.Fields
 {
+	/// <summary>
+	/// Used to specify which HTTP predicate fields should be generated for proxy predicates
+	/// </summary>
 	public class HttpBooleanPredicateFields : PredicateFields
 	{
 		/// <summary>

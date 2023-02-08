@@ -4,6 +4,9 @@ using Newtonsoft.Json;
 
 namespace MbDotNet.Models.Predicates.Fields
 {
+	/// <summary>
+	/// Predicate fields for predicates on HTTP imposters
+	/// </summary>
 	public class HttpPredicateFields : PredicateFields
 	{
 		/// <summary>
@@ -19,10 +22,8 @@ namespace MbDotNet.Models.Predicates.Fields
 		public object RequestBody { get; set; }
 
 		/// <summary>
-		/// Form-encoded key-value pairs in the body. 
-		/// Supports key-specific predicates. 
-		/// For example, with a body of "firstname=bob&lastname=smith", you
-		/// could set a predicate on just "lastname".
+		/// Form-encoded key-value pairs in the body.
+		/// Supports key-specific predicates.
 		/// </summary>
 		[JsonProperty("form", NullValueHandling = NullValueHandling.Ignore)]
 		public Dictionary<string, string> FormContent { get; set; }

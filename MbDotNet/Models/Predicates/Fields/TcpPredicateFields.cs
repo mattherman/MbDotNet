@@ -2,6 +2,9 @@ using Newtonsoft.Json;
 
 namespace MbDotNet.Models.Predicates.Fields
 {
+	/// <summary>
+	/// Predicate fields for predicates on TCP imposters
+	/// </summary>
 	public class TcpPredicateFields : PredicateFields
 	{
 		/// <summary>
