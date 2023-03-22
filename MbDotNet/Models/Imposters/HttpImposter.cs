@@ -44,10 +44,7 @@ namespace MbDotNet.Models.Imposters
 			DefaultResponse = defaultResponse;
 		}
 
-		/// <summary>
-		/// Add an empty stub to this imposter
-		/// </summary>
-		/// <returns>The new stub</returns>
+		/// <inheritdoc />
 		public HttpStub AddStub()
 		{
 			var stub = new HttpStub();

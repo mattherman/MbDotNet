@@ -10,11 +10,9 @@ namespace MbDotNet.Models.Imposters
 	/// An imposter using the HTTPS protocol
 	/// </summary>
 	[SuppressMessage("ReSharper", "InconsistentNaming", Justification = "CORS is an abbreviation")]
-	public class HttpsImposter : Imposter
+	public class HttpsImposter : Imposter, IWithStubs<HttpStub>, IWithResponseFields<HttpResponseFields>
 	{
-		/// <summary>
-		/// The stubs defined for this imposter
-		/// </summary>
+		/// <inheritdoc />
 		[JsonProperty("stubs")]
 		public ICollection<HttpStub> Stubs { get; private set; }
 
@@ -36,9 +34,7 @@ namespace MbDotNet.Models.Imposters
 		[JsonProperty("mutualAuth")]
 		public bool MutualAuthRequired { get; private set; }
 
-		/// <summary>
-		/// Optional default response that imposter sends back if no predicate matches a request
-		/// </summary>
+		/// <inheritdoc />
 		[JsonProperty("defaultResponse", NullValueHandling = NullValueHandling.Ignore)]
 		public HttpResponseFields DefaultResponse { get; private set; }
 
@@ -83,10 +79,7 @@ namespace MbDotNet.Models.Imposters
 			AllowCORS = allowCORS;
 		}
 
-		/// <summary>
-		/// Add an empty stub to this imposter
-		/// </summary>
-		/// <returns>The new stub</returns>
+		/// <inheritdoc />
 		public HttpStub AddStub()
 		{
 			var stub = new HttpStub();
