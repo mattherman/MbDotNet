@@ -1,4 +1,4 @@
-﻿namespace MbDotNet.Models.Responses.Fields
+namespace MbDotNet.Models.Responses.Fields
 {
 	/// <summary>
 	/// Represents a type that supports default response fields
