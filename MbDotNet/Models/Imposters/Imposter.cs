@@ -33,6 +33,7 @@ namespace MbDotNet.Models.Imposters
 		[JsonProperty("recordRequests")]
 		public bool RecordRequests { get; private set; }
 
+		// TODO: Remove this and add a body to a setter
 		internal void SetDynamicPort(int port)
 		{
 			if (Port != default)

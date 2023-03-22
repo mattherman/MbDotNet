@@ -9,7 +9,7 @@ namespace MbDotNet.Models.Imposters
 	/// <summary>
 	/// An imposter using the TCP protocol
 	/// </summary>
-	public class TcpImposter : Imposter
+	public class TcpImposter : Imposter, IWithStubs<TcpStub>, IWithResponseFields<TcpResponseFields>
 	{
 		/// <summary>
 		/// The stubs defined for this imposter
