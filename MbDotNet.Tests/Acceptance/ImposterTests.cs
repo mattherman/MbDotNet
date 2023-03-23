@@ -109,9 +109,7 @@ namespace MbDotNet.Tests.Acceptance
 		public async Task CanCreateAndGetTcpImposter()
 		{
 			const int port = 6000;
-			var imposter = _client.CreateTcpImposter(port);
-
-			await _client.SubmitAsync(imposter);
+			await _client.CreateTcpImposterAsync(port, _ => { });
 
 			var retrievedImposter = await _client.GetTcpImposterAsync(port);
 			Assert.IsNotNull(retrievedImposter);
@@ -121,12 +119,12 @@ namespace MbDotNet.Tests.Acceptance
 		public async Task CanUpdateTcpImposter()
 		{
 			const int port = 6000;
-			var imposter = _client.CreateTcpImposter(port);
-			imposter.AddStub()
-				.OnDataEquals("abc")
-				.ReturnsData("123");
-
-			await _client.SubmitAsync(imposter);
+			var imposter = await _client.CreateTcpImposterAsync(port, imposter =>
+			{
+				imposter.AddStub()
+					.OnDataEquals("abc")
+					.ReturnsData("123");
+			});
 
 			imposter.AddStub()
 				.OnDataEquals("def")
@@ -192,24 +190,25 @@ namespace MbDotNet.Tests.Acceptance
 			const int sourceImposterPort = 6000;
 			const int proxyImposterPort = 6001;
 
-			var sourceImposter = _client.CreateTcpImposter(sourceImposterPort);
-			sourceImposter.AddStub().ReturnsData("abc123");
-			await _client.SubmitAsync(sourceImposter);
-
-			var proxyImposter = _client.CreateTcpImposter(proxyImposterPort);
-			var predicateGenerators = new List<MatchesPredicate<TcpBooleanPredicateFields>>
+			await _client.CreateTcpImposterAsync(sourceImposterPort, sourceImposter =>
 			{
-				new(new TcpBooleanPredicateFields
+				sourceImposter.AddStub().ReturnsData("abc123");
+			});
+
+			await _client.CreateTcpImposterAsync(proxyImposterPort, proxyImposter =>
+			{
+				var predicateGenerators = new List<MatchesPredicate<TcpBooleanPredicateFields>>
 				{
-					Data = true
-				})
-			};
+					new(new TcpBooleanPredicateFields
+					{
+						Data = true
+					})
+				};
 
-			proxyImposter.AddStub().ReturnsProxy(
-				new Uri($"tcp://localhost:{sourceImposterPort}"),
-				ProxyMode.ProxyOnce, predicateGenerators);
-
-			await _client.SubmitAsync(proxyImposter);
+				proxyImposter.AddStub().ReturnsProxy(
+					new Uri($"tcp://localhost:{sourceImposterPort}"),
+					ProxyMode.ProxyOnce, predicateGenerators);
+			});
 
 			// Make a request to the imposter to trigger the proxy
 			using (var client = new TcpClient("localhost", proxyImposterPort))

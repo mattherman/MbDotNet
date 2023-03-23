@@ -19,11 +19,11 @@ namespace MbDotNet.Models.Imposters
 		/// The encoding used for request and response strings
 		/// </summary>
 		[JsonProperty("mode")]
-		public string Mode { get; private set; }
+		public string Mode { get; set; }
 
 		/// <inheritdoc />
 		[JsonProperty("defaultResponse", NullValueHandling = NullValueHandling.Ignore)]
-		public TcpResponseFields DefaultResponse { get; private set; }
+		public TcpResponseFields DefaultResponse { get; set; }
 
 		/// <summary>
 		/// Create a new TcpImposter instance

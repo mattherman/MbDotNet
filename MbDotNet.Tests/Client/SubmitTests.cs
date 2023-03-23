@@ -30,10 +30,8 @@ namespace MbDotNet.Tests.Client
 			const int firstPortNumber = 123;
 			const int secondPortNumber = 456;
 
-			var imposter1 = Client.CreateTcpImposter(firstPortNumber);
-			var imposter2 = Client.CreateTcpImposter(secondPortNumber);
-
-			await Client.SubmitAsync(new[] { imposter1, imposter2 }).ConfigureAwait(false);
+			await Client.CreateTcpImposterAsync(firstPortNumber, _ => { });
+			await Client.CreateTcpImposterAsync(secondPortNumber, _ => { });
 
 			MockRequestProxy.Verify(x => x.CreateImposterAsync(It.Is<Imposter>(imp => imp.Port == firstPortNumber), default), Times.Once);
 			MockRequestProxy.Verify(x => x.CreateImposterAsync(It.Is<Imposter>(imp => imp.Port == secondPortNumber), default), Times.Once);
@@ -45,10 +43,8 @@ namespace MbDotNet.Tests.Client
 			const int firstPortNumber = 123;
 			const int secondPortNumber = 456;
 
-			var imposter1 = Client.CreateTcpImposter(firstPortNumber);
-			var imposter2 = Client.CreateTcpImposter(secondPortNumber);
-
-			await Client.SubmitAsync(new[] { imposter1, imposter2 }).ConfigureAwait(false);
+			await Client.CreateTcpImposterAsync(firstPortNumber, _ => { });
+			await Client.CreateTcpImposterAsync(secondPortNumber, _ => { });
 
 			Assert.AreEqual(1, Client.Imposters.Count(x => x.Port == firstPortNumber));
 			Assert.AreEqual(1, Client.Imposters.Count(x => x.Port == secondPortNumber));

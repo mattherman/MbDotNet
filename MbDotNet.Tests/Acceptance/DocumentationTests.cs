@@ -156,36 +156,35 @@ namespace MbDotNet.Tests.Acceptance
 		[TestMethod]
 		public async Task ContainsPredicateExample()
 		{
-			var imposter = _client.CreateTcpImposter(4547, "ContainsPredicateExample", TcpMode.Binary);
-
-			// First stub
-			var predicateFields = new TcpPredicateFields
+			await _client.CreateTcpImposterAsync(4547, "ContainsPredicateExample", TcpMode.Binary, imposter =>
 			{
-				Data = "AgM="
-			};
+				// First stub
+				var predicateFields = new TcpPredicateFields
+				{
+					Data = "AgM="
+				};
 
-			imposter.AddStub().On(new ContainsPredicate<TcpPredicateFields>(predicateFields))
-				.ReturnsData("Zmlyc3QgcmVzcG9uc2U=");
+				imposter.AddStub().On(new ContainsPredicate<TcpPredicateFields>(predicateFields))
+					.ReturnsData("Zmlyc3QgcmVzcG9uc2U=");
 
-			// Second stub
-			predicateFields = new TcpPredicateFields
-			{
-				Data = "Bwg="
-			};
+				// Second stub
+				predicateFields = new TcpPredicateFields
+				{
+					Data = "Bwg="
+				};
 
-			imposter.AddStub().On(new ContainsPredicate<TcpPredicateFields>(predicateFields))
-				.ReturnsData("c2Vjb25kIHJlc3BvbnNl");
+				imposter.AddStub().On(new ContainsPredicate<TcpPredicateFields>(predicateFields))
+					.ReturnsData("c2Vjb25kIHJlc3BvbnNl");
 
-			// Third stub
-			predicateFields = new TcpPredicateFields
-			{
-				Data = "Bwg="
-			};
+				// Third stub
+				predicateFields = new TcpPredicateFields
+				{
+					Data = "Bwg="
+				};
 
-			imposter.AddStub().On(new ContainsPredicate<TcpPredicateFields>(predicateFields))
-				.ReturnsData("dGhpcmQgcmVzcG9uc2U=");
-
-			await _client.SubmitAsync(imposter);
+				imposter.AddStub().On(new ContainsPredicate<TcpPredicateFields>(predicateFields))
+					.ReturnsData("dGhpcmQgcmVzcG9uc2U=");
+			});
 		}
 
 		/// <summary>
@@ -195,36 +194,35 @@ namespace MbDotNet.Tests.Acceptance
 		[TestMethod]
 		public async Task StartsWithPredicateExample()
 		{
-			var imposter = _client.CreateTcpImposter(4548, "StartsWithPredicateExample");
-
-			// First stub
-			var predicateFields = new TcpPredicateFields
+			await _client.CreateTcpImposterAsync(4548, "StartsWithPredicateExample", imposter =>
 			{
-				Data = "first"
-			};
+				// First stub
+				var predicateFields = new TcpPredicateFields
+				{
+					Data = "first"
+				};
 
-			imposter.AddStub().On(new StartsWithPredicate<TcpPredicateFields>(predicateFields))
-				.ReturnsData("first response");
+				imposter.AddStub().On(new StartsWithPredicate<TcpPredicateFields>(predicateFields))
+					.ReturnsData("first response");
 
-			// Second stub
-			predicateFields = new TcpPredicateFields
-			{
-				Data = "second"
-			};
+				// Second stub
+				predicateFields = new TcpPredicateFields
+				{
+					Data = "second"
+				};
 
-			imposter.AddStub().On(new StartsWithPredicate<TcpPredicateFields>(predicateFields))
-				.ReturnsData("second response");
+				imposter.AddStub().On(new StartsWithPredicate<TcpPredicateFields>(predicateFields))
+					.ReturnsData("second response");
 
-			// Third stub
-			predicateFields = new TcpPredicateFields
-			{
-				Data = "second"
-			};
+				// Third stub
+				predicateFields = new TcpPredicateFields
+				{
+					Data = "second"
+				};
 
-			imposter.AddStub().On(new StartsWithPredicate<TcpPredicateFields>(predicateFields))
-				.ReturnsData("third response");
-
-			await _client.SubmitAsync(imposter);
+				imposter.AddStub().On(new StartsWithPredicate<TcpPredicateFields>(predicateFields))
+					.ReturnsData("third response");
+			});
 		}
 
 		/// <summary>
@@ -234,36 +232,35 @@ namespace MbDotNet.Tests.Acceptance
 		[TestMethod]
 		public async Task EndsWithPredicateExample()
 		{
-			var imposter = _client.CreateTcpImposter(4549, "EndsWithPredicateExample", TcpMode.Binary);
-
-			// First stub
-			var predicateFields = new TcpPredicateFields
+			await _client.CreateTcpImposterAsync(4549, "EndsWithPredicateExample", TcpMode.Binary, imposter =>
 			{
-				Data = "AwQ="
-			};
+				// First stub
+				var predicateFields = new TcpPredicateFields
+				{
+					Data = "AwQ="
+				};
 
-			imposter.AddStub().On(new EndsWithPredicate<TcpPredicateFields>(predicateFields))
-				.ReturnsData("Zmlyc3QgcmVzcG9uc2U=");
+				imposter.AddStub().On(new EndsWithPredicate<TcpPredicateFields>(predicateFields))
+					.ReturnsData("Zmlyc3QgcmVzcG9uc2U=");
 
-			// Second stub
-			predicateFields = new TcpPredicateFields
-			{
-				Data = "BQY="
-			};
+				// Second stub
+				predicateFields = new TcpPredicateFields
+				{
+					Data = "BQY="
+				};
 
-			imposter.AddStub().On(new EndsWithPredicate<TcpPredicateFields>(predicateFields))
-				.ReturnsData("c2Vjb25kIHJlc3BvbnNl");
+				imposter.AddStub().On(new EndsWithPredicate<TcpPredicateFields>(predicateFields))
+					.ReturnsData("c2Vjb25kIHJlc3BvbnNl");
 
-			// Third stub
-			predicateFields = new TcpPredicateFields
-			{
-				Data = "BQY="
-			};
+				// Third stub
+				predicateFields = new TcpPredicateFields
+				{
+					Data = "BQY="
+				};
 
-			imposter.AddStub().On(new EndsWithPredicate<TcpPredicateFields>(predicateFields))
-				.ReturnsData("dGhpcmQgcmVzcG9uc2U=");
-
-			await _client.SubmitAsync(imposter);
+				imposter.AddStub().On(new EndsWithPredicate<TcpPredicateFields>(predicateFields))
+					.ReturnsData("dGhpcmQgcmVzcG9uc2U=");
+			});
 		}
 
 		/// <summary>
@@ -273,36 +270,35 @@ namespace MbDotNet.Tests.Acceptance
 		[TestMethod]
 		public async Task MatchesPredicateExample()
 		{
-			var imposter = _client.CreateTcpImposter(4550, "MatchesPredicateExample");
-
-			// First stub
-			var predicateFields = new TcpPredicateFields
+			await _client.CreateTcpImposterAsync(4550, "MatchesPredicateExample", imposter =>
 			{
-				Data = "^first\\Wsecond"
-			};
+				// First stub
+				var predicateFields = new TcpPredicateFields
+				{
+					Data = "^first\\Wsecond"
+				};
 
-			imposter.AddStub().On(new MatchesPredicate<TcpPredicateFields>(predicateFields, true, null, null))
-				.ReturnsData("first response");
+				imposter.AddStub().On(new MatchesPredicate<TcpPredicateFields>(predicateFields, true, null, null))
+					.ReturnsData("first response");
 
-			// Second stub
-			predicateFields = new TcpPredicateFields
-			{
-				Data = "second\\s+request"
-			};
+				// Second stub
+				predicateFields = new TcpPredicateFields
+				{
+					Data = "second\\s+request"
+				};
 
-			imposter.AddStub().On(new MatchesPredicate<TcpPredicateFields>(predicateFields))
-				.ReturnsData("second response");
+				imposter.AddStub().On(new MatchesPredicate<TcpPredicateFields>(predicateFields))
+					.ReturnsData("second response");
 
-			// Third stub
-			predicateFields = new TcpPredicateFields
-			{
-				Data = "second\\s+request"
-			};
+				// Third stub
+				predicateFields = new TcpPredicateFields
+				{
+					Data = "second\\s+request"
+				};
 
-			imposter.AddStub().On(new MatchesPredicate<TcpPredicateFields>(predicateFields))
-				.ReturnsData("third response");
-
-			await _client.SubmitAsync(imposter);
+				imposter.AddStub().On(new MatchesPredicate<TcpPredicateFields>(predicateFields))
+					.ReturnsData("third response");
+			});
 		}
 
 		/// <summary>
@@ -347,19 +343,18 @@ namespace MbDotNet.Tests.Acceptance
 		[TestMethod]
 		public async Task NotPredicateExample()
 		{
-			var imposter = _client.CreateTcpImposter(4552, "NotPredicateExample");
+			await _client.CreateTcpImposterAsync(4552, "NotPredicateExample", imposter =>
+			{
+				var predicate = new EqualsPredicate<TcpPredicateFields>(new TcpPredicateFields { Data = "test\n" });
 
-			var predicate = new EqualsPredicate<TcpPredicateFields>(new TcpPredicateFields { Data = "test\n" });
+				// First stub
+				imposter.AddStub().On(new NotPredicate(predicate))
+					.ReturnsData("not test");
 
-			// First stub
-			imposter.AddStub().On(new NotPredicate(predicate))
-				.ReturnsData("not test");
-
-			// Second stub
-			imposter.AddStub().On(predicate)
-				.ReturnsData("test");
-
-			await _client.SubmitAsync(imposter);
+				// Second stub
+				imposter.AddStub().On(predicate)
+					.ReturnsData("test");
+			});
 		}
 
 		/// <summary>
@@ -369,23 +364,22 @@ namespace MbDotNet.Tests.Acceptance
 		[TestMethod]
 		public async Task OrPredicateExample()
 		{
-			var imposter = _client.CreateTcpImposter(4553, "OrPredicateExample");
+			await _client.CreateTcpImposterAsync(4553, "OrPredicateExample", imposter =>
+			{
+				var startsWithFields = new TcpPredicateFields { Data = "start" };
+				var startsWith = new StartsWithPredicate<TcpPredicateFields>(startsWithFields);
 
-			var startsWithFields = new TcpPredicateFields { Data = "start" };
-			var startsWith = new StartsWithPredicate<TcpPredicateFields>(startsWithFields);
+				var endsWithFields = new TcpPredicateFields { Data = "end\n" };
+				var endsWith = new EndsWithPredicate<TcpPredicateFields>(endsWithFields);
 
-			var endsWithFields = new TcpPredicateFields { Data = "end\n" };
-			var endsWith = new EndsWithPredicate<TcpPredicateFields>(endsWithFields);
+				var containsFields = new TcpPredicateFields { Data = "middle" };
+				var contains = new ContainsPredicate<TcpPredicateFields>(containsFields);
 
-			var containsFields = new TcpPredicateFields { Data = "middle" };
-			var contains = new ContainsPredicate<TcpPredicateFields>(containsFields);
+				var predicate = new OrPredicate(new List<Predicate> { startsWith, endsWith, contains });
 
-			var predicate = new OrPredicate(new List<Predicate> { startsWith, endsWith, contains });
-
-			imposter.AddStub().On(predicate)
-				.ReturnsData("matches");
-
-			await _client.SubmitAsync(imposter);
+				imposter.AddStub().On(predicate)
+					.ReturnsData("matches");
+			});
 		}
 
 		/// <summary>
@@ -395,23 +389,22 @@ namespace MbDotNet.Tests.Acceptance
 		[TestMethod]
 		public async Task AndPredicateExample()
 		{
-			var imposter = _client.CreateTcpImposter(4554, "AndPredicateExample");
+			await _client.CreateTcpImposterAsync(4554, "AndPredicateExample", imposter =>
+			{
+				var startsWithFields = new TcpPredicateFields { Data = "start" };
+				var startsWith = new StartsWithPredicate<TcpPredicateFields>(startsWithFields);
 
-			var startsWithFields = new TcpPredicateFields { Data = "start" };
-			var startsWith = new StartsWithPredicate<TcpPredicateFields>(startsWithFields);
+				var endsWithFields = new TcpPredicateFields { Data = "end\n" };
+				var endsWith = new EndsWithPredicate<TcpPredicateFields>(endsWithFields);
 
-			var endsWithFields = new TcpPredicateFields { Data = "end\n" };
-			var endsWith = new EndsWithPredicate<TcpPredicateFields>(endsWithFields);
+				var containsFields = new TcpPredicateFields { Data = "middle" };
+				var contains = new ContainsPredicate<TcpPredicateFields>(containsFields);
 
-			var containsFields = new TcpPredicateFields { Data = "middle" };
-			var contains = new ContainsPredicate<TcpPredicateFields>(containsFields);
+				var predicate = new AndPredicate(new List<Predicate> { startsWith, endsWith, contains });
 
-			var predicate = new AndPredicate(new List<Predicate> { startsWith, endsWith, contains });
-
-			imposter.AddStub().On(predicate)
-				.ReturnsData("matches");
-
-			await _client.SubmitAsync(imposter);
+				imposter.AddStub().On(predicate)
+					.ReturnsData("matches");
+			});
 		}
 
 		/// <summary>

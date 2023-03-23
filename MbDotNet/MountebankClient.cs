@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using MbDotNet.Enums;
@@ -77,11 +76,16 @@ namespace MbDotNet
 			await CreateHttpsImposterAsync(port, null, imposterConfigurator);
 
 		/// <inheritdoc />
-		public TcpImposter CreateTcpImposter(int? port = null, string name = null, TcpMode mode = TcpMode.Text,
-			bool recordRequests = false, TcpResponseFields defaultResponse = null)
-		{
-			return new TcpImposter(port, name, mode, recordRequests, defaultResponse);
-		}
+		public async Task<TcpImposter> CreateTcpImposterAsync(int? port, string name, TcpMode mode, Action<TcpImposter> imposterConfigurator) =>
+			await ConfigureAndCreateImposter(new TcpImposter(port, name, mode), imposterConfigurator);
+
+		/// <inheritdoc />
+		public async Task<TcpImposter> CreateTcpImposterAsync(int? port, string name, Action<TcpImposter> imposterConfigurator) =>
+			await CreateTcpImposterAsync(port, name, TcpMode.Text, imposterConfigurator);
+
+		/// <inheritdoc />
+		public async Task<TcpImposter> CreateTcpImposterAsync(int? port, Action<TcpImposter> imposterConfigurator) =>
+			await CreateTcpImposterAsync(port, null, TcpMode.Text, imposterConfigurator);
 
 		/// <inheritdoc />
 		public SmtpImposter CreateSmtpImposter(int? port = null, string name = null, bool recordRequests = false)
