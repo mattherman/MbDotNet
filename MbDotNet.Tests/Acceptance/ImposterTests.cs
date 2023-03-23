@@ -139,9 +139,7 @@ namespace MbDotNet.Tests.Acceptance
 			const int port = 6000;
 			const string name = "TestSmtp";
 
-			var imposter = _client.CreateSmtpImposter(port, name, true);
-
-			await _client.SubmitAsync(imposter);
+			await _client.CreateSmtpImposterAsync(port, name, imposter => imposter.RecordRequests = true);
 
 			var retrievedImposter = await _client.GetSmtpImposterAsync(port);
 			Assert.IsNotNull(retrievedImposter);
@@ -294,8 +292,7 @@ namespace MbDotNet.Tests.Acceptance
 			const string attachmentContent1 = "Test Content1";
 			const string attachmentContent2 = "Test Content2";
 
-			var imposter = _client.CreateSmtpImposter(port, recordRequests: true);
-			await _client.SubmitAsync(imposter);
+			await _client.CreateSmtpImposterAsync(port, imposter => imposter.RecordRequests = true);
 
 			var mail = new MailMessage
 			{

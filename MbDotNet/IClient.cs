@@ -153,23 +153,37 @@ namespace MbDotNet
 		Task<TcpImposter> CreateTcpImposterAsync(int? port, Action<TcpImposter> imposterConfigurator);
 
 		/// <summary>
-		/// Creates a new imposter on the specified port with the SMTP protocol. The Submit method
-		/// must be called on the client in order to submit the imposter to Mountebank. If the port
-		/// is blank, Mountebank will assign one which can be retrieved after Submit. Note that Mountebank does not yet support
-		/// stubs for SMTP imposters.
+		/// Creates a new SMTP imposter on the specified port, configures it with the imposterConfigurator callback, and
+		/// then submits it to Mountebank. If port is null, Mountebank will assign a random port that can be accessed on
+		/// the response.
 		/// </summary>
 		/// <param name="port">
 		/// The port the imposter will be set up to receive requests on, or null to allow
 		/// Mountebank to set the port.
 		/// </param>
-		/// <param name="name">The name the imposter will receive, useful for debugging/logging purposes</param>
-		/// <param name="recordRequests">
-		/// Enables recording requests to use the imposter as a mock. See
-		/// <see href="http://www.mbtest.org/docs/api/mocks">here</see> for more details on Mountebank
-		/// verification.
+		/// <param name="name">The name the imposter will receive, useful for debugging/logging purposes.</param>
+		/// <param name="imposterConfigurator">
+		/// A callback function that will be used to configure the created imposter. This is where stubs should be
+		/// added and any imposter-specific settings specified.
 		/// </param>
-		/// <returns>The newly created imposter</returns>
-		SmtpImposter CreateSmtpImposter(int? port = null, string name = null, bool recordRequests = false);
+		/// <returns>The imposter that was created in Mountebank</returns>
+		Task<SmtpImposter> CreateSmtpImposterAsync(int? port, string name, Action<SmtpImposter> imposterConfigurator);
+
+		/// <summary>
+		/// Creates a new HTTPS imposter on the specified port, configures it with the imposterConfigurator callback, and
+		/// then submits it to Mountebank. If port is null, Mountebank will assign a random port that can be accessed on
+		/// the response.
+		/// </summary>
+		/// <param name="port">
+		/// The port the imposter will be set up to receive requests on, or null to allow Mountebank
+		/// to set the port.
+		/// </param>
+		/// <param name="imposterConfigurator">
+		/// A callback function that will be used to configure the created imposter. This is where stubs should be
+		/// added and any imposter-specific settings specified.
+		/// </param>
+		/// <returns>The imposter that was created in Mountebank</returns>
+		Task<SmtpImposter> CreateSmtpImposterAsync(int? port, Action<SmtpImposter> imposterConfigurator);
 
 		/// <summary>
 		/// Retrieves the list of imposters

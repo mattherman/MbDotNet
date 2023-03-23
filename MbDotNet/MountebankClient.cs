@@ -88,10 +88,12 @@ namespace MbDotNet
 			await CreateTcpImposterAsync(port, null, TcpMode.Text, imposterConfigurator);
 
 		/// <inheritdoc />
-		public SmtpImposter CreateSmtpImposter(int? port = null, string name = null, bool recordRequests = false)
-		{
-			return new SmtpImposter(port, name, recordRequests);
-		}
+		public async Task<SmtpImposter> CreateSmtpImposterAsync(int? port, string name, Action<SmtpImposter> imposterConfigurator) =>
+			await ConfigureAndCreateImposter(new SmtpImposter(port, name), imposterConfigurator);
+
+		/// <inheritdoc />
+		public async Task<SmtpImposter> CreateSmtpImposterAsync(int? port, Action<SmtpImposter> imposterConfigurator) =>
+			await CreateSmtpImposterAsync(port, null, imposterConfigurator);
 
 		/// <inheritdoc />
 		public async Task<IEnumerable<SimpleRetrievedImposter>> GetImpostersAsync(CancellationToken cancellationToken = default)
