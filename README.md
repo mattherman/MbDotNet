@@ -58,7 +58,7 @@ against an actual mountebank instance. In order for those tests to succeed, moun
 will need to be run with the `--mock --allowInjection --debug` option provided. See http://www.mbtest.org/docs/api/overview#get-imposter.
 
 If you would prefer to run mountebank via docker, please execute the following command from the root directory:
-```docker-compose up```
+```docker compose up```
 
 If you would like to just run the unit tests (which do not require mountebank), run the following:
 ```
