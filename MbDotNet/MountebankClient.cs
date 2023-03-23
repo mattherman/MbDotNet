@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MbDotNet.Enums;
@@ -20,9 +19,6 @@ namespace MbDotNet
 	{
 		private readonly IRequestProxy _requestProxy;
 
-		/// <inheritdoc />
-		public ICollection<Imposter> Imposters { get; private set; }
-
 		/// <summary>
 		/// Create a new MountebankClient instance for a server at the default address of http://127.0.0.1:2525
 		/// </summary>
@@ -36,7 +32,6 @@ namespace MbDotNet
 
 		internal MountebankClient(IRequestProxy requestProxy)
 		{
-			Imposters = new List<Imposter>();
 			_requestProxy = requestProxy;
 		}
 
@@ -156,20 +151,13 @@ namespace MbDotNet
 		/// <inheritdoc />
 		public async Task DeleteImposterAsync(int port, CancellationToken cancellationToken = default)
 		{
-			var imposter = Imposters.FirstOrDefault(imp => imp.Port == port);
 			await _requestProxy.DeleteImposterAsync(port, cancellationToken).ConfigureAwait(false);
-
-			if (imposter != null)
-			{
-				Imposters.Remove(imposter);
-			}
 		}
 
 		/// <inheritdoc />
 		public async Task DeleteAllImpostersAsync(CancellationToken cancellationToken = default)
 		{
 			await _requestProxy.DeleteAllImpostersAsync(cancellationToken).ConfigureAwait(false);
-			Imposters = new List<Imposter>();
 		}
 
 		/// <inheritdoc />
@@ -178,7 +166,6 @@ namespace MbDotNet
 			foreach (var imposter in imposters)
 			{
 				await _requestProxy.CreateImposterAsync(imposter, cancellationToken).ConfigureAwait(false);
-				Imposters.Add(imposter);
 			}
 		}
 

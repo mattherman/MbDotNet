@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Threading.Tasks;
 using MbDotNet.Models.Imposters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -35,19 +34,6 @@ namespace MbDotNet.Tests.Client
 
 			MockRequestProxy.Verify(x => x.CreateImposterAsync(It.Is<Imposter>(imp => imp.Port == firstPortNumber), default), Times.Once);
 			MockRequestProxy.Verify(x => x.CreateImposterAsync(It.Is<Imposter>(imp => imp.Port == secondPortNumber), default), Times.Once);
-		}
-
-		[TestMethod]
-		public async Task SubmitCollection_ShouldAddImpostersToCollection()
-		{
-			const int firstPortNumber = 123;
-			const int secondPortNumber = 456;
-
-			await Client.CreateTcpImposterAsync(firstPortNumber, _ => { });
-			await Client.CreateTcpImposterAsync(secondPortNumber, _ => { });
-
-			Assert.AreEqual(1, Client.Imposters.Count(x => x.Port == firstPortNumber));
-			Assert.AreEqual(1, Client.Imposters.Count(x => x.Port == secondPortNumber));
 		}
 
 		[TestMethod]

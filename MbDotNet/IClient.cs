@@ -7,7 +7,6 @@ using MbDotNet.Enums;
 using MbDotNet.Models;
 using MbDotNet.Models.Imposters;
 using MbDotNet.Models.Responses;
-using MbDotNet.Models.Responses.Fields;
 
 namespace MbDotNet
 {
@@ -17,12 +16,6 @@ namespace MbDotNet
 	[SuppressMessage("ReSharper", "InconsistentNaming", Justification = "CORS is an abbreviation")]
 	public interface IClient
 	{
-		/// <summary>
-		/// A collection of all of the current imposters. The imposters in this
-		/// collection may or may not have been submitted to mountebank.
-		/// </summary>
-		ICollection<Imposter> Imposters { get; }
-
 		/// <summary>
 		/// Get the entry hypermedia
 		/// </summary>
