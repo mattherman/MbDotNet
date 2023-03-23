@@ -15,7 +15,7 @@ namespace MbDotNet.Models.Stubs
 	/// <summary>
 	/// A HTTP imposter stub
 	/// </summary>
-	public class HttpStub : StubBase
+	public class HttpStub : Stub
 	{
 
 		/// <summary>

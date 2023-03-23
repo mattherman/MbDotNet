@@ -11,7 +11,7 @@ namespace MbDotNet.Models.Stubs
 	/// <summary>
 	/// A TCP imposter stub
 	/// </summary>
-	public class TcpStub : StubBase
+	public class TcpStub : Stub
 	{
 
 		/// <summary>

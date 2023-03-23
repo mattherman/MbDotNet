@@ -6,7 +6,7 @@ namespace MbDotNet.Models.Stubs
 	/// Represents a type that accepts and exposes stubs
 	/// </summary>
 	/// <typeparam name="TStub"></typeparam>
-	public interface IWithStubs<TStub> where TStub : StubBase
+	public interface IWithStubs<TStub> where TStub : Stub
 	{
 		/// <summary>
 		/// The configured stubs
