@@ -50,7 +50,7 @@ namespace MbDotNet
 		/// added and any imposter-specific settings specified.
 		/// </param>
 		/// <returns>The imposter that was created in Mountebank</returns>
-		Task<HttpImposter> CreateHttpImposter(int? port, string name, Action<HttpImposter> imposterConfigurator);
+		Task<HttpImposter> CreateHttpImposterAsync(int? port, string name, Action<HttpImposter> imposterConfigurator);
 
 		/// <summary>
 		/// Creates a new HTTP imposter on the specified port, configures it with the imposterConfigurator callback, and
@@ -66,7 +66,7 @@ namespace MbDotNet
 		/// added and any imposter-specific settings specified.
 		/// </param>
 		/// <returns>The imposter that was created in Mountebank</returns>
-		Task<HttpImposter> CreateHttpImposter(int? port, Action<HttpImposter> imposterConfigurator);
+		Task<HttpImposter> CreateHttpImposterAsync(int? port, Action<HttpImposter> imposterConfigurator);
 
 		/// <summary>
 		/// Creates a new imposter on the specified port with the HTTPS protocol. The Submit method
@@ -91,6 +91,7 @@ namespace MbDotNet
 		/// <returns>The newly created imposter</returns>
 		HttpsImposter CreateHttpsImposter(int? port = null, string name = null, string key = null, string cert = null,
 			bool mutualAuthRequired = false, bool recordRequests = false, HttpResponseFields defaultResponse = null, bool allowCORS = false);
+
 		/// <summary>
 		/// Creates a new imposter on the specified port with the TCP protocol. The Submit method
 		/// must be called on the client in order to submit the imposter to mountebank. If the port

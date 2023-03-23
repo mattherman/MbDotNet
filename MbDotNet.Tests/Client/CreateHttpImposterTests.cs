@@ -21,7 +21,7 @@ namespace MbDotNet.Tests.Client
 		[TestMethod]
 		public async Task HttpImposter_WithoutName_SetsNameToNull()
 		{
-			var imposter = await Client.CreateHttpImposter(123, _ => { });
+			var imposter = await Client.CreateHttpImposterAsync(123, _ => { });
 
 			Assert.IsNotNull(imposter);
 			Assert.IsNull(imposter.Name);
@@ -32,7 +32,7 @@ namespace MbDotNet.Tests.Client
 		{
 			const string expectedName = "Service";
 
-			var imposter = await Client.CreateHttpImposter(123, expectedName, _ => { });
+			var imposter = await Client.CreateHttpImposterAsync(123, expectedName, _ => { });
 
 			Assert.IsNotNull(imposter);
 			Assert.AreEqual(expectedName, imposter.Name);
@@ -41,7 +41,7 @@ namespace MbDotNet.Tests.Client
 		[TestMethod]
 		public async Task HttpImposter_WithoutPortAndName_SetsPortAndNameToNull()
 		{
-			var imposter = await Client.CreateHttpImposter(null, _ => { });
+			var imposter = await Client.CreateHttpImposterAsync(null, _ => { });
 
 			Assert.IsNotNull(imposter);
 			Assert.AreEqual(default(int), imposter.Port);
@@ -51,7 +51,7 @@ namespace MbDotNet.Tests.Client
 		[TestMethod]
 		public async Task HttpImposter_WithoutRecordRequests_SetsRecordRequest()
 		{
-			var imposter = await Client.CreateHttpImposter(123, "service", _ => { });
+			var imposter = await Client.CreateHttpImposterAsync(123, "service", _ => { });
 
 			Assert.IsFalse(imposter.RecordRequests);
 		}
@@ -59,7 +59,7 @@ namespace MbDotNet.Tests.Client
 		[TestMethod]
 		public async Task HttpImposter_WithRecordRequests_SetsRecordRequest()
 		{
-			var imposter = await Client.CreateHttpImposter(123, "service", imposter => imposter.RecordRequests = true);
+			var imposter = await Client.CreateHttpImposterAsync(123, "service", imposter => imposter.RecordRequests = true);
 
 			Assert.IsTrue(imposter.RecordRequests);
 		}
@@ -67,7 +67,7 @@ namespace MbDotNet.Tests.Client
 		[TestMethod]
 		public async Task HttpImposter_WithoutDefaultResponse_SetsDefaultResponse()
 		{
-			var imposter = await Client.CreateHttpImposter(123, "service", _ => { });
+			var imposter = await Client.CreateHttpImposterAsync(123, "service", _ => { });
 
 			Assert.IsNull(imposter.DefaultResponse);
 		}
@@ -77,7 +77,7 @@ namespace MbDotNet.Tests.Client
 		{
 			var defaultResponse = new HttpResponseFields();
 
-			var imposter = await Client.CreateHttpImposter(123, "service",
+			var imposter = await Client.CreateHttpImposterAsync(123, "service",
 				imposter => imposter.DefaultResponse = defaultResponse);
 
 			Assert.AreEqual(defaultResponse, imposter.DefaultResponse);

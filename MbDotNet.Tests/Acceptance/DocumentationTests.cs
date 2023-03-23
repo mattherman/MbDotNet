@@ -34,7 +34,7 @@ namespace MbDotNet.Tests.Acceptance
 		[TestMethod]
 		public async Task StubExample()
 		{
-			await _client.CreateHttpImposter(4545, "StubExample", imposter =>
+			await _client.CreateHttpImposterAsync(4545, "StubExample", imposter =>
 			{
 				imposter.AddStub().OnPathAndMethodEqual("/customers/123", Method.Post)
 					.ReturnsXml(HttpStatusCode.Created, new Customer { Email = "customer@test.com" })
@@ -49,7 +49,7 @@ namespace MbDotNet.Tests.Acceptance
 		[TestMethod]
 		public async Task DynamicPortExample()
 		{
-			await _client.CreateHttpImposter(null, "DynamicPort", _ => { });
+			await _client.CreateHttpImposterAsync(null, "DynamicPort", _ => { });
 		}
 
 		/// <summary>
@@ -59,7 +59,7 @@ namespace MbDotNet.Tests.Acceptance
 		[TestMethod]
 		public async Task EqualsPredicateExample()
 		{
-			await _client.CreateHttpImposter(4545, "EqualsPredicateExample", imposter =>
+			await _client.CreateHttpImposterAsync(4545, "EqualsPredicateExample", imposter =>
 			{
 				// First stub
 				var bodyPredicateFields = new HttpPredicateFields
@@ -103,7 +103,7 @@ namespace MbDotNet.Tests.Acceptance
 		[TestMethod]
 		public async Task DeepEqualsPredicateExample()
 		{
-			await _client.CreateHttpImposter(4556, "DeepEqualsPredicateExample", imposter =>
+			await _client.CreateHttpImposterAsync(4556, "DeepEqualsPredicateExample", imposter =>
 			{
 				// First stub
 				var predicateFields = new HttpPredicateFields
@@ -312,7 +312,7 @@ namespace MbDotNet.Tests.Acceptance
 		[TestMethod]
 		public async Task ExistsPredicateExample()
 		{
-			await _client.CreateHttpImposter(4550, "ExistsPredicateExample", imposter =>
+			await _client.CreateHttpImposterAsync(4550, "ExistsPredicateExample", imposter =>
 			{
 				// First stub
 				var predicateFields = new HttpPredicateFields
@@ -421,7 +421,7 @@ namespace MbDotNet.Tests.Acceptance
 		[TestMethod]
 		public async Task JsonExample()
 		{
-			await _client.CreateHttpImposter(4545, "JsonExample", imposter =>
+			await _client.CreateHttpImposterAsync(4545, "JsonExample", imposter =>
 			{
 				var caseSensitiveFields = new HttpPredicateFields { RequestBody = new Book { Title = "Harry Potter" } };
 				var caseSensitivePredicate = new EqualsPredicate<HttpPredicateFields>(caseSensitiveFields, true, null, null);
@@ -449,7 +449,7 @@ namespace MbDotNet.Tests.Acceptance
 		[TestMethod]
 		public async Task WaitBehaviorExample()
 		{
-			await _client.CreateHttpImposter(4546, "WaitBehaviorExample", imposter =>
+			await _client.CreateHttpImposterAsync(4546, "WaitBehaviorExample", imposter =>
 			{
 				imposter.AddStub().Returns(HttpStatusCode.OK, new Dictionary<string, object>(),
 					"This took at least half a second to send", latencyInMilliseconds: 500);
@@ -463,7 +463,7 @@ namespace MbDotNet.Tests.Acceptance
 		[TestMethod]
 		public async Task HttpInjectPredicateExample()
 		{
-			await _client.CreateHttpImposter(4547, "HttpInjectPredicateExample", imposter =>
+			await _client.CreateHttpImposterAsync(4547, "HttpInjectPredicateExample", imposter =>
 			{
 				const string injectedFunction =
 					"function (config) {\r\n\r\n    function hasXMLProlog () {\r\n        return config.request.body.indexOf('<?xml') === 0;\r\n    }\r\n\r\n    if (config.request.headers['Content-Type'] === 'application/xml') {\r\n        return !hasXMLProlog();\r\n    }\r\n    else {\r\n        return hasXMLProlog();\r\n    }\r\n}";

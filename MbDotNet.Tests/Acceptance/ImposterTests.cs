@@ -37,7 +37,7 @@ namespace MbDotNet.Tests.Acceptance
 		public async Task CanCreateAndGetHttpImposter()
 		{
 			const int port = 6000;
-			await _client.CreateHttpImposter(port, _ => { });
+			await _client.CreateHttpImposterAsync(port, _ => { });
 
 			var retrievedImposter = await _client.GetHttpImposterAsync(port);
 			Assert.IsNotNull(retrievedImposter);
@@ -64,7 +64,7 @@ namespace MbDotNet.Tests.Acceptance
 		public async Task CanUpdateHttpImposter()
 		{
 			const int port = 6000;
-			var imposter = await _client.CreateHttpImposter(port, imposter =>
+			var imposter = await _client.CreateHttpImposterAsync(port, imposter =>
 			{
 				imposter.AddStub()
 					.OnMethodEquals(Method.Get)
@@ -160,12 +160,12 @@ namespace MbDotNet.Tests.Acceptance
 			const int sourceImposterPort = 6000;
 			const int proxyImposterPort = 6001;
 
-			var sourceImposter = await _client.CreateHttpImposter(sourceImposterPort, imposter =>
+			var sourceImposter = await _client.CreateHttpImposterAsync(sourceImposterPort, imposter =>
 			{
 				imposter.AddStub().ReturnsStatus(HttpStatusCode.OK);
 			});
 
-			var proxyImposter = _client.CreateHttpImposter(proxyImposterPort, imposter =>
+			var proxyImposter = _client.CreateHttpImposterAsync(proxyImposterPort, imposter =>
 			{
 				var predicateGenerators = new List<MatchesPredicate<HttpBooleanPredicateFields>>
 				{
@@ -238,7 +238,7 @@ namespace MbDotNet.Tests.Acceptance
 		{
 			const int port = 6000;
 
-			await _client.CreateHttpImposter(port, _ => { });
+			await _client.CreateHttpImposterAsync(port, _ => { });
 
 			await _client.DeleteImposterAsync(port);
 
@@ -260,7 +260,7 @@ namespace MbDotNet.Tests.Acceptance
 		{
 			const int port = 6000;
 
-			await _client.CreateHttpImposter(port, imposter => imposter.RecordRequests = true);
+			await _client.CreateHttpImposterAsync(port, imposter => imposter.RecordRequests = true);
 
 			var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:6000/customers?id=123")
 			{
@@ -341,7 +341,7 @@ namespace MbDotNet.Tests.Acceptance
 		{
 			const int port = 6000;
 
-			await _client.CreateHttpImposter(port, imposter => imposter.RecordRequests = true);
+			await _client.CreateHttpImposterAsync(port, imposter => imposter.RecordRequests = true);
 
 			var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:6000/customers?id=123&id=456");
 			var response = await _httpClient.SendAsync(request);
@@ -364,7 +364,7 @@ namespace MbDotNet.Tests.Acceptance
 		public async Task CanDeleteSavedRequestsForImposter()
 		{
 			const int port = 6000;
-			await _client.CreateHttpImposter(port, imposter =>
+			await _client.CreateHttpImposterAsync(port, imposter =>
 			{
 				imposter.RecordRequests = true;
 				imposter.AddStub()
@@ -391,7 +391,7 @@ namespace MbDotNet.Tests.Acceptance
 		public async Task CanCheckMatchesForImposter()
 		{
 			const int port = 6000;
-			await _client.CreateHttpImposter(port, imposter =>
+			await _client.CreateHttpImposterAsync(port, imposter =>
 			{
 				imposter.RecordRequests = true;
 				imposter.AddStub()
