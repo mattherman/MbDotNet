@@ -20,13 +20,13 @@ namespace MbDotNet.Models.Imposters
 
 		/// <inheritdoc />
 		[JsonProperty("defaultResponse")]
-		public HttpResponseFields DefaultResponse { get; }
+		public HttpResponseFields DefaultResponse { get; set;  }
 
 		/// <summary>
 		/// Enables CORS requests when set to true, false by default
 		/// </summary>
 		[JsonProperty("allowCORS")]
-		public bool AllowCORS { get; private set; }
+		public bool AllowCORS { get; set; }
 
 		/// <summary>
 		/// Create a new HttpImposter instance

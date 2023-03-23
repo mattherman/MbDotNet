@@ -37,9 +37,7 @@ namespace MbDotNet.Tests.Acceptance
 		public async Task CanCreateAndGetHttpImposter()
 		{
 			const int port = 6000;
-			var imposter = _client.CreateHttpImposter(port);
-
-			await _client.SubmitAsync(imposter);
+			await _client.CreateHttpImposter(port, _ => { });
 
 			var retrievedImposter = await _client.GetHttpImposterAsync(port);
 			Assert.IsNotNull(retrievedImposter);
@@ -66,12 +64,12 @@ namespace MbDotNet.Tests.Acceptance
 		public async Task CanUpdateHttpImposter()
 		{
 			const int port = 6000;
-			var imposter = _client.CreateHttpImposter(port);
-			imposter.AddStub()
-				.OnMethodEquals(Method.Get)
-				.ReturnsStatus(HttpStatusCode.OK);
-
-			await _client.SubmitAsync(imposter);
+			var imposter = await _client.CreateHttpImposter(port, imposter =>
+			{
+				imposter.AddStub()
+					.OnMethodEquals(Method.Get)
+					.ReturnsStatus(HttpStatusCode.OK);
+			});
 
 			imposter.AddStub()
 				.OnMethodEquals(Method.Post)
@@ -162,24 +160,25 @@ namespace MbDotNet.Tests.Acceptance
 			const int sourceImposterPort = 6000;
 			const int proxyImposterPort = 6001;
 
-			var sourceImposter = _client.CreateHttpImposter(sourceImposterPort);
-			sourceImposter.AddStub().ReturnsStatus(System.Net.HttpStatusCode.OK);
-			await _client.SubmitAsync(sourceImposter);
-
-			var proxyImposter = _client.CreateHttpImposter(proxyImposterPort);
-			var predicateGenerators = new List<MatchesPredicate<HttpBooleanPredicateFields>>
+			var sourceImposter = await _client.CreateHttpImposter(sourceImposterPort, imposter =>
 			{
-				new MatchesPredicate<HttpBooleanPredicateFields>(new HttpBooleanPredicateFields
+				imposter.AddStub().ReturnsStatus(HttpStatusCode.OK);
+			});
+
+			var proxyImposter = _client.CreateHttpImposter(proxyImposterPort, imposter =>
+			{
+				var predicateGenerators = new List<MatchesPredicate<HttpBooleanPredicateFields>>
 				{
-					QueryParameters = true
-				})
-			};
+					new MatchesPredicate<HttpBooleanPredicateFields>(new HttpBooleanPredicateFields
+					{
+						QueryParameters = true
+					})
+				};
 
-			proxyImposter.AddStub().ReturnsProxy(
-				new System.Uri($"http://localhost:{sourceImposterPort}"),
-				ProxyMode.ProxyOnce, predicateGenerators);
-
-			await _client.SubmitAsync(proxyImposter);
+				imposter.AddStub().ReturnsProxy(
+					new System.Uri($"http://localhost:{sourceImposterPort}"),
+					ProxyMode.ProxyOnce, predicateGenerators);
+			});
 
 			// Make a request to the imposter to trigger the proxy
 			var request = new HttpRequestMessage(HttpMethod.Get, $"http://localhost:{proxyImposterPort}/test?param=value");
@@ -204,14 +203,14 @@ namespace MbDotNet.Tests.Acceptance
 			var proxyImposter = _client.CreateTcpImposter(proxyImposterPort);
 			var predicateGenerators = new List<MatchesPredicate<TcpBooleanPredicateFields>>
 			{
-				new MatchesPredicate<TcpBooleanPredicateFields>(new TcpBooleanPredicateFields
+				new(new TcpBooleanPredicateFields
 				{
 					Data = true
 				})
 			};
 
 			proxyImposter.AddStub().ReturnsProxy(
-				new System.Uri($"tcp://localhost:{sourceImposterPort}"),
+				new Uri($"tcp://localhost:{sourceImposterPort}"),
 				ProxyMode.ProxyOnce, predicateGenerators);
 
 			await _client.SubmitAsync(proxyImposter);
@@ -220,11 +219,15 @@ namespace MbDotNet.Tests.Acceptance
 			using (var client = new TcpClient("localhost", proxyImposterPort))
 			{
 				var data = Encoding.ASCII.GetBytes("testdata");
-				using (var stream = client.GetStream())
+				await using (var stream = client.GetStream())
 				{
-					await stream.WriteAsync(data, 0, data.Length);
+					await stream.WriteAsync(data);
 					await stream.FlushAsync();
-					await stream.ReadAsync(new byte[6], 0, 6);
+					int numberOfBytesRead;
+					do
+					{
+						numberOfBytesRead = await stream.ReadAsync(new byte[6].AsMemory(0, 6));
+					} while (numberOfBytesRead > 0);
 				}
 			}
 
@@ -238,7 +241,7 @@ namespace MbDotNet.Tests.Acceptance
 		{
 			const int port = 6000;
 
-			var imposter = _client.CreateHttpImposter(port);
+			await _client.CreateHttpImposter(port, _ => { });
 
 			await _client.DeleteImposterAsync(port);
 
@@ -260,8 +263,7 @@ namespace MbDotNet.Tests.Acceptance
 		{
 			const int port = 6000;
 
-			var imposter = _client.CreateHttpImposter(port);
-			await _client.SubmitAsync(imposter);
+			await _client.CreateHttpImposter(port, _ => { });
 
 			var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:6000/customers?id=123")
 			{
@@ -282,7 +284,7 @@ namespace MbDotNet.Tests.Acceptance
 			Assert.AreEqual("123", receivedRequest.QueryParameters["id"]);
 			Assert.AreEqual("<TestData>\r\n  <Name>Bob</Name>\r\n  <Email>bob@zmail.com</Email>\r\n</TestData>", receivedRequest.Body);
 			Assert.AreEqual(Method.Post, receivedRequest.Method);
-			Assert.AreNotEqual(default(DateTime), receivedRequest.Timestamp);
+			Assert.AreNotEqual(default, receivedRequest.Timestamp);
 			Assert.AreNotEqual(string.Empty, receivedRequest.RequestFrom);
 			Assert.AreEqual("text/xml; charset=utf-8", receivedRequest.Headers["Content-Type"]);
 			Assert.AreEqual("75", receivedRequest.Headers["Content-Length"]);
@@ -342,8 +344,7 @@ namespace MbDotNet.Tests.Acceptance
 		{
 			const int port = 6000;
 
-			var imposter = _client.CreateHttpImposter(port);
-			await _client.SubmitAsync(imposter);
+			await _client.CreateHttpImposter(port, _ => { });
 
 			var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:6000/customers?id=123&id=456");
 			var response = await _httpClient.SendAsync(request);
@@ -366,12 +367,12 @@ namespace MbDotNet.Tests.Acceptance
 		public async Task CanDeleteSavedRequestsForImposter()
 		{
 			const int port = 6000;
-			var imposter = _client.CreateHttpImposter(port);
-			imposter.AddStub()
-				.OnMethodEquals(Method.Get)
-				.ReturnsStatus(HttpStatusCode.OK);
-
-			await _client.SubmitAsync(imposter);
+			await _client.CreateHttpImposter(port, imposter =>
+			{
+				imposter.AddStub()
+					.OnMethodEquals(Method.Get)
+					.ReturnsStatus(HttpStatusCode.OK);
+			});
 
 			// Make a request to the imposter to record a request
 			var request = new HttpRequestMessage(HttpMethod.Get, $"http://localhost:{port}/test");
@@ -392,12 +393,12 @@ namespace MbDotNet.Tests.Acceptance
 		public async Task CanCheckMatchesForImposter()
 		{
 			const int port = 6000;
-			var imposter = _client.CreateHttpImposter(port);
-			imposter.AddStub()
-				.OnMethodEquals(Method.Get)
-				.ReturnsStatus(HttpStatusCode.OK);
-
-			await _client.SubmitAsync(imposter);
+			await _client.CreateHttpImposter(port, imposter =>
+			{
+				imposter.AddStub()
+					.OnMethodEquals(Method.Get)
+					.ReturnsStatus(HttpStatusCode.OK);
+			});
 
 			// Make a request to the imposter to record a match
 			var request = new HttpRequestMessage(HttpMethod.Get, $"http://localhost:{port}");

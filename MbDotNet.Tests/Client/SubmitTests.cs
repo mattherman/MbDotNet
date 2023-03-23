@@ -30,8 +30,8 @@ namespace MbDotNet.Tests.Client
 			const int firstPortNumber = 123;
 			const int secondPortNumber = 456;
 
-			var imposter1 = Client.CreateHttpImposter(firstPortNumber);
-			var imposter2 = Client.CreateHttpImposter(secondPortNumber);
+			var imposter1 = Client.CreateTcpImposter(firstPortNumber);
+			var imposter2 = Client.CreateTcpImposter(secondPortNumber);
 
 			await Client.SubmitAsync(new[] { imposter1, imposter2 }).ConfigureAwait(false);
 
@@ -45,8 +45,8 @@ namespace MbDotNet.Tests.Client
 			const int firstPortNumber = 123;
 			const int secondPortNumber = 456;
 
-			var imposter1 = Client.CreateHttpImposter(firstPortNumber);
-			var imposter2 = Client.CreateHttpImposter(secondPortNumber);
+			var imposter1 = Client.CreateTcpImposter(firstPortNumber);
+			var imposter2 = Client.CreateTcpImposter(secondPortNumber);
 
 			await Client.SubmitAsync(new[] { imposter1, imposter2 }).ConfigureAwait(false);
 

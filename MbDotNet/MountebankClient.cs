@@ -54,10 +54,17 @@ namespace MbDotNet
 		}
 
 		/// <inheritdoc />
-		public HttpImposter CreateHttpImposter(int? port = null, string name = null, bool recordRequests = false, HttpResponseFields defaultResponse = null, bool allowCORS = false)
+		public async Task<HttpImposter> CreateHttpImposter(int? port, string name, Action<HttpImposter> imposterConfigurator)
 		{
-			return new HttpImposter(port, name, recordRequests, defaultResponse, allowCORS);
+			var imposter = new HttpImposter(port, name);
+			imposterConfigurator(imposter);
+			await SubmitAsync(imposter);
+			return imposter;
 		}
+
+		/// <inheritdoc />
+		public async Task<HttpImposter> CreateHttpImposter(int? port, Action<HttpImposter> imposterConfigurator) =>
+			await CreateHttpImposter(port, null, imposterConfigurator);
 
 		/// <inheritdoc />
 		public HttpsImposter CreateHttpsImposter(int? port = null, string name = null, string key = null,

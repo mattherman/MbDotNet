@@ -25,13 +25,13 @@ namespace MbDotNet.Models.Imposters
 		/// Optional name for the imposter, used in the logs.
 		/// </summary>
 		[JsonProperty("name")]
-		public string Name { get; private set; }
+		public string Name { get; set; }
 
 		/// <summary>
 		/// Enables recording requests to use the imposter as a mock. See <see href="http://www.mbtest.org/docs/api/mocks">here</see> for more details on Mountebank verification.
 		/// </summary>
 		[JsonProperty("recordRequests")]
-		public bool RecordRequests { get; private set; }
+		public bool RecordRequests { get; set; }
 
 		// TODO: Remove this and add a body to a setter
 		internal void SetDynamicPort(int port)
