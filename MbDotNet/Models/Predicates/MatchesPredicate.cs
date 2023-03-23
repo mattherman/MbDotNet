@@ -7,7 +7,7 @@ namespace MbDotNet.Models.Predicates
 	/// A "matches" predicate
 	/// </summary>
 	/// <typeparam name="T">The type of predicate fields based on the imposter type the predicate is added to</typeparam>
-	public class MatchesPredicate<T> : PredicateBase where T : PredicateFields
+	public class MatchesPredicate<T> : Predicate where T : PredicateFields
 	{
 		/// <summary>
 		/// The predicate fields to match on

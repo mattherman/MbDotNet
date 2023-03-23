@@ -11,7 +11,7 @@ namespace MbDotNet.Models.Stubs
 	/// <summary>
 	/// A TCP imposter stub
 	/// </summary>
-	public class TcpStub : StubBase
+	public class TcpStub : Stub
 	{
 
 		/// <summary>
@@ -50,7 +50,7 @@ namespace MbDotNet.Models.Stubs
 		/// </summary>
 		/// <param name="predicate">The predicate object designating what the stub will match on</param>
 		/// <returns>The stub that the predicate was added to</returns>
-		public TcpStub On(PredicateBase predicate)
+		public TcpStub On(Predicate predicate)
 		{
 			Predicates.Add(predicate);
 			return this;
@@ -78,7 +78,7 @@ namespace MbDotNet.Models.Stubs
 		/// </summary>
 		/// <param name="response">The response object designating what the stub will return</param>
 		/// <returns>The stub that the response was added to</returns>
-		public TcpStub Returns(ResponseBase response)
+		public TcpStub Returns(Response response)
 		{
 			Responses.Add(response);
 			return this;

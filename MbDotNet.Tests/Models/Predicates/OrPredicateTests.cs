@@ -10,7 +10,7 @@ namespace MbDotNet.Tests.Models.Predicates
 		[TestMethod]
 		public void OrPredicate_Constructor_SetsPredicateCollection()
 		{
-			var expectedPredicates = new List<PredicateBase>
+			var expectedPredicates = new List<Predicate>
 			{
 				new EqualsPredicate<TestPredicateFields>(null),
 				new MatchesPredicate<TestPredicateFields>(null),

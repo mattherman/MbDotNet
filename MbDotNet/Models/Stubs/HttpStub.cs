@@ -15,7 +15,7 @@ namespace MbDotNet.Models.Stubs
 	/// <summary>
 	/// A HTTP imposter stub
 	/// </summary>
-	public class HttpStub : StubBase
+	public class HttpStub : Stub
 	{
 
 		/// <summary>
@@ -206,7 +206,7 @@ namespace MbDotNet.Models.Stubs
 		/// <param name="response"
 		/// >The response object designating what the stub will return</param>
 		/// <returns>The stub that the response was added to</returns>
-		public HttpStub Returns(ResponseBase response)
+		public HttpStub Returns(Response response)
 		{
 			Responses.Add(response);
 			return this;
@@ -285,7 +285,7 @@ namespace MbDotNet.Models.Stubs
 		/// </summary>
 		/// <param name="predicate">The predicate object designating what the stub will match on</param>
 		/// <returns>The stub that the predicate was added to</returns>
-		public HttpStub On(PredicateBase predicate)
+		public HttpStub On(Predicate predicate)
 		{
 			Predicates.Add(predicate);
 			return this;

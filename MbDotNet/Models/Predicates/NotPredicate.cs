@@ -5,19 +5,19 @@ namespace MbDotNet.Models.Predicates
 	/// <summary>
 	/// A "not" predicate
 	/// </summary>
-	public class NotPredicate : PredicateBase
+	public class NotPredicate : Predicate
 	{
 		/// <summary>
 		/// The predicate that is being negated
 		/// </summary>
 		[JsonProperty("not")]
-		public PredicateBase ChildPredicate { get; private set; }
+		public Predicate ChildPredicate { get; private set; }
 
 		/// <summary>
 		/// Create a new NotPredicate instance
 		/// </summary>
 		/// <param name="childPredicate">The predicate that is being negated</param>
-		public NotPredicate(PredicateBase childPredicate)
+		public NotPredicate(Predicate childPredicate)
 		{
 			ChildPredicate = childPredicate;
 		}
