@@ -5,7 +5,7 @@ namespace MbDotNet.Models.Predicates
 	/// <summary>
 	/// A "inject" predicate
 	/// </summary>
-	public class InjectPredicate : PredicateBase
+	public class InjectPredicate : Predicate
 	{
 		/// <summary>
 		/// A javascript function that is run to determine whether to match a stub.

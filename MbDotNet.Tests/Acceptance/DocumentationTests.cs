@@ -387,7 +387,7 @@ namespace MbDotNet.Tests.Acceptance
 			var containsFields = new TcpPredicateFields { Data = "middle" };
 			var contains = new ContainsPredicate<TcpPredicateFields>(containsFields);
 
-			var predicate = new OrPredicate(new List<PredicateBase> { startsWith, endsWith, contains });
+			var predicate = new OrPredicate(new List<Predicate> { startsWith, endsWith, contains });
 
 			imposter.AddStub().On(predicate)
 				.ReturnsData("matches");
@@ -413,7 +413,7 @@ namespace MbDotNet.Tests.Acceptance
 			var containsFields = new TcpPredicateFields { Data = "middle" };
 			var contains = new ContainsPredicate<TcpPredicateFields>(containsFields);
 
-			var predicate = new AndPredicate(new List<PredicateBase> { startsWith, endsWith, contains });
+			var predicate = new AndPredicate(new List<Predicate> { startsWith, endsWith, contains });
 
 			imposter.AddStub().On(predicate)
 				.ReturnsData("matches");

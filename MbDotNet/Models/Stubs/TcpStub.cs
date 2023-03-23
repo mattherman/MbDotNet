@@ -50,7 +50,7 @@ namespace MbDotNet.Models.Stubs
 		/// </summary>
 		/// <param name="predicate">The predicate object designating what the stub will match on</param>
 		/// <returns>The stub that the predicate was added to</returns>
-		public TcpStub On(PredicateBase predicate)
+		public TcpStub On(Predicate predicate)
 		{
 			Predicates.Add(predicate);
 			return this;

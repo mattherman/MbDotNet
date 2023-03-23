@@ -14,7 +14,7 @@ namespace MbDotNet.Models.Stubs
 		/// A collection of all of the responses set up on this stub.
 		/// </summary>
 		[JsonProperty("predicates", NullValueHandling = NullValueHandling.Ignore)]
-		public ICollection<PredicateBase> Predicates { get; set; }
+		public ICollection<Predicate> Predicates { get; set; }
 
 		/// <summary>
 		/// A collection of all of the predicates set up on this stub.
@@ -28,7 +28,7 @@ namespace MbDotNet.Models.Stubs
 		protected Stub()
 		{
 			Responses = new List<Response>();
-			Predicates = new List<PredicateBase>();
+			Predicates = new List<Predicate>();
 		}
 	}
 }
