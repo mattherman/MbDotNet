@@ -7,7 +7,7 @@ namespace MbDotNet.Models.Responses
 	/// A "proxy" response for record/replay behavior
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public class ProxyResponse<T> : ResponseBase where T : ResponseFields, new()
+	public class ProxyResponse<T> : Response where T : ResponseFields, new()
 	{
 		/// <summary>
 		/// The fields that should be captured for generated predicates

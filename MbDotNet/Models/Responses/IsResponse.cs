@@ -7,7 +7,7 @@ namespace MbDotNet.Models.Responses
 	/// A "is" response
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public class IsResponse<T> : ResponseBase where T : ResponseFields, new()
+	public class IsResponse<T> : Response where T : ResponseFields, new()
 	{
 		/// <summary>
 		/// Response fields to return when matched

@@ -78,7 +78,7 @@ namespace MbDotNet.Models.Stubs
 		/// </summary>
 		/// <param name="response">The response object designating what the stub will return</param>
 		/// <returns>The stub that the response was added to</returns>
-		public TcpStub Returns(ResponseBase response)
+		public TcpStub Returns(Response response)
 		{
 			Responses.Add(response);
 			return this;
