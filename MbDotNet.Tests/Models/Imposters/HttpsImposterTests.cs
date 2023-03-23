@@ -52,7 +52,7 @@ namespace MbDotNet.Tests.Models.Imposters
 		[TestMethod]
 		public void HttpsImposter_Constructor_SetsKey()
 		{
-			var expectedKeyValue = "testKey";
+			const string expectedKeyValue = "-----BEGIN CERTIFICATE-----base64_encoded_junk-----END CERTIFICATE-----";
 			var imposter = new HttpsImposter(123, null, expectedKeyValue, null, false);
 			Assert.AreEqual(expectedKeyValue, imposter.Key);
 		}
@@ -67,7 +67,7 @@ namespace MbDotNet.Tests.Models.Imposters
 		[TestMethod]
 		public void HttpsImposter_Constructor_SetsCert()
 		{
-			var expectedCertValue = "testCert";
+			const string expectedCertValue = "-----BEGIN CERTIFICATE-----base64_encoded_junk-----END CERTIFICATE-----";
 			var imposter = new HttpsImposter(123, null, null, expectedCertValue, false);
 			Assert.AreEqual(expectedCertValue, imposter.Cert);
 		}

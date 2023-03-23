@@ -20,7 +20,7 @@ namespace MbDotNet.Tests.Acceptance
 	[TestClass, TestCategory("Acceptance")]
 	public class ImposterTests : AcceptanceTestBase
 	{
-		private HttpClient _httpClient;
+		private readonly HttpClient _httpClient;
 
 		public ImposterTests()
 		{
@@ -47,12 +47,10 @@ namespace MbDotNet.Tests.Acceptance
 		public async Task CanGetListOfImposters()
 		{
 			const int port1 = 6000;
-			var imposter1 = _client.CreateHttpsImposter(port1);
-			await _client.SubmitAsync(imposter1);
+			await _client.CreateHttpsImposterAsync(port1, _ => { });
 
 			const int port2 = 5000;
-			var imposter2 = _client.CreateHttpsImposter(port2);
-			await _client.SubmitAsync(imposter2);
+			await _client.CreateHttpsImposterAsync(port2, _ => { });
 
 			var result = await _client.GetImpostersAsync();
 
@@ -82,9 +80,7 @@ namespace MbDotNet.Tests.Acceptance
 		public async Task CanCreateAndGetHttpsImposter()
 		{
 			const int port = 6000;
-			var imposter = _client.CreateHttpsImposter(port);
-
-			await _client.SubmitAsync(imposter);
+			await _client.CreateHttpsImposterAsync(port, _ => { });
 
 			var retrievedImposter = await _client.GetHttpsImposterAsync(port);
 
@@ -95,12 +91,12 @@ namespace MbDotNet.Tests.Acceptance
 		public async Task CanUpdateHttpsImposter()
 		{
 			const int port = 6000;
-			var imposter = _client.CreateHttpsImposter(port);
-			imposter.AddStub()
-				.OnMethodEquals(Method.Get)
-				.ReturnsStatus(HttpStatusCode.OK);
-
-			await _client.SubmitAsync(imposter);
+			var imposter = await _client.CreateHttpsImposterAsync(port, imposter =>
+			{
+				imposter.AddStub()
+					.OnMethodEquals(Method.Get)
+					.ReturnsStatus(HttpStatusCode.OK);
+			});
 
 			imposter.AddStub()
 				.OnMethodEquals(Method.Post)
@@ -160,23 +156,23 @@ namespace MbDotNet.Tests.Acceptance
 			const int sourceImposterPort = 6000;
 			const int proxyImposterPort = 6001;
 
-			var sourceImposter = await _client.CreateHttpImposterAsync(sourceImposterPort, imposter =>
+			await _client.CreateHttpImposterAsync(sourceImposterPort, imposter =>
 			{
 				imposter.AddStub().ReturnsStatus(HttpStatusCode.OK);
 			});
 
-			var proxyImposter = _client.CreateHttpImposterAsync(proxyImposterPort, imposter =>
+			await _client.CreateHttpImposterAsync(proxyImposterPort, imposter =>
 			{
 				var predicateGenerators = new List<MatchesPredicate<HttpBooleanPredicateFields>>
 				{
-					new MatchesPredicate<HttpBooleanPredicateFields>(new HttpBooleanPredicateFields
+					new(new HttpBooleanPredicateFields
 					{
 						QueryParameters = true
 					})
 				};
 
 				imposter.AddStub().ReturnsProxy(
-					new System.Uri($"http://localhost:{sourceImposterPort}"),
+					new Uri($"http://localhost:{sourceImposterPort}"),
 					ProxyMode.ProxyOnce, predicateGenerators);
 			});
 

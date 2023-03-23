@@ -53,39 +53,28 @@ namespace MbDotNet
 			return await _requestProxy.GetLogsAsync(cancellationToken).ConfigureAwait(false);
 		}
 
-		/// <inheritdoc />
-		public async Task<HttpImposter> CreateHttpImposterAsync(int? port, string name, Action<HttpImposter> imposterConfigurator)
+		private async Task<T> ConfigureAndCreateImposter<T>(T imposter, Action<T> imposterConfigurator) where T: Imposter
 		{
-			var imposter = new HttpImposter(port, name);
 			imposterConfigurator(imposter);
 			await SubmitAsync(imposter);
 			return imposter;
 		}
 
 		/// <inheritdoc />
+		public async Task<HttpImposter> CreateHttpImposterAsync(int? port, string name, Action<HttpImposter> imposterConfigurator) =>
+			await ConfigureAndCreateImposter(new HttpImposter(port, name), imposterConfigurator);
+
+		/// <inheritdoc />
 		public async Task<HttpImposter> CreateHttpImposterAsync(int? port, Action<HttpImposter> imposterConfigurator) =>
 			await CreateHttpImposterAsync(port, null, imposterConfigurator);
 
 		/// <inheritdoc />
-		public HttpsImposter CreateHttpsImposter(int? port = null, string name = null, string key = null,
-			string cert = null, bool mutualAuthRequired = false, bool recordRequests = false,
-			HttpResponseFields defaultResponse = null, bool allowCORS = false)
-		{
-			if (key != null && !IsPEMFormatted(key))
-			{
-				throw new InvalidOperationException("Provided key must be PEM-formatted");
-			}
+		public async Task<HttpsImposter> CreateHttpsImposterAsync(int? port, string name, Action<HttpsImposter> imposterConfigurator) =>
+			await ConfigureAndCreateImposter(new HttpsImposter(port, name), imposterConfigurator);
 
-			if (cert != null && !IsPEMFormatted(cert))
-			{
-				throw new InvalidOperationException("Provided certificate must be PEM-formatted");
-			}
-
-			return new HttpsImposter(port, name, key, cert, mutualAuthRequired, recordRequests, defaultResponse, allowCORS);
-		}
-
-		private static bool IsPEMFormatted(string value)
-			=> Regex.IsMatch(value, @"-----BEGIN CERTIFICATE-----[\S\s]*-----END CERTIFICATE-----");
+		/// <inheritdoc />
+		public async Task<HttpsImposter> CreateHttpsImposterAsync(int? port, Action<HttpsImposter> imposterConfigurator) =>
+			await CreateHttpsImposterAsync(port, null, imposterConfigurator);
 
 		/// <inheritdoc />
 		public TcpImposter CreateTcpImposter(int? port = null, string name = null, TcpMode mode = TcpMode.Text,
