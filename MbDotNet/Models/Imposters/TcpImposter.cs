@@ -9,11 +9,9 @@ namespace MbDotNet.Models.Imposters
 	/// <summary>
 	/// An imposter using the TCP protocol
 	/// </summary>
-	public class TcpImposter : Imposter
+	public class TcpImposter : Imposter, IWithStubs<TcpStub>, IWithResponseFields<TcpResponseFields>
 	{
-		/// <summary>
-		/// The stubs defined for this imposter
-		/// </summary>
+		/// <inheritdoc />
 		[JsonProperty("stubs")]
 		public ICollection<TcpStub> Stubs { get; private set; }
 
@@ -23,9 +21,7 @@ namespace MbDotNet.Models.Imposters
 		[JsonProperty("mode")]
 		public string Mode { get; private set; }
 
-		/// <summary>
-		/// Optional default response that imposter sends back if no predicate matches a request
-		/// </summary>
+		/// <inheritdoc />
 		[JsonProperty("defaultResponse", NullValueHandling = NullValueHandling.Ignore)]
 		public TcpResponseFields DefaultResponse { get; private set; }
 
@@ -45,10 +41,7 @@ namespace MbDotNet.Models.Imposters
 			DefaultResponse = defaultResponse;
 		}
 
-		/// <summary>
-		/// Add an empty stub to this imposter
-		/// </summary>
-		/// <returns>The new stub</returns>
+		/// <inheritdoc />
 		public TcpStub AddStub()
 		{
 			var stub = new TcpStub();
