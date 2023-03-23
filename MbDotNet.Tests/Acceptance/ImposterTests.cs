@@ -223,11 +223,8 @@ namespace MbDotNet.Tests.Acceptance
 				{
 					await stream.WriteAsync(data);
 					await stream.FlushAsync();
-					int numberOfBytesRead;
-					do
-					{
-						numberOfBytesRead = await stream.ReadAsync(new byte[6].AsMemory(0, 6));
-					} while (numberOfBytesRead > 0);
+					var numberOfBytesRead = await stream.ReadAsync(new byte[6].AsMemory(0, 6));
+					Assert.IsTrue(numberOfBytesRead > 0);
 				}
 			}
 
@@ -263,7 +260,7 @@ namespace MbDotNet.Tests.Acceptance
 		{
 			const int port = 6000;
 
-			await _client.CreateHttpImposter(port, _ => { });
+			await _client.CreateHttpImposter(port, imposter => imposter.RecordRequests = true);
 
 			var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:6000/customers?id=123")
 			{
@@ -344,7 +341,7 @@ namespace MbDotNet.Tests.Acceptance
 		{
 			const int port = 6000;
 
-			await _client.CreateHttpImposter(port, _ => { });
+			await _client.CreateHttpImposter(port, imposter => imposter.RecordRequests = true);
 
 			var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:6000/customers?id=123&id=456");
 			var response = await _httpClient.SendAsync(request);
@@ -369,6 +366,7 @@ namespace MbDotNet.Tests.Acceptance
 			const int port = 6000;
 			await _client.CreateHttpImposter(port, imposter =>
 			{
+				imposter.RecordRequests = true;
 				imposter.AddStub()
 					.OnMethodEquals(Method.Get)
 					.ReturnsStatus(HttpStatusCode.OK);
@@ -395,6 +393,7 @@ namespace MbDotNet.Tests.Acceptance
 			const int port = 6000;
 			await _client.CreateHttpImposter(port, imposter =>
 			{
+				imposter.RecordRequests = true;
 				imposter.AddStub()
 					.OnMethodEquals(Method.Get)
 					.ReturnsStatus(HttpStatusCode.OK);
