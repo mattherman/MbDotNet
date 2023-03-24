@@ -12,6 +12,7 @@ using MbDotNet.Enums;
 using MbDotNet.Exceptions;
 using MbDotNet.Models.Predicates;
 using MbDotNet.Models.Predicates.Fields;
+using MbDotNet.Models.Stubs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 
@@ -59,21 +60,21 @@ namespace MbDotNet.Tests.Acceptance
 		}
 
 		[TestMethod]
-		public async Task CanUpdateHttpImposter()
+		public async Task CanReplaceHttpImposterStubs()
 		{
 			const int port = 6000;
-			var imposter = await _client.CreateHttpImposterAsync(port, imposter =>
+			await _client.CreateHttpImposterAsync(port, imposter =>
 			{
 				imposter.AddStub()
 					.OnMethodEquals(Method.Get)
 					.ReturnsStatus(HttpStatusCode.OK);
 			});
 
-			imposter.AddStub()
+			var stub = new HttpStub()
 				.OnMethodEquals(Method.Post)
 				.ReturnsStatus(HttpStatusCode.Created);
 
-			await _client.UpdateImposterAsync(imposter);
+			await _client.ReplaceHttpImposterStubsAsync(port, new []{ stub });
 		}
 
 		[TestMethod]
@@ -88,21 +89,21 @@ namespace MbDotNet.Tests.Acceptance
 		}
 
 		[TestMethod]
-		public async Task CanUpdateHttpsImposter()
+		public async Task CanReplaceHttpsImposterStubs()
 		{
 			const int port = 6000;
-			var imposter = await _client.CreateHttpsImposterAsync(port, imposter =>
+			await _client.CreateHttpsImposterAsync(port, imposter =>
 			{
 				imposter.AddStub()
 					.OnMethodEquals(Method.Get)
 					.ReturnsStatus(HttpStatusCode.OK);
 			});
 
-			imposter.AddStub()
+			var stub = new HttpStub()
 				.OnMethodEquals(Method.Post)
 				.ReturnsStatus(HttpStatusCode.Created);
 
-			await _client.UpdateImposterAsync(imposter);
+			await _client.ReplaceHttpsImposterStubsAsync(port, new []{ stub });
 		}
 
 		[TestMethod]
@@ -116,21 +117,21 @@ namespace MbDotNet.Tests.Acceptance
 		}
 
 		[TestMethod]
-		public async Task CanUpdateTcpImposter()
+		public async Task CanReplaceTcpImposterStubs()
 		{
 			const int port = 6000;
-			var imposter = await _client.CreateTcpImposterAsync(port, imposter =>
+			await _client.CreateTcpImposterAsync(port, imposter =>
 			{
 				imposter.AddStub()
 					.OnDataEquals("abc")
 					.ReturnsData("123");
 			});
 
-			imposter.AddStub()
+			var stub = new TcpStub()
 				.OnDataEquals("def")
 				.ReturnsData("456");
 
-			await _client.UpdateImposterAsync(imposter);
+			await _client.ReplaceTcpImposterStubsAsync(port, new[] { stub });
 		}
 
 		[TestMethod]

@@ -9,6 +9,7 @@ using MbDotNet.Models.Imposters;
 using MbDotNet.Models.Requests;
 using MbDotNet.Models.Responses;
 using MbDotNet.Models.Responses.Fields;
+using MbDotNet.Models.Stubs;
 
 namespace MbDotNet
 {
@@ -171,10 +172,53 @@ namespace MbDotNet
 		}
 
 		/// <inheritdoc />
-		public async Task UpdateImposterAsync(Imposter imposter, CancellationToken cancellationToken = default)
-		{
-			await _requestProxy.UpdateImposterAsync(imposter, cancellationToken);
-		}
+		public async Task ReplaceHttpImposterStubsAsync(int port, ICollection<HttpStub> replacementStubs,
+			CancellationToken cancellationToken = default) =>
+			await _requestProxy.ReplaceStubsAsync(port, replacementStubs, cancellationToken);
+
+		/// <inheritdoc />
+		public async Task ReplaceHttpsImposterStubsAsync(int port, ICollection<HttpStub> replacementStubs,
+			CancellationToken cancellationToken = default) =>
+			await _requestProxy.ReplaceStubsAsync(port, replacementStubs, cancellationToken);
+
+		/// <inheritdoc />
+		public async Task ReplaceTcpImposterStubsAsync(int port, ICollection<TcpStub> replacementStubs,
+			CancellationToken cancellationToken = default) =>
+			await _requestProxy.ReplaceStubsAsync(port, replacementStubs, cancellationToken);
+
+		/// <inheritdoc />
+		public async Task ReplaceHttpImposterStubAsync(int port, HttpStub replacementStub, int stubIndex,
+			CancellationToken cancellationToken = default) =>
+			await _requestProxy.ReplaceStubAsync(port, replacementStub, stubIndex, cancellationToken);
+
+		/// <inheritdoc />
+		public async Task ReplaceHttpsImposterStubAsync(int port, HttpStub replacementStub, int stubIndex,
+			CancellationToken cancellationToken = default) =>
+			await _requestProxy.ReplaceStubAsync(port, replacementStub, stubIndex, cancellationToken);
+
+		/// <inheritdoc />
+		public async Task ReplaceTcpImposterStubAsync(int port, TcpStub replacementStub, int stubIndex,
+			CancellationToken cancellationToken = default) =>
+			await _requestProxy.ReplaceStubAsync(port, replacementStub, stubIndex, cancellationToken);
+
+		/// <inheritdoc />
+		public async Task AddHttpImposterStubAsync(int port, HttpStub newStub, int? newStubIndex,
+			CancellationToken cancellationToken = default) =>
+			await _requestProxy.AddStubAsync(port, newStub, newStubIndex, cancellationToken);
+
+		/// <inheritdoc />
+		public async Task AddHttpsImposterStubAsync(int port, HttpStub newStub, int? newStubIndex,
+			CancellationToken cancellationToken = default) =>
+			await _requestProxy.AddStubAsync(port, newStub, newStubIndex, cancellationToken);
+
+		/// <inheritdoc />
+		public async Task AddTcpImposterStubAsync(int port, TcpStub newStub, int? newStubIndex,
+			CancellationToken cancellationToken = default) =>
+			await _requestProxy.AddStubAsync(port, newStub, newStubIndex, cancellationToken);
+
+		/// <inheritdoc />
+		public async Task RemoveStubAsync(int port, int stubIndex, CancellationToken cancellationToken = default) =>
+			await _requestProxy.RemoveStubAsync(port, stubIndex, cancellationToken);
 
 		/// <inheritdoc />
 		public async Task DeleteSavedRequestsAsync(int port, CancellationToken cancellationToken = default)

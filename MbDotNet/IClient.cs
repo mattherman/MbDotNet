@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MbDotNet.Models;
 using MbDotNet.Models.Imposters;
 using MbDotNet.Models.Responses;
+using MbDotNet.Models.Stubs;
 
 namespace MbDotNet
 {
@@ -261,13 +262,25 @@ namespace MbDotNet
 		/// </summary>
 		Task DeleteAllImpostersAsync(CancellationToken cancellationToken = default);
 
-		/// <summary>
-		/// Overwrites the stubs of an existing imposter without restarting it.
-		/// </summary>
-		/// <param name="imposter">The imposter to be updated with new stubs</param>
-		/// <param name="cancellationToken"></param>
-		/// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
-		Task UpdateImposterAsync(Imposter imposter, CancellationToken cancellationToken = default);
+		Task ReplaceHttpImposterStubsAsync(int port, ICollection<HttpStub> replacementStubs, CancellationToken cancellationToken = default);
+
+		Task ReplaceHttpsImposterStubsAsync(int port, ICollection<HttpStub> replacementStubs, CancellationToken cancellationToken = default);
+
+		Task ReplaceTcpImposterStubsAsync(int port, ICollection<TcpStub> replacementStubs, CancellationToken cancellationToken = default);
+
+		Task ReplaceHttpImposterStubAsync(int port, HttpStub replacementStub, int stubIndex, CancellationToken cancellationToken = default);
+
+		Task ReplaceHttpsImposterStubAsync(int port, HttpStub replacementStub, int stubIndex, CancellationToken cancellationToken = default);
+
+		Task ReplaceTcpImposterStubAsync(int port, TcpStub replacementStub, int stubIndex, CancellationToken cancellationToken = default);
+
+		Task AddHttpImposterStubAsync(int port, HttpStub newStub, int? newStubIndex, CancellationToken cancellationToken = default);
+
+		Task AddHttpsImposterStubAsync(int port, HttpStub newStub, int? newStubIndex, CancellationToken cancellationToken = default);
+
+		Task AddTcpImposterStubAsync(int port, TcpStub newStub, int? newStubIndex, CancellationToken cancellationToken = default);
+
+		Task RemoveStubAsync(int port, int stubIndex, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Deletes previously saved requests for an imposter
