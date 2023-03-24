@@ -36,8 +36,8 @@ namespace MbDotNet.Tests.Models.Imposters
 		[TestMethod]
 		public void TcpImposter_Constructor_SetsMode()
 		{
-			const string expectedMode = "binary";
-			var imposter = new TcpImposter(123, null, new TcpImposterOptions { Mode = TcpMode.Binary });
+			const TcpMode expectedMode = TcpMode.Binary;
+			var imposter = new TcpImposter(123, null, new TcpImposterOptions { Mode = expectedMode });
 			Assert.AreEqual(expectedMode, imposter.Mode);
 		}
 

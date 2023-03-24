@@ -15,11 +15,26 @@ namespace MbDotNet.Models.Imposters
 		[JsonProperty("stubs")]
 		public ICollection<TcpStub> Stubs { get; private set; }
 
+		[JsonProperty("mode")]
+		internal string ModeAsText;
+
 		/// <summary>
 		/// The encoding used for request and response strings
 		/// </summary>
-		[JsonProperty("mode")]
-		public string Mode { get; set; }
+		public TcpMode Mode
+		{
+			get
+			{
+				switch (ModeAsText)
+				{
+					case "binary":
+						return TcpMode.Binary;
+					default:
+						return TcpMode.Text;
+				}
+			}
+			set => ModeAsText = value.ToString().ToLower();
+		}
 
 		/// <inheritdoc />
 		[JsonProperty("defaultResponse", NullValueHandling = NullValueHandling.Ignore)]
@@ -34,8 +49,7 @@ namespace MbDotNet.Models.Imposters
 		public TcpImposter(int? port, string name, TcpImposterOptions options)
 			: base(port, Enums.Protocol.Tcp, name, options?.RecordRequests ?? false)
 		{
-			var optionsModeOrDefault = options?.Mode ?? TcpMode.Text;
-			Mode = optionsModeOrDefault.ToString().ToLower();
+			Mode = options?.Mode ?? TcpMode.Text;
 			DefaultResponse = options?.DefaultResponse;
 			Stubs = new List<TcpStub>();
 		}

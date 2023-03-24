@@ -19,8 +19,6 @@ namespace MbDotNet.Tests.Acceptance
 	[TestClass, TestCategory("Acceptance")]
 	public class DocumentationTests : AcceptanceTestBase
 	{
-		private const int ImposterPort = 6000;
-
 		[TestInitialize]
 		public async Task TestInitialize()
 		{
@@ -66,7 +64,7 @@ namespace MbDotNet.Tests.Acceptance
 				{
 					RequestBody = "hello, world"
 				};
-				var bodyPredicate = new EqualsPredicate<HttpPredicateFields>(bodyPredicateFields, true, "$!", null);
+				var bodyPredicate = new EqualsPredicate<HttpPredicateFields>(bodyPredicateFields, true, "$!");
 
 				var complexPredicateFields = new HttpPredicateFields
 				{
@@ -156,8 +154,10 @@ namespace MbDotNet.Tests.Acceptance
 		[TestMethod]
 		public async Task ContainsPredicateExample()
 		{
-			await _client.CreateTcpImposterAsync(4547, "ContainsPredicateExample", TcpMode.Binary, imposter =>
+			await _client.CreateTcpImposterAsync(4547, "ContainsPredicateExample", imposter =>
 			{
+				imposter.Mode = TcpMode.Binary;
+
 				// First stub
 				var predicateFields = new TcpPredicateFields
 				{
@@ -232,8 +232,10 @@ namespace MbDotNet.Tests.Acceptance
 		[TestMethod]
 		public async Task EndsWithPredicateExample()
 		{
-			await _client.CreateTcpImposterAsync(4549, "EndsWithPredicateExample", TcpMode.Binary, imposter =>
+			await _client.CreateTcpImposterAsync(4549, "EndsWithPredicateExample", imposter =>
 			{
+				imposter.Mode = TcpMode.Binary;
+
 				// First stub
 				var predicateFields = new TcpPredicateFields
 				{
@@ -278,7 +280,7 @@ namespace MbDotNet.Tests.Acceptance
 					Data = "^first\\Wsecond"
 				};
 
-				imposter.AddStub().On(new MatchesPredicate<TcpPredicateFields>(predicateFields, true, null, null))
+				imposter.AddStub().On(new MatchesPredicate<TcpPredicateFields>(predicateFields, true))
 					.ReturnsData("first response");
 
 				// Second stub
@@ -417,10 +419,10 @@ namespace MbDotNet.Tests.Acceptance
 			await _client.CreateHttpImposterAsync(4545, "JsonExample", imposter =>
 			{
 				var caseSensitiveFields = new HttpPredicateFields { RequestBody = new Book { Title = "Harry Potter" } };
-				var caseSensitivePredicate = new EqualsPredicate<HttpPredicateFields>(caseSensitiveFields, true, null, null);
+				var caseSensitivePredicate = new EqualsPredicate<HttpPredicateFields>(caseSensitiveFields, true);
 
 				var exceptFields = new HttpPredicateFields { RequestBody = new Book { Title = "POTTER" } };
-				var exceptPredicate = new EqualsPredicate<HttpPredicateFields>(exceptFields, false, "HARRY ", null);
+				var exceptPredicate = new EqualsPredicate<HttpPredicateFields>(exceptFields, false, "HARRY ");
 
 				var matchesFields = new HttpPredicateFields { RequestBody = new Book { Title = "^Harry" } };
 				var matchesPredicate = new MatchesPredicate<HttpPredicateFields>(matchesFields);

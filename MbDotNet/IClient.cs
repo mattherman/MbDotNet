@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using MbDotNet.Enums;
 using MbDotNet.Models;
 using MbDotNet.Models.Imposters;
 using MbDotNet.Models.Responses;
@@ -27,6 +26,14 @@ namespace MbDotNet
 		Task<IEnumerable<Log>> GetLogsAsync(CancellationToken cancellationToken = default);
 
 		/// <summary>
+		/// Creates a new HTTP imposter.
+		/// </summary>
+		/// <param name="imposter">The imposter to create.</param>
+		/// <param name="cancellationToken"></param>
+		/// <returns></returns>
+		Task<HttpImposter> CreateHttpImposterAsync(HttpImposter imposter, CancellationToken cancellationToken = default);
+
+		/// <summary>
 		/// Creates a new HTTP imposter on the specified port, configures it with the imposterConfigurator callback, and
 		/// then submits it to Mountebank. If port is null, Mountebank will assign a random port that can be accessed on
 		/// the response.
@@ -40,8 +47,9 @@ namespace MbDotNet
 		/// A callback function that will be used to configure the created imposter. This is where stubs should be
 		/// added and any imposter-specific settings specified.
 		/// </param>
+		/// <param name="cancellationToken"></param>
 		/// <returns>The imposter that was created in Mountebank</returns>
-		Task<HttpImposter> CreateHttpImposterAsync(int? port, string name, Action<HttpImposter> imposterConfigurator);
+		Task<HttpImposter> CreateHttpImposterAsync(int? port, string name, Action<HttpImposter> imposterConfigurator, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Creates a new HTTP imposter on the specified port, configures it with the imposterConfigurator callback, and
@@ -56,8 +64,17 @@ namespace MbDotNet
 		/// A callback function that will be used to configure the created imposter. This is where stubs should be
 		/// added and any imposter-specific settings specified.
 		/// </param>
+		/// <param name="cancellationToken"></param>
 		/// <returns>The imposter that was created in Mountebank</returns>
-		Task<HttpImposter> CreateHttpImposterAsync(int? port, Action<HttpImposter> imposterConfigurator);
+		Task<HttpImposter> CreateHttpImposterAsync(int? port, Action<HttpImposter> imposterConfigurator, CancellationToken cancellationToken = default);
+
+		/// <summary>
+		/// Creates a new HTTP imposter.
+		/// </summary>
+		/// <param name="imposter">The imposter to create.</param>
+		/// <param name="cancellationToken"></param>
+		/// <returns></returns>
+		Task<HttpsImposter> CreateHttpsImposterAsync(HttpsImposter imposter, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Creates a new HTTPS imposter on the specified port, configures it with the imposterConfigurator callback, and
@@ -73,8 +90,9 @@ namespace MbDotNet
 		/// A callback function that will be used to configure the created imposter. This is where stubs should be
 		/// added and any imposter-specific settings specified.
 		/// </param>
+		/// <param name="cancellationToken"></param>
 		/// <returns>The imposter that was created in Mountebank</returns>
-		Task<HttpsImposter> CreateHttpsImposterAsync(int? port, string name, Action<HttpsImposter> imposterConfigurator);
+		Task<HttpsImposter> CreateHttpsImposterAsync(int? port, string name, Action<HttpsImposter> imposterConfigurator, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Creates a new HTTPS imposter on the specified port, configures it with the imposterConfigurator callback, and
@@ -89,26 +107,17 @@ namespace MbDotNet
 		/// A callback function that will be used to configure the created imposter. This is where stubs should be
 		/// added and any imposter-specific settings specified.
 		/// </param>
+		/// <param name="cancellationToken"></param>
 		/// <returns>The imposter that was created in Mountebank</returns>
-		Task<HttpsImposter> CreateHttpsImposterAsync(int? port, Action<HttpsImposter> imposterConfigurator);
+		Task<HttpsImposter> CreateHttpsImposterAsync(int? port, Action<HttpsImposter> imposterConfigurator, CancellationToken cancellationToken = default);
 
 		/// <summary>
-		/// Creates a new TCP imposter on the specified port, configures it with the imposterConfigurator callback, and
-		/// then submits it to Mountebank. If port is null, Mountebank will assign a random port that can be accessed on
-		/// the response.
+		/// Creates a new TCP imposter.
 		/// </summary>
-		/// <param name="port">
-		/// The port the imposter will be set up to receive requests on, or null to allow
-		/// Mountebank to set the port.
-		/// </param>
-		/// <param name="name">The name the imposter will receive, useful for debugging/logging purposes.</param>
-		/// <param name="mode">The mode of the imposter, text or binary. This defines the encoding for request/response data.</param>
-		/// <param name="imposterConfigurator">
-		/// A callback function that will be used to configure the created imposter. This is where stubs should be
-		/// added and any imposter-specific settings specified.
-		/// </param>
-		/// <returns>The imposter that was created in Mountebank</returns>
-		Task<TcpImposter> CreateTcpImposterAsync(int? port, string name, TcpMode mode, Action<TcpImposter> imposterConfigurator);
+		/// <param name="imposter">The imposter to create.</param>
+		/// <param name="cancellationToken"></param>
+		/// <returns></returns>
+		Task<TcpImposter> CreateTcpImposterAsync(TcpImposter imposter, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Creates a new TCP imposter on the specified port, configures it with the imposterConfigurator callback, and
@@ -124,8 +133,9 @@ namespace MbDotNet
 		/// A callback function that will be used to configure the created imposter. This is where stubs should be
 		/// added and any imposter-specific settings specified.
 		/// </param>
+		/// <param name="cancellationToken"></param>
 		/// <returns>The imposter that was created in Mountebank</returns>
-		Task<TcpImposter> CreateTcpImposterAsync(int? port, string name, Action<TcpImposter> imposterConfigurator);
+		Task<TcpImposter> CreateTcpImposterAsync(int? port, string name, Action<TcpImposter> imposterConfigurator, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Creates a new TCP imposter on the specified port, configures it with the imposterConfigurator callback, and
@@ -140,8 +150,17 @@ namespace MbDotNet
 		/// A callback function that will be used to configure the created imposter. This is where stubs should be
 		/// added and any imposter-specific settings specified.
 		/// </param>
+		/// <param name="cancellationToken"></param>
 		/// <returns>The imposter that was created in Mountebank</returns>
-		Task<TcpImposter> CreateTcpImposterAsync(int? port, Action<TcpImposter> imposterConfigurator);
+		Task<TcpImposter> CreateTcpImposterAsync(int? port, Action<TcpImposter> imposterConfigurator, CancellationToken cancellationToken = default);
+
+		/// <summary>
+		/// Creates a new SMTP imposter.
+		/// </summary>
+		/// <param name="imposter">The imposter to create.</param>
+		/// <param name="cancellationToken"></param>
+		/// <returns></returns>
+		Task<SmtpImposter> CreateSmtpImposterAsync(SmtpImposter imposter, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Creates a new SMTP imposter on the specified port, configures it with the imposterConfigurator callback, and
@@ -157,8 +176,9 @@ namespace MbDotNet
 		/// A callback function that will be used to configure the created imposter. This is where stubs should be
 		/// added and any imposter-specific settings specified.
 		/// </param>
+		/// <param name="cancellationToken"></param>
 		/// <returns>The imposter that was created in Mountebank</returns>
-		Task<SmtpImposter> CreateSmtpImposterAsync(int? port, string name, Action<SmtpImposter> imposterConfigurator);
+		Task<SmtpImposter> CreateSmtpImposterAsync(int? port, string name, Action<SmtpImposter> imposterConfigurator, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Creates a new HTTPS imposter on the specified port, configures it with the imposterConfigurator callback, and
@@ -173,8 +193,9 @@ namespace MbDotNet
 		/// A callback function that will be used to configure the created imposter. This is where stubs should be
 		/// added and any imposter-specific settings specified.
 		/// </param>
+		/// <param name="cancellationToken"></param>
 		/// <returns>The imposter that was created in Mountebank</returns>
-		Task<SmtpImposter> CreateSmtpImposterAsync(int? port, Action<SmtpImposter> imposterConfigurator);
+		Task<SmtpImposter> CreateSmtpImposterAsync(int? port, Action<SmtpImposter> imposterConfigurator, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Retrieves the list of imposters
@@ -239,22 +260,6 @@ namespace MbDotNet
 		/// of imposters that the client maintains.
 		/// </summary>
 		Task DeleteAllImpostersAsync(CancellationToken cancellationToken = default);
-
-		/// <summary>
-		/// Submits all pending imposters from the supplied collection to be created in mountebank.
-		/// <exception cref="MbDotNet.Exceptions.MountebankException">Thrown if unable to create the imposter.</exception>
-		/// </summary>
-		/// <param name="imposters">The imposters being submitted to mountebank</param>
-		/// <param name="cancellationToken"></param>
-		Task SubmitAsync(ICollection<Imposter> imposters, CancellationToken cancellationToken = default);
-
-		/// <summary>
-		/// Submits imposter to be created in mountebank.
-		/// <exception cref="MbDotNet.Exceptions.MountebankException">Thrown if unable to create the imposter.</exception>
-		/// </summary>
-		/// <param name="imposter">The imposter being submitted to mountebank</param>
-		/// <param name="cancellationToken"></param>
-		Task SubmitAsync(Imposter imposter, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Overwrites the stubs of an existing imposter without restarting it.

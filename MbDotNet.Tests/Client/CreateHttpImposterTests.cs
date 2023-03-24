@@ -19,6 +19,13 @@ namespace MbDotNet.Tests.Client
 		}
 
 		[TestMethod]
+		public async Task HttpImposter_Preconfigured()
+		{
+			var imposter = new HttpImposter(123, null, null);
+			await Client.CreateHttpImposterAsync(imposter);
+		}
+
+		[TestMethod]
 		public async Task HttpImposter_WithoutName_SetsNameToNull()
 		{
 			var imposter = await Client.CreateHttpImposterAsync(123, _ => { });
@@ -44,7 +51,7 @@ namespace MbDotNet.Tests.Client
 			var imposter = await Client.CreateHttpImposterAsync(null, _ => { });
 
 			Assert.IsNotNull(imposter);
-			Assert.AreEqual(default(int), imposter.Port);
+			Assert.AreEqual(default, imposter.Port);
 			Assert.IsNull(imposter.Name);
 		}
 

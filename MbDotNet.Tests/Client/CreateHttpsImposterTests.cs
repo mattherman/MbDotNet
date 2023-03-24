@@ -20,6 +20,13 @@ namespace MbDotNet.Tests.Client
 		}
 
 		[TestMethod]
+		public async Task HttpsImposter_Preconfigured()
+		{
+			var imposter = new HttpsImposter(123, null, null);
+			await Client.CreateHttpsImposterAsync(imposter);
+		}
+
+		[TestMethod]
 		public async Task HttpsImposter_WithoutName_SetsNameToNull()
 		{
 			var imposter = await Client.CreateHttpsImposterAsync(123, _ => { });

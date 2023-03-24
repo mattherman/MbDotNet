@@ -20,6 +20,13 @@ namespace MbDotNet.Tests.Client
 		}
 
 		[TestMethod]
+		public async Task TcpImposter_Preconfigured()
+		{
+			var imposter = new TcpImposter(123, null, null);
+			await Client.CreateTcpImposterAsync(imposter);
+		}
+
+		[TestMethod]
 		public async Task TcpImposter_WithoutName_SetsNameToNull()
 		{
 			var imposter = await Client.CreateTcpImposterAsync(123, _ => { });
@@ -42,7 +49,7 @@ namespace MbDotNet.Tests.Client
 		[TestMethod]
 		public async Task TcpImposter_WithoutMode_SetsModeToText()
 		{
-			const string expectedMode = "text";
+			const TcpMode expectedMode = TcpMode.Text;
 
 			var imposter = await Client.CreateTcpImposterAsync(123, _ => { });
 
@@ -53,9 +60,9 @@ namespace MbDotNet.Tests.Client
 		[TestMethod]
 		public async Task TcpImposter_WithMode_SetsMode()
 		{
-			const string expectedMode = "binary";
+			const TcpMode expectedMode = TcpMode.Binary;
 
-			var imposter = await Client.CreateTcpImposterAsync(123, null, TcpMode.Binary, _ => { });
+			var imposter = await Client.CreateTcpImposterAsync(123, null, imposter => imposter.Mode = expectedMode);
 
 			Assert.IsNotNull(imposter);
 			Assert.AreEqual(expectedMode, imposter.Mode);
