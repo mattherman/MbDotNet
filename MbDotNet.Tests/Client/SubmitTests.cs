@@ -14,8 +14,8 @@ namespace MbDotNet.Tests.Client
 			const int firstPortNumber = 123;
 			const int secondPortNumber = 456;
 
-			var imposter1 = new HttpImposter(firstPortNumber, null);
-			var imposter2 = new HttpImposter(secondPortNumber, null);
+			var imposter1 = new HttpImposter(firstPortNumber, null, null);
+			var imposter2 = new HttpImposter(secondPortNumber, null, null);
 
 			await Client.SubmitAsync(new[] { imposter1, imposter2 }).ConfigureAwait(false);
 
@@ -39,7 +39,7 @@ namespace MbDotNet.Tests.Client
 		[TestMethod]
 		public async Task Submit_AllowsNullPort()
 		{
-			var imposter = new HttpImposter(null, null);
+			var imposter = new HttpImposter(null, null, null);
 
 			await Client.SubmitAsync(imposter).ConfigureAwait(false);
 

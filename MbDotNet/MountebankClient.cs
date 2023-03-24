@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using MbDotNet.Enums;
@@ -14,7 +13,6 @@ using MbDotNet.Models.Responses.Fields;
 namespace MbDotNet
 {
 	/// <inheritdoc />
-	[SuppressMessage("ReSharper", "InconsistentNaming", Justification = "CORS is an abbreviation")]
 	public class MountebankClient : IClient
 	{
 		private readonly IRequestProxy _requestProxy;
@@ -56,7 +54,7 @@ namespace MbDotNet
 
 		/// <inheritdoc />
 		public async Task<HttpImposter> CreateHttpImposterAsync(int? port, string name, Action<HttpImposter> imposterConfigurator) =>
-			await ConfigureAndCreateImposter(new HttpImposter(port, name), imposterConfigurator);
+			await ConfigureAndCreateImposter(new HttpImposter(port, name, null), imposterConfigurator);
 
 		/// <inheritdoc />
 		public async Task<HttpImposter> CreateHttpImposterAsync(int? port, Action<HttpImposter> imposterConfigurator) =>

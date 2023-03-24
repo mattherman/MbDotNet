@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using MbDotNet.Enums;
@@ -13,7 +12,6 @@ namespace MbDotNet
 	/// <summary>
 	/// A client for interacting with the Mountebank API
 	/// </summary>
-	[SuppressMessage("ReSharper", "InconsistentNaming", Justification = "CORS is an abbreviation")]
 	public interface IClient
 	{
 		/// <summary>

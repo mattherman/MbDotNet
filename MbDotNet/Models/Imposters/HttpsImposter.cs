@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 using MbDotNet.Models.Responses.Fields;
 using MbDotNet.Models.Stubs;
@@ -11,7 +10,6 @@ namespace MbDotNet.Models.Imposters
 	/// <summary>
 	/// An imposter using the HTTPS protocol
 	/// </summary>
-	[SuppressMessage("ReSharper", "InconsistentNaming", Justification = "CORS is an abbreviation")]
 	public class HttpsImposter : Imposter, IWithStubs<HttpStub>, IWithResponseFields<HttpResponseFields>
 	{
 		/// <inheritdoc />
