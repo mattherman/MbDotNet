@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using MbDotNet.Models.Responses.Fields;
 using MbDotNet.Models.Stubs;
 using Newtonsoft.Json;
@@ -9,7 +8,6 @@ namespace MbDotNet.Models.Imposters
 	/// <summary>
 	/// An imposter using the HTTP protocol
 	/// </summary>
-	[SuppressMessage("ReSharper", "InconsistentNaming", Justification = "CORS is an abbreviation")]
 	public class HttpImposter : Imposter, IWithStubs<HttpStub>, IWithResponseFields<HttpResponseFields>
 	{
 		/// <summary>
@@ -20,28 +18,26 @@ namespace MbDotNet.Models.Imposters
 
 		/// <inheritdoc />
 		[JsonProperty("defaultResponse")]
-		public HttpResponseFields DefaultResponse { get; }
+		public HttpResponseFields DefaultResponse { get; set;  }
 
 		/// <summary>
 		/// Enables CORS requests when set to true, false by default
 		/// </summary>
 		[JsonProperty("allowCORS")]
-		public bool AllowCORS { get; private set; }
+		public bool AllowCORS { get; set; }
 
 		/// <summary>
 		/// Create a new HttpImposter instance
 		/// </summary>
 		/// <param name="port">An optional port for the imposter to listen on</param>
 		/// <param name="name">An optional name for the imposter</param>
-		/// <param name="recordRequests">Whether or not Mountebank should record requests made to the imposter, defaults to false</param>
-		/// <param name="defaultResponse">An optional default response for when no predicates match a request</param>
-		/// <param name="allowCORS">Enables CORS requests, defaults to false</param>
-		public HttpImposter(int? port, string name, bool recordRequests = false, HttpResponseFields defaultResponse = null, bool allowCORS = false)
-			: base(port, Enums.Protocol.Http, name, recordRequests)
+		/// <param name="options">Options for configuring the imposter</param>
+		public HttpImposter(int? port, string name, HttpImposterOptions options)
+			: base(port, Enums.Protocol.Http, name, options?.RecordRequests ?? false)
 		{
 			Stubs = new List<HttpStub>();
-			AllowCORS = allowCORS;
-			DefaultResponse = defaultResponse;
+			AllowCORS = options?.AllowCORS ?? false;
+			DefaultResponse = options?.DefaultResponse;
 		}
 
 		/// <inheritdoc />

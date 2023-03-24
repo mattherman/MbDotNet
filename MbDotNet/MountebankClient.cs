@@ -1,8 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using MbDotNet.Enums;
@@ -16,13 +13,9 @@ using MbDotNet.Models.Responses.Fields;
 namespace MbDotNet
 {
 	/// <inheritdoc />
-	[SuppressMessage("ReSharper", "InconsistentNaming", Justification = "CORS is an abbreviation")]
 	public class MountebankClient : IClient
 	{
 		private readonly IRequestProxy _requestProxy;
-
-		/// <inheritdoc />
-		public ICollection<Imposter> Imposters { get; private set; }
 
 		/// <summary>
 		/// Create a new MountebankClient instance for a server at the default address of http://127.0.0.1:2525
@@ -37,7 +30,6 @@ namespace MbDotNet
 
 		internal MountebankClient(IRequestProxy requestProxy)
 		{
-			Imposters = new List<Imposter>();
 			_requestProxy = requestProxy;
 		}
 
@@ -53,45 +45,60 @@ namespace MbDotNet
 			return await _requestProxy.GetLogsAsync(cancellationToken).ConfigureAwait(false);
 		}
 
-		/// <inheritdoc />
-		public HttpImposter CreateHttpImposter(int? port = null, string name = null, bool recordRequests = false, HttpResponseFields defaultResponse = null, bool allowCORS = false)
+		private async Task<T> ConfigureAndCreateImposter<T>(T imposter, Action<T> imposterConfigurator, CancellationToken cancellationToken) where T: Imposter
 		{
-			return new HttpImposter(port, name, recordRequests, defaultResponse, allowCORS);
+			imposterConfigurator(imposter);
+			await _requestProxy.CreateImposterAsync(imposter, cancellationToken).ConfigureAwait(false);
+			return imposter;
 		}
 
 		/// <inheritdoc />
-		public HttpsImposter CreateHttpsImposter(int? port = null, string name = null, string key = null,
-			string cert = null, bool mutualAuthRequired = false, bool recordRequests = false,
-			HttpResponseFields defaultResponse = null, bool allowCORS = false)
-		{
-			if (key != null && !IsPEMFormatted(key))
-			{
-				throw new InvalidOperationException("Provided key must be PEM-formatted");
-			}
-
-			if (cert != null && !IsPEMFormatted(cert))
-			{
-				throw new InvalidOperationException("Provided certificate must be PEM-formatted");
-			}
-
-			return new HttpsImposter(port, name, key, cert, mutualAuthRequired, recordRequests, defaultResponse, allowCORS);
-		}
-
-		private static bool IsPEMFormatted(string value)
-			=> Regex.IsMatch(value, @"-----BEGIN CERTIFICATE-----[\S\s]*-----END CERTIFICATE-----");
+		public async Task<HttpImposter> CreateHttpImposterAsync(HttpImposter imposter, CancellationToken cancellationToken = default) =>
+			await ConfigureAndCreateImposter(imposter, _ => { }, cancellationToken);
 
 		/// <inheritdoc />
-		public TcpImposter CreateTcpImposter(int? port = null, string name = null, TcpMode mode = TcpMode.Text,
-			bool recordRequests = false, TcpResponseFields defaultResponse = null)
-		{
-			return new TcpImposter(port, name, mode, recordRequests, defaultResponse);
-		}
+		public async Task<HttpImposter> CreateHttpImposterAsync(int? port, string name, Action<HttpImposter> imposterConfigurator, CancellationToken cancellationToken = default) =>
+			await ConfigureAndCreateImposter(new HttpImposter(port, name, null), imposterConfigurator, cancellationToken);
 
 		/// <inheritdoc />
-		public SmtpImposter CreateSmtpImposter(int? port = null, string name = null, bool recordRequests = false)
-		{
-			return new SmtpImposter(port, name, recordRequests);
-		}
+		public async Task<HttpImposter> CreateHttpImposterAsync(int? port, Action<HttpImposter> imposterConfigurator, CancellationToken cancellationToken = default) =>
+			await CreateHttpImposterAsync(port, null, imposterConfigurator);
+
+		/// <inheritdoc />
+		public async Task<HttpsImposter> CreateHttpsImposterAsync(HttpsImposter imposter, CancellationToken cancellationToken = default) =>
+			await ConfigureAndCreateImposter(imposter, _ => { }, cancellationToken);
+
+		/// <inheritdoc />
+		public async Task<HttpsImposter> CreateHttpsImposterAsync(int? port, string name, Action<HttpsImposter> imposterConfigurator, CancellationToken cancellationToken = default) =>
+			await ConfigureAndCreateImposter(new HttpsImposter(port, name, null), imposterConfigurator, cancellationToken);
+
+		/// <inheritdoc />
+		public async Task<HttpsImposter> CreateHttpsImposterAsync(int? port, Action<HttpsImposter> imposterConfigurator, CancellationToken cancellationToken = default) =>
+			await ConfigureAndCreateImposter(new HttpsImposter(port, null, null), imposterConfigurator, cancellationToken);
+
+		/// <inheritdoc />
+		public async Task<TcpImposter> CreateTcpImposterAsync(TcpImposter imposter, CancellationToken cancellationToken = default) =>
+			await ConfigureAndCreateImposter(imposter, _ => { }, cancellationToken);
+
+		/// <inheritdoc />
+		public async Task<TcpImposter> CreateTcpImposterAsync(int? port, string name, Action<TcpImposter> imposterConfigurator, CancellationToken cancellationToken = default) =>
+			await ConfigureAndCreateImposter(new TcpImposter(port, name, null), imposterConfigurator, cancellationToken);
+
+		/// <inheritdoc />
+		public async Task<TcpImposter> CreateTcpImposterAsync(int? port, Action<TcpImposter> imposterConfigurator, CancellationToken cancellationToken = default) =>
+			await ConfigureAndCreateImposter(new TcpImposter(port, null, null), imposterConfigurator, cancellationToken);
+
+		/// <inheritdoc />
+		public async Task<SmtpImposter> CreateSmtpImposterAsync(SmtpImposter imposter, CancellationToken cancellationToken = default) =>
+			await ConfigureAndCreateImposter(imposter, _ => { }, cancellationToken);
+
+		/// <inheritdoc />
+		public async Task<SmtpImposter> CreateSmtpImposterAsync(int? port, string name, Action<SmtpImposter> imposterConfigurator, CancellationToken cancellationToken = default) =>
+			await ConfigureAndCreateImposter(new SmtpImposter(port, name, null), imposterConfigurator, cancellationToken);
+
+		/// <inheritdoc />
+		public async Task<SmtpImposter> CreateSmtpImposterAsync(int? port, Action<SmtpImposter> imposterConfigurator, CancellationToken cancellationToken = default) =>
+			await ConfigureAndCreateImposter(new SmtpImposter(port, null, null), imposterConfigurator, cancellationToken);
 
 		/// <inheritdoc />
 		public async Task<IEnumerable<SimpleRetrievedImposter>> GetImpostersAsync(CancellationToken cancellationToken = default)
@@ -154,36 +161,13 @@ namespace MbDotNet
 		/// <inheritdoc />
 		public async Task DeleteImposterAsync(int port, CancellationToken cancellationToken = default)
 		{
-			var imposter = Imposters.FirstOrDefault(imp => imp.Port == port);
 			await _requestProxy.DeleteImposterAsync(port, cancellationToken).ConfigureAwait(false);
-
-			if (imposter != null)
-			{
-				Imposters.Remove(imposter);
-			}
 		}
 
 		/// <inheritdoc />
 		public async Task DeleteAllImpostersAsync(CancellationToken cancellationToken = default)
 		{
 			await _requestProxy.DeleteAllImpostersAsync(cancellationToken).ConfigureAwait(false);
-			Imposters = new List<Imposter>();
-		}
-
-		/// <inheritdoc />
-		public async Task SubmitAsync(ICollection<Imposter> imposters, CancellationToken cancellationToken = default)
-		{
-			foreach (var imposter in imposters)
-			{
-				await _requestProxy.CreateImposterAsync(imposter, cancellationToken).ConfigureAwait(false);
-				Imposters.Add(imposter);
-			}
-		}
-
-		/// <inheritdoc />
-		public async Task SubmitAsync(Imposter imposter, CancellationToken cancellationToken = default)
-		{
-			await SubmitAsync(new[] { imposter }, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <inheritdoc />

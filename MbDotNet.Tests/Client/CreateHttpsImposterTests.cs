@@ -1,118 +1,128 @@
 using System;
+using System.Threading.Tasks;
+using MbDotNet.Models.Imposters;
 using MbDotNet.Models.Responses.Fields;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace MbDotNet.Tests.Client
 {
 	[TestClass, TestCategory("Unit")]
 	public class CreateHttpsImposterTests : MountebankClientTestBase
 	{
-		[TestMethod]
-		public void HttpsImposter_ShouldNotAddNewImposterToCollection()
+		[TestInitialize]
+		public void Initialize()
 		{
-			Client.CreateHttpsImposter(123);
-			Assert.AreEqual(0, Client.Imposters.Count);
+			MockRequestProxy
+				.Setup(f => f.CreateImposterAsync(It.IsAny<HttpsImposter>(), default))
+				.Returns(Task.CompletedTask)
+				.Verifiable();
 		}
 
 		[TestMethod]
-		public void HttpsImposter_WithoutName_SetsNameToNull()
+		public async Task HttpsImposter_Preconfigured()
 		{
-			var imposter = Client.CreateHttpsImposter(123);
+			var imposter = new HttpsImposter(123, null, null);
+			await Client.CreateHttpsImposterAsync(imposter);
+		}
+
+		[TestMethod]
+		public async Task HttpsImposter_WithoutName_SetsNameToNull()
+		{
+			var imposter = await Client.CreateHttpsImposterAsync(123, _ => { });
 
 			Assert.IsNotNull(imposter);
 			Assert.IsNull(imposter.Name);
 		}
 
 		[TestMethod]
-		public void HttpsImposter_WithName_SetsName()
+		public async Task HttpsImposter_WithName_SetsName()
 		{
 			const string expectedName = "Service";
 
-			var imposter = Client.CreateHttpsImposter(123, expectedName);
+			var imposter = await Client.CreateHttpsImposterAsync(123, expectedName, _ => { });
 
 			Assert.IsNotNull(imposter);
 			Assert.AreEqual(expectedName, imposter.Name);
 		}
 
 		[TestMethod]
-		public void HttpsImposter_WithPEMFormattedKey_SetsKey()
+		public async Task HttpsImposter_WithPEMFormattedKey_SetsKey()
 		{
 			const string expectedKey = "-----BEGIN CERTIFICATE-----base64_encoded_junk-----END CERTIFICATE-----";
 
-			var imposter = Client.CreateHttpsImposter(123, null, expectedKey);
+			var imposter = await Client.CreateHttpsImposterAsync(123, imposter => imposter.Key = expectedKey);
 
 			Assert.IsNotNull(imposter);
 			Assert.AreEqual(expectedKey, imposter.Key);
 		}
 
 		[TestMethod]
-		public void HttpsImposter_WithInvalidKey_ThrowsInvalidOperationException()
+		public async Task HttpsImposter_WithInvalidKey_ThrowsInvalidOperationException()
 		{
-			Assert.ThrowsException<InvalidOperationException>(() =>
-				Client.CreateHttpsImposter(123, null, "invalid key"));
+			await Assert.ThrowsExceptionAsync<InvalidOperationException>(async () =>
+				await Client.CreateHttpsImposterAsync(123, imposter => imposter.Key = "invalid"));
 		}
 
 		[TestMethod]
-		public void HttpsImposter_WithPEMFormattedCert_SetsCert()
+		public async Task HttpsImposter_WithPEMFormattedCert_SetsCert()
 		{
 			const string expectedCert = "-----BEGIN CERTIFICATE-----base64_encoded_junk-----END CERTIFICATE-----";
 
-			var imposter = Client.CreateHttpsImposter(123, null, null, expectedCert);
+			var imposter = await Client.CreateHttpsImposterAsync(123, imposter => imposter.Cert = expectedCert);
 
 			Assert.IsNotNull(imposter);
 			Assert.AreEqual(expectedCert, imposter.Cert);
 		}
 
 		[TestMethod]
-		public void HttpsImposter_WithInvalidCert_ThrowsInvalidOperationException()
+		public async Task HttpsImposter_WithInvalidCert_ThrowsInvalidOperationException()
 		{
-			Assert.ThrowsException<InvalidOperationException>(() =>
-				Client.CreateHttpsImposter(123, null, null, "invalid cert"));
+			await Assert.ThrowsExceptionAsync<InvalidOperationException>(async () =>
+				await Client.CreateHttpsImposterAsync(123, imposter => imposter.Cert = "invalid"));
 		}
 
 		[TestMethod]
-		public void HttpsImposter_WithoutPortAndName_SetsPortAndNameToNull()
+		public async Task HttpsImposter_WithoutPortAndName_SetsPortAndNameToNull()
 		{
-			var imposter = Client.CreateHttpsImposter();
+			var imposter = await Client.CreateHttpsImposterAsync(null, _ => { });
 
 			Assert.IsNotNull(imposter);
-			Assert.AreEqual(default(int), imposter.Port);
+			Assert.AreEqual(default, imposter.Port);
 			Assert.IsNull(imposter.Name);
 		}
 
 		[TestMethod]
-		public void HttpsImposter_WithoutRecordRequests_SetsRecordRequest()
+		public async Task HttpsImposter_WithoutRecordRequests_SetsRecordRequest()
 		{
-			var imposter = Client.CreateHttpsImposter();
+			var imposter = await Client.CreateHttpsImposterAsync(null, _ => { });
 
 			Assert.IsFalse(imposter.RecordRequests);
 		}
 
 		[TestMethod]
-		public void HttpsImposter_WithRecordRequests_SetsRecordRequest()
+		public async Task HttpsImposter_WithRecordRequests_SetsRecordRequest()
 		{
-			const bool recordRequests = true;
-
-			var imposter = Client.CreateHttpsImposter(recordRequests: recordRequests);
+			var imposter = await Client.CreateHttpsImposterAsync(null, imposter => imposter.RecordRequests = true);
 
 			Assert.IsTrue(imposter.RecordRequests);
 		}
 
 		[TestMethod]
-		public void HttpImposter_WithoutDefaultRequest_SetsDefaultRequest()
+		public async Task HttpImposter_WithoutDefaultResponse_SetsDefaultResponse()
 		{
-			var imposter = Client.CreateHttpsImposter(123, "service");
+			var imposter = await Client.CreateHttpsImposterAsync(123, "service", _ => { });
 
 			Assert.IsNull(imposter.DefaultResponse);
 		}
 
 		[TestMethod]
-		public void HttpImposter_WithDefaultRequest_SetsDefaultRequest()
+		public async Task HttpImposter_WithDefaultResponse_SetsDefaultResponse()
 		{
 			var defaultResponse = new HttpResponseFields();
-			var imposter = Client.CreateHttpsImposter(123, "service", defaultResponse: defaultResponse);
+			var imposter = await Client.CreateHttpsImposterAsync(123, "service",
+				imposter => imposter.DefaultResponse = defaultResponse);
 
-			Assert.IsNotNull(imposter.DefaultResponse);
 			Assert.AreEqual(defaultResponse, imposter.DefaultResponse);
 		}
 	}

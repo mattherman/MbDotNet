@@ -16,14 +16,14 @@ namespace MbDotNet.Tests.Models.Imposters
 		public void Constructor_SetsPort()
 		{
 			const int port = 123;
-			var imposter = new HttpImposter(port, null);
+			var imposter = new HttpImposter(port, null, null);
 			Assert.AreEqual(port, imposter.Port);
 		}
 
 		[TestMethod]
 		public void Constructor_SetsProtocol()
 		{
-			var imposter = new HttpImposter(123, null);
+			var imposter = new HttpImposter(123, null, null);
 			Assert.AreEqual("http", imposter.Protocol);
 		}
 
@@ -31,53 +31,72 @@ namespace MbDotNet.Tests.Models.Imposters
 		public void Constructor_SetsName()
 		{
 			const string expectedName = "Service";
-			var imposter = new HttpImposter(123, expectedName);
+			var imposter = new HttpImposter(123, expectedName, null);
 			Assert.AreEqual(expectedName, imposter.Name);
 		}
 
 		[TestMethod]
 		public void Constructor_AllowsNullPort()
 		{
-			var imposter = new HttpImposter(null, null);
-			Assert.AreEqual(default(int), imposter.Port);
+			var imposter = new HttpImposter(null, null, null);
+			Assert.AreEqual(default, imposter.Port);
 		}
 
 		[TestMethod]
 		public void Constructor_InitializesStubsCollection()
 		{
-			var imposter = new HttpImposter(123, null);
+			var imposter = new HttpImposter(123, null, null);
 			Assert.IsNotNull(imposter.Stubs);
 		}
 
 		[TestMethod]
-		public void Constructor_InitializesDefaultResponse()
+		public void Constructor_InitialDefaultResponse()
 		{
-			var imposter = new HttpImposter(123, null, defaultResponse: new HttpResponseFields());
-			Assert.IsNotNull(imposter.DefaultResponse);
+			var imposter = new HttpImposter(null, null, null);
+			Assert.IsNull(imposter.DefaultResponse);
+		}
+
+		[TestMethod]
+		public void Constructor_SetsDefaultResponse()
+		{
+			var expectedDefaultResponse = new HttpResponseFields();
+			var imposter = new HttpImposter(123, null,
+				new HttpImposterOptions { DefaultResponse = expectedDefaultResponse });
+			Assert.AreEqual(expectedDefaultResponse, imposter.DefaultResponse);
 		}
 
 		[TestMethod]
 		public void Constructor_InitialAllowCORS()
 		{
-			const bool allowCORS = false;
-			var imposter = new HttpImposter(null, null);
-			Assert.AreEqual(allowCORS, imposter.AllowCORS);
+			const bool expectedAllowCORS = false;
+			var imposter = new HttpImposter(null, null, null);
+			Assert.AreEqual(expectedAllowCORS, imposter.AllowCORS);
 		}
 
 		[TestMethod]
 		public void Constructor_AllowCORSTrue()
 		{
-			const bool allowCORS = true;
-			var imposter = new HttpImposter(null, null, false, null, true);
-			Assert.AreEqual(allowCORS, imposter.AllowCORS);
+			const bool expectedAllowCORS = true;
+			var imposter = new HttpImposter(null, null,
+				new HttpImposterOptions { AllowCORS = expectedAllowCORS });
+			Assert.AreEqual(expectedAllowCORS, imposter.AllowCORS);
 		}
 
 		[TestMethod]
-		public void Constructor_AllowCORSFalse()
+		public void Constructor_InitialRecordRequests()
 		{
-			const bool allowCORS = false;
-			var imposter = new HttpImposter(null, null, false, null, false);
-			Assert.AreEqual(allowCORS, imposter.AllowCORS);
+			const bool expectedRecordRequests = false;
+			var imposter = new HttpImposter(null, null, null);
+			Assert.AreEqual(expectedRecordRequests, imposter.RecordRequests);
+		}
+
+		[TestMethod]
+		public void Constructor_RecordRequestsTrue()
+		{
+			const bool expectedRecordRequests = true;
+			var imposter = new HttpImposter(null, null,
+				new HttpImposterOptions { RecordRequests = expectedRecordRequests });
+			Assert.AreEqual(expectedRecordRequests, imposter.RecordRequests);
 		}
 
 		#endregion
@@ -87,7 +106,7 @@ namespace MbDotNet.Tests.Models.Imposters
 		[TestMethod]
 		public void AddStub_AddsStubToCollection()
 		{
-			var imposter = new HttpImposter(123, null);
+			var imposter = new HttpImposter(123, null, null);
 			imposter.AddStub();
 			Assert.AreEqual(1, imposter.Stubs.Count);
 		}

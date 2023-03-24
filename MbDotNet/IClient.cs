@@ -1,27 +1,18 @@
+using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
-using MbDotNet.Enums;
 using MbDotNet.Models;
 using MbDotNet.Models.Imposters;
 using MbDotNet.Models.Responses;
-using MbDotNet.Models.Responses.Fields;
 
 namespace MbDotNet
 {
 	/// <summary>
 	/// A client for interacting with the Mountebank API
 	/// </summary>
-	[SuppressMessage("ReSharper", "InconsistentNaming", Justification = "CORS is an abbreviation")]
 	public interface IClient
 	{
-		/// <summary>
-		/// A collection of all of the current imposters. The imposters in this
-		/// collection may or may not have been submitted to mountebank.
-		/// </summary>
-		ICollection<Imposter> Imposters { get; }
-
 		/// <summary>
 		/// Get the entry hypermedia
 		/// </summary>
@@ -35,87 +26,176 @@ namespace MbDotNet
 		Task<IEnumerable<Log>> GetLogsAsync(CancellationToken cancellationToken = default);
 
 		/// <summary>
-		/// Creates a new imposter on the specified port with the HTTP protocol. The Submit method
-		/// must be called on the client in order to submit the imposter to mountebank. If the port
-		/// is blank, Mountebank will assign one which can be retrieved after Submit.
+		/// Creates a new HTTP imposter.
 		/// </summary>
-		/// <param name="port">
-		/// The port the imposter will be set up to receive requests on, or null to allow
-		/// Mountebank to set the port.
-		/// </param>
-		/// <param name="name">The name the imposter will receive, useful for debugging/logging purposes</param>
-		/// <param name="recordRequests">
-		/// Enables recording requests to use the imposter as a mock. See
-		/// <see href="http://www.mbtest.org/docs/api/mocks">here</see> for more details on Mountebank
-		/// verification.
-		/// </param>
-		/// <param name="defaultResponse">The default response to send if no predicate matches</param>
-		/// <param name="allowCORS">Will allow all CORS preflight requests if set to true</param>
-		/// <returns>The newly created imposter</returns>
-		HttpImposter CreateHttpImposter(int? port = null, string name = null, bool recordRequests = false, HttpResponseFields defaultResponse = null, bool allowCORS = false);
+		/// <param name="imposter">The imposter to create.</param>
+		/// <param name="cancellationToken"></param>
+		/// <returns></returns>
+		Task<HttpImposter> CreateHttpImposterAsync(HttpImposter imposter, CancellationToken cancellationToken = default);
 
 		/// <summary>
-		/// Creates a new imposter on the specified port with the HTTPS protocol. The Submit method
-		/// must be called on the client in order to submit the imposter to mountebank. If the port
-		/// is blank, Mountebank will assign one which can be retrieved after Submit.
+		/// Creates a new HTTP imposter on the specified port, configures it with the imposterConfigurator callback, and
+		/// then submits it to Mountebank. If port is null, Mountebank will assign a random port that can be accessed on
+		/// the response.
 		/// </summary>
 		/// <param name="port">
-		/// The port the imposter will be set up to receive requests on, or null to allow
-		/// Mountebank to set the port.
+		/// The port the imposter will be set up to receive requests on, or null to allow Mountebank
+		/// to set the port.
 		/// </param>
-		/// <param name="name">The name the imposter will receive, useful for debugging/logging purposes</param>
-		/// <param name="key">The private key the imposter will use</param>
-		/// <param name="cert">The public certificate the imposer will use</param>
-		/// <param name="mutualAuthRequired">Whether or not the server requires mutual auth</param>
-		/// <param name="recordRequests">
-		/// Enables recording requests to use the imposter as a mock. See
-		/// <see href="http://www.mbtest.org/docs/api/mocks">here</see> for more details on Mountebank
-		/// verification.
+		/// <param name="name">The name the imposter will receive, useful for debugging/logging purposes.</param>
+		/// <param name="imposterConfigurator">
+		/// A callback function that will be used to configure the created imposter. This is where stubs should be
+		/// added and any imposter-specific settings specified.
 		/// </param>
-		/// <param name="defaultResponse">The default response to send if no predicate matches</param>
-		/// <param name="allowCORS">Will allow all CORS preflight requests if set to true</param>
-		/// <returns>The newly created imposter</returns>
-		HttpsImposter CreateHttpsImposter(int? port = null, string name = null, string key = null, string cert = null,
-			bool mutualAuthRequired = false, bool recordRequests = false, HttpResponseFields defaultResponse = null, bool allowCORS = false);
-		/// <summary>
-		/// Creates a new imposter on the specified port with the TCP protocol. The Submit method
-		/// must be called on the client in order to submit the imposter to mountebank. If the port
-		/// is blank, Mountebank will assign one which can be retrieved after Submit.
-		/// </summary>
-		/// <param name="port">
-		/// The port the imposter will be set up to receive requests on, or null to allow
-		/// Mountebank to set the port.
-		/// </param>
-		/// <param name="name">The name the imposter will receive, useful for debugging/logging purposes</param>
-		/// <param name="mode">The mode of the imposter, text or binary. This defines the encoding for request/response data</param>
-		/// <param name="recordRequests">
-		/// Enables recording requests to use the imposter as a mock. See
-		/// <see href="http://www.mbtest.org/docs/api/mocks">here</see> for more details on Mountebank
-		/// verification.
-		/// </param>
-		/// <param name="defaultResponse">The default response to send if no predicate matches</param>
-		/// <returns>The newly created imposter</returns>
-		TcpImposter CreateTcpImposter(int? port = null, string name = null, TcpMode mode = TcpMode.Text,
-			bool recordRequests = false, TcpResponseFields defaultResponse = null);
+		/// <param name="cancellationToken"></param>
+		/// <returns>The imposter that was created in Mountebank</returns>
+		Task<HttpImposter> CreateHttpImposterAsync(int? port, string name, Action<HttpImposter> imposterConfigurator, CancellationToken cancellationToken = default);
 
 		/// <summary>
-		/// Creates a new imposter on the specified port with the SMTP protocol. The Submit method
-		/// must be called on the client in order to submit the imposter to Mountebank. If the port
-		/// is blank, Mountebank will assign one which can be retrieved after Submit. Note that Mountebank does not yet support
-		/// stubs for SMTP imposters.
+		/// Creates a new HTTP imposter on the specified port, configures it with the imposterConfigurator callback, and
+		/// then submits it to Mountebank. If port is null, Mountebank will assign a random port that can be accessed on
+		/// the response.
+		/// </summary>
+		/// <param name="port">
+		/// The port the imposter will be set up to receive requests on, or null to allow Mountebank
+		/// to set the port.
+		/// </param>
+		/// <param name="imposterConfigurator">
+		/// A callback function that will be used to configure the created imposter. This is where stubs should be
+		/// added and any imposter-specific settings specified.
+		/// </param>
+		/// <param name="cancellationToken"></param>
+		/// <returns>The imposter that was created in Mountebank</returns>
+		Task<HttpImposter> CreateHttpImposterAsync(int? port, Action<HttpImposter> imposterConfigurator, CancellationToken cancellationToken = default);
+
+		/// <summary>
+		/// Creates a new HTTP imposter.
+		/// </summary>
+		/// <param name="imposter">The imposter to create.</param>
+		/// <param name="cancellationToken"></param>
+		/// <returns></returns>
+		Task<HttpsImposter> CreateHttpsImposterAsync(HttpsImposter imposter, CancellationToken cancellationToken = default);
+
+		/// <summary>
+		/// Creates a new HTTPS imposter on the specified port, configures it with the imposterConfigurator callback, and
+		/// then submits it to Mountebank. If port is null, Mountebank will assign a random port that can be accessed on
+		/// the response.
 		/// </summary>
 		/// <param name="port">
 		/// The port the imposter will be set up to receive requests on, or null to allow
 		/// Mountebank to set the port.
 		/// </param>
-		/// <param name="name">The name the imposter will receive, useful for debugging/logging purposes</param>
-		/// <param name="recordRequests">
-		/// Enables recording requests to use the imposter as a mock. See
-		/// <see href="http://www.mbtest.org/docs/api/mocks">here</see> for more details on Mountebank
-		/// verification.
+		/// <param name="name">The name the imposter will receive, useful for debugging/logging purposes.</param>
+		/// <param name="imposterConfigurator">
+		/// A callback function that will be used to configure the created imposter. This is where stubs should be
+		/// added and any imposter-specific settings specified.
 		/// </param>
-		/// <returns>The newly created imposter</returns>
-		SmtpImposter CreateSmtpImposter(int? port = null, string name = null, bool recordRequests = false);
+		/// <param name="cancellationToken"></param>
+		/// <returns>The imposter that was created in Mountebank</returns>
+		Task<HttpsImposter> CreateHttpsImposterAsync(int? port, string name, Action<HttpsImposter> imposterConfigurator, CancellationToken cancellationToken = default);
+
+		/// <summary>
+		/// Creates a new HTTPS imposter on the specified port, configures it with the imposterConfigurator callback, and
+		/// then submits it to Mountebank. If port is null, Mountebank will assign a random port that can be accessed on
+		/// the response.
+		/// </summary>
+		/// <param name="port">
+		/// The port the imposter will be set up to receive requests on, or null to allow Mountebank
+		/// to set the port.
+		/// </param>
+		/// <param name="imposterConfigurator">
+		/// A callback function that will be used to configure the created imposter. This is where stubs should be
+		/// added and any imposter-specific settings specified.
+		/// </param>
+		/// <param name="cancellationToken"></param>
+		/// <returns>The imposter that was created in Mountebank</returns>
+		Task<HttpsImposter> CreateHttpsImposterAsync(int? port, Action<HttpsImposter> imposterConfigurator, CancellationToken cancellationToken = default);
+
+		/// <summary>
+		/// Creates a new TCP imposter.
+		/// </summary>
+		/// <param name="imposter">The imposter to create.</param>
+		/// <param name="cancellationToken"></param>
+		/// <returns></returns>
+		Task<TcpImposter> CreateTcpImposterAsync(TcpImposter imposter, CancellationToken cancellationToken = default);
+
+		/// <summary>
+		/// Creates a new TCP imposter on the specified port, configures it with the imposterConfigurator callback, and
+		/// then submits it to Mountebank. If port is null, Mountebank will assign a random port that can be accessed on
+		/// the response.
+		/// </summary>
+		/// <param name="port">
+		/// The port the imposter will be set up to receive requests on, or null to allow Mountebank
+		/// to set the port.
+		/// </param>
+		/// <param name="name">The name the imposter will receive, useful for debugging/logging purposes.</param>
+		/// <param name="imposterConfigurator">
+		/// A callback function that will be used to configure the created imposter. This is where stubs should be
+		/// added and any imposter-specific settings specified.
+		/// </param>
+		/// <param name="cancellationToken"></param>
+		/// <returns>The imposter that was created in Mountebank</returns>
+		Task<TcpImposter> CreateTcpImposterAsync(int? port, string name, Action<TcpImposter> imposterConfigurator, CancellationToken cancellationToken = default);
+
+		/// <summary>
+		/// Creates a new TCP imposter on the specified port, configures it with the imposterConfigurator callback, and
+		/// then submits it to Mountebank. If port is null, Mountebank will assign a random port that can be accessed on
+		/// the response.
+		/// </summary>
+		/// <param name="port">
+		/// The port the imposter will be set up to receive requests on, or null to allow Mountebank
+		/// to set the port.
+		/// </param>
+		/// <param name="imposterConfigurator">
+		/// A callback function that will be used to configure the created imposter. This is where stubs should be
+		/// added and any imposter-specific settings specified.
+		/// </param>
+		/// <param name="cancellationToken"></param>
+		/// <returns>The imposter that was created in Mountebank</returns>
+		Task<TcpImposter> CreateTcpImposterAsync(int? port, Action<TcpImposter> imposterConfigurator, CancellationToken cancellationToken = default);
+
+		/// <summary>
+		/// Creates a new SMTP imposter.
+		/// </summary>
+		/// <param name="imposter">The imposter to create.</param>
+		/// <param name="cancellationToken"></param>
+		/// <returns></returns>
+		Task<SmtpImposter> CreateSmtpImposterAsync(SmtpImposter imposter, CancellationToken cancellationToken = default);
+
+		/// <summary>
+		/// Creates a new SMTP imposter on the specified port, configures it with the imposterConfigurator callback, and
+		/// then submits it to Mountebank. If port is null, Mountebank will assign a random port that can be accessed on
+		/// the response.
+		/// </summary>
+		/// <param name="port">
+		/// The port the imposter will be set up to receive requests on, or null to allow
+		/// Mountebank to set the port.
+		/// </param>
+		/// <param name="name">The name the imposter will receive, useful for debugging/logging purposes.</param>
+		/// <param name="imposterConfigurator">
+		/// A callback function that will be used to configure the created imposter. This is where stubs should be
+		/// added and any imposter-specific settings specified.
+		/// </param>
+		/// <param name="cancellationToken"></param>
+		/// <returns>The imposter that was created in Mountebank</returns>
+		Task<SmtpImposter> CreateSmtpImposterAsync(int? port, string name, Action<SmtpImposter> imposterConfigurator, CancellationToken cancellationToken = default);
+
+		/// <summary>
+		/// Creates a new HTTPS imposter on the specified port, configures it with the imposterConfigurator callback, and
+		/// then submits it to Mountebank. If port is null, Mountebank will assign a random port that can be accessed on
+		/// the response.
+		/// </summary>
+		/// <param name="port">
+		/// The port the imposter will be set up to receive requests on, or null to allow Mountebank
+		/// to set the port.
+		/// </param>
+		/// <param name="imposterConfigurator">
+		/// A callback function that will be used to configure the created imposter. This is where stubs should be
+		/// added and any imposter-specific settings specified.
+		/// </param>
+		/// <param name="cancellationToken"></param>
+		/// <returns>The imposter that was created in Mountebank</returns>
+		Task<SmtpImposter> CreateSmtpImposterAsync(int? port, Action<SmtpImposter> imposterConfigurator, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Retrieves the list of imposters
@@ -180,22 +260,6 @@ namespace MbDotNet
 		/// of imposters that the client maintains.
 		/// </summary>
 		Task DeleteAllImpostersAsync(CancellationToken cancellationToken = default);
-
-		/// <summary>
-		/// Submits all pending imposters from the supplied collection to be created in mountebank.
-		/// <exception cref="MbDotNet.Exceptions.MountebankException">Thrown if unable to create the imposter.</exception>
-		/// </summary>
-		/// <param name="imposters">The imposters being submitted to mountebank</param>
-		/// <param name="cancellationToken"></param>
-		Task SubmitAsync(ICollection<Imposter> imposters, CancellationToken cancellationToken = default);
-
-		/// <summary>
-		/// Submits imposter to be created in mountebank.
-		/// <exception cref="MbDotNet.Exceptions.MountebankException">Thrown if unable to create the imposter.</exception>
-		/// </summary>
-		/// <param name="imposter">The imposter being submitted to mountebank</param>
-		/// <param name="cancellationToken"></param>
-		Task SubmitAsync(Imposter imposter, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Overwrites the stubs of an existing imposter without restarting it.

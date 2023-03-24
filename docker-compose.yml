@@ -3,6 +3,7 @@ version: "3.9"
 services:
   mountebank:
     image: "bbyars/mountebank:2.8.2"
+    command: start --allowInjection --debug
     ports:
     - "2525:2525"
     - "6000:6000"

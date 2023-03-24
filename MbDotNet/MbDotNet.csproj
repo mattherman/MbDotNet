@@ -12,7 +12,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
 
     <!-- NuGet Metadata-->
-    <Version>5.0.0-rc8</Version>
+    <Version>5.0.0-rc9</Version>
     <PackageId>MbDotNet</PackageId>
     <Title>MbDotNet</Title>
     <Authors>Matthew Herman</Authors>

@@ -15,30 +15,43 @@ namespace MbDotNet.Models.Imposters
 		[JsonProperty("stubs")]
 		public ICollection<TcpStub> Stubs { get; private set; }
 
+		[JsonProperty("mode")]
+		internal string ModeAsText;
+
 		/// <summary>
 		/// The encoding used for request and response strings
 		/// </summary>
-		[JsonProperty("mode")]
-		public string Mode { get; private set; }
+		public TcpMode Mode
+		{
+			get
+			{
+				switch (ModeAsText)
+				{
+					case "binary":
+						return TcpMode.Binary;
+					default:
+						return TcpMode.Text;
+				}
+			}
+			set => ModeAsText = value.ToString().ToLower();
+		}
 
 		/// <inheritdoc />
 		[JsonProperty("defaultResponse", NullValueHandling = NullValueHandling.Ignore)]
-		public TcpResponseFields DefaultResponse { get; private set; }
+		public TcpResponseFields DefaultResponse { get; set; }
 
 		/// <summary>
 		/// Create a new TcpImposter instance
 		/// </summary>
 		/// <param name="port">An optional port for the imposter to listen on</param>
 		/// <param name="name">An optional name for the imposter</param>
-		/// <param name="mode">The encoding used for request and response strings</param>
-		/// <param name="recordRequests">Whether or not Mountebank should record requests made to the imposter, defaults to false</param>
-		/// <param name="defaultResponse">An optional default response for when no predicates match a request</param>
-		public TcpImposter(int? port, string name, TcpMode mode, bool recordRequests = false, TcpResponseFields defaultResponse = null)
-			: base(port, Enums.Protocol.Tcp, name, recordRequests)
+		/// <param name="options">Options for configuring the imposter</param>
+		public TcpImposter(int? port, string name, TcpImposterOptions options)
+			: base(port, Enums.Protocol.Tcp, name, options?.RecordRequests ?? false)
 		{
+			Mode = options?.Mode ?? TcpMode.Text;
+			DefaultResponse = options?.DefaultResponse;
 			Stubs = new List<TcpStub>();
-			Mode = mode.ToString().ToLower();
-			DefaultResponse = defaultResponse;
 		}
 
 		/// <inheritdoc />

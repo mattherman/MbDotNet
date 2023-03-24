@@ -10,9 +10,9 @@ namespace MbDotNet.Models.Imposters
 		/// </summary>
 		/// <param name="port">An optional port for the imposter to listen on</param>
 		/// <param name="name">An optional name for the imposter</param>
-		/// <param name="recordRequests">Whether or not Mountebank should record requests made to the imposter, defaults to false</param>
-		public SmtpImposter(int? port, string name, bool recordRequests = false)
-			: base(port, Enums.Protocol.Smtp, name, recordRequests)
+		/// <param name="options">Options for configuring the imposter</param>
+		public SmtpImposter(int? port, string name, SmtpImposterOptions options)
+			: base(port, Enums.Protocol.Smtp, name, options?.RecordRequests ?? false)
 		{
 		}
 	}

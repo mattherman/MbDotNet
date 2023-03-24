@@ -54,7 +54,7 @@ namespace MbDotNet.Tests
 		public async Task DeleteImposter_SendsRequest()
 		{
 			const int port = 123;
-			var expectedResource = string.Format("imposters/{0}", port);
+			var expectedResource = $"imposters/{port}";
 
 			var response = GetResponse(HttpStatusCode.OK);
 
@@ -83,14 +83,14 @@ namespace MbDotNet.Tests
 		{
 			const string expectedResource = "imposters";
 
-			var imposter = new HttpImposter(123, null);
+			var imposter = new HttpImposter(123, null, null);
 
 			var response = GetResponse(HttpStatusCode.Created);
 
 			HttpContent content = null;
 			_mockClient.Setup(x => x.PostAsync(expectedResource, It.IsAny<HttpContent>(), default))
 				.ReturnsAsync(response)
-				.Callback<string, HttpContent, CancellationToken>((res, cont, _) => content = cont);
+				.Callback<string, HttpContent, CancellationToken>((_, cont, _) => content = cont);
 
 			await _proxy.CreateImposterAsync(imposter).ConfigureAwait(false);
 
@@ -123,7 +123,7 @@ namespace MbDotNet.Tests
 			_mockClient.Setup(x => x.PostAsync(It.IsAny<string>(), It.IsAny<HttpContent>(), default))
 				.ReturnsAsync(response);
 
-			var imposter = new HttpImposter(null, null);
+			var imposter = new HttpImposter(null, null, null);
 
 			await _proxy.CreateImposterAsync(imposter).ConfigureAwait(false);
 
@@ -139,7 +139,7 @@ namespace MbDotNet.Tests
 			_mockClient.Setup(x => x.PostAsync(It.IsAny<string>(), It.IsAny<HttpContent>(), default))
 				.ReturnsAsync(response);
 
-			await _proxy.CreateImposterAsync(new HttpImposter(123, null)).ConfigureAwait(false);
+			await _proxy.CreateImposterAsync(new HttpImposter(123, null, null)).ConfigureAwait(false);
 		}
 
 		[TestMethod]
@@ -150,12 +150,12 @@ namespace MbDotNet.Tests
 
 			var response = GetResponse(HttpStatusCode.OK);
 
-			var imposter = new HttpImposter(port, null);
+			var imposter = new HttpImposter(port, null, null);
 
 			HttpContent content = null;
 			_mockClient.Setup(x => x.PutAsync(expectedResource, It.IsAny<HttpContent>(), default))
 				.ReturnsAsync(response)
-				.Callback<string, HttpContent, CancellationToken>((res, cont, _) => content = cont);
+				.Callback<string, HttpContent, CancellationToken>((_, cont, _) => content = cont);
 
 			await _proxy.UpdateImposterAsync(imposter).ConfigureAwait(false);
 
@@ -174,7 +174,7 @@ namespace MbDotNet.Tests
 			_mockClient.Setup(x => x.PutAsync(It.IsAny<string>(), It.IsAny<HttpContent>(), default))
 				.ReturnsAsync(response);
 
-			await _proxy.UpdateImposterAsync(new HttpImposter(123, null)).ConfigureAwait(false);
+			await _proxy.UpdateImposterAsync(new HttpImposter(123, null, null)).ConfigureAwait(false);
 		}
 
 		[TestMethod]
