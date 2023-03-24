@@ -62,7 +62,7 @@ namespace MbDotNet
 
 		/// <inheritdoc />
 		public async Task<HttpsImposter> CreateHttpsImposterAsync(int? port, string name, Action<HttpsImposter> imposterConfigurator) =>
-			await ConfigureAndCreateImposter(new HttpsImposter(port, name), imposterConfigurator);
+			await ConfigureAndCreateImposter(new HttpsImposter(port, name, null), imposterConfigurator);
 
 		/// <inheritdoc />
 		public async Task<HttpsImposter> CreateHttpsImposterAsync(int? port, Action<HttpsImposter> imposterConfigurator) =>

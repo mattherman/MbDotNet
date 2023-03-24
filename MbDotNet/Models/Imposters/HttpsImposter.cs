@@ -79,34 +79,15 @@ namespace MbDotNet.Models.Imposters
 		/// </summary>
 		/// <param name="port">An optional port for the imposter to listen on</param>
 		/// <param name="name">An optional name for the imposter</param>
-		/// <param name="recordRequests">Whether or not Mountebank should record requests made to the imposter, defaults to false</param>
-		/// <param name="defaultResponse">An optional default response for when no predicates match a request</param>
-		/// <param name="allowCORS">Enables CORS requests, defaults to false</param>
-		public HttpsImposter(int? port, string name, bool recordRequests = false, HttpResponseFields defaultResponse = null, bool allowCORS = false)
-			: this(port, name, null, null, false, recordRequests, defaultResponse, allowCORS)
+		/// <param name="options">Options for configuring the imposter</param>
+		public HttpsImposter(int? port, string name, HttpsImposterOptions options) : base(port, Enums.Protocol.Https, name, options?.RecordRequests ?? false)
 		{
-		}
-
-		/// <summary>
-		/// Create a new HttpsImposter instance
-		/// </summary>
-		/// <param name="port">An optional port for the imposter to listen on</param>
-		/// <param name="name">An optional name for the imposter</param>
-		/// <param name="mutualAuthRequired">Forces the server to request a client certificate, defaults to false</param>
-		/// <param name="recordRequests">Whether or not Mountebank should record requests made to the imposter, defaults to false</param>
-		/// <param name="defaultResponse">An optional default response for when no predicates match a request</param>
-		/// <param name="allowCORS">Enables CORS requests, defaults to false</param>
-		/// <param name="key">An optional SSL private key used by the imposter</param>
-		/// <param name="cert">An optional SSL certificate used by the imposter</param>
-		public HttpsImposter(int? port, string name, string key, string cert, bool mutualAuthRequired,
-			bool recordRequests = false, HttpResponseFields defaultResponse = null, bool allowCORS = false) : base(port, Enums.Protocol.Https, name, recordRequests)
-		{
-			Cert = cert;
-			Key = key;
-			MutualAuthRequired = mutualAuthRequired;
+			Cert = options?.Cert;
+			Key = options?.Key;
+			MutualAuthRequired = options?.MutualAuthRequired ?? false;
+			DefaultResponse = options?.DefaultResponse;
+			AllowCORS = options?.AllowCORS ?? false;
 			Stubs = new List<HttpStub>();
-			DefaultResponse = defaultResponse;
-			AllowCORS = allowCORS;
 		}
 
 		/// <inheritdoc />
