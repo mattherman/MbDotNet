@@ -180,7 +180,7 @@ namespace MbDotNet
 			}
 		}
 
-		private async Task HandleDynamicPort(HttpResponseMessage response, Imposter imposter)
+		private static async Task HandleDynamicPort(HttpResponseMessage response, Imposter imposter)
 		{
 			if (imposter.Port == default)
 			{
@@ -188,7 +188,7 @@ namespace MbDotNet
 				{
 					var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 					var returnedImposter = JsonConvert.DeserializeObject<CreateImposterResponse>(content);
-					imposter.SetDynamicPort(returnedImposter.Port);
+					imposter.Port = returnedImposter.Port;
 				}
 				catch (Exception e)
 				{

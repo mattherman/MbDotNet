@@ -9,11 +9,25 @@ namespace MbDotNet.Models.Imposters
 	/// </summary>
 	public abstract class Imposter
 	{
+		private int _port;
+
 		/// <summary>
 		/// The port the imposter is set up to accept requests on.
 		/// </summary>
 		[JsonProperty(PropertyName = "port", DefaultValueHandling = DefaultValueHandling.Ignore)]
-		public int Port { get; private set; }
+		public int Port
+		{
+			get => _port;
+			internal set
+			{
+				if (_port != default)
+				{
+					throw new MountebankException("Cannot change imposter port once it has been set.");
+				}
+
+				_port = value;
+			}
+		}
 
 		/// <summary>
 		/// The protocol the imposter is set up to accept requests through.
@@ -32,17 +46,6 @@ namespace MbDotNet.Models.Imposters
 		/// </summary>
 		[JsonProperty("recordRequests")]
 		public bool RecordRequests { get; set; }
-
-		// TODO: Remove this and add a body to a setter
-		internal void SetDynamicPort(int port)
-		{
-			if (Port != default)
-			{
-				throw new MountebankException("Cannot change imposter port once it has been set.");
-			}
-
-			Port = port;
-		}
 
 		/// <summary>
 		/// Create a new Imposter instance
