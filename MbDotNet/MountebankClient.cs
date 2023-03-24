@@ -82,7 +82,7 @@ namespace MbDotNet
 
 		/// <inheritdoc />
 		public async Task<SmtpImposter> CreateSmtpImposterAsync(int? port, string name, Action<SmtpImposter> imposterConfigurator) =>
-			await ConfigureAndCreateImposter(new SmtpImposter(port, name), imposterConfigurator);
+			await ConfigureAndCreateImposter(new SmtpImposter(port, name, null), imposterConfigurator);
 
 		/// <inheritdoc />
 		public async Task<SmtpImposter> CreateSmtpImposterAsync(int? port, Action<SmtpImposter> imposterConfigurator) =>
