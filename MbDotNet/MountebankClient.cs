@@ -70,7 +70,7 @@ namespace MbDotNet
 
 		/// <inheritdoc />
 		public async Task<TcpImposter> CreateTcpImposterAsync(int? port, string name, TcpMode mode, Action<TcpImposter> imposterConfigurator) =>
-			await ConfigureAndCreateImposter(new TcpImposter(port, name, mode), imposterConfigurator);
+			await ConfigureAndCreateImposter(new TcpImposter(port, name, new TcpImposterOptions { Mode = mode }), imposterConfigurator);
 
 		/// <inheritdoc />
 		public async Task<TcpImposter> CreateTcpImposterAsync(int? port, string name, Action<TcpImposter> imposterConfigurator) =>

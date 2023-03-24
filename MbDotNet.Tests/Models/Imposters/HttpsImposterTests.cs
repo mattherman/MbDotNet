@@ -117,6 +117,7 @@ namespace MbDotNet.Tests.Models.Imposters
 			var imposter = new HttpsImposter(null, null, new HttpsImposterOptions { AllowCORS = expectedAllowCORS });
 			Assert.AreEqual(expectedAllowCORS, imposter.AllowCORS);
 		}
+
 		[TestMethod]
 		public void Constructor_InitialRecordRequests()
 		{
