@@ -5,7 +5,7 @@
 	/// </summary>
 	public class SmtpImposterOptions
 	{
-		/// <inheritdoc cref="SmtpImposter.RecordRequests" />
+		/// <inheritdoc cref="Imposter.RecordRequests" />
 		public bool RecordRequests { get; set; }
 	}
 }

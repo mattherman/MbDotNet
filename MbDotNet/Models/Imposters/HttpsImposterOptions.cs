@@ -13,7 +13,7 @@ namespace MbDotNet.Models.Imposters
 		/// <inheritdoc cref="HttpsImposter.AllowCORS" />
 		public bool AllowCORS { get; set; }
 
-		/// <inheritdoc cref="HttpsImposter.RecordRequests" />
+		/// <inheritdoc cref="Imposter.RecordRequests" />
 		public bool RecordRequests { get; set; }
 
 		/// <inheritdoc cref="HttpsImposter.Key" />

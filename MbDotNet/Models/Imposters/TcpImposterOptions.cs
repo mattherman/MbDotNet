@@ -11,7 +11,7 @@ namespace MbDotNet.Models.Imposters
 		/// <inheritdoc cref="TcpImposter.DefaultResponse" />
 		public TcpResponseFields DefaultResponse { get; set; }
 
-		/// <inheritdoc cref="TcpImposter.RecordRequests" />
+		/// <inheritdoc cref="Imposter.RecordRequests" />
 		public bool RecordRequests { get; set; }
 
 		/// <inheritdoc cref="TcpImposter.Mode" />
