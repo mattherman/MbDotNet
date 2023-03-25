@@ -20,7 +20,7 @@ namespace MbDotNet.Models.Requests
 		/// The address sent using the RCPT command
 		/// </summary>
 		[JsonProperty("envelopeTo")]
-		public IList<string> EnvelopeTo { get; internal set; }
+		public IReadOnlyList<string> EnvelopeTo { get; internal set; }
 
 		/// <summary>
 		/// The sender of the message
@@ -32,19 +32,19 @@ namespace MbDotNet.Models.Requests
 		/// The recipients of the message
 		/// </summary>
 		[JsonProperty("to")]
-		public IList<EmailAddress> To { get; internal set; }
+		public IReadOnlyList<EmailAddress> To { get; internal set; }
 
 		/// <summary>
 		/// The CC recipients of the message
 		/// </summary>
 		[JsonProperty("cc")]
-		public IList<EmailAddress> Cc { get; internal set; }
+		public IReadOnlyList<EmailAddress> Cc { get; internal set; }
 
 		/// <summary>
 		/// The BCC recipients of the message
 		/// </summary>
 		[JsonProperty("bcc")]
-		public IList<EmailAddress> Bcc { get; internal set; }
+		public IReadOnlyList<EmailAddress> Bcc { get; internal set; }
 
 		/// <summary>
 		/// The subject of the message
@@ -62,7 +62,7 @@ namespace MbDotNet.Models.Requests
 		/// The in reply to of the message
 		/// </summary>
 		[JsonProperty("inReplyTo")]
-		public IList<EmailAddress> InReplyTo { get; internal set; }
+		public IReadOnlyList<EmailAddress> InReplyTo { get; internal set; }
 
 		/// <summary>
 		/// The text-only message
@@ -80,6 +80,6 @@ namespace MbDotNet.Models.Requests
 		/// The message attachments
 		/// </summary>
 		[JsonProperty("attachments")]
-		public IList<EmailAttachment> Attachments { get; internal set; }
+		public IReadOnlyList<EmailAttachment> Attachments { get; internal set; }
 	}
 }

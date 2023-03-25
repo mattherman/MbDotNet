@@ -14,7 +14,7 @@ namespace MbDotNet.Models.Imposters
 	{
 		/// <inheritdoc />
 		[JsonProperty("stubs")]
-		public ICollection<HttpStub> Stubs { get; private set; }
+		public IList<HttpStub> Stubs { get; private set; }
 
 		private static bool IsPEMFormatted(string value)
 			=> Regex.IsMatch(value, @"-----BEGIN CERTIFICATE-----[\S\s]*-----END CERTIFICATE-----");

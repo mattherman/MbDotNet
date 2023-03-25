@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using MbDotNet.Enums;
 using MbDotNet.Models.Predicates;
 using MbDotNet.Models.Predicates.Fields;
@@ -89,16 +90,16 @@ namespace MbDotNet.Models.Stubs
 		/// </summary>
 		/// <param name="to">endpoint address to proxy to</param>
 		/// <param name="proxyMode">proxyalways, proxyonce or proxytransparent</param>
-		/// <param name="predicateGenerators">list of predicates that a proxy repsonse will be recorded for</param>
+		/// <param name="predicateGenerators">list of predicates that a proxy response will be recorded for</param>
 		/// <returns>The stub that the response was added to</returns>
 		public TcpStub ReturnsProxy(Uri to, ProxyMode proxyMode,
-			IList<MatchesPredicate<TcpPredicateFields>> predicateGenerators)
+			IEnumerable<MatchesPredicate<TcpPredicateFields>> predicateGenerators)
 		{
 			var fields = new ProxyResponseFields<TcpPredicateFields>
 			{
 				To = to,
 				Mode = proxyMode,
-				PredicateGenerators = predicateGenerators
+				PredicateGenerators = predicateGenerators.ToList()
 			};
 
 			var response = new ProxyResponse<ProxyResponseFields<TcpPredicateFields>>(fields);
@@ -111,16 +112,16 @@ namespace MbDotNet.Models.Stubs
 		/// </summary>
 		/// <param name="to">endpoint address to proxy to</param>
 		/// <param name="proxyMode">proxyalways, proxyonce or proxytransparent</param>
-		/// <param name="predicateGenerators">list of predicates that a proxy repsonse will be recorded for</param>
+		/// <param name="predicateGenerators">list of predicates that a proxy response will be recorded for</param>
 		/// <returns>The stub that the response was added to</returns>
 		public TcpStub ReturnsProxy(Uri to, ProxyMode proxyMode,
-			IList<MatchesPredicate<TcpBooleanPredicateFields>> predicateGenerators)
+			IEnumerable<MatchesPredicate<TcpBooleanPredicateFields>> predicateGenerators)
 		{
 			var fields = new ProxyResponseFields<TcpBooleanPredicateFields>
 			{
 				To = to,
 				Mode = proxyMode,
-				PredicateGenerators = predicateGenerators
+				PredicateGenerators = predicateGenerators.ToList()
 			};
 
 			var response = new ProxyResponse<ProxyResponseFields<TcpBooleanPredicateFields>>(fields);

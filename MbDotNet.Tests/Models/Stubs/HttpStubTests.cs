@@ -316,6 +316,7 @@ namespace MbDotNet.Tests.Models.Stubs
 
 			var proxyResponse = stub.Responses.First() as ProxyResponse<ProxyResponseFields<HttpBooleanPredicateFields>>;
 
+			Assert.IsNotNull(proxyResponse);
 			Assert.AreEqual(proxyToUrl, proxyResponse.Fields.To);
 			Assert.AreEqual(proxyModeToUse, proxyResponse.Fields.Mode);
 			Assert.AreEqual(proxyGeneratorPredicate, proxyResponse.Fields.PredicateGenerators.First());
@@ -337,7 +338,7 @@ namespace MbDotNet.Tests.Models.Stubs
 			});
 
 			var proxyToUrl = new Uri("http://someTestDestination.com");
-			var proxyModeToUse = ProxyMode.ProxyTransparent;
+			const ProxyMode proxyModeToUse = ProxyMode.ProxyTransparent;
 
 			var stub = new HttpStub();
 			stub.On(predicateInvokingProxyStub)
@@ -345,6 +346,7 @@ namespace MbDotNet.Tests.Models.Stubs
 
 			var proxyResponse = stub.Responses.First() as ProxyResponse<ProxyResponseFields<HttpPredicateFields>>;
 
+			Assert.IsNotNull(proxyResponse);
 			Assert.AreEqual(proxyToUrl, proxyResponse.Fields.To);
 			Assert.AreEqual(proxyModeToUse, proxyResponse.Fields.Mode);
 			Assert.AreEqual(proxyGeneratorPredicate, proxyResponse.Fields.PredicateGenerators.First());

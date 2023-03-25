@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Net;
 using MbDotNet.Enums;
 using MbDotNet.Models.Predicates;
 using MbDotNet.Models.Predicates.Fields;

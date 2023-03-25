@@ -11,7 +11,7 @@ namespace MbDotNet.Models.Stubs
 		/// <summary>
 		/// The configured stubs
 		/// </summary>
-		ICollection<TStub> Stubs { get; }
+		IList<TStub> Stubs { get; }
 
 		/// <summary>
 		/// Adds an empty stub

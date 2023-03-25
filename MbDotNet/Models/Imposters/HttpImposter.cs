@@ -14,7 +14,7 @@ namespace MbDotNet.Models.Imposters
 		/// The stubs defined for this imposter
 		/// </summary>
 		[JsonProperty("stubs")]
-		public ICollection<HttpStub> Stubs { get; private set; }
+		public IList<HttpStub> Stubs { get; private set; }
 
 		/// <inheritdoc />
 		[JsonProperty("defaultResponse")]

@@ -13,7 +13,7 @@ namespace MbDotNet.Models.Imposters
 	{
 		/// <inheritdoc />
 		[JsonProperty("stubs")]
-		public ICollection<TcpStub> Stubs { get; private set; }
+		public IList<TcpStub> Stubs { get; private set; }
 
 		[JsonProperty("mode")]
 		internal string ModeAsText;
