@@ -11,6 +11,9 @@
     <FileVersion>5.0.0.0</FileVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
 
+    <!-- Include symbol files (*.pdb) in the built .nupkg -->
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+
     <!-- NuGet Metadata-->
     <Version>5.0.0-rc9</Version>
     <PackageId>MbDotNet</PackageId>
