@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MbDotNet.Models;
 using MbDotNet.Models.Imposters;
 using MbDotNet.Models.Responses;
+using MbDotNet.Models.Stubs;
 
 namespace MbDotNet
 {
@@ -13,18 +14,6 @@ namespace MbDotNet
 	/// </summary>
 	public interface IClient
 	{
-		/// <summary>
-		/// Get the entry hypermedia
-		/// </summary>
-		/// <returns>The Home object which contains entry hypermedia</returns>
-		Task<Home> GetEntryHypermediaAsync(CancellationToken cancellationToken = default);
-
-		/// <summary>
-		/// Get the Mountebank server logs
-		/// </summary>
-		/// <returns>The list of logs</returns>
-		Task<IEnumerable<Log>> GetLogsAsync(CancellationToken cancellationToken = default);
-
 		/// <summary>
 		/// Creates a new HTTP imposter.
 		/// </summary>
@@ -262,12 +251,99 @@ namespace MbDotNet
 		Task DeleteAllImpostersAsync(CancellationToken cancellationToken = default);
 
 		/// <summary>
-		/// Overwrites the stubs of an existing imposter without restarting it.
+		/// Replaces all stubs on an imposter with the replacement stubs.
 		/// </summary>
-		/// <param name="imposter">The imposter to be updated with new stubs</param>
+		/// <param name="port">The port of the imposter being updated</param>
+		/// <param name="replacementStubs">The stubs that should replace the existing stubs</param>
 		/// <param name="cancellationToken"></param>
-		/// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
-		Task UpdateImposterAsync(Imposter imposter, CancellationToken cancellationToken = default);
+		Task ReplaceHttpImposterStubsAsync(int port, ICollection<HttpStub> replacementStubs, CancellationToken cancellationToken = default);
+
+		/// <summary>
+		/// Replaces all stubs on an imposter with the replacement stubs.
+		/// </summary>
+		/// <param name="port">The port of the imposter being updated</param>
+		/// <param name="replacementStubs">The stubs that should replace the existing stubs</param>
+		/// <param name="cancellationToken"></param>
+		Task ReplaceHttpsImposterStubsAsync(int port, ICollection<HttpStub> replacementStubs, CancellationToken cancellationToken = default);
+
+		/// <summary>
+		/// Replaces all stubs on an imposter with the replacement stubs.
+		/// </summary>
+		/// <param name="port">The port of the imposter being updated</param>
+		/// <param name="replacementStubs">The stubs that should replace the existing stubs</param>
+		/// <param name="cancellationToken"></param>
+		Task ReplaceTcpImposterStubsAsync(int port, ICollection<TcpStub> replacementStubs, CancellationToken cancellationToken = default);
+
+		/// <summary>
+		/// Replaces a single stub on an imposter with the replacement stub. The stub to replace is specified by the index.
+		/// </summary>
+		/// <param name="port">The port of the imposter being updated</param>
+		/// <param name="replacementStub">The stub that should replace the existing stub</param>
+		/// <param name="stubIndex">The index of the stub being replaced</param>
+		/// <param name="cancellationToken"></param>
+		Task ReplaceHttpImposterStubAsync(int port, HttpStub replacementStub, int stubIndex, CancellationToken cancellationToken = default);
+
+		/// <summary>
+		/// Replaces a single stub on an imposter with the replacement stub. The stub to replace is specified by the index.
+		/// </summary>
+		/// <param name="port">The port of the imposter being updated</param>
+		/// <param name="replacementStub">The stub that should replace the existing stub</param>
+		/// <param name="stubIndex">The index of the stub being replaced</param>
+		/// <param name="cancellationToken"></param>
+		Task ReplaceHttpsImposterStubAsync(int port, HttpStub replacementStub, int stubIndex, CancellationToken cancellationToken = default);
+
+		/// <summary>
+		/// Replaces a single stub on an imposter with the replacement stub. The stub to replace is specified by the index.
+		/// </summary>
+		/// <param name="port">The port of the imposter being updated</param>
+		/// <param name="replacementStub">The stub that should replace the existing stub</param>
+		/// <param name="stubIndex">The index of the stub being replaced</param>
+		/// <param name="cancellationToken"></param>
+		Task ReplaceTcpImposterStubAsync(int port, TcpStub replacementStub, int stubIndex, CancellationToken cancellationToken = default);
+
+		/// <summary>
+		/// Adds a stub to an imposter at the end of the stub collection. Alternatively, the index can be used to add the stub at a
+		/// specific index within the existing stubs.
+		/// </summary>
+		/// <param name="port">The port of the imposter being updated</param>
+		/// <param name="newStub">The stub being added</param>
+		/// <param name="newStubIndex">
+		/// An optional index specifying where to insert the stub, if unspecified the stub is included at the end of the stub collection
+		/// </param>
+		/// <param name="cancellationToken"></param>
+		Task AddHttpImposterStubAsync(int port, HttpStub newStub, int? newStubIndex = null, CancellationToken cancellationToken = default);
+
+		/// <summary>
+		/// Adds a stub to an imposter at the end of the stub collection. Alternatively, the index can be used to add the stub at a
+		/// specific index within the existing stubs.
+		/// </summary>
+		/// <param name="port">The port of the imposter being updated</param>
+		/// <param name="newStub">The stub being added</param>
+		/// <param name="newStubIndex">
+		/// An optional index specifying where to insert the stub, if unspecified the stub is included at the end of the stub collection
+		/// </param>
+		/// <param name="cancellationToken"></param>
+		Task AddHttpsImposterStubAsync(int port, HttpStub newStub, int? newStubIndex = null, CancellationToken cancellationToken = default);
+
+		/// <summary>
+		/// Adds a stub to an imposter at the end of the stub collection. Alternatively, the index can be used to add the stub at a
+		/// specific index within the existing stubs.
+		/// </summary>
+		/// <param name="port">The port of the imposter being updated</param>
+		/// <param name="newStub">The stub being added</param>
+		/// <param name="newStubIndex">
+		/// An optional index specifying where to insert the stub, if unspecified the stub is included at the end of the stub collection
+		/// </param>
+		/// <param name="cancellationToken"></param>
+		Task AddTcpImposterStubAsync(int port, TcpStub newStub, int? newStubIndex = null, CancellationToken cancellationToken = default);
+
+		/// <summary>
+		/// Remove a single stub from an imposter.
+		/// </summary>
+		/// <param name="port">The port of the imposter being updated</param>
+		/// <param name="stubIndex">The index of the stub being removed</param>
+		/// <param name="cancellationToken"></param>
+		Task RemoveStubAsync(int port, int stubIndex, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Deletes previously saved requests for an imposter
@@ -282,5 +358,17 @@ namespace MbDotNet
 		/// </summary>
 		/// <returns>A Config object containing the configuration of Mountebank</returns>
 		Task<Config> GetConfigAsync(CancellationToken cancellationToken = default);
+
+		/// <summary>
+		/// Get the entry hypermedia
+		/// </summary>
+		/// <returns>The Home object which contains entry hypermedia</returns>
+		Task<Home> GetEntryHypermediaAsync(CancellationToken cancellationToken = default);
+
+		/// <summary>
+		/// Get the Mountebank server logs
+		/// </summary>
+		/// <returns>The list of logs</returns>
+		Task<IEnumerable<Log>> GetLogsAsync(CancellationToken cancellationToken = default);
 	}
 }

@@ -8,6 +8,7 @@ using MbDotNet.Exceptions;
 using MbDotNet.Models;
 using MbDotNet.Models.Imposters;
 using MbDotNet.Models.Responses;
+using MbDotNet.Models.Stubs;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -67,23 +68,78 @@ namespace MbDotNet
 			}
 		}
 
-		public async Task UpdateImposterAsync(Imposter imposter, CancellationToken cancellationToken = default)
+		public async Task ReplaceStubsAsync<T>(int port, ICollection<T> replacementStubs,
+			CancellationToken cancellationToken = default) where T: Stub
 		{
-			var json = JsonConvert.SerializeObject(imposter);
+			var json = JsonConvert.SerializeObject(new
+			{
+				stubs = replacementStubs
+			});
 
 			using (
 				var response = await _httpClient.PutAsync(
-					$"imposters/{imposter.Port}/stubs",
+					$"imposters/{port}/stubs",
 					new StringContent(json),
 					cancellationToken
 				).ConfigureAwait(false))
 			{
 				await HandleResponse(response, HttpStatusCode.OK,
-					$"Failed to replace stubs for the imposter with port {imposter.Port}.",
-					(message) => new ImposterNotFoundException(message)).ConfigureAwait(false);
+					$"Failed to replace stubs for the imposter with port {port}.",
+					message => new ImposterNotFoundException(message)).ConfigureAwait(false);
 			}
 		}
 
+		public async Task ReplaceStubAsync<T>(int port, T newStub, int stubIndex,
+			CancellationToken cancellationToken = default)
+		{
+			var json = JsonConvert.SerializeObject(newStub);
+
+			using (
+				var response = await _httpClient.PutAsync(
+					$"imposters/{port}/stubs/{stubIndex}",
+					new StringContent(json),
+					cancellationToken
+				).ConfigureAwait(false))
+			{
+				await HandleResponse(response, HttpStatusCode.OK,
+					$"Failed to replace stub {stubIndex} for the imposter with port {port}.",
+					message => new ImposterNotFoundException(message)).ConfigureAwait(false);
+			}
+		}
+
+		public async Task AddStubAsync<T>(int port, T newStub, int? newStubIndex,
+			CancellationToken cancellationToken = default)
+		{
+			var json = newStubIndex.HasValue
+				? JsonConvert.SerializeObject(new { index = newStubIndex, stub = newStub })
+				: JsonConvert.SerializeObject(new { stub = newStub });
+
+			using (
+				var response = await _httpClient.PostAsync(
+					$"imposters/{port}/stubs",
+					new StringContent(json),
+					cancellationToken
+				).ConfigureAwait(false))
+			{
+				await HandleResponse(response, HttpStatusCode.OK,
+					$"Failed to add stub for the imposter with port {port}.",
+					message => new ImposterNotFoundException(message)).ConfigureAwait(false);
+			}
+		}
+
+		public async Task RemoveStubAsync(int port, int stubIndex, CancellationToken cancellationToken = default)
+		{
+			using (
+				var response = await _httpClient.DeleteAsync(
+					$"imposters/{port}/stubs/{stubIndex}",
+					cancellationToken
+				).ConfigureAwait(false))
+			{
+				await HandleResponse(response, HttpStatusCode.OK,
+					$"Failed to delete stub {stubIndex} for the imposter with port {port}.",
+					message => new ImposterNotFoundException(message)).ConfigureAwait(false);
+			}
+		}
 
 		public async Task<Home> GetEntryHypermediaAsync(CancellationToken cancellationToken = default)
 		{

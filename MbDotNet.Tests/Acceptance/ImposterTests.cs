@@ -12,6 +12,7 @@ using MbDotNet.Enums;
 using MbDotNet.Exceptions;
 using MbDotNet.Models.Predicates;
 using MbDotNet.Models.Predicates.Fields;
+using MbDotNet.Models.Stubs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 
@@ -59,21 +60,109 @@ namespace MbDotNet.Tests.Acceptance
 		}
 
 		[TestMethod]
-		public async Task CanUpdateHttpImposter()
+		public async Task CanReplaceHttpImposterStubs()
 		{
 			const int port = 6000;
-			var imposter = await _client.CreateHttpImposterAsync(port, imposter =>
+			await _client.CreateHttpImposterAsync(port, imposter =>
 			{
 				imposter.AddStub()
 					.OnMethodEquals(Method.Get)
 					.ReturnsStatus(HttpStatusCode.OK);
 			});
 
-			imposter.AddStub()
+			var stub = new HttpStub()
 				.OnMethodEquals(Method.Post)
 				.ReturnsStatus(HttpStatusCode.Created);
 
-			await _client.UpdateImposterAsync(imposter);
+			await _client.ReplaceHttpImposterStubsAsync(port, new []{ stub });
+
+			var imposter = await _client.GetHttpImposterAsync(port);
+
+			Assert.AreEqual(1, imposter.Stubs.Count);
+		}
+
+		[TestMethod]
+		public async Task CanReplaceHttpImposterStub()
+		{
+			const int port = 6000;
+			await _client.CreateHttpImposterAsync(port, imposter =>
+			{
+				imposter.AddStub()
+					.OnMethodEquals(Method.Get)
+					.ReturnsStatus(HttpStatusCode.OK);
+			});
+
+			var stub = new HttpStub()
+				.OnMethodEquals(Method.Get)
+				.ReturnsStatus(HttpStatusCode.BadRequest);
+
+			await _client.ReplaceHttpImposterStubAsync(port, stub, 0);
+
+			var imposter = await _client.GetHttpImposterAsync(port);
+
+			Assert.AreEqual(1, imposter.Stubs.Count);
+		}
+
+		[TestMethod]
+		public async Task CanAddHttpImposterStub_AtTheEnd()
+		{
+			const int port = 6000;
+			await _client.CreateHttpImposterAsync(port, imposter =>
+			{
+				imposter.AddStub()
+					.OnMethodEquals(Method.Get)
+					.ReturnsStatus(HttpStatusCode.OK);
+			});
+
+			var stub = new HttpStub()
+				.OnMethodEquals(Method.Get)
+				.ReturnsStatus(HttpStatusCode.BadRequest);
+
+			await _client.AddHttpImposterStubAsync(port, stub);
+
+			var imposter = await _client.GetHttpImposterAsync(port);
+
+			Assert.AreEqual(2, imposter.Stubs.Count);
+		}
+
+		[TestMethod]
+		public async Task CanAddHttpImposterStub_AtSpecificIndex()
+		{
+			const int port = 6000;
+			await _client.CreateHttpImposterAsync(port, imposter =>
+			{
+				imposter.AddStub()
+					.OnMethodEquals(Method.Get)
+					.ReturnsStatus(HttpStatusCode.OK);
+			});
+
+			var stub = new HttpStub()
+				.OnMethodEquals(Method.Get)
+				.ReturnsStatus(HttpStatusCode.BadRequest);
+
+			await _client.AddHttpImposterStubAsync(port, stub, 0);
+
+			var imposter = await _client.GetHttpImposterAsync(port);
+
+			Assert.AreEqual(2, imposter.Stubs.Count);
+		}
+
+		[TestMethod]
+		public async Task CanRemoveHttpImposterStub()
+		{
+			const int port = 6000;
+			await _client.CreateHttpImposterAsync(port, imposter =>
+			{
+				imposter.AddStub()
+					.OnMethodEquals(Method.Get)
+					.ReturnsStatus(HttpStatusCode.OK);
+			});
+
+			await _client.RemoveStubAsync(port, 0);
+
+			var imposter = await _client.GetHttpImposterAsync(port);
+
+			Assert.AreEqual(0, imposter.Stubs.Count);
 		}
 
 		[TestMethod]
@@ -88,21 +177,109 @@ namespace MbDotNet.Tests.Acceptance
 		}
 
 		[TestMethod]
-		public async Task CanUpdateHttpsImposter()
+		public async Task CanReplaceHttpsImposterStubs()
 		{
 			const int port = 6000;
-			var imposter = await _client.CreateHttpsImposterAsync(port, imposter =>
+			await _client.CreateHttpsImposterAsync(port, imposter =>
 			{
 				imposter.AddStub()
 					.OnMethodEquals(Method.Get)
 					.ReturnsStatus(HttpStatusCode.OK);
 			});
 
-			imposter.AddStub()
+			var stub = new HttpStub()
 				.OnMethodEquals(Method.Post)
 				.ReturnsStatus(HttpStatusCode.Created);
 
-			await _client.UpdateImposterAsync(imposter);
+			await _client.ReplaceHttpsImposterStubsAsync(port, new []{ stub });
+
+			var imposter = await _client.GetHttpsImposterAsync(port);
+
+			Assert.AreEqual(1, imposter.Stubs.Count);
+		}
+
+		[TestMethod]
+		public async Task CanReplaceHttpsImposterStub()
+		{
+			const int port = 6000;
+			await _client.CreateHttpsImposterAsync(port, imposter =>
+			{
+				imposter.AddStub()
+					.OnMethodEquals(Method.Get)
+					.ReturnsStatus(HttpStatusCode.OK);
+			});
+
+			var stub = new HttpStub()
+				.OnMethodEquals(Method.Get)
+				.ReturnsStatus(HttpStatusCode.BadRequest);
+
+			await _client.ReplaceHttpsImposterStubAsync(port, stub, 0);
+
+			var imposter = await _client.GetHttpsImposterAsync(port);
+
+			Assert.AreEqual(1, imposter.Stubs.Count);
+		}
+
+		[TestMethod]
+		public async Task CanAddHttpsImposterStub_AtTheEnd()
+		{
+			const int port = 6000;
+			await _client.CreateHttpsImposterAsync(port, imposter =>
+			{
+				imposter.AddStub()
+					.OnMethodEquals(Method.Get)
+					.ReturnsStatus(HttpStatusCode.OK);
+			});
+
+			var stub = new HttpStub()
+				.OnMethodEquals(Method.Get)
+				.ReturnsStatus(HttpStatusCode.BadRequest);
+
+			await _client.AddHttpsImposterStubAsync(port, stub);
+
+			var imposter = await _client.GetHttpsImposterAsync(port);
+
+			Assert.AreEqual(2, imposter.Stubs.Count);
+		}
+
+		[TestMethod]
+		public async Task CanAddHttpsImposterStub_AtSpecificIndex()
+		{
+			const int port = 6000;
+			await _client.CreateHttpsImposterAsync(port, imposter =>
+			{
+				imposter.AddStub()
+					.OnMethodEquals(Method.Get)
+					.ReturnsStatus(HttpStatusCode.OK);
+			});
+
+			var stub = new HttpStub()
+				.OnMethodEquals(Method.Get)
+				.ReturnsStatus(HttpStatusCode.BadRequest);
+
+			await _client.AddHttpsImposterStubAsync(port, stub, 0);
+
+			var imposter = await _client.GetHttpsImposterAsync(port);
+
+			Assert.AreEqual(2, imposter.Stubs.Count);
+		}
+
+		[TestMethod]
+		public async Task CanRemoveHttpsImposterStub()
+		{
+			const int port = 6000;
+			await _client.CreateHttpsImposterAsync(port, imposter =>
+			{
+				imposter.AddStub()
+					.OnMethodEquals(Method.Get)
+					.ReturnsStatus(HttpStatusCode.OK);
+			});
+
+			await _client.RemoveStubAsync(port, 0);
+
+			var imposter = await _client.GetHttpsImposterAsync(port);
+
+			Assert.AreEqual(0, imposter.Stubs.Count);
 		}
 
 		[TestMethod]
@@ -116,21 +293,109 @@ namespace MbDotNet.Tests.Acceptance
 		}
 
 		[TestMethod]
-		public async Task CanUpdateTcpImposter()
+		public async Task CanReplaceTcpImposterStubs()
 		{
 			const int port = 6000;
-			var imposter = await _client.CreateTcpImposterAsync(port, imposter =>
+			await _client.CreateTcpImposterAsync(port, imposter =>
 			{
 				imposter.AddStub()
 					.OnDataEquals("abc")
 					.ReturnsData("123");
 			});
 
-			imposter.AddStub()
+			var stub = new TcpStub()
 				.OnDataEquals("def")
 				.ReturnsData("456");
 
-			await _client.UpdateImposterAsync(imposter);
+			await _client.ReplaceTcpImposterStubsAsync(port, new[] { stub });
+
+			var imposter = await _client.GetTcpImposterAsync(port);
+
+			Assert.AreEqual(1, imposter.Stubs.Count);
+		}
+
+		[TestMethod]
+		public async Task CanReplaceTcpImposterStub()
+		{
+			const int port = 6000;
+			await _client.CreateTcpImposterAsync(port, imposter =>
+			{
+				imposter.AddStub()
+					.OnDataEquals("abc")
+					.ReturnsData("123");
+			});
+
+			var stub = new TcpStub()
+				.OnDataEquals("def")
+				.ReturnsData("456");
+
+			await _client.ReplaceTcpImposterStubAsync(port, stub, 0);
+
+			var imposter = await _client.GetTcpImposterAsync(port);
+
+			Assert.AreEqual(1, imposter.Stubs.Count);
+		}
+
+		[TestMethod]
+		public async Task CanAddTcpImposterStub_AtTheEnd()
+		{
+			const int port = 6000;
+			await _client.CreateTcpImposterAsync(port, imposter =>
+			{
+				imposter.AddStub()
+					.OnDataEquals("abc")
+					.ReturnsData("123");
+			});
+
+			var stub = new TcpStub()
+				.OnDataEquals("def")
+				.ReturnsData("456");
+
+			await _client.AddTcpImposterStubAsync(port, stub);
+
+			var imposter = await _client.GetTcpImposterAsync(port);
+
+			Assert.AreEqual(2, imposter.Stubs.Count);
+		}
+
+		[TestMethod]
+		public async Task CanAddTcpImposterStub_AtSpecificIndex()
+		{
+			const int port = 6000;
+			await _client.CreateTcpImposterAsync(port, imposter =>
+			{
+				imposter.AddStub()
+					.OnDataEquals("abc")
+					.ReturnsData("123");
+			});
+
+			var stub = new TcpStub()
+				.OnDataEquals("def")
+				.ReturnsData("456");
+
+			await _client.AddTcpImposterStubAsync(port, stub, 0);
+
+			var imposter = await _client.GetTcpImposterAsync(port);
+
+			Assert.AreEqual(2, imposter.Stubs.Count);
+		}
+
+		[TestMethod]
+		public async Task CanRemoveTcpImposterStub()
+		{
+			const int port = 6000;
+			await _client.CreateTcpImposterAsync(port, imposter =>
+			{
+				imposter.AddStub()
+					.OnDataEquals("abc")
+					.ReturnsData("123");
+			});
+
+			await _client.RemoveStubAsync(port, 0);
+
+			var imposter = await _client.GetTcpImposterAsync(port);
+
+			Assert.AreEqual(0, imposter.Stubs.Count);
 		}
 
 		[TestMethod]

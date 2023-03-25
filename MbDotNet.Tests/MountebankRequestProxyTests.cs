@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MbDotNet.Exceptions;
 using MbDotNet.Models.Imposters;
+using MbDotNet.Models.Stubs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
@@ -143,38 +144,124 @@ namespace MbDotNet.Tests
 		}
 
 		[TestMethod]
-		public async Task UpdateImposter_SendsRequest()
+		public async Task ReplaceStubsAsync_SendsRequest()
 		{
 			const int port = 123;
 			var expectedResource = $"imposters/{port}/stubs";
 
+			var stubs = new[] { new HttpStub() };
 			var response = GetResponse(HttpStatusCode.OK);
-
-			var imposter = new HttpImposter(port, null, null);
 
 			HttpContent content = null;
 			_mockClient.Setup(x => x.PutAsync(expectedResource, It.IsAny<HttpContent>(), default))
 				.ReturnsAsync(response)
 				.Callback<string, HttpContent, CancellationToken>((_, cont, _) => content = cont);
 
-			await _proxy.UpdateImposterAsync(imposter).ConfigureAwait(false);
+			await _proxy.ReplaceStubsAsync(port, stubs).ConfigureAwait(false);
 
-			var json = await content.ReadAsStringAsync();
-			var serializedImposter = JsonConvert.DeserializeObject<HttpImposter>(json);
-
-			Assert.AreEqual(imposter.Port, serializedImposter.Port);
+			Assert.IsNotNull(content);
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(ImposterNotFoundException))]
-		public async Task UpdateImposter_StatusCodeNotOk_ThrowsImposterNotFoundException()
+		public async Task ReplaceStubsAsync_StatusCodeNotOk_ThrowsImposterNotFoundException()
 		{
 			var response = GetResponse(HttpStatusCode.NotFound);
 
 			_mockClient.Setup(x => x.PutAsync(It.IsAny<string>(), It.IsAny<HttpContent>(), default))
 				.ReturnsAsync(response);
 
-			await _proxy.UpdateImposterAsync(new HttpImposter(123, null, null)).ConfigureAwait(false);
+			await _proxy.ReplaceStubsAsync(123, new []{ new HttpStub() }).ConfigureAwait(false);
+		}
+
+		[TestMethod]
+		public async Task ReplaceStubAsync_SendsRequest()
+		{
+			const int port = 123;
+			const int stubIndex = 1;
+			var expectedResource = $"imposters/{port}/stubs/{stubIndex}";
+
+			var stub = new HttpStub();
+			var response = GetResponse(HttpStatusCode.OK);
+
+			HttpContent content = null;
+			_mockClient.Setup(x => x.PutAsync(expectedResource, It.IsAny<HttpContent>(), default))
+				.ReturnsAsync(response)
+				.Callback<string, HttpContent, CancellationToken>((_, cont, _) => content = cont);
+
+			await _proxy.ReplaceStubAsync(port, stub, stubIndex).ConfigureAwait(false);
+
+			Assert.IsNotNull(content);
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ImposterNotFoundException))]
+		public async Task ReplaceStubAsync_StatusCodeNotOk_ThrowsImposterNotFoundException()
+		{
+			var response = GetResponse(HttpStatusCode.NotFound);
+
+			_mockClient.Setup(x => x.PutAsync(It.IsAny<string>(), It.IsAny<HttpContent>(), default))
+				.ReturnsAsync(response);
+
+			await _proxy.ReplaceStubAsync(123, new HttpStub(), 1).ConfigureAwait(false);
+		}
+
+		[TestMethod]
+		public async Task AddStubAsync_SendsRequest()
+		{
+			const int port = 123;
+			var expectedResource = $"imposters/{port}/stubs";
+
+			var stub = new HttpStub();
+			var response = GetResponse(HttpStatusCode.OK);
+
+			HttpContent content = null;
+			_mockClient.Setup(x => x.PostAsync(expectedResource, It.IsAny<HttpContent>(), default))
+				.ReturnsAsync(response)
+				.Callback<string, HttpContent, CancellationToken>((_, cont, _) => content = cont);
+
+			await _proxy.AddStubAsync(port, stub, null).ConfigureAwait(false);
+
+			Assert.IsNotNull(content);
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ImposterNotFoundException))]
+		public async Task AddStubAsync_StatusCodeNotOk_ThrowsImposterNotFoundException()
+		{
+			var response = GetResponse(HttpStatusCode.NotFound);
+
+			_mockClient.Setup(x => x.PostAsync(It.IsAny<string>(), It.IsAny<HttpContent>(), default))
+				.ReturnsAsync(response);
+
+			await _proxy.AddStubAsync(123, new HttpStub(), null).ConfigureAwait(false);
+		}
+
+		[TestMethod]
+		public async Task RemoveStubAsync_SendsRequest()
+		{
+			const int port = 123;
+			const int stubIndex = 1;
+			var expectedResource = $"imposters/{port}/stubs/{stubIndex}";
+
+			var response = GetResponse(HttpStatusCode.OK);
+
+			_mockClient.Setup(x => x.DeleteAsync(expectedResource, default))
+				.ReturnsAsync(response);
+
+			await _proxy.RemoveStubAsync(port, stubIndex).ConfigureAwait(false);
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ImposterNotFoundException))]
+		public async Task RemoveStubAsync_StatusCodeNotOk_ThrowsImposterNotFoundException()
+		{
+			var response = GetResponse(HttpStatusCode.NotFound);
+
+			_mockClient.Setup(x => x.DeleteAsync(It.IsAny<string>(), default))
+				.ReturnsAsync(response);
+
+			await _proxy.RemoveStubAsync(123, 1).ConfigureAwait(false);
 		}
 
 		[TestMethod]

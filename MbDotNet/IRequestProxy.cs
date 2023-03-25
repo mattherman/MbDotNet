@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MbDotNet.Models;
 using MbDotNet.Models.Imposters;
 using MbDotNet.Models.Responses;
+using MbDotNet.Models.Stubs;
 
 namespace MbDotNet
 {
@@ -12,7 +13,10 @@ namespace MbDotNet
 		Task DeleteAllImpostersAsync(CancellationToken cancellationToken = default);
 		Task DeleteImposterAsync(int port, CancellationToken cancellationToken = default);
 		Task CreateImposterAsync(Imposter imposter, CancellationToken cancellationToken = default);
-		Task UpdateImposterAsync(Imposter imposter, CancellationToken cancellationToken = default);
+		Task ReplaceStubsAsync<T>(int port, ICollection<T> replacementStubs, CancellationToken cancellationToken = default) where T: Stub;
+		Task ReplaceStubAsync<T>(int port, T newStub, int stubIndex, CancellationToken cancellationToken = default);
+		Task AddStubAsync<T>(int port, T newStub, int? newStubIndex, CancellationToken cancellationToken = default);
+		Task RemoveStubAsync(int port, int stubIndex, CancellationToken cancellationToken = default);
 		Task<RetrievedHttpImposter> GetHttpImposterAsync(int port, CancellationToken cancellationToken = default);
 		Task<RetrievedTcpImposter> GetTcpImposterAsync(int port, CancellationToken cancellationToken = default);
 		Task<RetrievedHttpsImposter> GetHttpsImposterAsync(int port, CancellationToken cancellationToken = default);
