@@ -204,8 +204,8 @@ namespace MbDotNet.Models.Stubs
 		/// <summary>
 		/// Adds a response to the stub.
 		/// </summary>
-		/// <param name="response"
-		/// >The response object designating what the stub will return</param>
+		/// <param name="response">
+		/// The response object designating what the stub will return</param>
 		/// <returns>The stub that the response was added to</returns>
 		public HttpStub Returns(Response response)
 		{

@@ -90,7 +90,7 @@ namespace MbDotNet
 		}
 
 		public async Task ReplaceStubAsync<T>(int port, T newStub, int stubIndex,
-			CancellationToken cancellationToken = default)
+			CancellationToken cancellationToken = default) where T: Stub
 		{
 			var json = JsonConvert.SerializeObject(newStub);
 
@@ -108,7 +108,7 @@ namespace MbDotNet
 		}
 
 		public async Task AddStubAsync<T>(int port, T newStub, int? newStubIndex,
-			CancellationToken cancellationToken = default)
+			CancellationToken cancellationToken = default) where T: Stub
 		{
 			var json = newStubIndex.HasValue
 				? JsonConvert.SerializeObject(new { index = newStubIndex, stub = newStub })
