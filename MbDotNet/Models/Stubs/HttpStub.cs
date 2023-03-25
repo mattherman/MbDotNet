@@ -171,7 +171,7 @@ namespace MbDotNet.Models.Stubs
 			{
 				To = to,
 				Mode = proxyMode,
-				PredicateGenerators = predicateGenerators
+				PredicateGenerators = predicateGenerators.ToList()
 			};
 
 			var response = new ProxyResponse<ProxyResponseFields<HttpPredicateFields>>(fields);
@@ -193,7 +193,7 @@ namespace MbDotNet.Models.Stubs
 			{
 				To = to,
 				Mode = proxyMode,
-				PredicateGenerators = predicateGenerators
+				PredicateGenerators = predicateGenerators.ToList()
 			};
 
 			var response = new ProxyResponse<ProxyResponseFields<HttpBooleanPredicateFields>>(fields);
