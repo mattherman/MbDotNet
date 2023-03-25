@@ -43,51 +43,51 @@ namespace MbDotNet
 
 		/// <inheritdoc />
 		public async Task<HttpImposter> CreateHttpImposterAsync(HttpImposter imposter, CancellationToken cancellationToken = default) =>
-			await ConfigureAndCreateImposter(imposter, _ => { }, cancellationToken);
+			await ConfigureAndCreateImposter(imposter, _ => { }, cancellationToken).ConfigureAwait(false);
 
 		/// <inheritdoc />
 		public async Task<HttpImposter> CreateHttpImposterAsync(int? port, string name, Action<HttpImposter> imposterConfigurator, CancellationToken cancellationToken = default) =>
-			await ConfigureAndCreateImposter(new HttpImposter(port, name, null), imposterConfigurator, cancellationToken);
+			await ConfigureAndCreateImposter(new HttpImposter(port, name, null), imposterConfigurator, cancellationToken).ConfigureAwait(false);
 
 		/// <inheritdoc />
 		public async Task<HttpImposter> CreateHttpImposterAsync(int? port, Action<HttpImposter> imposterConfigurator, CancellationToken cancellationToken = default) =>
-			await ConfigureAndCreateImposter(new HttpImposter(port, null, null), imposterConfigurator, cancellationToken);
+			await ConfigureAndCreateImposter(new HttpImposter(port, null, null), imposterConfigurator, cancellationToken).ConfigureAwait(false);
 
 		/// <inheritdoc />
 		public async Task<HttpsImposter> CreateHttpsImposterAsync(HttpsImposter imposter, CancellationToken cancellationToken = default) =>
-			await ConfigureAndCreateImposter(imposter, _ => { }, cancellationToken);
+			await ConfigureAndCreateImposter(imposter, _ => { }, cancellationToken).ConfigureAwait(false);
 
 		/// <inheritdoc />
 		public async Task<HttpsImposter> CreateHttpsImposterAsync(int? port, string name, Action<HttpsImposter> imposterConfigurator, CancellationToken cancellationToken = default) =>
-			await ConfigureAndCreateImposter(new HttpsImposter(port, name, null), imposterConfigurator, cancellationToken);
+			await ConfigureAndCreateImposter(new HttpsImposter(port, name, null), imposterConfigurator, cancellationToken).ConfigureAwait(false);
 
 		/// <inheritdoc />
 		public async Task<HttpsImposter> CreateHttpsImposterAsync(int? port, Action<HttpsImposter> imposterConfigurator, CancellationToken cancellationToken = default) =>
-			await ConfigureAndCreateImposter(new HttpsImposter(port, null, null), imposterConfigurator, cancellationToken);
+			await ConfigureAndCreateImposter(new HttpsImposter(port, null, null), imposterConfigurator, cancellationToken).ConfigureAwait(false);
 
 		/// <inheritdoc />
 		public async Task<TcpImposter> CreateTcpImposterAsync(TcpImposter imposter, CancellationToken cancellationToken = default) =>
-			await ConfigureAndCreateImposter(imposter, _ => { }, cancellationToken);
+			await ConfigureAndCreateImposter(imposter, _ => { }, cancellationToken).ConfigureAwait(false);
 
 		/// <inheritdoc />
 		public async Task<TcpImposter> CreateTcpImposterAsync(int? port, string name, Action<TcpImposter> imposterConfigurator, CancellationToken cancellationToken = default) =>
-			await ConfigureAndCreateImposter(new TcpImposter(port, name, null), imposterConfigurator, cancellationToken);
+			await ConfigureAndCreateImposter(new TcpImposter(port, name, null), imposterConfigurator, cancellationToken).ConfigureAwait(false);
 
 		/// <inheritdoc />
 		public async Task<TcpImposter> CreateTcpImposterAsync(int? port, Action<TcpImposter> imposterConfigurator, CancellationToken cancellationToken = default) =>
-			await ConfigureAndCreateImposter(new TcpImposter(port, null, null), imposterConfigurator, cancellationToken);
+			await ConfigureAndCreateImposter(new TcpImposter(port, null, null), imposterConfigurator, cancellationToken).ConfigureAwait(false);
 
 		/// <inheritdoc />
 		public async Task<SmtpImposter> CreateSmtpImposterAsync(SmtpImposter imposter, CancellationToken cancellationToken = default) =>
-			await ConfigureAndCreateImposter(imposter, _ => { }, cancellationToken);
+			await ConfigureAndCreateImposter(imposter, _ => { }, cancellationToken).ConfigureAwait(false);
 
 		/// <inheritdoc />
 		public async Task<SmtpImposter> CreateSmtpImposterAsync(int? port, string name, Action<SmtpImposter> imposterConfigurator, CancellationToken cancellationToken = default) =>
-			await ConfigureAndCreateImposter(new SmtpImposter(port, name, null), imposterConfigurator, cancellationToken);
+			await ConfigureAndCreateImposter(new SmtpImposter(port, name, null), imposterConfigurator, cancellationToken).ConfigureAwait(false);
 
 		/// <inheritdoc />
 		public async Task<SmtpImposter> CreateSmtpImposterAsync(int? port, Action<SmtpImposter> imposterConfigurator, CancellationToken cancellationToken = default) =>
-			await ConfigureAndCreateImposter(new SmtpImposter(port, null, null), imposterConfigurator, cancellationToken);
+			await ConfigureAndCreateImposter(new SmtpImposter(port, null, null), imposterConfigurator, cancellationToken).ConfigureAwait(false);
 
 		/// <inheritdoc />
 		public async Task<IEnumerable<SimpleRetrievedImposter>> GetImpostersAsync(CancellationToken cancellationToken = default)
@@ -162,62 +162,62 @@ namespace MbDotNet
 		/// <inheritdoc />
 		public async Task ReplaceHttpImposterStubsAsync(int port, ICollection<HttpStub> replacementStubs,
 			CancellationToken cancellationToken = default) =>
-			await _requestProxy.ReplaceStubsAsync(port, replacementStubs, cancellationToken);
+			await _requestProxy.ReplaceStubsAsync(port, replacementStubs, cancellationToken).ConfigureAwait(false);
 
 		/// <inheritdoc />
 		public async Task ReplaceHttpsImposterStubsAsync(int port, ICollection<HttpStub> replacementStubs,
 			CancellationToken cancellationToken = default) =>
-			await _requestProxy.ReplaceStubsAsync(port, replacementStubs, cancellationToken);
+			await _requestProxy.ReplaceStubsAsync(port, replacementStubs, cancellationToken).ConfigureAwait(false);
 
 		/// <inheritdoc />
 		public async Task ReplaceTcpImposterStubsAsync(int port, ICollection<TcpStub> replacementStubs,
 			CancellationToken cancellationToken = default) =>
-			await _requestProxy.ReplaceStubsAsync(port, replacementStubs, cancellationToken);
+			await _requestProxy.ReplaceStubsAsync(port, replacementStubs, cancellationToken).ConfigureAwait(false);
 
 		/// <inheritdoc />
 		public async Task ReplaceHttpImposterStubAsync(int port, HttpStub replacementStub, int stubIndex,
 			CancellationToken cancellationToken = default) =>
-			await _requestProxy.ReplaceStubAsync(port, replacementStub, stubIndex, cancellationToken);
+			await _requestProxy.ReplaceStubAsync(port, replacementStub, stubIndex, cancellationToken).ConfigureAwait(false);
 
 		/// <inheritdoc />
 		public async Task ReplaceHttpsImposterStubAsync(int port, HttpStub replacementStub, int stubIndex,
 			CancellationToken cancellationToken = default) =>
-			await _requestProxy.ReplaceStubAsync(port, replacementStub, stubIndex, cancellationToken);
+			await _requestProxy.ReplaceStubAsync(port, replacementStub, stubIndex, cancellationToken).ConfigureAwait(false);
 
 		/// <inheritdoc />
 		public async Task ReplaceTcpImposterStubAsync(int port, TcpStub replacementStub, int stubIndex,
 			CancellationToken cancellationToken = default) =>
-			await _requestProxy.ReplaceStubAsync(port, replacementStub, stubIndex, cancellationToken);
+			await _requestProxy.ReplaceStubAsync(port, replacementStub, stubIndex, cancellationToken).ConfigureAwait(false);
 
 		/// <inheritdoc />
 		public async Task AddHttpImposterStubAsync(int port, HttpStub newStub, int? newStubIndex = null,
 			CancellationToken cancellationToken = default) =>
-			await _requestProxy.AddStubAsync(port, newStub, newStubIndex, cancellationToken);
+			await _requestProxy.AddStubAsync(port, newStub, newStubIndex, cancellationToken).ConfigureAwait(false);
 
 		/// <inheritdoc />
 		public async Task AddHttpsImposterStubAsync(int port, HttpStub newStub, int? newStubIndex = null,
 			CancellationToken cancellationToken = default) =>
-			await _requestProxy.AddStubAsync(port, newStub, newStubIndex, cancellationToken);
+			await _requestProxy.AddStubAsync(port, newStub, newStubIndex, cancellationToken).ConfigureAwait(false);
 
 		/// <inheritdoc />
 		public async Task AddTcpImposterStubAsync(int port, TcpStub newStub, int? newStubIndex = null,
 			CancellationToken cancellationToken = default) =>
-			await _requestProxy.AddStubAsync(port, newStub, newStubIndex, cancellationToken);
+			await _requestProxy.AddStubAsync(port, newStub, newStubIndex, cancellationToken).ConfigureAwait(false);
 
 		/// <inheritdoc />
 		public async Task RemoveStubAsync(int port, int stubIndex, CancellationToken cancellationToken = default) =>
-			await _requestProxy.RemoveStubAsync(port, stubIndex, cancellationToken);
+			await _requestProxy.RemoveStubAsync(port, stubIndex, cancellationToken).ConfigureAwait(false);
 
 		/// <inheritdoc />
 		public async Task DeleteSavedRequestsAsync(int port, CancellationToken cancellationToken = default)
 		{
-			await _requestProxy.DeleteSavedRequestsAsync(port, cancellationToken);
+			await _requestProxy.DeleteSavedRequestsAsync(port, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <inheritdoc />
 		public async Task<Config> GetConfigAsync(CancellationToken cancellationToken = default)
 		{
-			return await _requestProxy.GetConfigAsync(cancellationToken);
+			return await _requestProxy.GetConfigAsync(cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <inheritdoc />

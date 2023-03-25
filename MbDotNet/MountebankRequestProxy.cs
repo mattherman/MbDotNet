@@ -145,7 +145,8 @@ namespace MbDotNet
 		{
 			using (var response = await _httpClient.GetAsync("", cancellationToken).ConfigureAwait(false))
 			{
-				await HandleResponse(response, HttpStatusCode.OK, $"Failed to get the entry hypermedia");
+				await HandleResponse(response, HttpStatusCode.OK, $"Failed to get the entry hypermedia")
+					.ConfigureAwait(false);
 				var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 				return JsonConvert.DeserializeObject<Home>(content);
 			}
@@ -155,7 +156,7 @@ namespace MbDotNet
 		{
 			using (var response = await _httpClient.GetAsync("logs", cancellationToken).ConfigureAwait(false))
 			{
-				await HandleResponse(response, HttpStatusCode.OK, $"Failed to get the logs");
+				await HandleResponse(response, HttpStatusCode.OK, $"Failed to get the logs").ConfigureAwait(false);
 				var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 				var logs = JObject.Parse(content)["logs"]?.ToString();
 				if (logs == null)
@@ -168,7 +169,7 @@ namespace MbDotNet
 		{
 			using (var response = await _httpClient.GetAsync("imposters", cancellationToken).ConfigureAwait(false))
 			{
-				await HandleResponse(response, HttpStatusCode.OK, $"Failed to retrieve the list of imposters");
+				await HandleResponse(response, HttpStatusCode.OK, $"Failed to retrieve the list of imposters").ConfigureAwait(false);
 				var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 				var imposters = JObject.Parse(content)["imposters"]?.ToString();
 				if (imposters == null)
@@ -222,7 +223,7 @@ namespace MbDotNet
 			}
 		}
 
-		private async Task HandleResponse(HttpResponseMessage response, HttpStatusCode expectedStatusCode,
+		private static async Task HandleResponse(HttpResponseMessage response, HttpStatusCode expectedStatusCode,
 			string failureErrorMessage, Func<string, Exception> exceptionFactory = null)
 		{
 			if (exceptionFactory == null)
