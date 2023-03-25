@@ -43,13 +43,13 @@ namespace MbDotNet.Models.Imposters
 		/// The requests that have been made to this imposter
 		/// </summary>
 		[JsonProperty("requests")]
-		public TRequest[] Requests { get; internal set; }
+		public IReadOnlyList<TRequest> Requests { get; internal set; }
 
 		/// <summary>
 		/// A set of behaviors used to generate a response for an imposter
 		/// </summary>
 		[JsonProperty("stubs")]
-		public ICollection<RetrievedStub<TRequest, TResponseFields>> Stubs { get; internal set; }
+		public IReadOnlyList<RetrievedStub<TRequest, TResponseFields>> Stubs { get; internal set; }
 
 		/// <summary>
 		/// Optional default response that imposter sends back if no predicate matches a request

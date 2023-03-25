@@ -14,13 +14,13 @@ namespace MbDotNet.Models.Stubs
 		/// A collection of all of the responses set up on this stub.
 		/// </summary>
 		[JsonProperty("predicates", NullValueHandling = NullValueHandling.Ignore)]
-		public ICollection<Predicate> Predicates { get; set; }
+		public IList<Predicate> Predicates { get; set; }
 
 		/// <summary>
 		/// A collection of all of the predicates set up on this stub.
 		/// </summary>
 		[JsonProperty("responses", NullValueHandling = NullValueHandling.Ignore)]
-		public ICollection<Response> Responses { get; set; }
+		public IList<Response> Responses { get; set; }
 
 		/// <summary>
 		/// Create a new StubBase instance

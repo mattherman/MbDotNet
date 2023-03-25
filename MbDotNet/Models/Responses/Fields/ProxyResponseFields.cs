@@ -32,6 +32,6 @@ namespace MbDotNet.Models.Responses.Fields
 		/// An array of objects that defines how the predicates for new stubs are created
 		/// </summary>
 		[JsonProperty("predicateGenerators", NullValueHandling = NullValueHandling.Ignore)]
-		public IList<MatchesPredicate<T>> PredicateGenerators { get; set; }
+		public IEnumerable<MatchesPredicate<T>> PredicateGenerators { get; set; }
 	}
 }

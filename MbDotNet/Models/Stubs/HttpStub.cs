@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Xml;
@@ -100,9 +101,9 @@ namespace MbDotNet.Models.Stubs
 		/// <param name="response">Byte array representing binary stream.</param>
 		/// <param name="contentType">Content type</param>
 		/// <returns>The stub that the response was added to</returns>
-		public HttpStub ReturnsBinary(HttpStatusCode statusCode, byte[] response, string contentType)
+		public HttpStub ReturnsBinary(HttpStatusCode statusCode, IEnumerable<byte> response, string contentType)
 		{
-			var convertedBase64Bytes = Convert.ToBase64String(response);
+			var convertedBase64Bytes = Convert.ToBase64String(response.ToArray());
 
 			return Returns(statusCode, new Dictionary<string, object> { { "Content-Type", contentType } }, convertedBase64Bytes, "binary");
 		}
@@ -161,10 +162,10 @@ namespace MbDotNet.Models.Stubs
 		/// </summary>
 		/// <param name="to">endpoint address to proxy to</param>
 		/// <param name="proxyMode">proxyalways, proxyonce or proxytransparent</param>
-		/// <param name="predicateGenerators">list of predicates that a proxy repsonse will be recorded for</param>
+		/// <param name="predicateGenerators">list of predicates that a proxy response will be recorded for</param>
 		/// <returns>The stub that the response was added to</returns>
 		public HttpStub ReturnsProxy(Uri to, ProxyMode proxyMode,
-			IList<MatchesPredicate<HttpPredicateFields>> predicateGenerators)
+			IEnumerable<MatchesPredicate<HttpPredicateFields>> predicateGenerators)
 		{
 			var fields = new ProxyResponseFields<HttpPredicateFields>
 			{
@@ -183,10 +184,10 @@ namespace MbDotNet.Models.Stubs
 		/// </summary>
 		/// <param name="to">endpoint address to proxy to</param>
 		/// <param name="proxyMode">proxyalways, proxyonce or proxytransparent</param>
-		/// <param name="predicateGenerators">list of predicates that a proxy repsonse will be recorded for</param>
+		/// <param name="predicateGenerators">list of predicates that a proxy response will be recorded for</param>
 		/// <returns>The stub that the response was added to</returns>
 		public HttpStub ReturnsProxy(Uri to, ProxyMode proxyMode,
-			IList<MatchesPredicate<HttpBooleanPredicateFields>> predicateGenerators)
+			IEnumerable<MatchesPredicate<HttpBooleanPredicateFields>> predicateGenerators)
 		{
 			var fields = new ProxyResponseFields<HttpBooleanPredicateFields>
 			{

@@ -19,7 +19,7 @@ namespace MbDotNet.Models.Stubs
 		/// An collection of all activity by this stub.
 		/// </summary>
 		[JsonProperty("matches", NullValueHandling = NullValueHandling.Ignore)]
-		public ICollection<Match<TRequest, TResponseFields>> Matches { get; set; }
+		public IReadOnlyList<Match<TRequest, TResponseFields>> Matches { get; set; }
 
 		/// <summary>
 		/// Create a new RetrievedStub instance

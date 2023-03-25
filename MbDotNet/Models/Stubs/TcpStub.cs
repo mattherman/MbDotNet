@@ -92,7 +92,7 @@ namespace MbDotNet.Models.Stubs
 		/// <param name="predicateGenerators">list of predicates that a proxy repsonse will be recorded for</param>
 		/// <returns>The stub that the response was added to</returns>
 		public TcpStub ReturnsProxy(Uri to, ProxyMode proxyMode,
-			IList<MatchesPredicate<TcpPredicateFields>> predicateGenerators)
+			IEnumerable<MatchesPredicate<TcpPredicateFields>> predicateGenerators)
 		{
 			var fields = new ProxyResponseFields<TcpPredicateFields>
 			{
@@ -114,7 +114,7 @@ namespace MbDotNet.Models.Stubs
 		/// <param name="predicateGenerators">list of predicates that a proxy repsonse will be recorded for</param>
 		/// <returns>The stub that the response was added to</returns>
 		public TcpStub ReturnsProxy(Uri to, ProxyMode proxyMode,
-			IList<MatchesPredicate<TcpBooleanPredicateFields>> predicateGenerators)
+			IEnumerable<MatchesPredicate<TcpBooleanPredicateFields>> predicateGenerators)
 		{
 			var fields = new ProxyResponseFields<TcpBooleanPredicateFields>
 			{

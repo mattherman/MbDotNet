@@ -256,7 +256,7 @@ namespace MbDotNet
 		/// <param name="port">The port of the imposter being updated</param>
 		/// <param name="replacementStubs">The stubs that should replace the existing stubs</param>
 		/// <param name="cancellationToken"></param>
-		Task ReplaceHttpImposterStubsAsync(int port, ICollection<HttpStub> replacementStubs, CancellationToken cancellationToken = default);
+		Task ReplaceHttpImposterStubsAsync(int port, IEnumerable<HttpStub> replacementStubs, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Replaces all stubs on an imposter with the replacement stubs.
@@ -264,7 +264,7 @@ namespace MbDotNet
 		/// <param name="port">The port of the imposter being updated</param>
 		/// <param name="replacementStubs">The stubs that should replace the existing stubs</param>
 		/// <param name="cancellationToken"></param>
-		Task ReplaceHttpsImposterStubsAsync(int port, ICollection<HttpStub> replacementStubs, CancellationToken cancellationToken = default);
+		Task ReplaceHttpsImposterStubsAsync(int port, IEnumerable<HttpStub> replacementStubs, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Replaces all stubs on an imposter with the replacement stubs.
@@ -272,7 +272,7 @@ namespace MbDotNet
 		/// <param name="port">The port of the imposter being updated</param>
 		/// <param name="replacementStubs">The stubs that should replace the existing stubs</param>
 		/// <param name="cancellationToken"></param>
-		Task ReplaceTcpImposterStubsAsync(int port, ICollection<TcpStub> replacementStubs, CancellationToken cancellationToken = default);
+		Task ReplaceTcpImposterStubsAsync(int port, IEnumerable<TcpStub> replacementStubs, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Replaces a single stub on an imposter with the replacement stub. The stub to replace is specified by the index.

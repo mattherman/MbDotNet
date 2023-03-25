@@ -68,7 +68,7 @@ namespace MbDotNet
 			}
 		}
 
-		public async Task ReplaceStubsAsync<T>(int port, ICollection<T> replacementStubs,
+		public async Task ReplaceStubsAsync<T>(int port, IEnumerable<T> replacementStubs,
 			CancellationToken cancellationToken = default) where T: Stub
 		{
 			var json = JsonConvert.SerializeObject(new

@@ -160,17 +160,17 @@ namespace MbDotNet
 		}
 
 		/// <inheritdoc />
-		public async Task ReplaceHttpImposterStubsAsync(int port, ICollection<HttpStub> replacementStubs,
+		public async Task ReplaceHttpImposterStubsAsync(int port, IEnumerable<HttpStub> replacementStubs,
 			CancellationToken cancellationToken = default) =>
 			await _requestProxy.ReplaceStubsAsync(port, replacementStubs, cancellationToken).ConfigureAwait(false);
 
 		/// <inheritdoc />
-		public async Task ReplaceHttpsImposterStubsAsync(int port, ICollection<HttpStub> replacementStubs,
+		public async Task ReplaceHttpsImposterStubsAsync(int port, IEnumerable<HttpStub> replacementStubs,
 			CancellationToken cancellationToken = default) =>
 			await _requestProxy.ReplaceStubsAsync(port, replacementStubs, cancellationToken).ConfigureAwait(false);
 
 		/// <inheritdoc />
-		public async Task ReplaceTcpImposterStubsAsync(int port, ICollection<TcpStub> replacementStubs,
+		public async Task ReplaceTcpImposterStubsAsync(int port, IEnumerable<TcpStub> replacementStubs,
 			CancellationToken cancellationToken = default) =>
 			await _requestProxy.ReplaceStubsAsync(port, replacementStubs, cancellationToken).ConfigureAwait(false);
 

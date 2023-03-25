@@ -635,13 +635,13 @@ namespace MbDotNet.Tests.Acceptance
 
 			var retrievedImposter = await _client.GetHttpImposterAsync(port);
 
-			Assert.AreEqual(retrievedImposter.Requests.Length, 1);
+			Assert.AreEqual(retrievedImposter.Requests.Count, 1);
 
 			await _client.DeleteSavedRequestsAsync(port);
 
 			retrievedImposter = await _client.GetHttpImposterAsync(port);
 
-			Assert.AreEqual(retrievedImposter.Requests.Length, 0);
+			Assert.AreEqual(retrievedImposter.Requests.Count, 0);
 		}
 
 		[TestMethod]
