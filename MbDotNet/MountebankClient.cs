@@ -34,18 +34,6 @@ namespace MbDotNet
 			_requestProxy = requestProxy;
 		}
 
-		/// <inheritdoc />
-		public async Task<Home> GetEntryHypermediaAsync(CancellationToken cancellationToken = default)
-		{
-			return await _requestProxy.GetEntryHypermediaAsync(cancellationToken).ConfigureAwait(false);
-		}
-
-		/// <inheritdoc />
-		public async Task<IEnumerable<Log>> GetLogsAsync(CancellationToken cancellationToken = default)
-		{
-			return await _requestProxy.GetLogsAsync(cancellationToken).ConfigureAwait(false);
-		}
-
 		private async Task<T> ConfigureAndCreateImposter<T>(T imposter, Action<T> imposterConfigurator, CancellationToken cancellationToken) where T: Imposter
 		{
 			imposterConfigurator(imposter);
@@ -230,6 +218,18 @@ namespace MbDotNet
 		public async Task<Config> GetConfigAsync(CancellationToken cancellationToken = default)
 		{
 			return await _requestProxy.GetConfigAsync(cancellationToken);
+		}
+
+		/// <inheritdoc />
+		public async Task<Home> GetEntryHypermediaAsync(CancellationToken cancellationToken = default)
+		{
+			return await _requestProxy.GetEntryHypermediaAsync(cancellationToken).ConfigureAwait(false);
+		}
+
+		/// <inheritdoc />
+		public async Task<IEnumerable<Log>> GetLogsAsync(CancellationToken cancellationToken = default)
+		{
+			return await _requestProxy.GetLogsAsync(cancellationToken).ConfigureAwait(false);
 		}
 	}
 }

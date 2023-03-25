@@ -15,18 +15,6 @@ namespace MbDotNet
 	public interface IClient
 	{
 		/// <summary>
-		/// Get the entry hypermedia
-		/// </summary>
-		/// <returns>The Home object which contains entry hypermedia</returns>
-		Task<Home> GetEntryHypermediaAsync(CancellationToken cancellationToken = default);
-
-		/// <summary>
-		/// Get the Mountebank server logs
-		/// </summary>
-		/// <returns>The list of logs</returns>
-		Task<IEnumerable<Log>> GetLogsAsync(CancellationToken cancellationToken = default);
-
-		/// <summary>
 		/// Creates a new HTTP imposter.
 		/// </summary>
 		/// <param name="imposter">The imposter to create.</param>
@@ -295,5 +283,17 @@ namespace MbDotNet
 		/// </summary>
 		/// <returns>A Config object containing the configuration of Mountebank</returns>
 		Task<Config> GetConfigAsync(CancellationToken cancellationToken = default);
+
+		/// <summary>
+		/// Get the entry hypermedia
+		/// </summary>
+		/// <returns>The Home object which contains entry hypermedia</returns>
+		Task<Home> GetEntryHypermediaAsync(CancellationToken cancellationToken = default);
+
+		/// <summary>
+		/// Get the Mountebank server logs
+		/// </summary>
+		/// <returns>The list of logs</returns>
+		Task<IEnumerable<Log>> GetLogsAsync(CancellationToken cancellationToken = default);
 	}
 }
