@@ -110,11 +110,9 @@ namespace MbDotNet
 		public async Task AddStubAsync<T>(int port, T newStub, int? newStubIndex,
 			CancellationToken cancellationToken = default)
 		{
-			var json = JsonConvert.SerializeObject(new
-			{
-				index = newStubIndex,
-				stub = newStub
-			});
+			var json = newStubIndex.HasValue
+				? JsonConvert.SerializeObject(new { index = newStubIndex, stub = newStub })
+				: JsonConvert.SerializeObject(new { stub = newStub });
 
 			using (
 				var response = await _httpClient.PostAsync(

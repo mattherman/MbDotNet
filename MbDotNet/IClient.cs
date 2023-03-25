@@ -262,11 +262,11 @@ namespace MbDotNet
 
 		Task ReplaceTcpImposterStubAsync(int port, TcpStub replacementStub, int stubIndex, CancellationToken cancellationToken = default);
 
-		Task AddHttpImposterStubAsync(int port, HttpStub newStub, int? newStubIndex, CancellationToken cancellationToken = default);
+		Task AddHttpImposterStubAsync(int port, HttpStub newStub, int? newStubIndex = null, CancellationToken cancellationToken = default);
 
-		Task AddHttpsImposterStubAsync(int port, HttpStub newStub, int? newStubIndex, CancellationToken cancellationToken = default);
+		Task AddHttpsImposterStubAsync(int port, HttpStub newStub, int? newStubIndex = null, CancellationToken cancellationToken = default);
 
-		Task AddTcpImposterStubAsync(int port, TcpStub newStub, int? newStubIndex, CancellationToken cancellationToken = default);
+		Task AddTcpImposterStubAsync(int port, TcpStub newStub, int? newStubIndex = null, CancellationToken cancellationToken = default);
 
 		Task RemoveStubAsync(int port, int stubIndex, CancellationToken cancellationToken = default);
 

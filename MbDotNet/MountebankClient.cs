@@ -190,17 +190,17 @@ namespace MbDotNet
 			await _requestProxy.ReplaceStubAsync(port, replacementStub, stubIndex, cancellationToken);
 
 		/// <inheritdoc />
-		public async Task AddHttpImposterStubAsync(int port, HttpStub newStub, int? newStubIndex,
+		public async Task AddHttpImposterStubAsync(int port, HttpStub newStub, int? newStubIndex = null,
 			CancellationToken cancellationToken = default) =>
 			await _requestProxy.AddStubAsync(port, newStub, newStubIndex, cancellationToken);
 
 		/// <inheritdoc />
-		public async Task AddHttpsImposterStubAsync(int port, HttpStub newStub, int? newStubIndex,
+		public async Task AddHttpsImposterStubAsync(int port, HttpStub newStub, int? newStubIndex = null,
 			CancellationToken cancellationToken = default) =>
 			await _requestProxy.AddStubAsync(port, newStub, newStubIndex, cancellationToken);
 
 		/// <inheritdoc />
-		public async Task AddTcpImposterStubAsync(int port, TcpStub newStub, int? newStubIndex,
+		public async Task AddTcpImposterStubAsync(int port, TcpStub newStub, int? newStubIndex = null,
 			CancellationToken cancellationToken = default) =>
 			await _requestProxy.AddStubAsync(port, newStub, newStubIndex, cancellationToken);
 
