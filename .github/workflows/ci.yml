@@ -23,12 +23,8 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release
     - name: Start Mountebank
-      run: |
-        mkdir ~/.npm-global
-        npm config set prefix '~/.npm-global'
-        export PATH=~/.npm-global/bin:$PATH
-        source ~/.profile
-        npm install -g mountebank
-        mb --mock --allowInjection --debug &
+      run: docker compose up -d
     - name: Test
       run: dotnet test --configuration Release --no-build
+    - name: Stop Mountebank
+      run: docker compose down
