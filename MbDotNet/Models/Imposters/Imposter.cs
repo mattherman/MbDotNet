@@ -55,14 +55,25 @@ namespace MbDotNet.Models.Imposters
 		/// <param name="name">An optional name for the imposter</param>
 		/// <param name="recordRequests">Whether or not Mountebank should record requests made to the imposter</param>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors", Justification = "Set as virtual for testing purposes")]
-		protected Imposter(int? port, Protocol protocol, string name, bool recordRequests)
+		protected Imposter(int? port, Protocol protocol, string name, bool recordRequests) : this(port, protocol.ToString().ToLower(), name, recordRequests)
+		{
+		}
+
+		/// <summary>
+		/// Create a new Imposter instance. Supports plain string protocol names to allow custom protocols.
+		/// </summary>
+		/// <param name="port">An optional port the imposter should be associated with</param>
+		/// <param name="protocol">The network protocol of the imposter</param>
+		/// <param name="name">An optional name for the imposter</param>
+		/// <param name="recordRequests">Whether or not Mountebank should record requests made to the imposter</param>
+		protected Imposter(int? port, string protocol, string name, bool recordRequests)
 		{
 			if (port.HasValue)
 			{
 				Port = port.Value;
 			}
 
-			Protocol = protocol.ToString().ToLower();
+			Protocol = protocol.ToLower();
 			Name = name;
 			RecordRequests = recordRequests;
 		}
