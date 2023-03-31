@@ -134,3 +134,115 @@ Assert.Equal("/books", booksImposter.Requests[0].Path);
 For this test we setup a single stub and enable Mountebank's request recording functionality for the imposter using `imposter.RecordRequests = true`. We then exercise the code under test which relies on the API that we are mocking and verify the result. Finally, we retrieve the imposter and inspect the `Requests` collection to verify the behavior we expected.
 
 The official [documentation](https://mbtest.org) has many more examples of imposter creation with all of the different [predicates](http://www.mbtest.org/docs/api/predicates) and [responses](http://www.mbtest.org/docs/api/stubs) that are available. Most of these examples have a corresponding test in the [DocumentationTests.cs](https://github.com/mattherman/MbDotNet/blob/master/MbDotNet.Tests/Acceptance/DocumentationTests.cs) file that may help you translate between the JSON imposter definitions and how they would be defined with MbDotNet. If you are struggling to define a specific predicate or response I would suggest looking there first.
+
+# Deep Dive
+
+## Interacting with Mountebank
+
+All interaction with Mountebank is done through the `MountebankClient` class. This class exposes the various [imposter operations](http://www.mbtest.org/docs/api/overview) as well as more diagnostic operations like viewing logs or configuration information.
+
+The default constructor will assume that Mountebank is running at `http://localhost:2525`. There is an alternative constructor that accepts a URI if you need to override this value.
+
+The following methods are used to create HTTP imposters:
+
+```
+CreateHttpImposterAsync(int? port, string name, Action<HttpImposter> imposterConfigurator);
+CreateHttpImposterAsync(int? port, Action<HttpImposter> imposterConfigurator)
+CreateHttpImposterAsync(HttpImposter imposter)
+# Additional methods for creating HTTPS, TCP, and SMTP imposters...
+```
+
+There are similar methods for HTTPS, TCP, and SMTP imposters as well. I suggest using one of the first two overloads which take a callback for configuring the imposter. This encapsulates the configuration and avoids situations where you might modify your imposter object after it has been submitted to Mountebank which would likely cause confusion since the changes would not be represented there. If you'd like to create the imposter and configure it separately you can still use the last overload to submit it to Mountebank.
+
+The client also exposes methods to retrieve imposters:
+
+```
+GetHttpImposterAsync(int port)
+GetHttpsImposterAsync(int port)
+GetTcpImposterAsync(int port)
+GetSmtpImposterAsync(int port)
+GetImpostersAsync()
+```
+
+These methods return a simplified representation of the imposter which does not include the configured stubs, but does have requests (if `RecordRequests` is true) and stub matches (if Mountebank is run with the `--debug` flag).
+
+The client allows you to delete imposters or clear saved requests:
+
+```
+DeleteImposterAsync(int port)
+DeleteAllImpostersAsync()
+DeleteSavedRequestsAsync(int port)
+```
+
+It also lets you modify stubs on a specific imposter:
+
+```
+ReplaceHttpImposterStubsAsync(int port, IEnumerable<HttpStub> replacementStubs)
+ReplaceHttpImposterStubAsync(int port, HttpStub replacementStub, int stubIndex)
+AddHttpImposterStubAsync(int port, HttpStub newStub, int? newStubIndex)
+RemoveStubAsync(int port, int stubIndex)
+```
+
+Finally, there are a handful of diagnostic methods:
+
+```
+GetEntryHypermediaAsync()
+GetConfigAsync()
+GetLogsAsync()
+```
+
+## Creating HTTP/HTTPS Stubs
+
+There are a handful of predicate helpers on the `HttpStub` class for common predicate setup as well as the `On(Predicate)` method which lets you configure more complex predicates.
+
+Similarly, there are helpers that allow you to more easily craft your responses. There are also helpers for configuring [proxy responses](http://www.mbtest.org/docs/api/proxies) and a generic `Returns(Response)` method for adding custom responses.
+
+Examples:
+
+```
+imposter.AddStub()
+	.OnPathEquals("/books")
+	.ReturnsJson(HttpStatusCode.OK, books);
+
+imposter.AddStub()
+	.OnMethodEquals(Method.Post)
+	.ReturnsStatus(HttpStatusCode.Created);
+
+imposter.AddStub()
+	.OnPathAndMethodEqual("/books", Method.Get)
+	.ReturnsXml(HttpStatusCode.OK, books);
+
+imposter.AddStub()
+	.OnInjectedFunction("function(config) { return true; }")
+	.ReturnsBody("a=1&b=2");
+
+var predicateFields = new HttpPredicateFields
+{
+	Path = "/binaryData"
+};
+var responseFields = new HttpResponseFields
+{
+	StatusCode = HttpStatusCode.OK,
+	ResponseObject = "data",
+	Mode = "binary"
+}
+imposter.AddStub()
+	.On(new StartsWithPredicate<HttpPredicateFields>(predicateFields))
+	.Returns(new IsResponse<HttpResponseFields>(responseFields));
+```
+
+## Creating TCP Stubs
+
+The `TcpStub` class exposes a limited set of helpers as well as a generic `On(Predicate)` and `Returns(Response)` methods.
+
+Examples:
+
+```
+imposter.AddStub()
+	.OnDataEquals("123456")
+	.ReturnsData("abcdefg");
+
+imposter.AddStub()
+	.OnInjectedFunction("function(config) { return true; }")
+	.ReturnsData("abcdefg");
+```
