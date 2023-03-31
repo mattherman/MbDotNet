@@ -2,7 +2,7 @@
 
 MbDotNet is a .NET client library for the [Mountebank](https://mbtest.org) testing tool created by Brandon Byars. Mountebank provides cross-platform, multi-protocol test doubles over the wire that enable you to test distributed applications by mocking and stubbing your applications dependencies at the network level.
 
-Test doubles in Mountebank are called _imposters_. An imposter is configured to respond to requests made to a specific port. Each imposter defines one or more _stubs_ that control how the _imposter_ responds to those requests. A single _stub_ defines _predicates_ which specify whether that stub should be matched by a request. If matched, the stub also defines _responses_ which specify the actual response that should be returned.
+Test doubles in Mountebank are called _imposters_. An imposter is configured to respond to requests made to a specific port. Each imposter defines one or more _stubs_ that control how the imposter responds to those requests. A single stub defines _predicates_ which specify whether that stub should be matched by a request. If matched, the stub also defines _responses_ which specify the actual response that should be returned.
 
 Here is an example HTTP imposter that is configured on port 4545 and has two stubs:
 
@@ -98,3 +98,39 @@ imposter.AddStub()
 ```
 
 In this example we are adding a stub that will match any requests where the path starts with "/admin" and returning a 403 response with a custom body and specific headers. Since the stub does not expose a helper for the "startsWith" predicate we needed to craft the predicate ourselves and use the `On` method to add it to the stub. We then use the `Returns` method to have some more control over each part of the response.
+
+We can also retrieve imposters and verify the requests that have been made to them for mock verification. A full test with imposter setup and verification might look something like this:
+
+```
+var client = new MountebankClient();
+
+var books = new []
+{
+	new Book { Id = 1, Name = "Great Expectations" },
+	new Book { Id = 2, Name = "A Christmas Carol" }
+};
+
+await client.CreateHttpImposterAsync(4545, imposter =>
+{
+	imposter.RecordRequests = true;
+
+	imposter.AddStub()
+		.OnPathAndMethodEqual("/books", Method.Get)
+		.ReturnsJson(HttpStatusCode.OK, books);
+});
+
+var codeUnderTest = new CodeUnderTest(apiUrl: "http://localhost:4545");
+var result = await codeUnderTest.GetBooks();
+
+Assert.Equal(result, books);
+
+var booksImposter = await client.GetHttpImposterAsync(4545);
+
+Assert.Equal(1, booksImposter.NumberOfRequests);
+Assert.Equal("GET", booksImposter.Requests[0].Method);
+Assert.Equal("/books", booksImposter.Requests[0].Path);
+```
+
+For this test we setup a single stub and enable Mountebank's request recording functionality for the imposter using `imposter.RecordRequests = true`. We then exercise the code under test which relies on the API that we are mocking and verify the result. Finally, we retrieve the imposter and inspect the `Requests` collection to verify the behavior we expected.
+
+The official [documentation](https://mbtest.org) has many more examples of imposter creation with all of the different [predicates](http://www.mbtest.org/docs/api/predicates) and [responses](http://www.mbtest.org/docs/api/stubs) that are available. Most of these examples have a corresponding test in the [DocumentationTests.cs](https://github.com/mattherman/MbDotNet/blob/master/MbDotNet.Tests/Acceptance/DocumentationTests.cs) file that may help you translate between the JSON imposter definitions and how they would be defined with MbDotNet. If you are struggling to define a specific predicate or response I would suggest looking there first.
