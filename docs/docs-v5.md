@@ -246,3 +246,51 @@ imposter.AddStub()
 	.OnInjectedFunction("function(config) { return true; }")
 	.ReturnsData("abcdefg");
 ```
+
+## Predicates
+
+MbDotNet supports all of the predicate types that are supported by Mountebank (as of v2.8.2).
+
+| Mountebank Predicate Type                                                       | MbDotNet Class        |
+| ------------------------------------------------------------------------------- | --------------------- |
+| [`equals`](http://www.mbtest.org/docs/api/predicates#predicates-equals)         | `EqualsPredicate`     |
+| [`deepEquals`](http://www.mbtest.org/docs/api/predicates#predicates-deepEquals) | `DeepEqualsPredicate` |
+| [`contains`](http://www.mbtest.org/docs/api/predicates#predicates-contains)     | `ContainsPredicate`   |
+| [`startsWith`](http://www.mbtest.org/docs/api/predicates#predicates-startsWith) | `StartsWithPredicate` |
+| [`endsWith`](http://www.mbtest.org/docs/api/predicates#predicates-endsWith)     | `EndsWithPredicate`   |
+| [`matches`](http://www.mbtest.org/docs/api/predicates#predicates-matches)       | `MatchesPredicate`    |
+| [`exists`](http://www.mbtest.org/docs/api/predicates#predicates-exists)         | `ExistsPredicate`     |
+| [`not`](http://www.mbtest.org/docs/api/predicates#predicates-not)               | `NotPredicate`        |
+| [`or`](http://www.mbtest.org/docs/api/predicates#predicates-or)                 | `OrPredicate`         |
+| [`and`](http://www.mbtest.org/docs/api/predicates#predicates-and)               | `AndPredicate`        |
+| [`inject`](http://www.mbtest.org/docs/api/predicates#predicates-inject)         | `InjectPredicate`     |
+
+Most predicates expect a set of request fields, like `HttpPredicateFields`, with specific values to match in some way. However, some predicates like `exists` expect boolean values for those request fields. In those cases you should use `HttpBooleanPredicateFields`.
+
+### Multiple Predicates
+
+If a single stub contains multiple predicates, the request needs to match ALL predicates in order for the stub to be matched.
+
+For example, the following stubs are equivalent:
+
+```
+var combinedPredicateFields = new HttpPredicateFields
+{
+	Path = "/books"
+	Method = Method.Post
+};
+imposter.AddStub()
+	.On(combinedPredicateFields)
+	.ReturnsStatus(HttpStatusCode.Created);
+
+var pathPredicateFields = new HttpPredicateFields { Path = "/books" };
+var methodPredicateFields = new HttpPredicateFields { Method = Method.Post };
+imposter.AddStub()
+	.On(pathPredicateFields)
+	.On(methodPredicateFields)
+	.ReturnsStatus(HttpStatusCode.Created);
+```
+
+## Responses
+
+### Multiple Responses
