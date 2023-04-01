@@ -1,4 +1,4 @@
-_The following documentation is for v5.x. Documentation for older versions can be found [here](https://github.com/mattherman/MbDotNet/blob/master/docs/docs-v4.md)._
+_The following documentation is for v4.x and earlier. The latest documentation can be found [here](https://github.com/mattherman/MbDotNet/blob/master/docs/docs-v5.md)._
 
 # Introduction
 
@@ -61,26 +61,25 @@ One of the primary goals of this project is to simplify the creation of imposter
 
 ```
 var client = new MountebankClient();
-await client.CreateHttpImposterAsync(4545, imposter =>
+var imposter = client.CreateHttpImposter(4545);
+
+var books = new []
 {
-	var books = new []
-	{
-		new Book { Id = 1, Name = "Great Expectations" },
-		new Book { Id = 2, Name = "A Christmas Carol" }
-	};
+	new Book { Id = 1, Name = "Great Expectations" },
+	new Book { Id = 2, Name = "A Christmas Carol" }
+};
 
-	imposter.AddStub()
-		.OnPathAndMethodEqual("/books", Method.Get)
-		.ReturnsJson(HttpStatusCode.OK, books);
+imposter.AddStub()
+	.OnPathAndMethodEqual("/books", Method.Get)
+	.ReturnsJson(HttpStatusCode.OK, books);
 
-	imposter.AddStub()
-		.ReturnsStatus(HttpStatusCode.NotFound);
-});
+imposter.AddStub()
+	.ReturnsStatus(HttpStatusCode.NotFound);
+
+client.Submit(imposter);
 ```
 
-First we create a new `MountebankClient` which we use to interact with Mountebank. Then we create a new HTTP imposter on port 4545 using the `CreateHttpImposterAsync` method. This method accepts a configurator callback which we can use to configure the imposter before creation.
-
-The imposter configuration uses a fluent interface that exposes helper functions like `OnPathAndMethodEqual` and `ReturnsJson` that make defining your stubs more natural.
+First we create a new `MountebankClient` which we use to interact with Mountebank. Then we create a new HTTP imposter on port 4545 using the `CreateHttpImposter` factory method. Imposter configuration is performed by adding stubs with specific predicates and responses. The stub classes use a fluent interface that exposes helper functions like `OnPathAndMethodEqual` and `ReturnsJson` that make defining your stubs more natural.
 
 Methods like this exist for the most common predicates and responses, but on occasion you may need more control. You can add more complex predicates and responses to your stubs using the `On` and `Returns` methods:
 
@@ -94,7 +93,7 @@ imposter.AddStub()
 	.On(adminPath)
 	.Returns(
 		HttpStatusCode.Forbidden,
-		new Dictionary<string, object> { ["Date"] = DateTime.UtcNow },
+		new Dictionary<string, string> { ["Date"] = DateTime.UtcNow },
 		"User does not have admin rights"
 	);
 ```
@@ -112,30 +111,29 @@ var books = new []
 	new Book { Id = 2, Name = "A Christmas Carol" }
 };
 
-await client.CreateHttpImposterAsync(4545, imposter =>
-{
-	imposter.RecordRequests = true;
+var imposter = client.CreateHttpImposter(4545, recordRequests: true);
 
-	imposter.AddStub()
-		.OnPathAndMethodEqual("/books", Method.Get)
-		.ReturnsJson(HttpStatusCode.OK, books);
-});
+imposter.AddStub()
+	.OnPathAndMethodEqual("/books", Method.Get)
+	.ReturnsJson(HttpStatusCode.OK, books);
+
+client.Submit(imposter);
 
 var codeUnderTest = new CodeUnderTest(apiUrl: "http://localhost:4545");
 var result = await codeUnderTest.GetBooks();
 
 Assert.AreEqual(result, books);
 
-var booksImposter = await client.GetHttpImposterAsync(4545);
+var booksImposter = client.GetHttpImposter(4545);
 
 Assert.AreEqual(1, booksImposter.NumberOfRequests);
 Assert.AreEqual("GET", booksImposter.Requests[0].Method);
 Assert.AreEqual("/books", booksImposter.Requests[0].Path);
 ```
 
-For this test we setup a single stub and enable Mountebank's request recording functionality for the imposter using `imposter.RecordRequests = true`. We then exercise the code under test which relies on the API that we are mocking and verify the result. Finally, we retrieve the imposter and inspect the `Requests` collection to verify the behavior we expected.
+For this test we setup a single stub and enable Mountebank's request recording functionality for the imposter by setting the `recordRequests` parameter to `true`. We then exercise the code under test which relies on the API that we are mocking and verify the result. Finally, we retrieve the imposter and inspect the `Requests` collection to verify the behavior we expected.
 
-The official [documentation](https://mbtest.org) has many more examples of imposter creation with all of the different [predicates](http://www.mbtest.org/docs/api/predicates) and [responses](http://www.mbtest.org/docs/api/stubs) that are available. Most of these examples have a corresponding test in the [DocumentationTests.cs](https://github.com/mattherman/MbDotNet/blob/master/MbDotNet.Tests/Acceptance/DocumentationTests.cs) file that may help you translate between the JSON imposter definitions and how they would be defined with MbDotNet. If you are struggling to define a specific predicate or response I would suggest looking there first.
+The official [documentation](https://mbtest.org) has many more examples of imposter creation with all of the different [predicates](http://www.mbtest.org/docs/api/predicates) and [responses](http://www.mbtest.org/docs/api/stubs) that are available. Most of these examples have a corresponding test in the [DocumentationTests.cs](https://github.com/mattherman/MbDotNet/blob/master/MbDotNet.Tests/Acceptance/DocumentationTests.cs) file that may help you translate between the JSON imposter definitions and how they would be defined with MbDotNet. Keep in mind those tests are for the latest version of the library so some things may differ from v4.
 
 # Deep Dive
 
@@ -145,27 +143,22 @@ All interaction with Mountebank is done through the `MountebankClient` class. Th
 
 The default constructor will assume that Mountebank is running at `http://localhost:2525`. There is an alternative constructor that accepts a URI if you need to override this value.
 
-The following methods are used to create HTTP imposters:
+The following factory methods are used to create imposters:
 
 ```
-CreateHttpImposterAsync(int? port, string name, Action<HttpImposter> imposterConfigurator);
-CreateHttpImposterAsync(int? port, Action<HttpImposter> imposterConfigurator)
-CreateHttpImposterAsync(HttpImposter imposter)
-# Additional methods for creating HTTPS, TCP, and SMTP imposters...
+CreateHttpImposter(int? port = null, string name = null, bool recordRequests = false, HttpResponseFields defaultResponse = null, bool allowCORS = false)
+CreateHttpsImposter(int? port = null, string name = null, string key = null, string cert = null, bool mutualAuthRequired = false, bool recordRequests = false, HttpResponseFields defaultResponse = null, bool allowCORS = false)
+CreateTcpImposter(int? port = null, string name = null, TcpMode mode = TcpMode.Text, bool recordRequests = false, TcpResponseFields defaultResponse = null)
 ```
 
-There are similar methods for HTTPS, TCP, and SMTP imposters as well. I suggest using one of the first two overloads which take a callback for configuring the imposter. This encapsulates the configuration and avoids situations where you might modify your imposter object after it has been submitted to Mountebank which would likely cause confusion since the changes would not be represented there. If you'd like to create the imposter and configure it separately you can still use the last overload to submit it to Mountebank.
-
-Specifying a port number when creating an imposter is optional. If it is omitted Mountebank will assing a random port for the imposter.
+All of the parameters represent optional imposter configuration, including the port. If a port number is not specified Mountebank will assign a random port to the imposter.
 
 The client also exposes methods to retrieve imposters:
 
 ```
-GetHttpImposterAsync(int port)
-GetHttpsImposterAsync(int port)
-GetTcpImposterAsync(int port)
-GetSmtpImposterAsync(int port)
-GetImpostersAsync()
+GetHttpImposter(int port)
+GetHttpsImposter(int port)
+GetTcpImposter(int port)
 ```
 
 These methods return a simplified representation of the imposter which does not include the configured stubs, but does have [requests](http://www.mbtest.org/docs/api/mocks) (if `RecordRequests` is true) and stub [matches](http://www.mbtest.org/docs/api/overview#get-imposter) (if Mountebank is run with the `--debug` flag).
@@ -176,23 +169,6 @@ The client allows you to delete imposters or clear saved requests:
 DeleteImposterAsync(int port)
 DeleteAllImpostersAsync()
 DeleteSavedRequestsAsync(int port)
-```
-
-It also lets you modify stubs on a specific imposter:
-
-```
-ReplaceHttpImposterStubsAsync(int port, IEnumerable<HttpStub> replacementStubs)
-ReplaceHttpImposterStubAsync(int port, HttpStub replacementStub, int stubIndex)
-AddHttpImposterStubAsync(int port, HttpStub newStub, int? newStubIndex)
-RemoveStubAsync(int port, int stubIndex)
-```
-
-Finally, there are a handful of diagnostic methods:
-
-```
-GetEntryHypermediaAsync()
-GetConfigAsync()
-GetLogsAsync()
 ```
 
 ## Creating Stubs
@@ -255,7 +231,7 @@ imposter.AddStub()
 
 ## Predicates
 
-MbDotNet supports all of the predicate types that are supported by Mountebank (as of v2.8.2).
+MbDotNet supports most of the predicate types that are supported by Mountebank (as of v2.8.2).
 
 | Mountebank Predicate Type                                                       | MbDotNet Class        |
 | ------------------------------------------------------------------------------- | --------------------- |
@@ -265,13 +241,11 @@ MbDotNet supports all of the predicate types that are supported by Mountebank (a
 | [`startsWith`](http://www.mbtest.org/docs/api/predicates#predicates-startsWith) | `StartsWithPredicate` |
 | [`endsWith`](http://www.mbtest.org/docs/api/predicates#predicates-endsWith)     | `EndsWithPredicate`   |
 | [`matches`](http://www.mbtest.org/docs/api/predicates#predicates-matches)       | `MatchesPredicate`    |
-| [`exists`](http://www.mbtest.org/docs/api/predicates#predicates-exists)         | `ExistsPredicate`     |
+| [`exists`](http://www.mbtest.org/docs/api/predicates#predicates-exists)         | Not Supported         |
 | [`not`](http://www.mbtest.org/docs/api/predicates#predicates-not)               | `NotPredicate`        |
 | [`or`](http://www.mbtest.org/docs/api/predicates#predicates-or)                 | `OrPredicate`         |
 | [`and`](http://www.mbtest.org/docs/api/predicates#predicates-and)               | `AndPredicate`        |
 | [`inject`](http://www.mbtest.org/docs/api/predicates#predicates-inject)         | `InjectPredicate`     |
-
-Most predicates expect a set of request fields, like `HttpPredicateFields`, with specific values to match in some way. However, some predicates like `exists` expect boolean values for those request fields. In those cases you should use `HttpBooleanPredicateFields`.
 
 The `inject` predicate type can be used to inject a custom Javascript function that will determine whether or not to match a request.
 
