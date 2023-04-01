@@ -267,6 +267,8 @@ MbDotNet supports all of the predicate types that are supported by Mountebank (a
 
 Most predicates expect a set of request fields, like `HttpPredicateFields`, with specific values to match in some way. However, some predicates like `exists` expect boolean values for those request fields. In those cases you should use `HttpBooleanPredicateFields`.
 
+The `inject` predicate type can be used to inject a custom Javascript function that will determine whether or not to match a request.
+
 ### Multiple Predicates
 
 If a single stub contains multiple predicates, the request needs to match ALL predicates in order for the stub to be matched.
@@ -293,4 +295,46 @@ imposter.AddStub()
 
 ## Responses
 
+MbDotNet supports most of the response types that are supported by Mountebank (as of v2.8.2).
+
+| Mountebank Response Type                             | MbDotnet Class  |
+| ---------------------------------------------------- | --------------- |
+| [`is`](http://www.mbtest.org/docs/api/stubs)         | `IsResponse`    |
+| [`proxy`](http://www.mbtest.org/docs/api/proxies)    | `ProxyResponse` |
+| [`inject`](http://www.mbtest.org/docs/api/injection) | Not Supported   |
+| [`fault`](http://www.mbtest.org/docs/api/faults)     | Not supported   |
+
+The most common response is the `is` response type which lets you specify the exact values that should be returned for each response field.
+
+The `proxy` response type allows you to record and replay behavior by proxying requests to a real service. This requires you to define predicate generators which will determine how Mountebank will create the stubs for the imposter it generates. See the [official documentation](http://www.mbtest.org/docs/api/proxies) for more information about how to use proxies.
+
+Example:
+
+```
+var predicateGenerators = new List<MatchesPredicate<HttpBooleanPredicateFields>>
+{
+	new(new HttpBooleanPredicateFields
+	{
+		QueryParameters = true
+	})
+};
+imposter.AddStub()
+	.ReturnsProxy(
+		new Uri("http://origin-server.com",
+		ProxyMode.ProxyOnce,
+		predicateGenerators)
+	);
+```
+
+In this example, the first request to the imposter will be proxied to the real service at `http://origin-server.com`. Mountebank will then create a stub based on the predicate generators and the response from the actual service. In this case a predicate that matches on the query parameters of the request will be added. Since the proxy uses `ProxyMode.ProxyOnce` all subsequent requests will be handled by the imposter directly.
+
 ### Multiple Responses
+
+If a stub contains multiple responses Mountebank will return each response in a round robin manner when the stub is matched. This can be useful for test scenarios where you expect a different response the second time a request is made, such as a delete scenario:
+
+```
+imposter.AddStub()
+	.OnPathAndMethodEqual("/books/123", Method.Delete)
+	.ReturnsStatus(HttpStatusCode.NoContent)
+	.ReturnsStatus(HttpStatusCode.NotFound);
+```
