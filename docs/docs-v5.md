@@ -72,7 +72,7 @@ await client.CreateHttpImposterAsync(4545, imposter =>
 		.ReturnsJson(HttpStatusCode.OK, books);
 
 	imposter.AddStub()
-		.ReturnsStatus(HttpstatusCode.NotFound);
+		.ReturnsStatus(HttpStatusCode.NotFound);
 });
 ```
 
@@ -83,7 +83,7 @@ The imposter configuration uses a fluent interface that exposes helper functions
 Methods like this exist for the most common predicates and responses, but on occasion you may need more control. You can add more complex predicates and responses to your stubs using the `On` and `Returns` methods:
 
 ```
-var adminPath = new StartsWithPredicate<HttpPredicateFields>(
+var adminPath = new StartsWithPredicate<HttpPredicateFields>(new HttpPredicateFields
 {
 	Path = "/admin"
 });
@@ -122,13 +122,13 @@ await client.CreateHttpImposterAsync(4545, imposter =>
 var codeUnderTest = new CodeUnderTest(apiUrl: "http://localhost:4545");
 var result = await codeUnderTest.GetBooks();
 
-Assert.Equal(result, books);
+Assert.AreEqual(result, books);
 
 var booksImposter = await client.GetHttpImposterAsync(4545);
 
-Assert.Equal(1, booksImposter.NumberOfRequests);
-Assert.Equal("GET", booksImposter.Requests[0].Method);
-Assert.Equal("/books", booksImposter.Requests[0].Path);
+Assert.AreEqual(1, booksImposter.NumberOfRequests);
+Assert.AreEqual("GET", booksImposter.Requests[0].Method);
+Assert.AreEqual("/books", booksImposter.Requests[0].Path);
 ```
 
 For this test we setup a single stub and enable Mountebank's request recording functionality for the imposter using `imposter.RecordRequests = true`. We then exercise the code under test which relies on the API that we are mocking and verify the result. Finally, we retrieve the imposter and inspect the `Requests` collection to verify the behavior we expected.
@@ -216,7 +216,7 @@ imposter.AddStub()
 
 imposter.AddStub()
 	.OnInjectedFunction("function(config) { return true; }")
-	.ReturnsBody("a=1&b=2");
+	.ReturnsBody(HttpStatusCode.OK, "a=1&b=2");
 
 var predicateFields = new HttpPredicateFields
 {
@@ -227,7 +227,7 @@ var responseFields = new HttpResponseFields
 	StatusCode = HttpStatusCode.OK,
 	ResponseObject = "data",
 	Mode = "binary"
-}
+};
 imposter.AddStub()
 	.On(new StartsWithPredicate<HttpPredicateFields>(predicateFields))
 	.Returns(new IsResponse<HttpResponseFields>(responseFields));
@@ -280,18 +280,18 @@ For example, the following stubs are equivalent:
 ```
 var combinedPredicateFields = new HttpPredicateFields
 {
-	Path = "/books"
+	Path = "/books",
 	Method = Method.Post
 };
 imposter.AddStub()
-	.On(combinedPredicateFields)
+	.On(new EqualsPredicate<HttpPredicateFields>(combinedPredicateFields))
 	.ReturnsStatus(HttpStatusCode.Created);
 
 var pathPredicateFields = new HttpPredicateFields { Path = "/books" };
 var methodPredicateFields = new HttpPredicateFields { Method = Method.Post };
 imposter.AddStub()
-	.On(pathPredicateFields)
-	.On(methodPredicateFields)
+	.On(new EqualsPredicate<HttpPredicateFields>(pathPredicateFields))
+	.On(new EqualsPredicate<HttpPredicateFields>(methodPredicateFields))
 	.ReturnsStatus(HttpStatusCode.Created);
 ```
 
@@ -322,9 +322,9 @@ var predicateGenerators = new List<MatchesPredicate<HttpBooleanPredicateFields>>
 };
 imposter.AddStub()
 	.ReturnsProxy(
-		new Uri("http://origin-server.com",
+		new Uri("http://origin-server.com"),
 		ProxyMode.ProxyOnce,
-		predicateGenerators)
+		predicateGenerators
 	);
 ```
 
