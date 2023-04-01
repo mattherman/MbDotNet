@@ -1,4 +1,4 @@
-_The following documentation is for v5.x. Documentation for older versions can be found [here](https://github.com/mattherman/MbDotNet/blob/master/docs/docs-v4.md)._
+_The following documentation is for v5.x. Documentation for older versions can be found [here](https://github.com/mattherman/MbDotNet/blob/master/docs/docs-v4.md). If you are migrating from v4.x make sure to read about the [breaking changes](https://github.com/mattherman/MbDotNet/blob/master/docs/v4-to-v5-migration.md)._
 
 # Introduction
 
