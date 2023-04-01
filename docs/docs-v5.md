@@ -191,7 +191,9 @@ GetConfigAsync()
 GetLogsAsync()
 ```
 
-## Creating HTTP/HTTPS Stubs
+## Creating Stubs
+
+### HTTP/HTTPS
 
 There are a handful of predicate helpers on the `HttpStub` class for common predicate setup as well as the `On(Predicate)` method which lets you configure more complex predicates.
 
@@ -231,7 +233,7 @@ imposter.AddStub()
 	.Returns(new IsResponse<HttpResponseFields>(responseFields));
 ```
 
-## Creating TCP Stubs
+### TCP
 
 The `TcpStub` class exposes a limited set of helpers as well as a generic `On(Predicate)` and `Returns(Response)` methods.
 
