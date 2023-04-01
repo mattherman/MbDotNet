@@ -164,7 +164,7 @@ GetSmtpImposterAsync(int port)
 GetImpostersAsync()
 ```
 
-These methods return a simplified representation of the imposter which does not include the configured stubs, but does have requests (if `RecordRequests` is true) and stub matches (if Mountebank is run with the `--debug` flag).
+These methods return a simplified representation of the imposter which does not include the configured stubs, but does have [requests](http://www.mbtest.org/docs/api/mocks) (if `RecordRequests` is true) and stub [matches](http://www.mbtest.org/docs/api/overview#get-imposter) (if Mountebank is run with the `--debug` flag).
 
 The client allows you to delete imposters or clear saved requests:
 
