@@ -3,9 +3,10 @@
 There were a handful of breaking changes introduced in v5.x of the library. These include:
 
 - `MountebankClient` methods are now async by default and have been renamed to include an `Async` suffix
-- The `CreateXYZImposter` methods on `MountebankClient` have been updated to actually create imposters in Mountebank rather than act as simple factory methods for the imposter objects
-- The `Submit` methods on `MountebankClient` have been removed since the create methods now handle submission to Mountebank
-- Imposter configuration (ex. `RecordRequests`) is now exposed via properties on the imposters themselves rather than through arguments to the `CreateXYZImposter` methods
+- The `MountebankClient` constructor which overrides the Mountebank URL now takes a `Uri` object instead of a `string`
+- The `CreateHttpImposter`, `CreateHttpsImposter`, and `CreateTcpImposter` methods on `MountebankClient` have been updated to actually create imposters in Mountebank rather than act as simple factory methods for the imposter objects
+- The `Submit` methods on `MountebankClient` have been removed since the imposter creation methods now handle submission to Mountebank
+- Imposter configuration (ex. `RecordRequests`) is now exposed via properties on the imposters themselves rather than through arguments to the imposter creation methods
 - The `Headers` and `QueryParameters` properties on `HttpPredicateFields` now have a type of `IDictionary<string, object>` instead of `IDictionary<string, string>` to support specifying arrays of values
 - The `Headers` property on `HttpResponseFields` now has a type of `IDictionary<string, object>` instead of `IDictionary<string, string>` to support returning arrays of values
 - Various collection types in the models have been changed. See [#119](https://github.com/mattherman/MbDotNet/pull/119) for details.
@@ -47,11 +48,11 @@ public async Task MyTest { ... }
 
 ## Imposter Configuration and Creation
 
-This is by far the largest change between the two versions. Previously the `CreateXYZImposter` methods were simple factory methods on the client that assisted with the creation and configuration of imposter objects. In order to actually create the imposters in Mountebank users would need to call the `Submit` method.
+This is by far the largest change between the two versions. Previously the imposter creation methods were simple factory methods on the client that assisted with the creation and configuration of imposter objects. In order to actually create the imposters in Mountebank users would need to call the `Submit` method.
 
 The factory methods have always been a little confusing for users since they include the word "Create" in them. Many users initially think those methods will create the imposter in Mountebank itself.
 
-In order to make this clearer, those methods have been modified to handle the creation and configuration of the imposter instance as well as its submission to Mountebank in a single method call.
+In order to make this more clear, those methods have been modified to handle the creation and configuration of the imposter instance as well as its submission to Mountebank in a single method call.
 
 There are two main styles by which you create and configure imposters in v5.x. The first (and recommended) style uses a callback for configuration while the second style allows you to create and configure the imposter instance yourself.
 

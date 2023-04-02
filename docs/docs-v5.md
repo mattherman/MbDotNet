@@ -190,6 +190,7 @@ ReplaceHttpImposterStubsAsync(int port, IEnumerable<HttpStub> replacementStubs)
 ReplaceHttpImposterStubAsync(int port, HttpStub replacementStub, int stubIndex)
 AddHttpImposterStubAsync(int port, HttpStub newStub, int? newStubIndex)
 RemoveStubAsync(int port, int stubIndex)
+# Additional methods for modifying HTTPS, TCP, and SMTP imposters...
 ```
 
 Finally, there are a handful of diagnostic methods:

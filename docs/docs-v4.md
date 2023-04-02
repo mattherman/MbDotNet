@@ -139,7 +139,7 @@ The official [documentation](https://www.mbtest.org) has many more examples of i
 
 ## Interacting with Mountebank
 
-All interaction with Mountebank is done through the `MountebankClient` class. This class exposes the various [imposter operations](http://www.mbtest.org/docs/api/overview) as well as more diagnostic operations like viewing logs or configuration information.
+All interaction with Mountebank is done through the `MountebankClient` class. This class exposes various [imposter operations](http://www.mbtest.org/docs/api/overview).
 
 The default constructor will assume that Mountebank is running at `http://localhost:2525`. There is an alternative constructor that accepts a URI if you need to override this value:
 
