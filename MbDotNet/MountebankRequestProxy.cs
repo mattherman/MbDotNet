@@ -20,9 +20,9 @@ namespace MbDotNet
 		private const string DefaultMountebankUrl = "http://127.0.0.1:2525";
 		private readonly IHttpClientWrapper _httpClient;
 
-		public MountebankRequestProxy() : this(DefaultMountebankUrl) { }
+		public MountebankRequestProxy() : this(new Uri(DefaultMountebankUrl)) { }
 
-		public MountebankRequestProxy(string mountebankUrl) : this(new HttpClientWrapper(new Uri(mountebankUrl))) { }
+		public MountebankRequestProxy(Uri mountebankUri) : this(new HttpClientWrapper(mountebankUri)) { }
 
 		/// <summary>
 		/// Internal constructor that allows injection of a client for

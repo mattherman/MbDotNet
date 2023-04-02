@@ -26,8 +26,8 @@ namespace MbDotNet
 		/// <summary>
 		/// Create a new MountebankClient instance for a specific server URL
 		/// </summary>
-		/// <param name="mountebankUrl"></param>
-		public MountebankClient(string mountebankUrl) : this(new MountebankRequestProxy(mountebankUrl)) { }
+		/// <param name="mountebankUri"></param>
+		public MountebankClient(Uri mountebankUri) : this(new MountebankRequestProxy(mountebankUri)) { }
 
 		internal MountebankClient(IRequestProxy requestProxy)
 		{
