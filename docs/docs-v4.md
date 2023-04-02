@@ -2,7 +2,7 @@ _The following documentation is for v4.x and earlier. The latest documentation c
 
 # Introduction
 
-MbDotNet is a .NET client library for the [Mountebank](https://mbtest.org) testing tool created by Brandon Byars. Mountebank provides cross-platform, multi-protocol test doubles over the wire that enable you to test distributed applications by mocking and stubbing your applications dependencies at the network level.
+MbDotNet is a .NET client library for the [Mountebank](https://www.mbtest.org) testing tool created by Brandon Byars. Mountebank provides cross-platform, multi-protocol test doubles over the wire that enable you to test distributed systems by mocking and stubbing your application's dependencies at the network level.
 
 Test doubles in Mountebank are called _imposters_. An imposter is configured to respond to requests made to a specific port. Each imposter defines one or more _stubs_ that control how the imposter responds to those requests. A single stub defines _predicates_ which specify whether that stub should be matched by a request. If matched, the stub also defines _responses_ which specify the actual response that should be returned.
 
@@ -53,7 +53,7 @@ Most interaction with Mountebank is performed through its API. For example, to c
 
 MbDotNet is an abstraction layer over this API that allows you to easily configure your imposters using plain .NET types rather than using the JSON format directly. It also provides methods for most of the API operations that Mountebank exposes.
 
-If you're unfamiliar with Mountebank, I suggest reading through that [project's documentation](https://mbtest.org) before starting to use MbDotNet.
+If you're unfamiliar with Mountebank, I suggest reading through the [documentation](https://www.mbtest.org) before starting to use MbDotNet.
 
 # Getting Started with MbDotNet
 
@@ -133,7 +133,7 @@ Assert.AreEqual("/books", booksImposter.Requests[0].Path);
 
 For this test we setup a single stub and enable Mountebank's request recording functionality for the imposter by setting the `recordRequests` parameter to `true`. We then exercise the code under test which relies on the API that we are mocking and verify the result. Finally, we retrieve the imposter and inspect the `Requests` collection to verify the behavior we expected.
 
-The official [documentation](https://mbtest.org) has many more examples of imposter creation with all of the different [predicates](http://www.mbtest.org/docs/api/predicates) and [responses](http://www.mbtest.org/docs/api/stubs) that are available. Most of these examples have a corresponding test in the [DocumentationTests.cs](https://github.com/mattherman/MbDotNet/blob/master/MbDotNet.Tests/Acceptance/DocumentationTests.cs) file that may help you translate between the JSON imposter definitions and how they would be defined with MbDotNet. Keep in mind those tests are for the latest version of the library so some things may differ from v4.
+The official [documentation](https://www.mbtest.org) has many more examples of imposter creation with all of the different [predicates](http://www.mbtest.org/docs/api/predicates) and [responses](http://www.mbtest.org/docs/api/stubs) that are available. Most of these examples have a corresponding test in the [DocumentationTests.cs](https://github.com/mattherman/MbDotNet/blob/master/MbDotNet.Tests/Acceptance/DocumentationTests.cs) file that may help you translate between the JSON imposter definitions and how they would be defined with MbDotNet. Keep in mind those tests are for the latest version of the library so some things may differ from v4.
 
 # Deep Dive
 
@@ -141,7 +141,12 @@ The official [documentation](https://mbtest.org) has many more examples of impos
 
 All interaction with Mountebank is done through the `MountebankClient` class. This class exposes the various [imposter operations](http://www.mbtest.org/docs/api/overview) as well as more diagnostic operations like viewing logs or configuration information.
 
-The default constructor will assume that Mountebank is running at `http://localhost:2525`. There is an alternative constructor that accepts a URI if you need to override this value.
+The default constructor will assume that Mountebank is running at `http://localhost:2525`. There is an alternative constructor that accepts a URI if you need to override this value:
+
+```
+MountebankClient()
+MountebankClient(Uri mountebankUri)
+```
 
 The following factory methods are used to create imposters:
 
@@ -215,7 +220,7 @@ imposter.AddStub()
 
 ### TCP
 
-The `TcpStub` class exposes a limited set of helpers as well as a generic `On(Predicate)` and `Returns(Response)` methods.
+The `TcpStub` class exposes a limited set of helpers as well as generic `On(Predicate)` and `Returns(Response)` methods.
 
 Examples:
 
