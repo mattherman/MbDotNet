@@ -152,17 +152,10 @@ namespace MbDotNet.Tests
 
 			var response = GetResponse(HttpStatusCode.OK);
 
-			HttpContent content = null;
 			_mockClient.Setup(x => x.PutAsync(expectedResource, It.IsAny<HttpContent>(), default))
-				.ReturnsAsync(response)
-				.Callback<string, HttpContent, CancellationToken>((_, cont, _) => content = cont);
+				.ReturnsAsync(response);
 
 			await _proxy.OverwriteAllImpostersAsync(imposters).ConfigureAwait(false);
-
-			var json = await content.ReadAsStringAsync();
-			var serializedImposters = JsonConvert.DeserializeObject<HttpImposter[]>(json);
-
-			Assert.AreEqual(imposters.Length, serializedImposters.Length);
 		}
 
 		[TestMethod]

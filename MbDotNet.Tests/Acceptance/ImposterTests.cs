@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MbDotNet.Exceptions;
 using MbDotNet.Models;
+using MbDotNet.Models.Imposters;
 using MbDotNet.Models.Predicates;
 using MbDotNet.Models.Predicates.Fields;
 using MbDotNet.Models.Stubs;
@@ -489,6 +490,65 @@ namespace MbDotNet.Tests.Acceptance
 			var retrievedSourceImposter = await _client.GetTcpImposterAsync(sourceImposterPort);
 			Assert.IsNotNull(retrievedSourceImposter);
 			Assert.AreEqual(1, retrievedSourceImposter.NumberOfRequests);
+		}
+
+		[TestMethod]
+		public async Task CanDeleteSavedProxyResponses()
+		{
+			const int sourceImposterPort = 6000;
+			const int proxyImposterPort = 6001;
+
+			await _client.CreateHttpImposterAsync(sourceImposterPort, imposter =>
+			{
+				imposter.AddStub().ReturnsStatus(HttpStatusCode.OK);
+			});
+
+			await _client.CreateHttpImposterAsync(proxyImposterPort, imposter =>
+			{
+				var predicateGenerators = new List<MatchesPredicate<HttpBooleanPredicateFields>>
+				{
+					new(new HttpBooleanPredicateFields
+					{
+						QueryParameters = true
+					})
+				};
+
+				imposter.AddStub().ReturnsProxy(
+					new Uri($"http://localhost:{sourceImposterPort}"),
+					ProxyMode.ProxyOnce, predicateGenerators);
+			});
+
+			// Make a request to the imposter to trigger the proxy
+			var request = new HttpRequestMessage(HttpMethod.Get, $"http://localhost:{proxyImposterPort}/test?param=value");
+			var response = await _httpClient.SendAsync(request);
+			Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "Request to proxy imposter failed");
+
+			var imposterBeforeDeletingResponses = await _client.GetHttpImposterAsync(proxyImposterPort);
+			Assert.IsNotNull(imposterBeforeDeletingResponses);
+			Assert.AreEqual(2, imposterBeforeDeletingResponses.Stubs.Count);
+
+			await _client.DeleteSavedProxyResponsesAsync(proxyImposterPort);
+
+			var imposterAfterDeletingResponses = await _client.GetHttpImposterAsync(proxyImposterPort);
+			Assert.IsNotNull(imposterAfterDeletingResponses);
+			Assert.AreEqual(1, imposterAfterDeletingResponses.Stubs.Count);
+		}
+
+		[TestMethod]
+		public async Task CanOverwriteAllImposters()
+		{
+			await _client.CreateHttpImposterAsync(6000, _ => { });
+			await _client.CreateHttpImposterAsync(6001, _ => { });
+
+			var impostersBeforeReplacement = (await _client.GetImpostersAsync()).ToList();
+			Assert.AreEqual(2, impostersBeforeReplacement.Count);
+
+			var newImposters = new[] { new HttpImposter(6002, null, null) };
+			await _client.OverwriteAllImposters(newImposters);
+
+			var impostersAfterReplacement = (await _client.GetImpostersAsync()).ToList();
+			Assert.AreEqual(1, impostersAfterReplacement.Count);
+			Assert.AreEqual(6002, impostersAfterReplacement[0].Port);
 		}
 
 		[TestMethod]
