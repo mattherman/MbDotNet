@@ -13,6 +13,7 @@ There were a handful of breaking changes introduced in v5.x of the library. Thes
 - The following types have been renamed: `StubBase` -> `Stub`, `PredicateBase` -> `Predicate`, `ResponseBase` -> `Response`
   - This should not impact most users since these are abstract base classes
 - If a `Key` or `Cert` are provided when creating an HTTPS imposter they will now be validated and an exception will be thrown if they are not valid PEM-formatted strings
+- The `MbDotNet.Enums` namespace has been removed and its types moved elsewhere
 
 Continue reading for detailed guidance on the updates you may need to make in order to upgrade to v5.x of the package.
 
@@ -161,3 +162,16 @@ var imposter = new HttpsImposter(4545, "MyImposter", new HttpsImposterConfigurat
 	Cert = "-----BEGIN CERTIFICATE-----base64_encoded_data-----END CERTIFICATE-----"
 });
 ```
+
+## Removal of `MbDotNet.Enums` namespace
+
+The `MbDotNet.Enums` namespace has been removed since it did not make sense to group those types by what they are vs. what they represent.
+
+The following types have been moved to the specified namespaces:
+
+- `MbDotNet.Enums.Method` -> `MbDotNet.Models.Method`
+- `MbDotNet.Enums.ProxyMode` -> `MbDotNet.Models.ProxyMode`
+- `MbDotNet.Enums.Protocol` -> `MbDotNet.Models.Imposters.Protocol`
+- `MbDotNet.Enums.TcpMode` -> `MbDotNet.Models.Imposters.TcpMode`
+
+Any `using` statements for `MbDotNet.Enums` will need to be updated to reflect the new locations.
