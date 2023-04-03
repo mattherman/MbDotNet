@@ -34,7 +34,13 @@ namespace MbDotNet
 			_requestProxy = requestProxy;
 		}
 
-		private async Task<T> ConfigureAndCreateImposter<T>(T imposter, Action<T> imposterConfigurator, CancellationToken cancellationToken) where T: Imposter
+		/// <summary>
+		/// Configures the imposter using imposterConfigurator before creating it in Mountebank.
+		/// </summary>
+		/// <param name="imposter">The imposter being created</param>
+		/// <param name="imposterConfigurator">A callback used to configure the imposter</param>
+		/// <param name="cancellationToken"></param>
+		protected async Task<T> ConfigureAndCreateImposter<T>(T imposter, Action<T> imposterConfigurator, CancellationToken cancellationToken) where T: Imposter
 		{
 			imposterConfigurator(imposter);
 			await _requestProxy.CreateImposterAsync(imposter, cancellationToken).ConfigureAwait(false);
