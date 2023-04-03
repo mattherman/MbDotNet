@@ -210,6 +210,14 @@ namespace MbDotNet
 			}
 		}
 
+		public async Task DeleteSavedProxyResponsesAsync(int port, CancellationToken cancellationToken = default)
+		{
+			using (var response = await _httpClient.DeleteAsync($"imposters/{port}/savedProxyResponses", cancellationToken).ConfigureAwait(false))
+			{
+				await HandleResponse(response, HttpStatusCode.OK, "Failed to delete the imposters saved proxy responses.").ConfigureAwait(false);
+			}
+		}
+
 		private async Task<T> GetImposterAsync<T>(int port, CancellationToken cancellationToken = default)
 		{
 			using (var response = await _httpClient.GetAsync($"imposters/{port}", cancellationToken).ConfigureAwait(false))
