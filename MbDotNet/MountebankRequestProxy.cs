@@ -68,6 +68,22 @@ namespace MbDotNet
 			}
 		}
 
+		public async Task OverwriteAllImpostersAsync(IEnumerable<Imposter> newImposters, CancellationToken cancellationToken = default)
+		{
+			var json = JsonConvert.SerializeObject(new { imposters = newImposters });
+
+			using (
+				var response = await _httpClient.PutAsync(
+					"imposters",
+					new StringContent(json),
+					cancellationToken
+				).ConfigureAwait(false))
+			{
+				await HandleResponse(response, HttpStatusCode.OK, $"Failed to overwrite all imposters.")
+					.ConfigureAwait(false);
+			}
+		}
+
 		public async Task ReplaceStubsAsync<T>(int port, IEnumerable<T> replacementStubs,
 			CancellationToken cancellationToken = default) where T: Stub
 		{

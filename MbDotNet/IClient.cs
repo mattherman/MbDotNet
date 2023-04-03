@@ -187,6 +187,13 @@ namespace MbDotNet
 		Task<SmtpImposter> CreateSmtpImposterAsync(int? port, Action<SmtpImposter> imposterConfigurator, CancellationToken cancellationToken = default);
 
 		/// <summary>
+		/// Overwrites all existing imposters with the specified collection of imposters.
+		/// </summary>
+		/// <param name="newImposters">The imposters that will replace the existing imposters</param>
+		/// <param name="cancellationToken"></param>
+		Task OverwriteAllImposters(IEnumerable<Imposter> newImposters, CancellationToken cancellationToken = default);
+
+		/// <summary>
 		/// Retrieves the list of imposters
 		/// </summary>
 		/// <returns>The list of retrieved imposters</returns>

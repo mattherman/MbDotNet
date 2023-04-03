@@ -13,6 +13,7 @@ namespace MbDotNet
 		Task DeleteAllImpostersAsync(CancellationToken cancellationToken = default);
 		Task DeleteImposterAsync(int port, CancellationToken cancellationToken = default);
 		Task CreateImposterAsync(Imposter imposter, CancellationToken cancellationToken = default);
+		Task OverwriteAllImpostersAsync(IEnumerable<Imposter> imposters, CancellationToken cancellationToken = default);
 		Task ReplaceStubsAsync<T>(int port, IEnumerable<T> replacementStubs, CancellationToken cancellationToken = default) where T: Stub;
 		Task ReplaceStubAsync<T>(int port, T newStub, int stubIndex, CancellationToken cancellationToken = default) where T: Stub;
 		Task AddStubAsync<T>(int port, T newStub, int? newStubIndex, CancellationToken cancellationToken = default) where T: Stub;

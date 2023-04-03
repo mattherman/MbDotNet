@@ -144,6 +144,40 @@ namespace MbDotNet.Tests
 		}
 
 		[TestMethod]
+		public async Task OverwriteAllImposters_SendsRequest()
+		{
+			const string expectedResource = "imposters";
+
+			var imposters = new[] { new HttpImposter(123, null, null), new HttpImposter(456, null, null) };
+
+			var response = GetResponse(HttpStatusCode.OK);
+
+			HttpContent content = null;
+			_mockClient.Setup(x => x.PutAsync(expectedResource, It.IsAny<HttpContent>(), default))
+				.ReturnsAsync(response)
+				.Callback<string, HttpContent, CancellationToken>((_, cont, _) => content = cont);
+
+			await _proxy.OverwriteAllImpostersAsync(imposters).ConfigureAwait(false);
+
+			var json = await content.ReadAsStringAsync();
+			var serializedImposters = JsonConvert.DeserializeObject<HttpImposter[]>(json);
+
+			Assert.AreEqual(imposters.Length, serializedImposters.Length);
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(MountebankException))]
+		public async Task OverwriteAllImposters_StatusCodeNotOk_ThrowsMountebankException()
+		{
+			var response = GetResponse(HttpStatusCode.BadRequest);
+
+			_mockClient.Setup(x => x.PutAsync(It.IsAny<string>(), It.IsAny<HttpContent>(), default))
+				.ReturnsAsync(response);
+
+			await _proxy.OverwriteAllImpostersAsync(new [] { new HttpImposter(123, null, null) }).ConfigureAwait(false);
+		}
+
+		[TestMethod]
 		public async Task ReplaceStubsAsync_SendsRequest()
 		{
 			const int port = 123;
