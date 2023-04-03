@@ -1,5 +1,4 @@
 using System;
-using MbDotNet.Enums;
 using MbDotNet.Models.Requests;
 using MbDotNet.Models.Responses.Fields;
 using Newtonsoft.Json;

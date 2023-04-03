@@ -8,7 +8,6 @@ using System.Net.Mime;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using MbDotNet.Enums;
 using MbDotNet.Exceptions;
 using MbDotNet.Models.Predicates;
 using MbDotNet.Models.Predicates.Fields;

@@ -1,5 +1,4 @@
-﻿using MbDotNet.Enums;
-using MbDotNet.Models.Responses.Fields;
+﻿using MbDotNet.Models.Responses.Fields;
 
 namespace MbDotNet.Models.Imposters
 {

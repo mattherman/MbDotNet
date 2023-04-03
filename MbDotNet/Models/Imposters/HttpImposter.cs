@@ -33,7 +33,7 @@ namespace MbDotNet.Models.Imposters
 		/// <param name="name">An optional name for the imposter</param>
 		/// <param name="options">Options for configuring the imposter</param>
 		public HttpImposter(int? port, string name, HttpImposterOptions options)
-			: base(port, Enums.Protocol.Http, name, options?.RecordRequests ?? false)
+			: base(port, Imposters.Protocol.Http, name, options?.RecordRequests ?? false)
 		{
 			Stubs = new List<HttpStub>();
 			AllowCORS = options?.AllowCORS ?? false;

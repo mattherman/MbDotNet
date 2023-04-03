@@ -80,7 +80,7 @@ namespace MbDotNet.Models.Imposters
 		/// <param name="port">An optional port for the imposter to listen on</param>
 		/// <param name="name">An optional name for the imposter</param>
 		/// <param name="options">Options for configuring the imposter</param>
-		public HttpsImposter(int? port, string name, HttpsImposterOptions options) : base(port, Enums.Protocol.Https, name, options?.RecordRequests ?? false)
+		public HttpsImposter(int? port, string name, HttpsImposterOptions options) : base(port, Imposters.Protocol.Https, name, options?.RecordRequests ?? false)
 		{
 			Cert = options?.Cert;
 			Key = options?.Key;

@@ -1,4 +1,4 @@
-using MbDotNet.Enums;
+using MbDotNet.Models;
 using MbDotNet.Models.Imposters;
 using MbDotNet.Models.Responses.Fields;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
