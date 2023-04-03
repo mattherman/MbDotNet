@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using MbDotNet.Enums;
 using MbDotNet.Exceptions;
 using MbDotNet.Models;
 using MbDotNet.Models.Imposters;

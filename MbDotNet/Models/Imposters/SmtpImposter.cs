@@ -12,7 +12,7 @@ namespace MbDotNet.Models.Imposters
 		/// <param name="name">An optional name for the imposter</param>
 		/// <param name="options">Options for configuring the imposter</param>
 		public SmtpImposter(int? port, string name, SmtpImposterOptions options)
-			: base(port, Enums.Protocol.Smtp, name, options?.RecordRequests ?? false)
+			: base(port, Imposters.Protocol.Smtp, name, options?.RecordRequests ?? false)
 		{
 		}
 	}

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using MbDotNet.Enums;
 using MbDotNet.Models.Responses.Fields;
 using MbDotNet.Models.Stubs;
 using Newtonsoft.Json;
@@ -47,7 +46,7 @@ namespace MbDotNet.Models.Imposters
 		/// <param name="name">An optional name for the imposter</param>
 		/// <param name="options">Options for configuring the imposter</param>
 		public TcpImposter(int? port, string name, TcpImposterOptions options)
-			: base(port, Enums.Protocol.Tcp, name, options?.RecordRequests ?? false)
+			: base(port, Imposters.Protocol.Tcp, name, options?.RecordRequests ?? false)
 		{
 			Mode = options?.Mode ?? TcpMode.Text;
 			DefaultResponse = options?.DefaultResponse;

@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
-using MbDotNet.Enums;
+using MbDotNet.Models;
+using MbDotNet.Models.Imposters;
 using MbDotNet.Models.Predicates;
 using MbDotNet.Models.Predicates.Fields;
 using MbDotNet.Models.Responses;

@@ -1,4 +1,3 @@
-using MbDotNet.Enums;
 using MbDotNet.Exceptions;
 using Newtonsoft.Json;
 
