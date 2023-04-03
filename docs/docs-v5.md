@@ -10,40 +10,40 @@ Here is an example HTTP imposter that is configured on port 4545 and has two stu
 
 ```
 {
-    "port": 4545,
-    "protocol": "http",
-    "stubs": [
-        {
-            predicates: [
-                {
-                    "matches": {
-                        "method": "GET",
-                        "path": "/books"
-                    }
-                }
-            ],
-            responses: [
-                {
-                    "is": {
-                        "statusCode": 200,
-                        "body": [
-                            { "id": 1, "name": "Great Expectations" },
-                            { "id": 2, "name": "A Christmas Carol" }
-                        ]
-                    }
-                }
-            ]
-        },
-        {
-            "responses": [
-                {
-                    "is": {
-                        "statusCode": 404
-                    }
-                }
-            ]
-        }
-    ]
+	"port": 4545,
+	"protocol": "http",
+	"stubs": [
+		{
+			predicates: [
+				{
+					"matches": {
+						"method": "GET",
+						"path": "/books"
+					}
+				}
+			],
+			responses: [
+				{
+					"is": {
+						"statusCode": 200,
+						"body": [
+							{ "id": 1, "name": "Great Expectations" },
+							{ "id": 2, "name": "A Christmas Carol" }
+						]
+					}
+				}
+			]
+		},
+		{
+			"responses": [
+				{
+					"is": {
+						"statusCode": 404
+					}
+				}
+			]
+		}
+	]
 }
 ```
 
@@ -362,76 +362,76 @@ Disclaimer: I have not tested this code with the actual custom protocol implemen
 ```
 public class TelnetImposter : Imposter
 {
-    public TelnetImposter(int? port, string name, bool recordRequests) : base(port, "telnet", name, recordRequests)
-    {
-    }
+	public TelnetImposter(int? port, string name, bool recordRequests) : base(port, "telnet", name, recordRequests)
+	{
+	}
 }
 
 public class TelnetStub : Stub
 {
-    public TelnetStub OnCommandDeepEquals(string command)
-    {
-        var fields = new TelnetPredicateFields
-        {
-            Command = command
-        };
+	public TelnetStub OnCommandDeepEquals(string command)
+	{
+		var fields = new TelnetPredicateFields
+		{
+			Command = command
+		};
 
-        Predicates.Add(new DeepEqualsPredicate<TelnetPredicateFields>(fields));
+		Predicates.Add(new DeepEqualsPredicate<TelnetPredicateFields>(fields));
 
-        return this;
-    }
+		return this;
+	}
 
-    public TelnetStub ReturnsResponse(string response)
-    {
-        var fields = new TelnetResponseFields
-        {
-            Response = response
-        };
+	public TelnetStub ReturnsResponse(string response)
+	{
+		var fields = new TelnetResponseFields
+		{
+			Response = response
+		};
 
-        Responses.Add(new IsResponse<TelnetResponseFields>(fields));
+		Responses.Add(new IsResponse<TelnetResponseFields>(fields));
 
-        return this;
-    }
+		return this;
+	}
 
-    public TelnetStub ReturnsProxy(Uri to, ProxyMode proxyMode,
-        IEnumerable<MatchesPredicate<TelnetBooleanPredicateFields>> predicateGenerators)
-    {
-        var fields = new ProxyResponseFields<TelnetBooleanPredicateFields>
-        {
-            To = to,
-            Mode = proxyMode,
-            PredicateGenerators = predicateGenerators.ToList()
-        };
+	public TelnetStub ReturnsProxy(Uri to, ProxyMode proxyMode,
+		IEnumerable<MatchesPredicate<TelnetBooleanPredicateFields>> predicateGenerators)
+	{
+		var fields = new ProxyResponseFields<TelnetBooleanPredicateFields>
+		{
+			To = to,
+			Mode = proxyMode,
+			PredicateGenerators = predicateGenerators.ToList()
+		};
 
-        Responses.Add(new ProxyResponse<ProxyResponseFields<TelnetBooleanPredicateFields>>(fields));
+		Responses.Add(new ProxyResponse<ProxyResponseFields<TelnetBooleanPredicateFields>>(fields));
 
-        return this;
-    }
+		return this;
+	}
 }
 
 public class TelnetPredicateFields : PredicateFields
 {
-    [JsonProperty("command", NullValueHandling = NullValueHandling.Ignore)]
-    public string Command { get; set; }
+	[JsonProperty("command", NullValueHandling = NullValueHandling.Ignore)]
+	public string Command { get; set; }
 }
 
 public class TelnetBooleanPredicateFields : PredicateFields
 {
-    [JsonProperty("command", NullValueHandling = NullValueHandling.Ignore)]
-    public bool? Command { get; set; }
+	[JsonProperty("command", NullValueHandling = NullValueHandling.Ignore)]
+	public bool? Command { get; set; }
 }
 
 public class TelnetResponseFields : ResponseFields
 {
-    [JsonProperty("response", NullValueHandling = NullValueHandling.Ignore)]
-    public string Response { get; set; }
+	[JsonProperty("response", NullValueHandling = NullValueHandling.Ignore)]
+	public string Response { get; set; }
 }
 
 public class CustomMountebankClient : MountebankClient
 {
-    public async Task<TelnetImposter> CreateTelnetImposterAsync(int port, string name, bool recordRequests,
-        CancellationToken cancellationToken = default) =>
-        await ConfigureAndCreateImposter(new TelnetImposter(port, name, recordRequests), _ => { }, cancellationToken);
+	public async Task<TelnetImposter> CreateTelnetImposterAsync(int port, string name, bool recordRequests,
+		CancellationToken cancellationToken = default) =>
+		await ConfigureAndCreateImposter(new TelnetImposter(port, name, recordRequests), _ => { }, cancellationToken);
 }
 ```
 
