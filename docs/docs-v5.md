@@ -350,3 +350,152 @@ imposter.AddStub()
 	.ReturnsStatus(HttpStatusCode.NoContent)
 	.ReturnsStatus(HttpStatusCode.NotFound);
 ```
+
+## Custom Imposter Protocols
+
+Mountebank allows users to [define their own protocol implementations](http://www.mbtest.org/docs/protocols/custom) beyond the official HTTP/S, TCP, and SMTP protocols. This has led to a variety of community-supported protocols such as gRPC, LDAP, and many others. If you would like to use one of these custom protocols with MbDotNet you should be able to extend it via inheritance to support the protocol.
+
+The following is an example of how to create a custom imposter for the telnet protocol provided by [mb-netmgmt](https://github.com/telekom/mb-netmgmt). The protocol defines a single predicate field of `command` and a single repsonse field of `response`.
+
+Disclaimer: I have not tested this code with the actual custom protocol implementation, but it should be enough to get you started on your own implementation.
+
+```
+public class TelnetImposter : Imposter
+{
+    public TelnetImposter(int? port, string name, bool recordRequests) : base(port, "telnet", name, recordRequests)
+    {
+    }
+}
+
+public class TelnetStub : Stub
+{
+    public TelnetStub OnCommandDeepEquals(string command)
+    {
+        var fields = new TelnetPredicateFields
+        {
+            Command = command
+        };
+
+        Predicates.Add(new DeepEqualsPredicate<TelnetPredicateFields>(fields));
+
+        return this;
+    }
+
+    public TelnetStub ReturnsResponse(string response)
+    {
+        var fields = new TelnetResponseFields
+        {
+            Response = response
+        };
+
+        Responses.Add(new IsResponse<TelnetResponseFields>(fields));
+
+        return this;
+    }
+
+    public TelnetStub ReturnsProxy(Uri to, ProxyMode proxyMode,
+        IEnumerable<MatchesPredicate<TelnetBooleanPredicateFields>> predicateGenerators)
+    {
+        var fields = new ProxyResponseFields<TelnetBooleanPredicateFields>
+        {
+            To = to,
+            Mode = proxyMode,
+            PredicateGenerators = predicateGenerators.ToList()
+        };
+
+        Responses.Add(new ProxyResponse<ProxyResponseFields<TelnetBooleanPredicateFields>>(fields));
+
+        return this;
+    }
+}
+
+public class TelnetPredicateFields : PredicateFields
+{
+    [JsonProperty("command", NullValueHandling = NullValueHandling.Ignore)]
+    public string Command { get; set; }
+}
+
+public class TelnetBooleanPredicateFields : PredicateFields
+{
+    [JsonProperty("command", NullValueHandling = NullValueHandling.Ignore)]
+    public bool? Command { get; set; }
+}
+
+public class TelnetResponseFields : ResponseFields
+{
+    [JsonProperty("response", NullValueHandling = NullValueHandling.Ignore)]
+    public string Response { get; set; }
+}
+
+public class CustomMountebankClient : MountebankClient
+{
+    public async Task<TelnetImposter> CreateTelnetImposterAsync(int port, string name, bool recordRequests,
+        CancellationToken cancellationToken = default) =>
+        await ConfigureAndCreateImposter(new TelnetImposter(port, name, recordRequests), _ => { }, cancellationToken);
+}
+```
+
+The README for that project uses the following imposter as an example:
+
+```
+{
+	"port": 23,
+	"protocol": "telnet",
+	"stubs": [
+		{
+			"predicates": [
+				{
+					"deepEquals": {
+						"command": "show run\r\n"
+					}
+				}
+			],
+			"responses": [
+				{
+					"is": {
+						"response": "end\r\n\r\n#"
+					}
+				}
+			]
+		},
+		{
+			"responses": [
+				{
+					"proxy": {
+						"predicatesGenerators": [
+							{
+								"matches": {
+									"command": true
+								}
+							}
+						],
+						"to": "telnet://example.org"
+					}
+				}
+			]
+		}
+	]
+}
+```
+
+Creating that imposter using our custom implementation would look like this:
+
+```
+var client = new CustomMountebankClient();
+
+await client.CreateTelnetImposterAsync(23, "TelnetImposter", imposter =>
+{
+	imposter.AddStub()
+		.OnCommandDeepEquals("show run\r\n")
+		.ReturnsResponse("end\r\n\r\n#");
+
+	imposter.AddStub()
+		.ReturnsProxy("telnet://example.org", ProxyMode.ProxyOnce, new []
+		{
+			new MatchesPredicate<TelnetBooleanPredicateFields>(new TelnetBooleanPredicateFields
+			{
+				Command = true
+			})
+		});
+})
+```
