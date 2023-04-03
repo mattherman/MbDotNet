@@ -256,6 +256,7 @@ namespace MbDotNet
 		/// <param name="port">The port of the imposter being updated</param>
 		/// <param name="replacementStubs">The stubs that should replace the existing stubs</param>
 		/// <param name="cancellationToken"></param>
+		/// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
 		Task ReplaceHttpImposterStubsAsync(int port, IEnumerable<HttpStub> replacementStubs, CancellationToken cancellationToken = default);
 
 		/// <summary>
@@ -264,6 +265,7 @@ namespace MbDotNet
 		/// <param name="port">The port of the imposter being updated</param>
 		/// <param name="replacementStubs">The stubs that should replace the existing stubs</param>
 		/// <param name="cancellationToken"></param>
+		/// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
 		Task ReplaceHttpsImposterStubsAsync(int port, IEnumerable<HttpStub> replacementStubs, CancellationToken cancellationToken = default);
 
 		/// <summary>
@@ -272,6 +274,7 @@ namespace MbDotNet
 		/// <param name="port">The port of the imposter being updated</param>
 		/// <param name="replacementStubs">The stubs that should replace the existing stubs</param>
 		/// <param name="cancellationToken"></param>
+		/// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
 		Task ReplaceTcpImposterStubsAsync(int port, IEnumerable<TcpStub> replacementStubs, CancellationToken cancellationToken = default);
 
 		/// <summary>
@@ -281,6 +284,7 @@ namespace MbDotNet
 		/// <param name="replacementStub">The stub that should replace the existing stub</param>
 		/// <param name="stubIndex">The index of the stub being replaced</param>
 		/// <param name="cancellationToken"></param>
+		/// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
 		Task ReplaceHttpImposterStubAsync(int port, HttpStub replacementStub, int stubIndex, CancellationToken cancellationToken = default);
 
 		/// <summary>
@@ -290,6 +294,7 @@ namespace MbDotNet
 		/// <param name="replacementStub">The stub that should replace the existing stub</param>
 		/// <param name="stubIndex">The index of the stub being replaced</param>
 		/// <param name="cancellationToken"></param>
+		/// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
 		Task ReplaceHttpsImposterStubAsync(int port, HttpStub replacementStub, int stubIndex, CancellationToken cancellationToken = default);
 
 		/// <summary>
@@ -299,6 +304,7 @@ namespace MbDotNet
 		/// <param name="replacementStub">The stub that should replace the existing stub</param>
 		/// <param name="stubIndex">The index of the stub being replaced</param>
 		/// <param name="cancellationToken"></param>
+		/// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
 		Task ReplaceTcpImposterStubAsync(int port, TcpStub replacementStub, int stubIndex, CancellationToken cancellationToken = default);
 
 		/// <summary>
@@ -311,6 +317,7 @@ namespace MbDotNet
 		/// An optional index specifying where to insert the stub, if unspecified the stub is included at the end of the stub collection
 		/// </param>
 		/// <param name="cancellationToken"></param>
+		/// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
 		Task AddHttpImposterStubAsync(int port, HttpStub newStub, int? newStubIndex = null, CancellationToken cancellationToken = default);
 
 		/// <summary>
@@ -323,6 +330,7 @@ namespace MbDotNet
 		/// An optional index specifying where to insert the stub, if unspecified the stub is included at the end of the stub collection
 		/// </param>
 		/// <param name="cancellationToken"></param>
+		/// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
 		Task AddHttpsImposterStubAsync(int port, HttpStub newStub, int? newStubIndex = null, CancellationToken cancellationToken = default);
 
 		/// <summary>
@@ -335,6 +343,7 @@ namespace MbDotNet
 		/// An optional index specifying where to insert the stub, if unspecified the stub is included at the end of the stub collection
 		/// </param>
 		/// <param name="cancellationToken"></param>
+		/// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
 		Task AddTcpImposterStubAsync(int port, TcpStub newStub, int? newStubIndex = null, CancellationToken cancellationToken = default);
 
 		/// <summary>
@@ -343,15 +352,24 @@ namespace MbDotNet
 		/// <param name="port">The port of the imposter being updated</param>
 		/// <param name="stubIndex">The index of the stub being removed</param>
 		/// <param name="cancellationToken"></param>
+		/// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
 		Task RemoveStubAsync(int port, int stubIndex, CancellationToken cancellationToken = default);
 
 		/// <summary>
-		/// Deletes previously saved requests for an imposter
+		/// Deletes saved requests for an imposter
 		/// </summary>
-		/// <param name="port">The port of the imposter to delete request history</param>
+		/// <param name="port">The port of the imposter to delete requests for</param>
 		/// <param name="cancellationToken"></param>
 		/// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
 		Task DeleteSavedRequestsAsync(int port, CancellationToken cancellationToken = default);
+
+		/// <summary>
+		/// Deletes saved proxy responses for an imposter
+		/// </summary>
+		/// <param name="port">The port of the imposter to delete proxy responses for</param>
+		/// <param name="cancellationToken"></param>
+		/// <exception cref="MbDotNet.Exceptions.ImposterNotFoundException">Thrown if no imposter was found on the specified port.</exception>
+		Task DeleteSavedProxyResponsesAsync(int port, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Gets the configuration information of Mountebank

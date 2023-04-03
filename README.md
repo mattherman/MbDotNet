@@ -36,7 +36,6 @@ The following Mountebank functionality is not yet supported:
 - The [`inject`](http://www.mbtest.org/docs/api/injection) response
 - The [`fault`](http://www.mbtest.org/docs/api/faults) response
 - Response [behaviors](http://www.mbtest.org/docs/api/behaviors) other than `wait`
-- [Deleting saved proxy responses](http://www.mbtest.org/docs/api/overview#delete-proxy-responses) from an imposter
 - [Overwriting all imposters](http://www.mbtest.org/docs/api/overview#put-imposters)
 
 Pull requests are always welcome.

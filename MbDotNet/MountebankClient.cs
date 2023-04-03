@@ -214,10 +214,12 @@ namespace MbDotNet
 			await _requestProxy.RemoveStubAsync(port, stubIndex, cancellationToken).ConfigureAwait(false);
 
 		/// <inheritdoc />
-		public async Task DeleteSavedRequestsAsync(int port, CancellationToken cancellationToken = default)
-		{
+		public async Task DeleteSavedRequestsAsync(int port, CancellationToken cancellationToken = default) =>
 			await _requestProxy.DeleteSavedRequestsAsync(port, cancellationToken).ConfigureAwait(false);
-		}
+
+		/// <inheritdoc />
+		public async Task DeleteSavedProxyResponsesAsync(int port, CancellationToken cancellationToken = default) =>
+			await _requestProxy.DeleteSavedProxyResponsesAsync(port, cancellationToken).ConfigureAwait(false);
 
 		/// <inheritdoc />
 		public async Task<Config> GetConfigAsync(CancellationToken cancellationToken = default)
