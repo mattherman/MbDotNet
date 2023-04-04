@@ -15,7 +15,7 @@
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
 
     <!-- NuGet Metadata-->
-    <Version>5.0.0-rc9</Version>
+    <Version>5.0.0</Version>
     <PackageId>MbDotNet</PackageId>
     <Title>MbDotNet</Title>
     <Authors>Matthew Herman</Authors>
@@ -24,7 +24,7 @@
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/mattherman/MbDotNet</PackageProjectUrl>
-    <PackageReleaseNotes>https://github.com/mattherman/MbDotNet/releases/tag/v5.0.0-rc7</PackageReleaseNotes>
+    <PackageReleaseNotes>https://github.com/mattherman/MbDotNet/releases/tag/v5.0.0</PackageReleaseNotes>
     <PackageTags>mountebank client wrapper</PackageTags>
     <BuildOutputTargetFolder>lib</BuildOutputTargetFolder>
   </PropertyGroup>
