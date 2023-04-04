@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using MbDotNet.Models.Responses.Fields;
 using Newtonsoft.Json;
 
@@ -16,20 +17,13 @@ namespace MbDotNet.Models.Responses
 		public T Fields { get; set; }
 
 		/// <summary>
-		/// Configured response behaviors
-		/// </summary>
-		[JsonProperty("_behaviors", NullValueHandling = NullValueHandling.Ignore)]
-		public Behavior Behavior { get; set; }
-
-		/// <summary>
 		/// Create a new IsResponse instance
 		/// </summary>
 		/// <param name="fields">The fields to return when matched</param>
-		/// <param name="behavior">Optional response behavior</param>
-		public IsResponse(T fields, Behavior behavior = null)
+		/// <param name="behaviors">Optional response behaviors</param>
+		public IsResponse(T fields, IEnumerable<Behavior> behaviors = null) : base(behaviors)
 		{
 			Fields = fields;
-			Behavior = behavior;
 		}
 	}
 }

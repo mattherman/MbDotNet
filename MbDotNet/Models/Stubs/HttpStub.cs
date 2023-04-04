@@ -154,14 +154,11 @@ namespace MbDotNet.Models.Stubs
 				Mode = mode
 			};
 
-			var behavior = latencyInMilliseconds.HasValue
-				? new Behavior
-				{
-					LatencyInMilliseconds = latencyInMilliseconds
-				}
+			var behaviors = latencyInMilliseconds.HasValue
+				? new [] { new WaitBehavior(latencyInMilliseconds.Value) }
 				: null;
 
-			var response = new IsResponse<HttpResponseFields>(fields, behavior);
+			var response = new IsResponse<HttpResponseFields>(fields, behaviors);
 
 			return Returns(response);
 		}

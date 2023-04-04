@@ -7,6 +7,8 @@ There were a handful of breaking changes introduced in v5.x of the library. Thes
 - The `CreateHttpImposter`, `CreateHttpsImposter`, and `CreateTcpImposter` methods on `MountebankClient` have been updated to actually create imposters in Mountebank rather than act as simple factory methods for the imposter objects
 - The `Submit` methods on `MountebankClient` have been removed since the imposter creation methods now handle submission to Mountebank
 - Imposter configuration (ex. `RecordRequests`) is now exposed via properties on the imposters themselves rather than through arguments to the imposter creation methods
+- The `Behavior` class has been renamed to `WaitBehavior` and a constructor was added for setting the latency value
+- Responses now require an array of behaviors instead of a single one
 - The `Headers` and `QueryParameters` properties on `HttpPredicateFields` now have a type of `IDictionary<string, object>` instead of `IDictionary<string, string>` to support specifying arrays of values
 - The `Headers` property on `HttpResponseFields` now has a type of `IDictionary<string, object>` instead of `IDictionary<string, string>` to support returning arrays of values
 - Various collection types in the models have been changed. See [#119](https://github.com/mattherman/MbDotNet/pull/119) for details.
@@ -117,6 +119,40 @@ var imposter = new HttpImposter(4545, "MyImposter", new HttpImposterConfiguratio
 	DefaultResponse = response,
 	AllowCORS = true
 });
+```
+
+## `Behavior` Renamed to `WaitBehavior`
+
+The `Behavior` class has been renamed to `WaitBehavior` to support adding additional behavior types in the future. A constructor has also been added which requires the `latencyInMilliseconds` to be provided when the class is instantiated.
+
+_v4_
+
+```
+var behavior = new Behavior { LatencyInMilliseconds = 1000 };
+```
+
+_v5_
+
+```
+var behavior = new WaitBehavior(1000);
+```
+
+## Response Behavior Array
+
+Responses now accept an array of behaviors instead of a single behavior. The JSON property for behaviors has also been updated from `_behaviors` to `behaviors` to match the current Mountebank contracts.
+
+This resulted in changes to the constructor signatures of `IsResponse` and `ProxyResponse`.
+
+_v4_
+
+```
+var response = new IsResponse(fields, new WaitBehavior(1000));
+```
+
+_v5_
+
+```
+var response = new IsResponse(fields, new []{ new WaitBehavior(1000) });
 ```
 
 ## Updates to `Headers` and `QueryParameters` Types

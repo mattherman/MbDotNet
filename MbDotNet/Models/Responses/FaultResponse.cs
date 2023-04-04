@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 namespace MbDotNet.Models.Responses
@@ -16,20 +17,13 @@ namespace MbDotNet.Models.Responses
 		public Fault Fault { get; set; }
 
 		/// <summary>
-		/// Configured response behaviors
-		/// </summary>
-		[JsonProperty("_behaviors", NullValueHandling = NullValueHandling.Ignore)]
-		public Behavior Behavior { get; set; }
-
-		/// <summary>
 		/// Create a new FaultResponse instance
 		/// </summary>
 		/// <param name="fault">The fault to return in the response</param>
-		/// <param name="behavior">Optional response behavior</param>
-		public FaultResponse(Fault fault, Behavior behavior = null)
+		/// <param name="behaviors">Optional response behavior</param>
+		public FaultResponse(Fault fault, IEnumerable<Behavior> behaviors = null) : base(behaviors)
 		{
 			Fault = fault;
-			Behavior = behavior;
 		}
 	}
 }
