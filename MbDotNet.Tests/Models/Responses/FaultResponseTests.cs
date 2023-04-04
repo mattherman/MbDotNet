@@ -19,7 +19,7 @@ namespace MbDotNet.Tests.Models.Responses
 		{
 			var behavior = new Behavior();
 			var response = new FaultResponse(Fault.ConnectionResetByPeer, behavior);
-			Assert.AreSame(behavior, response);
+			Assert.AreSame(behavior, response.Behavior);
 		}
 	}
 }
