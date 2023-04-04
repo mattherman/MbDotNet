@@ -466,6 +466,34 @@ namespace MbDotNet.Tests.Acceptance
 				imposter.AddStub().OnInjectedFunction(injectedFunction).ReturnsStatus(HttpStatusCode.BadRequest);
 			});
 		}
+
+		/// <summary>
+		/// This test shows how to setup the imposter in the connection reset fault response example
+		/// at http://www.mbtest.org/docs/api/faults#connection-reset.
+		/// </summary>
+		[TestMethod]
+		public async Task ConnectionResetFaultResponseExample()
+		{
+			await _client.CreateTcpImposterAsync(4554, imposter =>
+			{
+				imposter.Mode = TcpMode.Text;
+				imposter.AddStub().ReturnsFault(Fault.ConnectionResetByPeer);
+			});
+		}
+
+		/// <summary>
+		/// This test shows how to setup the imposter in the random data fault response example
+		/// at http://www.mbtest.org/docs/api/faults#random-data-then-close.
+		/// </summary>
+		[TestMethod]
+		public async Task RandomDataFaultResponseExample()
+		{
+			await _client.CreateTcpImposterAsync(4554, imposter =>
+			{
+				imposter.Mode = TcpMode.Text;
+				imposter.AddStub().ReturnsFault(Fault.RandomDataThenClose);
+			});
+		}
 	}
 
 	public class Book

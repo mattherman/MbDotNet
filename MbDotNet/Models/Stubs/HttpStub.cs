@@ -125,6 +125,16 @@ namespace MbDotNet.Models.Stubs
 		}
 
 		/// <summary>
+		/// Adds a fault response to the stub
+		/// </summary>
+		/// <param name="fault">The fault type to respond with</param>
+		/// <returns>The stub that the response was added to</returns>
+		public HttpStub ReturnsFault(Fault fault)
+		{
+			return Returns(new FaultResponse(fault));
+		}
+
+		/// <summary>
 		/// Adds a response to the stub with the specified content type
 		/// </summary>
 		/// <param name="statusCode">The status code to be returned</param>

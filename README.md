@@ -34,7 +34,6 @@ There were a handful of breaking changes in v5 of the library. If you are planni
 The following Mountebank functionality is not yet supported:
 
 - The [`inject`](http://www.mbtest.org/docs/api/injection) response
-- The [`fault`](http://www.mbtest.org/docs/api/faults) response
 - Response [behaviors](http://www.mbtest.org/docs/api/behaviors) other than `wait`
 
 Pull requests are always welcome.

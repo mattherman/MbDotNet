@@ -13,6 +13,7 @@ using MbDotNet.Models;
 using MbDotNet.Models.Imposters;
 using MbDotNet.Models.Predicates;
 using MbDotNet.Models.Predicates.Fields;
+using MbDotNet.Models.Responses;
 using MbDotNet.Models.Stubs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
@@ -726,6 +727,20 @@ namespace MbDotNet.Tests.Acceptance
 			// http://www.mbtest.org/docs/api/overview#get-imposter
 			Assert.AreEqual(retrievedImposter.Stubs.Count, 1);
 			Assert.AreEqual(retrievedImposter.Stubs.ElementAt(0).Matches.Count, 1);
+		}
+
+		[TestMethod]
+		public async Task CanCreateAnImposterWithAFaultResponse()
+		{
+			const int port = 6000;
+			await _client.CreateHttpImposterAsync(port, imposter =>
+			{
+				imposter.AddStub()
+					.ReturnsFault(Fault.ConnectionResetByPeer);
+			});
+
+			var request = new HttpRequestMessage(HttpMethod.Get, $"http://localhost:{port}");
+			await Assert.ThrowsExceptionAsync<HttpRequestException>(async () => await _httpClient.SendAsync(request));
 		}
 	}
 }
