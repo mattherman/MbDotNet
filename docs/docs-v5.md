@@ -314,7 +314,7 @@ MbDotNet supports most of the response types that are supported by Mountebank (a
 | [`is`](http://www.mbtest.org/docs/api/stubs)         | `IsResponse`    |
 | [`proxy`](http://www.mbtest.org/docs/api/proxies)    | `ProxyResponse` |
 | [`inject`](http://www.mbtest.org/docs/api/injection) | Not Supported   |
-| [`fault`](http://www.mbtest.org/docs/api/faults)     | Not supported   |
+| [`fault`](http://www.mbtest.org/docs/api/faults)     | `FaultResponse` |
 
 The most common response is the `is` response type which lets you specify the exact values that should be returned for each response field.
 

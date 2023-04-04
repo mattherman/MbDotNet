@@ -353,6 +353,19 @@ namespace MbDotNet.Tests.Models.Stubs
 		}
 
 		[TestMethod]
+		public void HttpStub_ReturnsFault_ReturnsStubWithFaultResponse()
+		{
+			const Fault expectedFault = Fault.ConnectionResetByPeer;
+			var stub = new HttpStub();
+			stub.ReturnsFault(expectedFault);
+
+			var faultResponse = stub.Responses[0] as FaultResponse;
+
+			Assert.IsNotNull(faultResponse);
+			Assert.AreEqual(expectedFault, faultResponse.Fault);
+		}
+
+		[TestMethod]
 		public void HttpStub_InjectedFunction_AddsPredicate_InjectedFunctionSet()
 		{
 			const string injectedFunction = "function(config) { return true; }";

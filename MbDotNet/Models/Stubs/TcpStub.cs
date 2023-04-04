@@ -127,5 +127,15 @@ namespace MbDotNet.Models.Stubs
 
 			return Returns(response);
 		}
+
+		/// <summary>
+		/// Adds a fault response to the stub
+		/// </summary>
+		/// <param name="fault">The fault type to respond with</param>
+		/// <returns>The stub that the response was added to</returns>
+		public TcpStub ReturnsFault(Fault fault)
+		{
+			return Returns(new FaultResponse(fault));
+		}
 	}
 }
