@@ -57,7 +57,7 @@ namespace MbDotNet.Tests.Models.Stubs
 		}
 
 		[TestMethod]
-		public void TcpStub_Returns_AddsResponse_LatencySet()
+		public void TcpStub_Returns_AddsResponse_BehaviorSet()
 		{
 			var expectedFields = new TcpResponseFields
 			{
@@ -65,38 +65,16 @@ namespace MbDotNet.Tests.Models.Stubs
 			};
 			const int expectedLatencyInMilliseconds = 1000;
 
-			var behavior = new Behavior
-			{
-				LatencyInMilliseconds = expectedLatencyInMilliseconds
-			};
+			var behavior = new WaitBehavior(expectedLatencyInMilliseconds);
 
 			var stub = new TcpStub();
-			stub.Returns(new IsResponse<TcpResponseFields>(expectedFields, behavior));
+			stub.Returns(new IsResponse<TcpResponseFields>(expectedFields, new []{ behavior }));
 
 			var response = stub.Responses.First() as IsResponse<TcpResponseFields>;
-			Assert.IsNotNull(response);
-			Assert.IsNotNull(response.Behavior);
-			Assert.IsNotNull(response.Behavior.LatencyInMilliseconds);
-			Assert.AreEqual(expectedLatencyInMilliseconds, response.Behavior.LatencyInMilliseconds);
-		}
-
-		[TestMethod]
-		public void TcpStub_Returns_AddsResponse_BehaviorSet()
-		{
-			var expectedFields = new TcpResponseFields
-			{
-				Data = "TestData"
-			};
-
-			var behavior = new Behavior();
-
-			var stub = new TcpStub();
-			stub.Returns(new IsResponse<TcpResponseFields>(expectedFields, behavior));
-
-			var response = stub.Responses.First() as IsResponse<TcpResponseFields>;
-			Assert.IsNotNull(response);
-			Assert.IsNotNull(response.Behavior);
-			Assert.AreEqual(behavior, response.Behavior);
+			Assert.IsNotNull(response?.Behaviors);
+			Assert.AreEqual(1, response.Behaviors.Count);
+			var responseBehavior = response.Behaviors[0] as WaitBehavior;
+			Assert.AreSame(behavior, responseBehavior);
 		}
 
 		[TestMethod]

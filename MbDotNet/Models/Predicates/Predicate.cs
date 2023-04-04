@@ -32,12 +32,12 @@ namespace MbDotNet.Models.Predicates
 		public JsonPathSelector JsonPathSelector { get; private set; }
 
 		/// <summary>
-		/// Create a new PredicateBase instance
+		/// Create a new Predicate instance
 		/// </summary>
 		protected Predicate() { }
 
 		/// <summary>
-		/// Create a new PredicateBase instance
+		/// Create a new Predicate instance
 		/// </summary>
 		/// <param name="isCaseSensitive">Whether or not predicate matching is case sensitive</param>
 		/// <param name="exceptExpression">A regular expression for eliminating parts of a predicate value</param>

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using MbDotNet.Models.Responses.Fields;
 using Newtonsoft.Json;
 
@@ -19,7 +20,8 @@ namespace MbDotNet.Models.Responses
 		/// Create a new ProxyResponse instance
 		/// </summary>
 		/// <param name="fields">The fields that should be captured for generated predicates</param>
-		public ProxyResponse(T fields)
+		/// <param name="behaviors">Optional response behaviors</param>
+		public ProxyResponse(T fields, IEnumerable<Behavior> behaviors = null) : base(behaviors)
 		{
 			Fields = fields;
 		}

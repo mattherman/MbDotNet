@@ -18,11 +18,12 @@ namespace MbDotNet.Tests.Models.Responses
 		}
 
 		[TestMethod]
-		public void TestResponse_Constructor_SetsBehavior()
+		public void TestResponse_Constructor_SetsBehaviors()
 		{
-			var behavior = new Behavior();
-			var response = new IsResponse<TestResponseFields>(new TestResponseFields(), behavior);
-			Assert.AreSame(behavior, response.Behavior);
+			var behavior = new WaitBehavior(1000);
+			var response = new IsResponse<TestResponseFields>(new TestResponseFields(), new []{ behavior });
+			Assert.AreEqual(1, response.Behaviors.Count);
+			Assert.AreSame(behavior, response.Behaviors[0]);
 		}
 	}
 }

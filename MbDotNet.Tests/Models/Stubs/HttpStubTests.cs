@@ -68,10 +68,9 @@ namespace MbDotNet.Tests.Models.Stubs
 			stub.Returns(expectedStatusCode, headers, "test", latencyInMilliseconds: expectedLatencyInMilliseconds);
 
 			var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
-			Assert.IsNotNull(response);
-			Assert.IsNotNull(response.Behavior);
-			Assert.IsNotNull(response.Behavior.LatencyInMilliseconds);
-			Assert.AreEqual(expectedLatencyInMilliseconds, response.Behavior.LatencyInMilliseconds);
+			Assert.IsNotNull(response?.Behaviors);
+			var responseBehavior = response.Behaviors[0] as WaitBehavior;
+			Assert.AreEqual(expectedLatencyInMilliseconds, responseBehavior?.LatencyInMilliseconds);
 		}
 
 		[TestMethod]
@@ -116,13 +115,15 @@ namespace MbDotNet.Tests.Models.Stubs
 		[TestMethod]
 		public void HttpStub_Returns_AddsBehavior()
 		{
-			var expectedResponse = new IsResponse<HttpResponseFields>(new HttpResponseFields(), new Behavior());
+			var behavior = new WaitBehavior(1000);
+			var expectedResponse = new IsResponse<HttpResponseFields>(new HttpResponseFields(), new[] { behavior });
 
 			var stub = new HttpStub();
 			stub.Returns(expectedResponse);
 
 			var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
-			Assert.AreEqual(expectedResponse.Behavior, response?.Behavior);
+			var responseBehavior = response?.Behaviors?[0];
+			Assert.AreEqual(behavior, responseBehavior);
 		}
 
 		[TestMethod]

@@ -1,16 +1,9 @@
-using Newtonsoft.Json;
-
 namespace MbDotNet.Models.Responses
 {
 	/// <summary>
-	/// A "behavior" response
+	/// An abstract response behavior
 	/// </summary>
-	public class Behavior
+	public abstract class Behavior
 	{
-		/// <summary>
-		/// The latency to add to the response
-		/// </summary>
-		[JsonProperty("wait", NullValueHandling = NullValueHandling.Ignore)]
-		public int? LatencyInMilliseconds { get; set; }
 	}
 }

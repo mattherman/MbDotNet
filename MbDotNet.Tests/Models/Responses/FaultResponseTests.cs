@@ -15,11 +15,12 @@ namespace MbDotNet.Tests.Models.Responses
 		}
 
 		[TestMethod]
-		public void FaultResponse_Constructor_SetsBehavior()
+		public void FaultResponse_Constructor_SetsBehaviors()
 		{
-			var behavior = new Behavior();
-			var response = new FaultResponse(Fault.ConnectionResetByPeer, behavior);
-			Assert.AreSame(behavior, response.Behavior);
+			var behavior = new WaitBehavior(1000);
+			var response = new FaultResponse(Fault.ConnectionResetByPeer, new []{ behavior });
+			Assert.AreEqual(1, response.Behaviors.Count);
+			Assert.AreSame(behavior, response.Behaviors[0]);
 		}
 	}
 }
