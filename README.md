@@ -1,3 +1,5 @@
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/U6U5K3WDG)
+
 ![](https://github.com/mattherman/mbdotnet/workflows/CI/badge.svg)
 
 # MbDotNet
