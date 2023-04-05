@@ -16,6 +16,7 @@ There were a handful of breaking changes introduced in v5.x of the library. Thes
   - This should not impact most users since these are abstract base classes
 - If a `Key` or `Cert` are provided when creating an HTTPS imposter they will now be validated and an exception will be thrown if they are not valid PEM-formatted strings
 - The `MbDotNet.Enums` namespace has been removed and its types moved elsewhere
+- `IHttpClientWrapper` / `HttpClientWrapper` are no longer `public`
 
 Continue reading for detailed guidance on the updates you may need to make in order to upgrade to v5.x of the package.
 

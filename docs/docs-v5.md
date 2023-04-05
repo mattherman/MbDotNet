@@ -181,6 +181,7 @@ The client allows you to delete imposters or clear saved requests:
 DeleteImposterAsync(int port)
 DeleteAllImpostersAsync()
 DeleteSavedRequestsAsync(int port)
+DeleteSavedProxyResponsesAsync(int port)
 ```
 
 It also lets you modify stubs on a specific imposter:
