@@ -6,28 +6,28 @@ using MbDotNet.Models.Predicates.Fields;
 using MbDotNet.Models.Responses;
 using MbDotNet.Models.Responses.Fields;
 using MbDotNet.Models.Stubs;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace MbDotNet.Tests.Models.Stubs
 {
-	[TestClass, TestCategory("Unit")]
+	[Trait("Category", "Unit")]
 	public class TcpStubTests
 	{
-		[TestMethod]
+		[Fact]
 		public void TcpStub_Constructor_InitializesResponsesCollection()
 		{
 			var stub = new TcpStub();
-			Assert.IsNotNull(stub.Responses);
+			Assert.NotNull(stub.Responses);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void TcpStub_Constructor_InitializesPredicatesCollection()
 		{
 			var stub = new TcpStub();
-			Assert.IsNotNull(stub.Predicates);
+			Assert.NotNull(stub.Predicates);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void TcpStub_ReturnsData_AddsResponse_DataSet()
 		{
 			const string expectedData = "TestData";
@@ -36,11 +36,11 @@ namespace MbDotNet.Tests.Models.Stubs
 			stub.ReturnsData(expectedData);
 
 			var response = stub.Responses.First() as IsResponse<TcpResponseFields>;
-			Assert.IsNotNull(response);
-			Assert.AreEqual(expectedData, response.Fields.Data);
+			Assert.NotNull(response);
+			Assert.Equal(expectedData, response.Fields.Data);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void TcpStub_Returns_AddsResponse_SetsFields()
 		{
 			var expectedFields = new TcpResponseFields
@@ -52,11 +52,11 @@ namespace MbDotNet.Tests.Models.Stubs
 			stub.Returns(new IsResponse<TcpResponseFields>(expectedFields));
 
 			var response = stub.Responses.First() as IsResponse<TcpResponseFields>;
-			Assert.IsNotNull(response);
-			Assert.AreEqual(expectedFields, response.Fields);
+			Assert.NotNull(response);
+			Assert.Equal(expectedFields, response.Fields);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void TcpStub_Returns_AddsResponse_BehaviorSet()
 		{
 			var expectedFields = new TcpResponseFields
@@ -71,13 +71,13 @@ namespace MbDotNet.Tests.Models.Stubs
 			stub.Returns(new IsResponse<TcpResponseFields>(expectedFields, new []{ behavior }));
 
 			var response = stub.Responses.First() as IsResponse<TcpResponseFields>;
-			Assert.IsNotNull(response?.Behaviors);
-			Assert.AreEqual(1, response.Behaviors.Count);
+			Assert.NotNull(response?.Behaviors);
+			Assert.Single(response.Behaviors);
 			var responseBehavior = response.Behaviors[0] as WaitBehavior;
-			Assert.AreSame(behavior, responseBehavior);
+			Assert.Same(behavior, responseBehavior);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void TcpStub_OnDataEquals_AddsPredicate_DataSet()
 		{
 			const string expectedData = "TestData";
@@ -86,11 +86,11 @@ namespace MbDotNet.Tests.Models.Stubs
 			stub.OnDataEquals(expectedData);
 
 			var predicate = stub.Predicates.First() as EqualsPredicate<TcpPredicateFields>;
-			Assert.IsNotNull(predicate);
-			Assert.AreEqual(expectedData, predicate.Fields.Data);
+			Assert.NotNull(predicate);
+			Assert.Equal(expectedData, predicate.Fields.Data);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void TcpStub_On_AddsPredicate_SetsFields()
 		{
 			var expectedFields = new TcpPredicateFields
@@ -103,11 +103,11 @@ namespace MbDotNet.Tests.Models.Stubs
 			stub.On(new EqualsPredicate<TcpPredicateFields>(expectedFields));
 
 			var predicate = stub.Predicates.First() as EqualsPredicate<TcpPredicateFields>;
-			Assert.IsNotNull(predicate);
-			Assert.AreEqual(expectedFields, predicate.Fields);
+			Assert.NotNull(predicate);
+			Assert.Equal(expectedFields, predicate.Fields);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void TcpStub_ReturnsProxy_ReturnsTcpBooleanProxyStub()
 		{
 			var predicateInvokingProxyStub = new ContainsPredicate<TcpPredicateFields>(new TcpPredicateFields
@@ -129,13 +129,13 @@ namespace MbDotNet.Tests.Models.Stubs
 
 			var proxyResponse = stub.Responses.First() as ProxyResponse<ProxyResponseFields<TcpBooleanPredicateFields>>;
 
-			Assert.IsNotNull(proxyResponse);
-			Assert.AreEqual(proxyToUrl, proxyResponse.Fields.To);
-			Assert.AreEqual(proxyModeToUse, proxyResponse.Fields.Mode);
-			Assert.AreEqual(proxyGeneratorPredicate, proxyResponse.Fields.PredicateGenerators.First());
+			Assert.NotNull(proxyResponse);
+			Assert.Equal(proxyToUrl, proxyResponse.Fields.To);
+			Assert.Equal(proxyModeToUse, proxyResponse.Fields.Mode);
+			Assert.Equal(proxyGeneratorPredicate, proxyResponse.Fields.PredicateGenerators.First());
 		}
 
-		[TestMethod]
+		[Fact]
 		public void TcpStub_ReturnsProxy_ReturnsTcpProxyStub()
 		{
 			var predicateInvokingProxyStub = new ContainsPredicate<TcpPredicateFields>(new TcpPredicateFields
@@ -157,13 +157,13 @@ namespace MbDotNet.Tests.Models.Stubs
 
 			var proxyResponse = stub.Responses.First() as ProxyResponse<ProxyResponseFields<TcpPredicateFields>>;
 
-			Assert.IsNotNull(proxyResponse);
-			Assert.AreEqual(proxyToUrl, proxyResponse.Fields.To);
-			Assert.AreEqual(proxyModeToUse, proxyResponse.Fields.Mode);
-			Assert.AreEqual(proxyGeneratorPredicate, proxyResponse.Fields.PredicateGenerators.First());
+			Assert.NotNull(proxyResponse);
+			Assert.Equal(proxyToUrl, proxyResponse.Fields.To);
+			Assert.Equal(proxyModeToUse, proxyResponse.Fields.Mode);
+			Assert.Equal(proxyGeneratorPredicate, proxyResponse.Fields.PredicateGenerators.First());
 		}
 
-		[TestMethod]
+		[Fact]
 		public void TcpStub_ReturnsFault_ReturnsStubWithFaultResponse()
 		{
 			const Fault expectedFault = Fault.ConnectionResetByPeer;
@@ -172,11 +172,11 @@ namespace MbDotNet.Tests.Models.Stubs
 
 			var faultResponse = stub.Responses[0] as FaultResponse;
 
-			Assert.IsNotNull(faultResponse);
-			Assert.AreEqual(expectedFault, faultResponse.Fault);
+			Assert.NotNull(faultResponse);
+			Assert.Equal(expectedFault, faultResponse.Fault);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void TcpStub_InjectedFunction_AddsPredicate_InjectedFunctionSet()
 		{
 			const string injectedFunction = "function(config) { return true; }";
@@ -185,8 +185,8 @@ namespace MbDotNet.Tests.Models.Stubs
 			stub.OnInjectedFunction(injectedFunction);
 
 			var predicate = stub.Predicates.First() as InjectPredicate;
-			Assert.IsNotNull(predicate);
-			Assert.AreEqual(injectedFunction, predicate.InjectedFunction);
+			Assert.NotNull(predicate);
+			Assert.Equal(injectedFunction, predicate.InjectedFunction);
 		}
 	}
 }

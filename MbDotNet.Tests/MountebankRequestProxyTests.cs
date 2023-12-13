@@ -5,26 +5,25 @@ using System.Threading.Tasks;
 using MbDotNet.Exceptions;
 using MbDotNet.Models.Imposters;
 using MbDotNet.Models.Stubs;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
+using Xunit;
 
 namespace MbDotNet.Tests
 {
-	[TestClass, TestCategory("Unit")]
+	[Trait("Category", "Unit")]
 	public class MountebankRequestProxyTests
 	{
 		private Mock<IHttpClientWrapper> _mockClient;
 		private MountebankRequestProxy _proxy;
 
-		[TestInitialize]
-		public void TestInitialize()
+		public MountebankRequestProxyTests()
 		{
 			_mockClient = new Mock<IHttpClientWrapper>();
 			_proxy = new MountebankRequestProxy(_mockClient.Object);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task DeleteAllImposters_SendsRequest()
 		{
 			var expectedResource = "imposters";
@@ -34,13 +33,12 @@ namespace MbDotNet.Tests
 			_mockClient.Setup(x => x.DeleteAsync(expectedResource, default))
 				.ReturnsAsync(response);
 
-			await _proxy.DeleteAllImpostersAsync().ConfigureAwait(false);
+			await _proxy.DeleteAllImpostersAsync();
 
 			_mockClient.Verify(x => x.DeleteAsync(expectedResource, default), Times.Once);
 		}
 
-		[TestMethod]
-		[ExpectedException(typeof(MountebankException))]
+		[Fact]
 		public async Task DeleteAllImposters_StatusCodeNotOk_ThrowsMountebankException()
 		{
 			var response = GetResponse(HttpStatusCode.BadRequest);
@@ -48,10 +46,13 @@ namespace MbDotNet.Tests
 			_mockClient.Setup(x => x.DeleteAsync(It.IsAny<string>(), default))
 				.ReturnsAsync(response);
 
-			await _proxy.DeleteAllImpostersAsync().ConfigureAwait(false);
+			await Assert.ThrowsAsync<MountebankException>(async () =>
+			{
+				await _proxy.DeleteAllImpostersAsync();
+			});
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task DeleteImposter_SendsRequest()
 		{
 			const int port = 123;
@@ -62,13 +63,12 @@ namespace MbDotNet.Tests
 			_mockClient.Setup(x => x.DeleteAsync(expectedResource, default))
 				.ReturnsAsync(response);
 
-			await _proxy.DeleteImposterAsync(port).ConfigureAwait(false);
+			await _proxy.DeleteImposterAsync(port);
 
 			_mockClient.Verify(x => x.DeleteAsync(expectedResource, default), Times.Once);
 		}
 
-		[TestMethod]
-		[ExpectedException(typeof(MountebankException))]
+		[Fact]
 		public async Task DeleteImposter_StatusCodeNotOk_ThrowsMountebankException()
 		{
 			var response = GetResponse(HttpStatusCode.BadRequest);
@@ -76,10 +76,13 @@ namespace MbDotNet.Tests
 			_mockClient.Setup(x => x.DeleteAsync(It.IsAny<string>(), default))
 				.ReturnsAsync(response);
 
-			await _proxy.DeleteImposterAsync(123).ConfigureAwait(false);
+			await Assert.ThrowsAsync<MountebankException>(async () =>
+			{
+				await _proxy.DeleteImposterAsync(123);
+			});
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task CreateImposter_SendsRequest()
 		{
 			const string expectedResource = "imposters";
@@ -93,15 +96,15 @@ namespace MbDotNet.Tests
 				.ReturnsAsync(response)
 				.Callback<string, HttpContent, CancellationToken>((_, cont, _) => content = cont);
 
-			await _proxy.CreateImposterAsync(imposter).ConfigureAwait(false);
+			await _proxy.CreateImposterAsync(imposter);
 
 			var json = await content.ReadAsStringAsync();
 			var serializedImposter = JsonConvert.DeserializeObject<HttpImposter>(json);
 
-			Assert.AreEqual(imposter.Port, serializedImposter.Port);
+			Assert.Equal(imposter.Port, serializedImposter.Port);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task CreateImposter_SendsRequest_ImposterWithNoPort()
 		{
 			var response = GetResponse(
@@ -126,13 +129,12 @@ namespace MbDotNet.Tests
 
 			var imposter = new HttpImposter(null, null, null);
 
-			await _proxy.CreateImposterAsync(imposter).ConfigureAwait(false);
+			await _proxy.CreateImposterAsync(imposter);
 
-			Assert.AreEqual(12345, imposter.Port);
+			Assert.Equal(12345, imposter.Port);
 		}
 
-		[TestMethod]
-		[ExpectedException(typeof(MountebankException))]
+		[Fact]
 		public async Task CreateImposter_StatusCodeNotCreated_ThrowsMountebankException()
 		{
 			var response = GetResponse(HttpStatusCode.BadRequest);
@@ -140,10 +142,13 @@ namespace MbDotNet.Tests
 			_mockClient.Setup(x => x.PostAsync(It.IsAny<string>(), It.IsAny<HttpContent>(), default))
 				.ReturnsAsync(response);
 
-			await _proxy.CreateImposterAsync(new HttpImposter(123, null, null)).ConfigureAwait(false);
+			await Assert.ThrowsAsync<MountebankException>(async () =>
+			{
+				await _proxy.CreateImposterAsync(new HttpImposter(123, null, null));
+			});
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task OverwriteAllImposters_SendsRequest()
 		{
 			const string expectedResource = "imposters";
@@ -155,11 +160,10 @@ namespace MbDotNet.Tests
 			_mockClient.Setup(x => x.PutAsync(expectedResource, It.IsAny<HttpContent>(), default))
 				.ReturnsAsync(response);
 
-			await _proxy.OverwriteAllImpostersAsync(imposters).ConfigureAwait(false);
+			await _proxy.OverwriteAllImpostersAsync(imposters);
 		}
 
-		[TestMethod]
-		[ExpectedException(typeof(MountebankException))]
+		[Fact]
 		public async Task OverwriteAllImposters_StatusCodeNotOk_ThrowsMountebankException()
 		{
 			var response = GetResponse(HttpStatusCode.BadRequest);
@@ -167,10 +171,13 @@ namespace MbDotNet.Tests
 			_mockClient.Setup(x => x.PutAsync(It.IsAny<string>(), It.IsAny<HttpContent>(), default))
 				.ReturnsAsync(response);
 
-			await _proxy.OverwriteAllImpostersAsync(new [] { new HttpImposter(123, null, null) }).ConfigureAwait(false);
+			await Assert.ThrowsAsync<MountebankException>(async () =>
+			{
+				await _proxy.OverwriteAllImpostersAsync(new[] { new HttpImposter(123, null, null) });
+			});
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task ReplaceStubsAsync_SendsRequest()
 		{
 			const int port = 123;
@@ -184,13 +191,12 @@ namespace MbDotNet.Tests
 				.ReturnsAsync(response)
 				.Callback<string, HttpContent, CancellationToken>((_, cont, _) => content = cont);
 
-			await _proxy.ReplaceStubsAsync(port, stubs).ConfigureAwait(false);
+			await _proxy.ReplaceStubsAsync(port, stubs);
 
-			Assert.IsNotNull(content);
+			Assert.NotNull(content);
 		}
 
-		[TestMethod]
-		[ExpectedException(typeof(ImposterNotFoundException))]
+		[Fact]
 		public async Task ReplaceStubsAsync_StatusCodeNotOk_ThrowsImposterNotFoundException()
 		{
 			var response = GetResponse(HttpStatusCode.NotFound);
@@ -198,10 +204,13 @@ namespace MbDotNet.Tests
 			_mockClient.Setup(x => x.PutAsync(It.IsAny<string>(), It.IsAny<HttpContent>(), default))
 				.ReturnsAsync(response);
 
-			await _proxy.ReplaceStubsAsync(123, new []{ new HttpStub() }).ConfigureAwait(false);
+			await Assert.ThrowsAsync<ImposterNotFoundException>(async () =>
+			{
+				await _proxy.ReplaceStubsAsync(123, new[] { new HttpStub() });
+			});
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task ReplaceStubAsync_SendsRequest()
 		{
 			const int port = 123;
@@ -216,13 +225,12 @@ namespace MbDotNet.Tests
 				.ReturnsAsync(response)
 				.Callback<string, HttpContent, CancellationToken>((_, cont, _) => content = cont);
 
-			await _proxy.ReplaceStubAsync(port, stub, stubIndex).ConfigureAwait(false);
+			await _proxy.ReplaceStubAsync(port, stub, stubIndex);
 
-			Assert.IsNotNull(content);
+			Assert.NotNull(content);
 		}
 
-		[TestMethod]
-		[ExpectedException(typeof(ImposterNotFoundException))]
+		[Fact]
 		public async Task ReplaceStubAsync_StatusCodeNotOk_ThrowsImposterNotFoundException()
 		{
 			var response = GetResponse(HttpStatusCode.NotFound);
@@ -230,10 +238,13 @@ namespace MbDotNet.Tests
 			_mockClient.Setup(x => x.PutAsync(It.IsAny<string>(), It.IsAny<HttpContent>(), default))
 				.ReturnsAsync(response);
 
-			await _proxy.ReplaceStubAsync(123, new HttpStub(), 1).ConfigureAwait(false);
+			await Assert.ThrowsAsync<ImposterNotFoundException>(async () =>
+			{
+				await _proxy.ReplaceStubAsync(123, new HttpStub(), 1);
+			});
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task AddStubAsync_SendsRequest()
 		{
 			const int port = 123;
@@ -247,13 +258,12 @@ namespace MbDotNet.Tests
 				.ReturnsAsync(response)
 				.Callback<string, HttpContent, CancellationToken>((_, cont, _) => content = cont);
 
-			await _proxy.AddStubAsync(port, stub, null).ConfigureAwait(false);
+			await _proxy.AddStubAsync(port, stub, null);
 
-			Assert.IsNotNull(content);
+			Assert.NotNull(content);
 		}
 
-		[TestMethod]
-		[ExpectedException(typeof(ImposterNotFoundException))]
+		[Fact]
 		public async Task AddStubAsync_StatusCodeNotOk_ThrowsImposterNotFoundException()
 		{
 			var response = GetResponse(HttpStatusCode.NotFound);
@@ -261,10 +271,13 @@ namespace MbDotNet.Tests
 			_mockClient.Setup(x => x.PostAsync(It.IsAny<string>(), It.IsAny<HttpContent>(), default))
 				.ReturnsAsync(response);
 
-			await _proxy.AddStubAsync(123, new HttpStub(), null).ConfigureAwait(false);
+			await Assert.ThrowsAsync<ImposterNotFoundException>(async () =>
+			{
+				await _proxy.AddStubAsync(123, new HttpStub(), null);
+			});
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task RemoveStubAsync_SendsRequest()
 		{
 			const int port = 123;
@@ -276,11 +289,10 @@ namespace MbDotNet.Tests
 			_mockClient.Setup(x => x.DeleteAsync(expectedResource, default))
 				.ReturnsAsync(response);
 
-			await _proxy.RemoveStubAsync(port, stubIndex).ConfigureAwait(false);
+			await _proxy.RemoveStubAsync(port, stubIndex);
 		}
 
-		[TestMethod]
-		[ExpectedException(typeof(ImposterNotFoundException))]
+		[Fact]
 		public async Task RemoveStubAsync_StatusCodeNotOk_ThrowsImposterNotFoundException()
 		{
 			var response = GetResponse(HttpStatusCode.NotFound);
@@ -288,10 +300,13 @@ namespace MbDotNet.Tests
 			_mockClient.Setup(x => x.DeleteAsync(It.IsAny<string>(), default))
 				.ReturnsAsync(response);
 
-			await _proxy.RemoveStubAsync(123, 1).ConfigureAwait(false);
+			await Assert.ThrowsAsync<ImposterNotFoundException>(async () =>
+			{
+				await _proxy.RemoveStubAsync(123, 1);
+			});
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task GetHttpImposter_SendsRequest()
 		{
 			const int port = 12345;
@@ -319,11 +334,10 @@ namespace MbDotNet.Tests
 
 			var imposter = await _proxy.GetHttpImposterAsync(port);
 
-			Assert.AreEqual(port, imposter.Port);
+			Assert.Equal(port, imposter.Port);
 		}
 
-		[TestMethod]
-		[ExpectedException(typeof(ImposterNotFoundException))]
+		[Fact]
 		public async Task GetHttpImposter_StatusCodeNotOk_ThrowsImposterNotFoundException()
 		{
 			var response = GetResponse(HttpStatusCode.NotFound);
@@ -331,10 +345,13 @@ namespace MbDotNet.Tests
 			_mockClient.Setup(x => x.GetAsync(It.IsAny<string>(), default))
 				.ReturnsAsync(response);
 
-			await _proxy.GetHttpImposterAsync(9999).ConfigureAwait(false);
+			await Assert.ThrowsAsync<ImposterNotFoundException>(async () =>
+			{
+				await _proxy.GetHttpImposterAsync(9999);
+			});
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task GetHttpsImposter_SendsRequest()
 		{
 			const int port = 12345;
@@ -362,11 +379,10 @@ namespace MbDotNet.Tests
 
 			var imposter = await _proxy.GetHttpsImposterAsync(port);
 
-			Assert.AreEqual(port, imposter.Port);
+			Assert.Equal(port, imposter.Port);
 		}
 
-		[TestMethod]
-		[ExpectedException(typeof(ImposterNotFoundException))]
+		[Fact]
 		public async Task GetHttpsImposter_StatusCodeNotOk_ThrowsImposterNotFoundException()
 		{
 			var response = GetResponse(HttpStatusCode.NotFound);
@@ -374,10 +390,13 @@ namespace MbDotNet.Tests
 			_mockClient.Setup(x => x.GetAsync(It.IsAny<string>(), default))
 				.ReturnsAsync(response);
 
-			await _proxy.GetHttpsImposterAsync(9999).ConfigureAwait(false);
+			await Assert.ThrowsAsync<ImposterNotFoundException>(async () =>
+			{
+				await _proxy.GetHttpsImposterAsync(9999);
+			});
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task GetTcpImposter_SendsRequest()
 		{
 			const int port = 12345;
@@ -405,11 +424,10 @@ namespace MbDotNet.Tests
 
 			var imposter = await _proxy.GetTcpImposterAsync(port);
 
-			Assert.AreEqual(port, imposter.Port);
+			Assert.Equal(port, imposter.Port);
 		}
 
-		[TestMethod]
-		[ExpectedException(typeof(ImposterNotFoundException))]
+		[Fact]
 		public async Task GetTcpImposter_StatusCodeNotOk_ThrowsImposterNotFoundException()
 		{
 			var response = GetResponse(HttpStatusCode.NotFound);
@@ -417,10 +435,13 @@ namespace MbDotNet.Tests
 			_mockClient.Setup(x => x.GetAsync(It.IsAny<string>(), default))
 				.ReturnsAsync(response);
 
-			await _proxy.GetTcpImposterAsync(9999).ConfigureAwait(false);
+			await Assert.ThrowsAsync<ImposterNotFoundException>(async () =>
+			{
+				await _proxy.GetTcpImposterAsync(9999);
+			});
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task DeleteSavedRequests_SendsRequest()
 		{
 			const int port = 123;
@@ -431,13 +452,12 @@ namespace MbDotNet.Tests
 			_mockClient.Setup(x => x.DeleteAsync(expectedResource, default))
 				.ReturnsAsync(response);
 
-			await _proxy.DeleteSavedRequestsAsync(port).ConfigureAwait(false);
+			await _proxy.DeleteSavedRequestsAsync(port);
 
 			_mockClient.Verify(x => x.DeleteAsync(expectedResource, default), Times.Once);
 		}
 
-		[TestMethod]
-		[ExpectedException(typeof(MountebankException))]
+		[Fact]
 		public async Task DeleteSavedRequests_StatusCodeNotOk_ThrowsMountebankException()
 		{
 			var response = GetResponse(HttpStatusCode.BadRequest);
@@ -445,10 +465,13 @@ namespace MbDotNet.Tests
 			_mockClient.Setup(x => x.DeleteAsync(It.IsAny<string>(), default))
 				.ReturnsAsync(response);
 
-			await _proxy.DeleteSavedRequestsAsync(123).ConfigureAwait(false);
+			await Assert.ThrowsAsync<MountebankException>(async () =>
+			{
+				await _proxy.DeleteSavedRequestsAsync(123);
+			});
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task DeleteSavedProxyResponses_SendsRequest()
 		{
 			const int port = 123;
@@ -459,13 +482,12 @@ namespace MbDotNet.Tests
 			_mockClient.Setup(x => x.DeleteAsync(expectedResource, default))
 				.ReturnsAsync(response);
 
-			await _proxy.DeleteSavedProxyResponsesAsync(port).ConfigureAwait(false);
+			await _proxy.DeleteSavedProxyResponsesAsync(port);
 
 			_mockClient.Verify(x => x.DeleteAsync(expectedResource, default), Times.Once);
 		}
 
-		[TestMethod]
-		[ExpectedException(typeof(MountebankException))]
+		[Fact]
 		public async Task DeleteSavedProxyResponses_StatusCodeNotOk_ThrowsMountebankException()
 		{
 			var response = GetResponse(HttpStatusCode.BadRequest);
@@ -473,7 +495,10 @@ namespace MbDotNet.Tests
 			_mockClient.Setup(x => x.DeleteAsync(It.IsAny<string>(), default))
 				.ReturnsAsync(response);
 
-			await _proxy.DeleteSavedProxyResponsesAsync(123).ConfigureAwait(false);
+			await Assert.ThrowsAsync<MountebankException>(async () =>
+			{
+				await _proxy.DeleteSavedProxyResponsesAsync(123);
+			});
 		}
 
 		private HttpResponseMessage GetResponse(HttpStatusCode statusCode, string content = null)

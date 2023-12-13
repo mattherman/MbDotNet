@@ -1,25 +1,30 @@
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using Xunit;
 
 namespace MbDotNet.Tests.Acceptance
 {
-	[TestClass, TestCategory("Acceptance")]
+	[Trait("Category", "Acceptance")]
+	[Collection("Sequential")]
 	public class ConfigTests : AcceptanceTestBase
 	{
-		[TestInitialize]
-		public async Task TestInitialize()
+		/// <summary>
+		/// It act as test initialize in x unit
+		/// at https://xunit.net/docs/comparisons
+		/// </summary>
+		public ConfigTests()
 		{
-			await _client.DeleteAllImpostersAsync();
+			_client.DeleteAllImpostersAsync().ConfigureAwait(false);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task GetConfig()
 		{
 			var result = await _client.GetConfigAsync();
-			Assert.IsNotNull(result);
-			Assert.IsNotNull(result.Version);
-			Assert.IsTrue(result.Process.Count > 0);
-			Assert.IsTrue(result.Options.Count > 0);
+			Assert.NotNull(result);
+			Assert.NotNull(result.Version);
+			Assert.True(result.Process.Count > 0);
+            Assert.True(result.Options.Count > 0);
 		}
 	}
 }

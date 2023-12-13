@@ -1,25 +1,29 @@
 ﻿using System.Threading.Tasks;
 using MbDotNet.Exceptions;
 using MbDotNet.Models.Imposters;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Xunit;
+
+using MSAssert = Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MbDotNet.Tests.Client
 {
-	[TestClass, TestCategory("Unit")]
+	[Trait("Category", "Unit")]
 	public class GetSmtpImposterTests : MountebankClientTestBase
 	{
-		[TestMethod]
-		[ExpectedException(typeof(InvalidProtocolException))]
+		[Fact]
 		public async Task NonSmtpImposterRetrieved_ThrowsInvalidProtocolException()
 		{
 			const int port = 6000;
 			MockRequestProxy.Setup(x => x.GetSmtpImposterAsync(port, default)).ReturnsAsync(new RetrievedSmtpImposter { Protocol = "Http" });
 
-			await Client.GetSmtpImposterAsync(port).ConfigureAwait(false);
+			await Assert.ThrowsAsync<InvalidProtocolException>(async () =>
+			{
+				await Client.GetSmtpImposterAsync(port);
+			});
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task SmtpImposterRetrieved_ReturnsImposter()
 		{
 			const int port = 6000;
@@ -31,9 +35,9 @@ namespace MbDotNet.Tests.Client
 
 			MockRequestProxy.Setup(x => x.GetSmtpImposterAsync(port, default)).ReturnsAsync(expectedImposter);
 
-			var result = await Client.GetSmtpImposterAsync(port).ConfigureAwait(false);
+			var result = await Client.GetSmtpImposterAsync(port);
 
-			Assert.AreSame(expectedImposter, result);
+			Assert.Same(expectedImposter, result);
 		}
 	}
 }
