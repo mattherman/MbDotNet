@@ -1,15 +1,15 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MbDotNet.Models.Imposters;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Xunit;
 
 namespace MbDotNet.Tests.Client
 {
-	[TestClass, TestCategory("Unit")]
+	[Trait("Category", "Unit")]
 	public class GetListOfImpostersTests : MountebankClientTestBase
 	{
-		[TestMethod]
+		[Fact]
 		public async Task ImpostersRetrieved_ReturnsImposters()
 		{
 			await Client.DeleteAllImpostersAsync();
@@ -21,9 +21,9 @@ namespace MbDotNet.Tests.Client
 			};
 			MockRequestProxy.Setup(x => x.GetImpostersAsync(default)).ReturnsAsync(expectedImposters);
 
-			var result = await Client.GetImpostersAsync().ConfigureAwait(false);
+			var result = await Client.GetImpostersAsync();
 
-			Assert.AreSame(expectedImposters, result);
+			Assert.Same(expectedImposters, result);
 		}
 	}
 }

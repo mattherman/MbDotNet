@@ -15,38 +15,40 @@ using MbDotNet.Models.Predicates;
 using MbDotNet.Models.Predicates.Fields;
 using MbDotNet.Models.Responses;
 using MbDotNet.Models.Stubs;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
+
+using Xunit;
 
 namespace MbDotNet.Tests.Acceptance
 {
-	[TestClass, TestCategory("Acceptance")]
+	[Trait("Category", "Acceptance")]
+	[Collection("Sequential")]
 	public class ImposterTests : AcceptanceTestBase
 	{
 		private readonly HttpClient _httpClient;
 
+		/// <summary>
+		/// It act as test initialize in x unit
+		/// at https://xunit.net/docs/comparisons
+		/// </summary>
 		public ImposterTests()
 		{
 			_httpClient = new HttpClient();
+
+			_client.DeleteAllImpostersAsync().ConfigureAwait(false);
 		}
 
-		[TestInitialize]
-		public async Task TestInitialize()
-		{
-			await _client.DeleteAllImpostersAsync();
-		}
-
-		[TestMethod]
+		[Fact]
 		public async Task CanCreateAndGetHttpImposter()
 		{
 			const int port = 6000;
 			await _client.CreateHttpImposterAsync(port, _ => { });
 
 			var retrievedImposter = await _client.GetHttpImposterAsync(port);
-			Assert.IsNotNull(retrievedImposter);
+            Assert.NotNull(retrievedImposter);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task CanGetListOfImposters()
 		{
 			const int port1 = 6000;
@@ -57,11 +59,11 @@ namespace MbDotNet.Tests.Acceptance
 
 			var result = await _client.GetImpostersAsync();
 
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			Assert.NotNull(result);
+			Assert.Equal(2, result.Count());
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task CanReplaceHttpImposterStubs()
 		{
 			const int port = 6000;
@@ -80,10 +82,10 @@ namespace MbDotNet.Tests.Acceptance
 
 			var imposter = await _client.GetHttpImposterAsync(port);
 
-			Assert.AreEqual(1, imposter.Stubs.Count);
+			Assert.Single(imposter.Stubs);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task CanReplaceHttpImposterStub()
 		{
 			const int port = 6000;
@@ -102,10 +104,10 @@ namespace MbDotNet.Tests.Acceptance
 
 			var imposter = await _client.GetHttpImposterAsync(port);
 
-			Assert.AreEqual(1, imposter.Stubs.Count);
+			Assert.Single(imposter.Stubs);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task CanAddHttpImposterStub_AtTheEnd()
 		{
 			const int port = 6000;
@@ -124,10 +126,10 @@ namespace MbDotNet.Tests.Acceptance
 
 			var imposter = await _client.GetHttpImposterAsync(port);
 
-			Assert.AreEqual(2, imposter.Stubs.Count);
+			Assert.Equal(2, imposter.Stubs.Count);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task CanAddHttpImposterStub_AtSpecificIndex()
 		{
 			const int port = 6000;
@@ -146,10 +148,10 @@ namespace MbDotNet.Tests.Acceptance
 
 			var imposter = await _client.GetHttpImposterAsync(port);
 
-			Assert.AreEqual(2, imposter.Stubs.Count);
+			Assert.Equal(2, imposter.Stubs.Count);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task CanRemoveHttpImposterStub()
 		{
 			const int port = 6000;
@@ -164,10 +166,10 @@ namespace MbDotNet.Tests.Acceptance
 
 			var imposter = await _client.GetHttpImposterAsync(port);
 
-			Assert.AreEqual(0, imposter.Stubs.Count);
+			Assert.Empty(imposter.Stubs);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task CanCreateAndGetHttpsImposter()
 		{
 			const int port = 6000;
@@ -175,10 +177,10 @@ namespace MbDotNet.Tests.Acceptance
 
 			var retrievedImposter = await _client.GetHttpsImposterAsync(port);
 
-			Assert.IsNotNull(retrievedImposter);
+			Assert.NotNull(retrievedImposter);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task CanReplaceHttpsImposterStubs()
 		{
 			const int port = 6000;
@@ -197,10 +199,10 @@ namespace MbDotNet.Tests.Acceptance
 
 			var imposter = await _client.GetHttpsImposterAsync(port);
 
-			Assert.AreEqual(1, imposter.Stubs.Count);
+			Assert.Single(imposter.Stubs);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task CanReplaceHttpsImposterStub()
 		{
 			const int port = 6000;
@@ -219,10 +221,10 @@ namespace MbDotNet.Tests.Acceptance
 
 			var imposter = await _client.GetHttpsImposterAsync(port);
 
-			Assert.AreEqual(1, imposter.Stubs.Count);
+			Assert.Single(imposter.Stubs);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task CanAddHttpsImposterStub_AtTheEnd()
 		{
 			const int port = 6000;
@@ -241,10 +243,10 @@ namespace MbDotNet.Tests.Acceptance
 
 			var imposter = await _client.GetHttpsImposterAsync(port);
 
-			Assert.AreEqual(2, imposter.Stubs.Count);
+			Assert.Equal(2, imposter.Stubs.Count);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task CanAddHttpsImposterStub_AtSpecificIndex()
 		{
 			const int port = 6000;
@@ -263,10 +265,10 @@ namespace MbDotNet.Tests.Acceptance
 
 			var imposter = await _client.GetHttpsImposterAsync(port);
 
-			Assert.AreEqual(2, imposter.Stubs.Count);
+			Assert.Equal(2, imposter.Stubs.Count);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task CanRemoveHttpsImposterStub()
 		{
 			const int port = 6000;
@@ -281,20 +283,20 @@ namespace MbDotNet.Tests.Acceptance
 
 			var imposter = await _client.GetHttpsImposterAsync(port);
 
-			Assert.AreEqual(0, imposter.Stubs.Count);
+			Assert.Empty(imposter.Stubs);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task CanCreateAndGetTcpImposter()
 		{
 			const int port = 6000;
 			await _client.CreateTcpImposterAsync(port, _ => { });
 
 			var retrievedImposter = await _client.GetTcpImposterAsync(port);
-			Assert.IsNotNull(retrievedImposter);
+			Assert.NotNull(retrievedImposter);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task CanReplaceTcpImposterStubs()
 		{
 			const int port = 6000;
@@ -313,10 +315,10 @@ namespace MbDotNet.Tests.Acceptance
 
 			var imposter = await _client.GetTcpImposterAsync(port);
 
-			Assert.AreEqual(1, imposter.Stubs.Count);
+			Assert.Single(imposter.Stubs);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task CanReplaceTcpImposterStub()
 		{
 			const int port = 6000;
@@ -335,10 +337,10 @@ namespace MbDotNet.Tests.Acceptance
 
 			var imposter = await _client.GetTcpImposterAsync(port);
 
-			Assert.AreEqual(1, imposter.Stubs.Count);
+			Assert.Single(imposter.Stubs);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task CanAddTcpImposterStub_AtTheEnd()
 		{
 			const int port = 6000;
@@ -357,10 +359,10 @@ namespace MbDotNet.Tests.Acceptance
 
 			var imposter = await _client.GetTcpImposterAsync(port);
 
-			Assert.AreEqual(2, imposter.Stubs.Count);
+			Assert.Equal(2, imposter.Stubs.Count);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task CanAddTcpImposterStub_AtSpecificIndex()
 		{
 			const int port = 6000;
@@ -379,10 +381,10 @@ namespace MbDotNet.Tests.Acceptance
 
 			var imposter = await _client.GetTcpImposterAsync(port);
 
-			Assert.AreEqual(2, imposter.Stubs.Count);
+			Assert.Equal(2, imposter.Stubs.Count);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task CanRemoveTcpImposterStub()
 		{
 			const int port = 6000;
@@ -397,10 +399,10 @@ namespace MbDotNet.Tests.Acceptance
 
 			var imposter = await _client.GetTcpImposterAsync(port);
 
-			Assert.AreEqual(0, imposter.Stubs.Count);
+			Assert.Empty(imposter.Stubs);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task CanCreateAndGetSmtpImposter()
 		{
 			const int port = 6000;
@@ -409,11 +411,11 @@ namespace MbDotNet.Tests.Acceptance
 			await _client.CreateSmtpImposterAsync(port, name, imposter => imposter.RecordRequests = true);
 
 			var retrievedImposter = await _client.GetSmtpImposterAsync(port);
-			Assert.IsNotNull(retrievedImposter);
-			Assert.AreEqual(name, retrievedImposter.Name);
+			Assert.NotNull(retrievedImposter);
+			Assert.Equal(name, retrievedImposter.Name);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task CanCreateHttpProxyImposter()
 		{
 			const int sourceImposterPort = 6000;
@@ -442,14 +444,14 @@ namespace MbDotNet.Tests.Acceptance
 			// Make a request to the imposter to trigger the proxy
 			var request = new HttpRequestMessage(HttpMethod.Get, $"http://localhost:{proxyImposterPort}/test?param=value");
 			var response = await _httpClient.SendAsync(request);
-			Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "Request to proxy imposter failed");
+			Assert.True(HttpStatusCode.OK == response.StatusCode, "Request to proxy imposter failed");
 
 			var retrievedSourceImposter = await _client.GetHttpImposterAsync(sourceImposterPort);
-			Assert.IsNotNull(retrievedSourceImposter);
-			Assert.AreEqual(1, retrievedSourceImposter.NumberOfRequests);
+			Assert.NotNull(retrievedSourceImposter);
+			Assert.Equal(1, retrievedSourceImposter.NumberOfRequests);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task CanCreateTcpProxyImposter()
 		{
 			const int sourceImposterPort = 6000;
@@ -479,21 +481,20 @@ namespace MbDotNet.Tests.Acceptance
 			using (var client = new TcpClient("localhost", proxyImposterPort))
 			{
 				var data = Encoding.ASCII.GetBytes("testdata");
-				await using (var stream = client.GetStream())
-				{
-					await stream.WriteAsync(data);
-					await stream.FlushAsync();
-					var numberOfBytesRead = await stream.ReadAsync(new byte[6].AsMemory(0, 6));
-					Assert.IsTrue(numberOfBytesRead > 0);
-				}
+				await using var stream = client.GetStream();
+
+				await stream.WriteAsync(data);
+				await stream.FlushAsync();
+				var numberOfBytesRead = await stream.ReadAsync(new byte[6].AsMemory(0, 6));
+				Assert.True(numberOfBytesRead > 0);
 			}
 
 			var retrievedSourceImposter = await _client.GetTcpImposterAsync(sourceImposterPort);
-			Assert.IsNotNull(retrievedSourceImposter);
-			Assert.AreEqual(1, retrievedSourceImposter.NumberOfRequests);
+			Assert.NotNull(retrievedSourceImposter);
+			Assert.Equal(1, retrievedSourceImposter.NumberOfRequests);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task CanDeleteSavedProxyResponses()
 		{
 			const int sourceImposterPort = 6000;
@@ -522,37 +523,37 @@ namespace MbDotNet.Tests.Acceptance
 			// Make a request to the imposter to trigger the proxy
 			var request = new HttpRequestMessage(HttpMethod.Get, $"http://localhost:{proxyImposterPort}/test?param=value");
 			var response = await _httpClient.SendAsync(request);
-			Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "Request to proxy imposter failed");
+			Assert.True(HttpStatusCode.OK == response.StatusCode, "Request to proxy imposter failed");
 
 			var imposterBeforeDeletingResponses = await _client.GetHttpImposterAsync(proxyImposterPort);
-			Assert.IsNotNull(imposterBeforeDeletingResponses);
-			Assert.AreEqual(2, imposterBeforeDeletingResponses.Stubs.Count);
+			Assert.NotNull(imposterBeforeDeletingResponses);
+			Assert.Equal(2, imposterBeforeDeletingResponses.Stubs.Count);
 
 			await _client.DeleteSavedProxyResponsesAsync(proxyImposterPort);
 
 			var imposterAfterDeletingResponses = await _client.GetHttpImposterAsync(proxyImposterPort);
-			Assert.IsNotNull(imposterAfterDeletingResponses);
-			Assert.AreEqual(1, imposterAfterDeletingResponses.Stubs.Count);
+			Assert.NotNull(imposterAfterDeletingResponses);
+			Assert.Single(imposterAfterDeletingResponses.Stubs);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task CanOverwriteAllImposters()
 		{
 			await _client.CreateHttpImposterAsync(6000, _ => { });
 			await _client.CreateHttpImposterAsync(6001, _ => { });
 
 			var impostersBeforeReplacement = (await _client.GetImpostersAsync()).ToList();
-			Assert.AreEqual(2, impostersBeforeReplacement.Count);
+			Assert.Equal(2, impostersBeforeReplacement.Count);
 
 			var newImposters = new[] { new HttpImposter(6002, null, null) };
 			await _client.OverwriteAllImposters(newImposters);
 
 			var impostersAfterReplacement = (await _client.GetImpostersAsync()).ToList();
-			Assert.AreEqual(1, impostersAfterReplacement.Count);
-			Assert.AreEqual(6002, impostersAfterReplacement[0].Port);
+			Assert.Single(impostersAfterReplacement);
+			Assert.Equal(6002, impostersAfterReplacement[0].Port);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task CanDeleteImposter()
 		{
 			const int port = 6000;
@@ -561,20 +562,20 @@ namespace MbDotNet.Tests.Acceptance
 
 			await _client.DeleteImposterAsync(port);
 
-			await Assert.ThrowsExceptionAsync<ImposterNotFoundException>(
+			await Assert.ThrowsAsync<ImposterNotFoundException>(
 				async () => await _client.GetHttpImposterAsync(port)
 			);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task UnableToRetrieveImposterThatDoesNotExist()
 		{
-			await Assert.ThrowsExceptionAsync<ImposterNotFoundException>(
+			await Assert.ThrowsAsync<ImposterNotFoundException>(
 				async () => await _client.GetHttpImposterAsync(6000)
 			);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task CanVerifyCallsOnImposter()
 		{
 			const int port = 6000;
@@ -586,27 +587,27 @@ namespace MbDotNet.Tests.Acceptance
 				Content = new StringContent("<TestData>\r\n  <Name>Bob</Name>\r\n  <Email>bob@zmail.com</Email>\r\n</TestData>", Encoding.UTF8, "text/xml")
 			};
 			var response = await _httpClient.SendAsync(request);
-			Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "Request to proxy imposter failed");
+			Assert.True(HttpStatusCode.OK == response.StatusCode, "Request to proxy imposter failed");
 
 			var retrievedImposter = await _client.GetHttpImposterAsync(port);
 
-			Assert.AreEqual(1, retrievedImposter.NumberOfRequests);
+			Assert.Equal(1, retrievedImposter.NumberOfRequests);
 
 			// For the request field to be populated, mountebank must be run with the --mock parameter
 			// http://www.mbtest.org/docs/api/overview#get-imposter
 			var receivedRequest = retrievedImposter.Requests[0];
 
-			Assert.AreEqual("/customers", receivedRequest.Path);
-			Assert.AreEqual("123", receivedRequest.QueryParameters["id"]);
-			Assert.AreEqual("<TestData>\r\n  <Name>Bob</Name>\r\n  <Email>bob@zmail.com</Email>\r\n</TestData>", receivedRequest.Body);
-			Assert.AreEqual(Method.Post, receivedRequest.Method);
-			Assert.AreNotEqual(default, receivedRequest.Timestamp);
-			Assert.AreNotEqual(string.Empty, receivedRequest.RequestFrom);
-			Assert.AreEqual("text/xml; charset=utf-8", receivedRequest.Headers["Content-Type"]);
-			Assert.AreEqual("75", receivedRequest.Headers["Content-Length"]);
+			Assert.Equal("/customers", receivedRequest.Path);
+			Assert.Equal("123", receivedRequest.QueryParameters["id"]);
+			Assert.Equal("<TestData>\r\n  <Name>Bob</Name>\r\n  <Email>bob@zmail.com</Email>\r\n</TestData>", receivedRequest.Body);
+			Assert.Equal(Method.Post, receivedRequest.Method);
+			Assert.NotEqual(default, receivedRequest.Timestamp);
+			Assert.NotEqual(string.Empty, receivedRequest.RequestFrom);
+			Assert.Equal("text/xml; charset=utf-8", receivedRequest.Headers["Content-Type"]);
+			Assert.Equal("75", receivedRequest.Headers["Content-Length"]);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task CanVerifyCallsOnSmtpImposter()
 		{
 			const int port = 6000;
@@ -644,17 +645,17 @@ namespace MbDotNet.Tests.Acceptance
 
 			var retrievedImposter = await _client.GetSmtpImposterAsync(port);
 
-			Assert.AreEqual(1, retrievedImposter.NumberOfRequests);
-			Assert.AreEqual(from, retrievedImposter.Requests.First().EnvelopeFrom);
-			Assert.AreEqual(to1, retrievedImposter.Requests.First().EnvelopeTo.First());
-			Assert.AreEqual(to2, retrievedImposter.Requests.First().EnvelopeTo.Last());
-			Assert.AreEqual(subject, retrievedImposter.Requests.First().Subject);
-			Assert.AreEqual(body, retrievedImposter.Requests.First().Text);
-			Assert.AreEqual(attachmentContent1, Encoding.UTF8.GetString(retrievedImposter.Requests.First().Attachments.First().Content.Data));
-			Assert.AreEqual(attachmentContent2, Encoding.UTF8.GetString(retrievedImposter.Requests.First().Attachments.Last().Content.Data));
+			Assert.Equal(1, retrievedImposter.NumberOfRequests);
+			Assert.Equal(from, retrievedImposter.Requests.First().EnvelopeFrom);
+			Assert.Equal(to1, retrievedImposter.Requests.First().EnvelopeTo.First());
+			Assert.Equal(to2, retrievedImposter.Requests.First().EnvelopeTo.Last());
+			Assert.Equal(subject, retrievedImposter.Requests.First().Subject);
+			Assert.Equal(body, retrievedImposter.Requests.First().Text);
+			Assert.Equal(attachmentContent1, Encoding.UTF8.GetString(retrievedImposter.Requests.First().Attachments.First().Content.Data));
+			Assert.Equal(attachmentContent2, Encoding.UTF8.GetString(retrievedImposter.Requests.First().Attachments.Last().Content.Data));
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task CanVerifyCallsOnImposterWithDuplicateQueryStringKey()
 		{
 			const int port = 6000;
@@ -663,25 +664,26 @@ namespace MbDotNet.Tests.Acceptance
 
 			var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:6000/customers?id=123&id=456");
 			var response = await _httpClient.SendAsync(request);
-			Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "Request to proxy imposter failed");
+			Assert.True(HttpStatusCode.OK == response.StatusCode, "Request to proxy imposter failed");
 
 			var retrievedImposter = await _client.GetHttpImposterAsync(port);
 
-			Assert.AreEqual(1, retrievedImposter.NumberOfRequests);
+			Assert.Equal(1, retrievedImposter.NumberOfRequests);
 
 			// For the request field to be populated, mountebank must be run with the --mock parameter
 			// http://www.mbtest.org/docs/api/overview#get-imposter
 			var receivedRequest = retrievedImposter.Requests[0];
 			var idQueryParameters = (JArray)receivedRequest.QueryParameters["id"];
 
-			Assert.AreEqual("123", idQueryParameters[0]);
-			Assert.AreEqual("456", idQueryParameters[1]);
+			Assert.Equal("123", idQueryParameters[0]);
+			Assert.Equal("456", idQueryParameters[1]);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task CanDeleteSavedRequestsForImposter()
 		{
 			const int port = 6000;
+
 			await _client.CreateHttpImposterAsync(port, imposter =>
 			{
 				imposter.RecordRequests = true;
@@ -691,21 +693,21 @@ namespace MbDotNet.Tests.Acceptance
 			});
 
 			// Make a request to the imposter to record a request
-			var request = new HttpRequestMessage(HttpMethod.Get, $"http://localhost:{port}/test");
+			var request = new HttpRequestMessage(HttpMethod.Get, $"http://localhost:6000/test");
 			_ = await _httpClient.SendAsync(request);
 
 			var retrievedImposter = await _client.GetHttpImposterAsync(port);
 
-			Assert.AreEqual(retrievedImposter.Requests.Count, 1);
+			Assert.Single(retrievedImposter.Requests);
 
 			await _client.DeleteSavedRequestsAsync(port);
 
 			retrievedImposter = await _client.GetHttpImposterAsync(port);
 
-			Assert.AreEqual(retrievedImposter.Requests.Count, 0);
+			Assert.Empty(retrievedImposter.Requests);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task CanCheckMatchesForImposter()
 		{
 			const int port = 6000;
@@ -725,11 +727,11 @@ namespace MbDotNet.Tests.Acceptance
 
 			// For the request field to be populated, mountebank must be run with the --debug parameter
 			// http://www.mbtest.org/docs/api/overview#get-imposter
-			Assert.AreEqual(retrievedImposter.Stubs.Count, 1);
-			Assert.AreEqual(retrievedImposter.Stubs.ElementAt(0).Matches.Count, 1);
+			Assert.Single(retrievedImposter.Stubs);
+			Assert.Single(retrievedImposter.Stubs.ElementAt(0).Matches);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task CanCreateAnImposterWithAFaultResponse()
 		{
 			const int port = 6000;
@@ -740,7 +742,7 @@ namespace MbDotNet.Tests.Acceptance
 			});
 
 			var request = new HttpRequestMessage(HttpMethod.Get, $"http://localhost:{port}");
-			await Assert.ThrowsExceptionAsync<HttpRequestException>(async () => await _httpClient.SendAsync(request));
+			await Assert.ThrowsAsync<HttpRequestException>(async () => await _httpClient.SendAsync(request));
 		}
 	}
 }

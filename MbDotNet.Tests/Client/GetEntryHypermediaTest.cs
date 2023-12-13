@@ -1,19 +1,15 @@
-using System;
 using System.Threading.Tasks;
 using MbDotNet.Models.Responses;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Newtonsoft.Json;
+using Xunit;
 
 namespace MbDotNet.Tests.Client
 
 {
-	[TestClass, TestCategory("Unit")]
-
+	[Trait("Category", "Unit")]
 	public class GetEntryHypermediaTest : MountebankClientTestBase
 	{
-		[TestMethod]
-
+		[Fact]
 		public async Task ReturnsEntryHypermedia()
 		{
 
@@ -32,9 +28,9 @@ namespace MbDotNet.Tests.Client
 
 
 			MockRequestProxy.Setup(x => x.GetEntryHypermediaAsync(default)).ReturnsAsync(expectedResult);
-			var result = await Client.GetEntryHypermediaAsync().ConfigureAwait(false);
+			var result = await Client.GetEntryHypermediaAsync();
 
-			Assert.AreSame(expectedResult, result);
+			Assert.Same(expectedResult, result);
 		}
 	}
 }

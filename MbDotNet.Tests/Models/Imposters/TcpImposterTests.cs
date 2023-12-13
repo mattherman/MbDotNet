@@ -1,96 +1,95 @@
-using MbDotNet.Models;
 using MbDotNet.Models.Imposters;
 using MbDotNet.Models.Responses.Fields;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace MbDotNet.Tests.Models.Imposters
 {
-	[TestClass, TestCategory("Unit")]
+	[Trait("Category", "Unit")]
 	public class TcpImposterTests
 	{
 		#region Constructor Tests
 
-		[TestMethod]
+		[Fact]
 		public void TcpImposter_Constructor_SetsPort()
 		{
 			const int port = 123;
 			var imposter = new TcpImposter(port, null, null);
-			Assert.AreEqual(port, imposter.Port);
+			Assert.Equal(port, imposter.Port);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void TcpImposter_Constructor_SetsProtocol()
 		{
 			var imposter = new TcpImposter(123, null, null);
-			Assert.AreEqual("tcp", imposter.Protocol);
+			Assert.Equal("tcp", imposter.Protocol);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void TcpImposter_Constructor_SetsName()
 		{
 			const string expectedName = "Service";
 			var imposter = new TcpImposter(123, expectedName, null);
-			Assert.AreEqual(expectedName, imposter.Name);
+			Assert.Equal(expectedName, imposter.Name);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void TcpImposter_Constructor_SetsMode()
 		{
 			const TcpMode expectedMode = TcpMode.Binary;
 			var imposter = new TcpImposter(123, null, new TcpImposterOptions { Mode = expectedMode });
-			Assert.AreEqual(expectedMode, imposter.Mode);
+			Assert.Equal(expectedMode, imposter.Mode);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void TcpImposter_Constructor_AllowsNullPort()
 		{
 			var imposter = new TcpImposter(null, null, null);
-			Assert.AreEqual(default, imposter.Port);
+			Assert.Equal(default, imposter.Port);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void TcpImposter_Constructor_InitializesStubsCollection()
 		{
 			var imposter = new TcpImposter(123, null, null);
-			Assert.IsNotNull(imposter.Stubs);
+			Assert.NotNull(imposter.Stubs);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void TcpImposter_Constructor_InitializesDefaultResponse()
 		{
 			var expectedDefaultResponse = new TcpResponseFields();
 			var imposter = new TcpImposter(123, null,
 				new TcpImposterOptions { DefaultResponse = expectedDefaultResponse });
-			Assert.AreEqual(expectedDefaultResponse, imposter.DefaultResponse);
+			Assert.Equal(expectedDefaultResponse, imposter.DefaultResponse);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void Constructor_InitialRecordRequests()
 		{
 			const bool expectedRecordRequests = false;
 			var imposter = new TcpImposter(null, null, null);
-			Assert.AreEqual(expectedRecordRequests, imposter.RecordRequests);
+			Assert.Equal(expectedRecordRequests, imposter.RecordRequests);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void Constructor_RecordRequestsTrue()
 		{
 			const bool expectedRecordRequests = true;
 			var imposter = new TcpImposter(null, null,
 				new TcpImposterOptions { RecordRequests = expectedRecordRequests });
-			Assert.AreEqual(expectedRecordRequests, imposter.RecordRequests);
+			Assert.Equal(expectedRecordRequests, imposter.RecordRequests);
 		}
 
 		#endregion
 
 		#region Stub Tests
 
-		[TestMethod]
+		[Fact]
 		public void TcpImposter_AddStub_AddsStubToCollection()
 		{
 			var imposter = new TcpImposter(123, null, null);
 			imposter.AddStub();
-			Assert.AreEqual(1, imposter.Stubs.Count);
+			Assert.Single(imposter.Stubs);
 		}
 
 		#endregion

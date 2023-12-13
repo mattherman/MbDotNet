@@ -1,5 +1,3 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using Moq;
 
 namespace MbDotNet.Tests.Client
@@ -9,8 +7,7 @@ namespace MbDotNet.Tests.Client
 		protected IClient Client;
 		internal Mock<IRequestProxy> MockRequestProxy;
 
-		[TestInitialize]
-		public void TestInitialize()
+		public MountebankClientTestBase()
 		{
 			MockRequestProxy = new Mock<IRequestProxy>();
 			Client = new MountebankClient(MockRequestProxy.Object);

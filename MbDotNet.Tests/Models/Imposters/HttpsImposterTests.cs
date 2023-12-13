@@ -1,150 +1,150 @@
 using MbDotNet.Models.Imposters;
 using MbDotNet.Models.Responses.Fields;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace MbDotNet.Tests.Models.Imposters
 {
 	/// <summary>
 	/// Summary description for ImposterTests
 	/// </summary>
-	[TestClass, TestCategory("Unit")]
+	[Trait("Category", "Unit")]
 	public class HttpsImposterTests
 	{
 		#region Constructor Tests
 
-		[TestMethod]
+		[Fact]
 		public void HttpsImposter_Constructor_SetsPort()
 		{
 			const int port = 123;
 			var imposter = new HttpsImposter(port, null, null);
-			Assert.AreEqual(port, imposter.Port);
+			Assert.Equal(port, imposter.Port);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void HttpsImposter_Constructor_SetsProtocol()
 		{
 			var imposter = new HttpsImposter(123, null, null);
-			Assert.AreEqual("https", imposter.Protocol);
+			Assert.Equal("https", imposter.Protocol);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void HttpsImposter_Constructor_SetsName()
 		{
 			const string expectedName = "Service";
 			var imposter = new HttpsImposter(123, expectedName, null);
-			Assert.AreEqual(expectedName, imposter.Name);
+			Assert.Equal(expectedName, imposter.Name);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void HttpsImposter_Constructor_AllowsNullPort()
 		{
 			var imposter = new HttpsImposter(null, null, null);
-			Assert.AreEqual(default, imposter.Port);
+			Assert.Equal(default, imposter.Port);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void HttpsImposter_Constructor_InitializesStubsCollection()
 		{
 			var imposter = new HttpsImposter(123, null, null);
-			Assert.IsNotNull(imposter.Stubs);
+			Assert.NotNull(imposter.Stubs);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void HttpsImposter_Constructor_SetsKey()
 		{
 			const string expectedKeyValue = "-----BEGIN CERTIFICATE-----base64_encoded_junk-----END CERTIFICATE-----";
 			var imposter = new HttpsImposter(123, null, new HttpsImposterOptions { Key = expectedKeyValue });
-			Assert.AreEqual(expectedKeyValue, imposter.Key);
+			Assert.Equal(expectedKeyValue, imposter.Key);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void HttpsImposter_Constructor_SetsKeyAsNullWhenMissing()
 		{
 			var imposter = new HttpsImposter(123, null, null);
-			Assert.IsNull(imposter.Key);
+			Assert.Null(imposter.Key);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void HttpsImposter_Constructor_SetsCert()
 		{
 			const string expectedCertValue = "-----BEGIN CERTIFICATE-----base64_encoded_junk-----END CERTIFICATE-----";
 			var imposter = new HttpsImposter(123, null, new HttpsImposterOptions { Cert = expectedCertValue });
-			Assert.AreEqual(expectedCertValue, imposter.Cert);
+			Assert.Equal(expectedCertValue, imposter.Cert);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void HttpsImposter_Constructor_SetsCertAsNullWhenMissing()
 		{
 			var imposter = new HttpsImposter(123, null, null);
-			Assert.IsNull(imposter.Cert);
+			Assert.Null(imposter.Cert);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void HttpsImposter_Constructor_SetsMutualAuth()
 		{
 			const bool expectedMutualAuthRequired = true;
 			var imposter = new HttpsImposter(123, null, new HttpsImposterOptions { MutualAuthRequired = expectedMutualAuthRequired });
-			Assert.AreEqual(expectedMutualAuthRequired, imposter.MutualAuthRequired);
+			Assert.Equal(expectedMutualAuthRequired, imposter.MutualAuthRequired);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void HttpsImposter_Constructor_SetsMutualAuthFalseWhenMissing()
 		{
 			var imposter = new HttpsImposter(123, null, null);
-			Assert.IsFalse(imposter.MutualAuthRequired);
+			Assert.False(imposter.MutualAuthRequired);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void HttpsImposter_Constructor_SetsDefaultResponse()
 		{
 			var expectedDefaultResponse = new HttpResponseFields();
 			var imposter = new HttpsImposter(123, null,
 				new HttpsImposterOptions { DefaultResponse = expectedDefaultResponse });
-			Assert.AreEqual(expectedDefaultResponse, imposter.DefaultResponse);
+			Assert.Equal(expectedDefaultResponse, imposter.DefaultResponse);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void Constructor_InitialAllowCORS()
 		{
 			var imposter = new HttpsImposter(null, null, null);
-			Assert.IsFalse(imposter.AllowCORS);
+			Assert.False(imposter.AllowCORS);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void Constructor_AllowCORSTrue()
 		{
 			const bool expectedAllowCORS = true;
 			var imposter = new HttpsImposter(null, null, new HttpsImposterOptions { AllowCORS = expectedAllowCORS });
-			Assert.AreEqual(expectedAllowCORS, imposter.AllowCORS);
+			Assert.Equal(expectedAllowCORS, imposter.AllowCORS);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void Constructor_InitialRecordRequests()
 		{
 			const bool expectedRecordRequests = false;
 			var imposter = new HttpsImposter(null, null, null);
-			Assert.AreEqual(expectedRecordRequests, imposter.RecordRequests);
+			Assert.Equal(expectedRecordRequests, imposter.RecordRequests);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void Constructor_RecordRequestsTrue()
 		{
 			const bool expectedRecordRequests = true;
 			var imposter = new HttpsImposter(null, null,
 				new HttpsImposterOptions { RecordRequests = expectedRecordRequests });
-			Assert.AreEqual(expectedRecordRequests, imposter.RecordRequests);
+			Assert.Equal(expectedRecordRequests, imposter.RecordRequests);
 		}
 
 		#endregion
 
 		#region Stub Tests
 
-		[TestMethod]
+		[Fact]
 		public void HttpsImposter_AddStub_AddsStubToCollection()
 		{
 			var imposter = new HttpsImposter(123, null, null);
 			imposter.AddStub();
-			Assert.AreEqual(1, imposter.Stubs.Count);
+			Assert.Single(imposter.Stubs);
 		}
 
 		#endregion

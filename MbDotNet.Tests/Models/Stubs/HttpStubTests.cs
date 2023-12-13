@@ -9,28 +9,28 @@ using MbDotNet.Models.Predicates.Fields;
 using MbDotNet.Models.Responses;
 using MbDotNet.Models.Responses.Fields;
 using MbDotNet.Models.Stubs;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace MbDotNet.Tests.Models.Stubs
 {
-	[TestClass, TestCategory("Unit")]
+	[Trait("Category", "Unit")]
 	public class HttpStubTests
 	{
-		[TestMethod]
+		[Fact]
 		public void HttpStub_Constructor_InitializesResponsesCollection()
 		{
 			var stub = new HttpStub();
-			Assert.IsNotNull(stub.Responses);
+			Assert.NotNull(stub.Responses);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void HttpStub_Constructor_InitializesPredicatesCollection()
 		{
 			var stub = new HttpStub();
-			Assert.IsNotNull(stub.Predicates);
+			Assert.NotNull(stub.Predicates);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void HttpStub_ReturnsStatus_AddsResponse_StatusCodeSet()
 		{
 			const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
@@ -39,11 +39,11 @@ namespace MbDotNet.Tests.Models.Stubs
 			stub.ReturnsStatus(expectedStatusCode);
 
 			var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
-			Assert.IsNotNull(response);
-			Assert.AreEqual(expectedStatusCode, response.Fields.StatusCode);
+			Assert.NotNull(response);
+			Assert.Equal(expectedStatusCode, response.Fields.StatusCode);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void HttpStub_Returns_AddsResponse_StatusCodeSet()
 		{
 			const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
@@ -53,11 +53,11 @@ namespace MbDotNet.Tests.Models.Stubs
 			stub.Returns(expectedStatusCode, headers, "test");
 
 			var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
-			Assert.IsNotNull(response);
-			Assert.AreEqual(expectedStatusCode, response.Fields.StatusCode);
+			Assert.NotNull(response);
+			Assert.Equal(expectedStatusCode, response.Fields.StatusCode);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void HttpStub_Returns_AddsResponse_LatencySet()
 		{
 			const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
@@ -68,12 +68,12 @@ namespace MbDotNet.Tests.Models.Stubs
 			stub.Returns(expectedStatusCode, headers, "test", latencyInMilliseconds: expectedLatencyInMilliseconds);
 
 			var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
-			Assert.IsNotNull(response?.Behaviors);
+			Assert.NotNull(response?.Behaviors);
 			var responseBehavior = response.Behaviors[0] as WaitBehavior;
-			Assert.AreEqual(expectedLatencyInMilliseconds, responseBehavior?.LatencyInMilliseconds);
+			Assert.Equal(expectedLatencyInMilliseconds, responseBehavior?.LatencyInMilliseconds);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void HttpStub_Returns_AddsResponse_ResponseObjectSet()
 		{
 			const string expectedResponseObject = "Test Response";
@@ -83,11 +83,11 @@ namespace MbDotNet.Tests.Models.Stubs
 			stub.Returns(HttpStatusCode.OK, headers, expectedResponseObject);
 
 			var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
-			Assert.IsNotNull(response);
-			Assert.AreEqual(expectedResponseObject, response.Fields.ResponseObject);
+			Assert.NotNull(response);
+			Assert.Equal(expectedResponseObject, response.Fields.ResponseObject);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void HttpStub_Returns_AddsResponse_ContentTypeHeaderSet()
 		{
 			var headers = new Dictionary<string, object> { { "Content-Type", "application/json" } };
@@ -96,11 +96,11 @@ namespace MbDotNet.Tests.Models.Stubs
 			stub.Returns(HttpStatusCode.OK, headers, "test");
 
 			var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
-			Assert.IsNotNull(response);
-			Assert.AreEqual(headers, response.Fields.Headers);
+			Assert.NotNull(response);
+			Assert.Equal(headers, response.Fields.Headers);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void HttpStub_Returns_AddsResponse()
 		{
 			var expectedResponse = new IsResponse<HttpResponseFields>(new HttpResponseFields());
@@ -109,10 +109,10 @@ namespace MbDotNet.Tests.Models.Stubs
 			stub.Returns(expectedResponse);
 
 			var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
-			Assert.AreEqual(expectedResponse, response);
+			Assert.Equal(expectedResponse, response);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void HttpStub_Returns_AddsBehavior()
 		{
 			var behavior = new WaitBehavior(1000);
@@ -123,10 +123,10 @@ namespace MbDotNet.Tests.Models.Stubs
 
 			var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
 			var responseBehavior = response?.Behaviors?[0];
-			Assert.AreEqual(behavior, responseBehavior);
+			Assert.Equal(behavior, responseBehavior);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void HttpStub_ReturnsBody_AddsResponse_StatusCodeSet()
 		{
 			const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
@@ -135,11 +135,11 @@ namespace MbDotNet.Tests.Models.Stubs
 			stub.ReturnsBody(expectedStatusCode, "test");
 
 			var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
-			Assert.IsNotNull(response);
-			Assert.AreEqual(expectedStatusCode, response.Fields.StatusCode);
+			Assert.NotNull(response);
+			Assert.Equal(expectedStatusCode, response.Fields.StatusCode);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void HttpStub_ReturnsBody_AddsResponse_ResponseObjectSet()
 		{
 			const string expectedBody = "test";
@@ -148,11 +148,11 @@ namespace MbDotNet.Tests.Models.Stubs
 			stub.ReturnsBody(HttpStatusCode.OK, expectedBody);
 
 			var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
-			Assert.IsNotNull(response);
-			Assert.AreEqual(expectedBody, response.Fields.ResponseObject.ToString());
+			Assert.NotNull(response);
+			Assert.Equal(expectedBody, response.Fields.ResponseObject.ToString());
 		}
 
-		[TestMethod]
+		[Fact]
 		public void HttpStub_ReturnsXml_AddsResponse_StatusCodeSet()
 		{
 			const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
@@ -161,11 +161,11 @@ namespace MbDotNet.Tests.Models.Stubs
 			stub.ReturnsXml(expectedStatusCode, "test");
 
 			var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
-			Assert.IsNotNull(response);
-			Assert.AreEqual(expectedStatusCode, response.Fields.StatusCode);
+			Assert.NotNull(response);
+			Assert.Equal(expectedStatusCode, response.Fields.StatusCode);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void HttpStub_ReturnsXml_AddsResponse_ResponseObjectSerializedAndSet()
 		{
 			const string expectedResponseObject = "<string>Test Response</string>";
@@ -174,11 +174,11 @@ namespace MbDotNet.Tests.Models.Stubs
 			stub.ReturnsXml(HttpStatusCode.OK, "Test Response");
 
 			var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
-			Assert.IsNotNull(response);
-			Assert.IsTrue(response.Fields.ResponseObject.ToString().Contains(expectedResponseObject));
+			Assert.NotNull(response);
+			Assert.Contains(expectedResponseObject, response.Fields.ResponseObject.ToString());
 		}
 
-		[TestMethod]
+		[Fact]
 		public void HttpStub_ReturnsXml_AddsResponse_DefaultsToUtf8Encoding()
 		{
 			const string expectedEncoding = "utf-8";
@@ -187,11 +187,11 @@ namespace MbDotNet.Tests.Models.Stubs
 			stub.ReturnsXml(HttpStatusCode.OK, "Test Response");
 
 			var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
-			Assert.IsNotNull(response);
-			Assert.IsTrue(response.Fields.ResponseObject.ToString().Contains(expectedEncoding));
+			Assert.NotNull(response);
+			Assert.Contains(expectedEncoding, response.Fields.ResponseObject.ToString());
 		}
 
-		[TestMethod]
+		[Fact]
 		public void HttpStub_ReturnsXmlWithEncoding_AddsResponse_WithSpecifiedEncoding()
 		{
 			const string expectedEncoding = "utf-16";
@@ -200,11 +200,11 @@ namespace MbDotNet.Tests.Models.Stubs
 			stub.ReturnsXml(HttpStatusCode.OK, "Test Response", Encoding.Unicode);
 
 			var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
-			Assert.IsNotNull(response);
-			Assert.IsTrue(response.Fields.ResponseObject.ToString().Contains(expectedEncoding));
+			Assert.NotNull(response);
+			Assert.Contains(expectedEncoding, response.Fields.ResponseObject.ToString());
 		}
 
-		[TestMethod]
+		[Fact]
 		public void HttpStub_ReturnsXml_AddsResponse_ContentTypeHeaderSet()
 		{
 			var headers = new Dictionary<string, string> { { "Content-Type", "application/xml" } };
@@ -213,11 +213,11 @@ namespace MbDotNet.Tests.Models.Stubs
 			stub.ReturnsXml(HttpStatusCode.OK, "test");
 
 			var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
-			Assert.IsNotNull(response);
-			Assert.AreEqual(headers["Content-Type"], response.Fields.Headers["Content-Type"]);
+			Assert.NotNull(response);
+			Assert.Equal(headers["Content-Type"], response.Fields.Headers["Content-Type"]);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void HttpStub_ReturnsBinary_AddsResponse_ContentTypePdf()
 		{
 			var stub = new HttpStub();
@@ -225,11 +225,11 @@ namespace MbDotNet.Tests.Models.Stubs
 			stub.ReturnsBinary(HttpStatusCode.OK, bytes, "application/pdf");
 
 			var response = stub.Responses.First() as IsResponse<HttpResponseFields>;
-			Assert.IsNotNull(response);
-			Assert.AreEqual("application/pdf", response.Fields.Headers["Content-Type"]);
+			Assert.NotNull(response);
+			Assert.Equal("application/pdf", response.Fields.Headers["Content-Type"]);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void HttpStub_OnPathEquals_AddsPredicate_PathSet()
 		{
 			const string expectedPath = "/test";
@@ -238,11 +238,11 @@ namespace MbDotNet.Tests.Models.Stubs
 			stub.OnPathEquals(expectedPath);
 
 			var predicate = stub.Predicates.First() as EqualsPredicate<HttpPredicateFields>;
-			Assert.IsNotNull(predicate);
-			Assert.AreEqual(expectedPath, predicate.Fields.Path);
+			Assert.NotNull(predicate);
+			Assert.Equal(expectedPath, predicate.Fields.Path);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void HttpStub_OnMethodEquals_AddsPredicate_MethodSet()
 		{
 			const Method expectedMethod = Method.Post;
@@ -251,11 +251,11 @@ namespace MbDotNet.Tests.Models.Stubs
 			stub.OnMethodEquals(expectedMethod);
 
 			var predicate = stub.Predicates.First() as EqualsPredicate<HttpPredicateFields>;
-			Assert.IsNotNull(predicate);
-			Assert.AreEqual(expectedMethod, predicate.Fields.Method);
+			Assert.NotNull(predicate);
+			Assert.Equal(expectedMethod, predicate.Fields.Method);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void HttpStub_OnPathAndMethodEqual_AddsPredicate_PathSet()
 		{
 			const string expectedPath = "/test";
@@ -264,11 +264,11 @@ namespace MbDotNet.Tests.Models.Stubs
 			stub.OnPathAndMethodEqual(expectedPath, Method.Get);
 
 			var predicate = stub.Predicates.First() as EqualsPredicate<HttpPredicateFields>;
-			Assert.IsNotNull(predicate);
-			Assert.AreEqual(expectedPath, predicate.Fields.Path);
+			Assert.NotNull(predicate);
+			Assert.Equal(expectedPath, predicate.Fields.Path);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void HttpStub_OnPathAndMethodEqual_AddsPredicate_MethodSet()
 		{
 			const Method expectedMethod = Method.Post;
@@ -277,11 +277,11 @@ namespace MbDotNet.Tests.Models.Stubs
 			stub.OnPathAndMethodEqual("/test", expectedMethod);
 
 			var predicate = stub.Predicates.First() as EqualsPredicate<HttpPredicateFields>;
-			Assert.IsNotNull(predicate);
-			Assert.AreEqual(expectedMethod, predicate.Fields.Method);
+			Assert.NotNull(predicate);
+			Assert.Equal(expectedMethod, predicate.Fields.Method);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void HttpStub_On_AddsPredicate()
 		{
 			var expectedPredicate = new EqualsPredicate<HttpPredicateFields>(new HttpPredicateFields());
@@ -290,10 +290,10 @@ namespace MbDotNet.Tests.Models.Stubs
 			stub.On(expectedPredicate);
 
 			var predicate = stub.Predicates.First() as EqualsPredicate<HttpPredicateFields>;
-			Assert.AreEqual(expectedPredicate, predicate);
+			Assert.Equal(expectedPredicate, predicate);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void HttpStub_ReturnsProxy_ReturnsHttpBooleanProxyStub()
 		{
 			var predicateInvokingProxyStub = new ContainsPredicate<HttpPredicateFields>(new HttpPredicateFields
@@ -317,13 +317,13 @@ namespace MbDotNet.Tests.Models.Stubs
 
 			var proxyResponse = stub.Responses.First() as ProxyResponse<ProxyResponseFields<HttpBooleanPredicateFields>>;
 
-			Assert.IsNotNull(proxyResponse);
-			Assert.AreEqual(proxyToUrl, proxyResponse.Fields.To);
-			Assert.AreEqual(proxyModeToUse, proxyResponse.Fields.Mode);
-			Assert.AreEqual(proxyGeneratorPredicate, proxyResponse.Fields.PredicateGenerators.First());
+			Assert.NotNull(proxyResponse);
+			Assert.Equal(proxyToUrl, proxyResponse.Fields.To);
+			Assert.Equal(proxyModeToUse, proxyResponse.Fields.Mode);
+			Assert.Equal(proxyGeneratorPredicate, proxyResponse.Fields.PredicateGenerators.First());
 		}
 
-		[TestMethod]
+		[Fact]
 		public void HttpStub_ReturnsProxy_ReturnsHttpProxyStub()
 		{
 			var predicateInvokingProxyStub = new ContainsPredicate<HttpPredicateFields>(new HttpPredicateFields
@@ -347,13 +347,13 @@ namespace MbDotNet.Tests.Models.Stubs
 
 			var proxyResponse = stub.Responses.First() as ProxyResponse<ProxyResponseFields<HttpPredicateFields>>;
 
-			Assert.IsNotNull(proxyResponse);
-			Assert.AreEqual(proxyToUrl, proxyResponse.Fields.To);
-			Assert.AreEqual(proxyModeToUse, proxyResponse.Fields.Mode);
-			Assert.AreEqual(proxyGeneratorPredicate, proxyResponse.Fields.PredicateGenerators.First());
+			Assert.NotNull(proxyResponse);
+			Assert.Equal(proxyToUrl, proxyResponse.Fields.To);
+			Assert.Equal(proxyModeToUse, proxyResponse.Fields.Mode);
+			Assert.Equal(proxyGeneratorPredicate, proxyResponse.Fields.PredicateGenerators.First());
 		}
 
-		[TestMethod]
+		[Fact]
 		public void HttpStub_ReturnsFault_ReturnsStubWithFaultResponse()
 		{
 			const Fault expectedFault = Fault.ConnectionResetByPeer;
@@ -362,11 +362,11 @@ namespace MbDotNet.Tests.Models.Stubs
 
 			var faultResponse = stub.Responses[0] as FaultResponse;
 
-			Assert.IsNotNull(faultResponse);
-			Assert.AreEqual(expectedFault, faultResponse.Fault);
+			Assert.NotNull(faultResponse);
+			Assert.Equal(expectedFault, faultResponse.Fault);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void HttpStub_InjectedFunction_AddsPredicate_InjectedFunctionSet()
 		{
 			const string injectedFunction = "function(config) { return true; }";
@@ -375,8 +375,8 @@ namespace MbDotNet.Tests.Models.Stubs
 			stub.OnInjectedFunction(injectedFunction);
 
 			var predicate = stub.Predicates.First() as InjectPredicate;
-			Assert.IsNotNull(predicate);
-			Assert.AreEqual(injectedFunction, predicate.InjectedFunction);
+			Assert.NotNull(predicate);
+			Assert.Equal(injectedFunction, predicate.InjectedFunction);
 		}
 	}
 }
