@@ -23,19 +23,23 @@ namespace MbDotNet.Tests.Acceptance
 {
 	[Trait("Category", "Acceptance")]
 	[Collection("Sequential")]
-	public class ImposterTests : AcceptanceTestBase
+	public class ImposterTests : AcceptanceTestBase, IAsyncLifetime
 	{
 		private readonly HttpClient _httpClient;
 
-		/// <summary>
-		/// It act as test initialize in x unit
-		/// at https://xunit.net/docs/comparisons
-		/// </summary>
 		public ImposterTests()
 		{
 			_httpClient = new HttpClient();
+		}
 
-			_client.DeleteAllImpostersAsync().ConfigureAwait(false);
+		public async Task InitializeAsync()
+		{
+			await _client.DeleteAllImpostersAsync();
+		}
+
+		public Task DisposeAsync()
+		{
+			return Task.CompletedTask;
 		}
 
 		[Fact]
@@ -45,7 +49,7 @@ namespace MbDotNet.Tests.Acceptance
 			await _client.CreateHttpImposterAsync(port, _ => { });
 
 			var retrievedImposter = await _client.GetHttpImposterAsync(port);
-            Assert.NotNull(retrievedImposter);
+			Assert.NotNull(retrievedImposter);
 		}
 
 		[Fact]
@@ -78,7 +82,7 @@ namespace MbDotNet.Tests.Acceptance
 				.OnMethodEquals(Method.Post)
 				.ReturnsStatus(HttpStatusCode.Created);
 
-			await _client.ReplaceHttpImposterStubsAsync(port, new []{ stub });
+			await _client.ReplaceHttpImposterStubsAsync(port, new[] { stub });
 
 			var imposter = await _client.GetHttpImposterAsync(port);
 
@@ -195,7 +199,7 @@ namespace MbDotNet.Tests.Acceptance
 				.OnMethodEquals(Method.Post)
 				.ReturnsStatus(HttpStatusCode.Created);
 
-			await _client.ReplaceHttpsImposterStubsAsync(port, new []{ stub });
+			await _client.ReplaceHttpsImposterStubsAsync(port, new[] { stub });
 
 			var imposter = await _client.GetHttpsImposterAsync(port);
 
@@ -746,3 +750,4 @@ namespace MbDotNet.Tests.Acceptance
 		}
 	}
 }
+
