@@ -20,15 +20,16 @@ namespace MbDotNet.Tests.Acceptance
 	/// </summary>
 	[Trait("Category", "Acceptance")]
 	[Collection("Sequential")]
-	public class DocumentationTests : AcceptanceTestBase
+	public class DocumentationTests : AcceptanceTestBase, IAsyncLifetime
 	{
-		/// <summary>
-		/// It act as test initialize in x unit
-		/// at https://xunit.net/docs/comparisons
-		/// </summary>
-		public DocumentationTests()
+		public async Task InitializeAsync()
 		{
-			_client.DeleteAllImpostersAsync().ConfigureAwait(false);
+			await _client.DeleteAllImpostersAsync();
+		}
+
+		public Task DisposeAsync()
+		{
+			return Task.CompletedTask;
 		}
 
 		/// <summary>
@@ -518,3 +519,4 @@ namespace MbDotNet.Tests.Acceptance
 		public string Email { get; set; }
 	}
 }
+

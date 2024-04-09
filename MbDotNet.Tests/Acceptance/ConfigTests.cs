@@ -6,15 +6,16 @@ namespace MbDotNet.Tests.Acceptance
 {
 	[Trait("Category", "Acceptance")]
 	[Collection("Sequential")]
-	public class ConfigTests : AcceptanceTestBase
+	public class ConfigTests : AcceptanceTestBase, IAsyncLifetime
 	{
-		/// <summary>
-		/// It act as test initialize in x unit
-		/// at https://xunit.net/docs/comparisons
-		/// </summary>
-		public ConfigTests()
+		public async Task InitializeAsync()
 		{
-			_client.DeleteAllImpostersAsync().ConfigureAwait(false);
+			await _client.DeleteAllImpostersAsync();
+		}
+
+		public Task DisposeAsync()
+		{
+			return Task.CompletedTask;
 		}
 
 		[Fact]
@@ -24,7 +25,8 @@ namespace MbDotNet.Tests.Acceptance
 			Assert.NotNull(result);
 			Assert.NotNull(result.Version);
 			Assert.True(result.Process.Count > 0);
-            Assert.True(result.Options.Count > 0);
+			Assert.True(result.Options.Count > 0);
 		}
 	}
 }
+
