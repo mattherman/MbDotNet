@@ -1,17 +1,17 @@
 ﻿using MbDotNet.Models.Responses;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace MbDotNet.Tests.Models.Responses
 {
-	[TestClass, TestCategory("Unit")]
+	[Trait("Category", "Unit")]
 	public class WaitBehaviorTests
 	{
-		[TestMethod]
+		[Fact]
 		public void WaitBehavior_Constructor_SetsLatency()
 		{
 			const int latencyInMilliseconds = 1500;
 			var behavior = new WaitBehavior(latencyInMilliseconds);
-			Assert.AreEqual(latencyInMilliseconds, behavior.LatencyInMilliseconds);
+			Assert.Equal(latencyInMilliseconds, behavior.LatencyInMilliseconds);
 		}
 	}
 }

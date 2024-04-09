@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using MbDotNet.Models.Predicates;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace MbDotNet.Tests.Models.Predicates
 {
-	[TestClass, TestCategory("Unit")]
+	[Trait("Category", "Unit")]
 	public class OrPredicateTests : PredicateTestBase
 	{
-		[TestMethod]
+		[Fact]
 		public void OrPredicate_Constructor_SetsPredicateCollection()
 		{
 			var expectedPredicates = new List<Predicate>
@@ -16,7 +16,7 @@ namespace MbDotNet.Tests.Models.Predicates
 				new MatchesPredicate<TestPredicateFields>(null),
 			};
 			var predicate = new OrPredicate(expectedPredicates);
-			Assert.AreSame(expectedPredicates, predicate.Predicates);
+			Assert.Same(expectedPredicates, predicate.Predicates);
 		}
 	}
 }

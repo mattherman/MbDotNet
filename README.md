@@ -75,7 +75,7 @@ If you would prefer to run Mountebank via docker, please execute the following c
 If you would like to just run the unit tests (which do not require Mountebank), run the following:
 
 ```
-dotnet test --filter TestCategory=Unit
+dotnet test --filter Category=Unit
 ```
 
-Similarly, you can filter to only the acceptance tests using `--filter TestCategory=Acceptance`.
+Similarly, you can filter to only the acceptance tests using `--filter Category=Acceptance`.

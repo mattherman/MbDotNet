@@ -1,14 +1,14 @@
 ﻿using System.Threading.Tasks;
 using MbDotNet.Models.Imposters;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Xunit;
 
 namespace MbDotNet.Tests.Client
 {
-	[TestClass, TestCategory("Unit")]
+	[Trait("Category", "Unit")]
 	public class CreateSmtpImposterAsyncTests : MountebankClientTestBase
 	{
-		[TestInitialize]
+		[Fact]
 		public void Initialize()
 		{
 			MockRequestProxy
@@ -17,57 +17,57 @@ namespace MbDotNet.Tests.Client
 				.Verifiable();
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task SmtpImposter_Preconfigured()
 		{
 			var imposter = new SmtpImposter(123, null, null);
 			await Client.CreateSmtpImposterAsync(imposter);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task SmtpImposter_WithoutName_SetsNameToNull()
 		{
 			var imposter = await Client.CreateSmtpImposterAsync(123, _ => { });
 
-			Assert.IsNotNull(imposter);
-			Assert.IsNull(imposter.Name);
+			Assert.NotNull(imposter);
+			Assert.Null(imposter.Name);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task SmtpImposter_WithName_SetsName()
 		{
 			const string expectedName = "Service";
 
 			var imposter = await Client.CreateSmtpImposterAsync(123, expectedName, _ => { });
 
-			Assert.IsNotNull(imposter);
-			Assert.AreEqual(expectedName, imposter.Name);
+			Assert.NotNull(imposter);
+			Assert.Equal(expectedName, imposter.Name);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task SmtpImposter_WithoutPortAndName_SetsPortAndNameToNull()
 		{
 			var imposter = await Client.CreateSmtpImposterAsync(null, _ => { });
 
-			Assert.IsNotNull(imposter);
-			Assert.AreEqual(default, imposter.Port);
-			Assert.IsNull(imposter.Name);
+			Assert.NotNull(imposter);
+			Assert.Equal(default, imposter.Port);
+			Assert.Null(imposter.Name);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task SmtpImposter_WithoutRecordRequests_SetsRecordRequest()
 		{
 			var imposter = await Client.CreateSmtpImposterAsync(null, _ => { });
 
-			Assert.IsFalse(imposter.RecordRequests);
+			Assert.False(imposter.RecordRequests);
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task SmtpImposter_WithRecordRequests_SetsRecordRequest()
 		{
 			var imposter = await Client.CreateSmtpImposterAsync(null, imposter => imposter.RecordRequests = true);
 
-			Assert.IsTrue(imposter.RecordRequests);
+			Assert.True(imposter.RecordRequests);
 		}
 	}
 }

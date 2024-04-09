@@ -1,18 +1,18 @@
 using MbDotNet.Models.Predicates;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace MbDotNet.Tests.Models.Predicates
 {
-	[TestClass, TestCategory("Unit")]
+	[Trait("Category", "Unit")]
 	public class JsonPathSelectorTests
 	{
-		[TestMethod]
+		[Fact]
 		public void JsonPathSelector_Constructor_SetsSelector()
 		{
 			const string expectedSelector = "$..title";
 
 			var selector = new JsonPathSelector(expectedSelector);
-			Assert.AreEqual(expectedSelector, selector.Selector);
+			Assert.Equal(expectedSelector, selector.Selector);
 		}
 	}
 }
