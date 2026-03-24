@@ -25,7 +25,7 @@ The library is available for install as a NuGet package.
 
 https://www.nuget.org/packages/MbDotNet
 
-The project currently targets .NET Standard 1.3, which is compatible with .NET Framework 4.6. If you need to use it in a project targeting an older framework version, such as .NET Framework 4.5, please use version 3.x of the package.
+The project currently targets .NET Standard 2.0, which is compatible with .NET Framework 4.6.1+. If you need to use it in a project targeting an older framework version, such as .NET Framework 4.5, please use version 3.x of the package.
 
 ## Upgrading from v4 (or earlier) to v5
 
@@ -46,7 +46,7 @@ Pull requests are always welcome.
 
 The following items are necessary in order to build and test the project:
 
-- .NET SDK 6.0
+- .NET SDK 10.0
 - Mountebank or Docker Compose
 
 ### Building
