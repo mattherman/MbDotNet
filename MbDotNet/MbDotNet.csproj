@@ -20,17 +20,30 @@
     <Title>MbDotNet</Title>
     <Authors>Matthew Herman</Authors>
     <Description>A .NET client library for interacting with mountebank (www.mbtest.org).</Description>
-    <Copyright>Copyright ©  2020</Copyright>
+    <Copyright>Copyright © 2026 Matthew Herman</Copyright>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/mattherman/MbDotNet</PackageProjectUrl>
     <PackageReleaseNotes>https://github.com/mattherman/MbDotNet/releases/tag/v5.0.0</PackageReleaseNotes>
     <PackageTags>mountebank client wrapper</PackageTags>
     <BuildOutputTargetFolder>lib</BuildOutputTargetFolder>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/mattherman/MbDotNet</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+
+    <!-- Embed source control metadata so consumers can step into library sources -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <ContinuousIntegrationBuild Condition="'$(GITHUB_ACTIONS)' == 'true'">true</ContinuousIntegrationBuild>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
 </Project>
