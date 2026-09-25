@@ -501,6 +501,23 @@ namespace MbDotNet.Tests
 			});
 		}
 
+		[Fact]
+		public void Dispose_DisposesHttpClient()
+		{
+			_proxy.Dispose();
+
+			_mockClient.Verify(x => x.Dispose(), Times.Once);
+		}
+
+		[Fact]
+		public void Dispose_CalledTwice_DisposesHttpClientOnce()
+		{
+			_proxy.Dispose();
+			_proxy.Dispose();
+
+			_mockClient.Verify(x => x.Dispose(), Times.Once);
+		}
+
 		private HttpResponseMessage GetResponse(HttpStatusCode statusCode, string content = null)
 		{
 			return new HttpResponseMessage

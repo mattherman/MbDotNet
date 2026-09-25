@@ -13,9 +13,10 @@ using MbDotNet.Models.Stubs;
 namespace MbDotNet
 {
 	/// <inheritdoc />
-	public class MountebankClient : IClient
+	public class MountebankClient : IClient, IDisposable
 	{
 		private readonly IRequestProxy _requestProxy;
+		private bool _disposed;
 
 		/// <summary>
 		/// Create a new MountebankClient instance for a server at the default address of http://127.0.0.1:2525
@@ -31,6 +32,34 @@ namespace MbDotNet
 		internal MountebankClient(IRequestProxy requestProxy)
 		{
 			_requestProxy = requestProxy;
+		}
+
+		/// <summary>
+		/// Releases the underlying HTTP connection. A client should be reused for the lifetime of
+		/// the application or test suite rather than created per request, but disposing it when
+		/// finished releases the sockets held by the connection pool.
+		/// </summary>
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		/// <summary>
+		/// Releases the resources held by the client.
+		/// </summary>
+		/// <param name="disposing">
+		/// True when called from <see cref="Dispose()"/>, false when called from a finalizer.
+		/// </param>
+		protected virtual void Dispose(bool disposing)
+		{
+			if (_disposed)
+				return;
+
+			if (disposing && _requestProxy is IDisposable disposableRequestProxy)
+				disposableRequestProxy.Dispose();
+
+			_disposed = true;
 		}
 
 		/// <summary>

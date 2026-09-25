@@ -150,6 +150,15 @@ MountebankClient()
 MountebankClient(Uri mountebankUri)
 ```
 
+A single client should be reused for the lifetime of your application or test suite rather than created per request, since each one opens its own HTTP connection pool. The client implements `IDisposable`, so when you are finished with it you can release those connections:
+
+```
+using (var client = new MountebankClient())
+{
+	// ...
+}
+```
+
 The following methods are used to create HTTP imposters:
 
 ```
