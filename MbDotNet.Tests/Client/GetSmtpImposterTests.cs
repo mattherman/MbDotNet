@@ -4,8 +4,6 @@ using MbDotNet.Models.Imposters;
 using Moq;
 using Xunit;
 
-using MSAssert = Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace MbDotNet.Tests.Client
 {
 	[Trait("Category", "Unit")]
