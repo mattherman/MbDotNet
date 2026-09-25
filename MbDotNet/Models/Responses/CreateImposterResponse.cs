@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace MbDotNet.Models.Responses
 {
@@ -12,7 +12,8 @@ namespace MbDotNet.Models.Responses
 		/// <summary>
 		/// The port the imposter is set up to accept requests on.
 		/// </summary>
-		[JsonProperty("port")]
+		[JsonInclude]
+		[JsonPropertyName("port")]
 		public int Port { get; internal set; }
 
 	}

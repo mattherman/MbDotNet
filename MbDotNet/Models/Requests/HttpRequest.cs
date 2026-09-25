@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace MbDotNet.Models.Requests
 {
@@ -12,37 +12,43 @@ namespace MbDotNet.Models.Requests
 		/// <summary>
 		/// The path of the request, without the querystring
 		/// </summary>
-		[JsonProperty("path")]
+		[JsonInclude]
+		[JsonPropertyName("path")]
 		public string Path { get; internal set; }
 
 		/// <summary>
 		/// The request body
 		/// </summary>
-		[JsonProperty("body")]
+		[JsonInclude]
+		[JsonPropertyName("body")]
 		public string Body { get; internal set; }
 
 		/// <summary>
 		/// The request method
 		/// </summary>
-		[JsonProperty("method")]
+		[JsonInclude]
+		[JsonPropertyName("method")]
 		public Method Method { get; internal set; }
 
 		/// <summary>
 		/// When the request was made
 		/// </summary>
-		[JsonProperty("timestamp")]
+		[JsonInclude]
+		[JsonPropertyName("timestamp")]
 		public DateTime Timestamp { get; internal set; }
 
 		/// <summary>
 		/// The querystring of the request
 		/// </summary>
-		[JsonProperty("query")]
+		[JsonInclude]
+		[JsonPropertyName("query")]
 		public Dictionary<string, object> QueryParameters { get; internal set; }
 
 		/// <summary>
 		/// The HTTP headers
 		/// </summary>
-		[JsonProperty("headers")]
+		[JsonInclude]
+		[JsonPropertyName("headers")]
 		public Dictionary<string, string> Headers { get; internal set; }
 	}
 }

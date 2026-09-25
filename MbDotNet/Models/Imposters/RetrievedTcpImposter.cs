@@ -1,7 +1,7 @@
 using System;
 using MbDotNet.Models.Requests;
 using MbDotNet.Models.Responses.Fields;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace MbDotNet.Models.Imposters
 {
@@ -10,7 +10,8 @@ namespace MbDotNet.Models.Imposters
 	/// </summary>
 	public class RetrievedTcpImposter : RetrievedImposter<TcpRequest, TcpResponseFields>
 	{
-		[JsonProperty("mode")]
+		[JsonInclude]
+		[JsonPropertyName("mode")]
 		internal string RawMode { get; set; }
 
 		/// <summary>

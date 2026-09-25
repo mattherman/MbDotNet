@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using MbDotNet.Models.Imposters;
 using MbDotNet.Models.Requests;
 using MbDotNet.Models.Responses.Fields;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace MbDotNet.Models.Stubs
 {
@@ -18,7 +18,7 @@ namespace MbDotNet.Models.Stubs
 		/// <summary>
 		/// An collection of all activity by this stub.
 		/// </summary>
-		[JsonProperty("matches", NullValueHandling = NullValueHandling.Ignore)]
+		[JsonPropertyName("matches")]
 		public IReadOnlyList<Match<TRequest, TResponseFields>> Matches { get; set; }
 
 		/// <summary>

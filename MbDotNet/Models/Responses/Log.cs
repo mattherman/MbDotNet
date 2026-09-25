@@ -1,5 +1,5 @@
 using System;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace MbDotNet.Models.Responses
 {
@@ -11,19 +11,22 @@ namespace MbDotNet.Models.Responses
 		/// <summary>
 		/// The log level
 		/// </summary>
-		[JsonProperty("level")]
+		[JsonInclude]
+		[JsonPropertyName("level")]
 		public string Level { get; internal set; }
 
 		/// <summary>
 		/// The log message
 		/// </summary>
-		[JsonProperty("message")]
+		[JsonInclude]
+		[JsonPropertyName("message")]
 		public string Message { get; internal set; }
 
 		/// <summary>
 		/// When the log was recorded
 		/// </summary>
-		[JsonProperty("Timestamp")]
+		[JsonInclude]
+		[JsonPropertyName("Timestamp")]
 		public DateTime Timestamp { get; internal set; }
 	}
 }

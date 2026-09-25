@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Net;
-using Newtonsoft.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace MbDotNet.Models.Responses.Fields
 {
@@ -12,25 +14,45 @@ namespace MbDotNet.Models.Responses.Fields
 		/// <summary>
 		/// The HTTP status code of the response
 		/// </summary>
-		[JsonProperty("statusCode", NullValueHandling = NullValueHandling.Ignore)]
+		[JsonPropertyName("statusCode")]
+		[JsonConverter(typeof(HttpStatusCodeConverter))]
 		public HttpStatusCode? StatusCode { get; set; }
 
 		/// <summary>
 		/// The body of the response
 		/// </summary>
-		[JsonProperty("body", NullValueHandling = NullValueHandling.Ignore)]
+		[JsonPropertyName("body")]
+		[JsonConverter(typeof(JsonHelper.ConsumerPayloadConverter))]
 		public object ResponseObject { get; set; }
 
 		/// <summary>
 		/// The HTTP headers
 		/// </summary>
-		[JsonProperty("headers", NullValueHandling = NullValueHandling.Ignore)]
+		[JsonPropertyName("headers")]
 		public IDictionary<string, object> Headers { get; set; }
 
 		/// <summary>
 		/// The mode of the response, "text" (default) or "binary"
 		/// </summary>
-		[JsonProperty("_mode", NullValueHandling = NullValueHandling.Ignore)]
+		[JsonPropertyName("_mode")]
 		public string Mode { get; set; }
+	}
+
+	internal class HttpStatusCodeConverter : JsonConverter<HttpStatusCode?>
+	{
+		public override HttpStatusCode? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+		{
+			if (reader.TokenType == JsonTokenType.Null)
+				return null;
+			return (HttpStatusCode)reader.GetInt32();
+		}
+
+		public override void Write(Utf8JsonWriter writer, HttpStatusCode? value, JsonSerializerOptions options)
+		{
+			if (value == null)
+				writer.WriteNullValue();
+			else
+				writer.WriteNumberValue((int)value);
+		}
 	}
 }

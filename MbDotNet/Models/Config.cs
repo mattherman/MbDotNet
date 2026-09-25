@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace MbDotNet.Models
 {
@@ -11,19 +11,19 @@ namespace MbDotNet.Models
 		/// <summary>
 		/// The version of Mountebank that is running
 		/// </summary>
-		[JsonProperty("version")]
+		[JsonPropertyName("version")]
 		public string Version { get; set; }
 
 		/// <summary>
 		/// The command line options used to start Mountebank
 		/// </summary>
-		[JsonProperty("options")]
+		[JsonPropertyName("options")]
 		public Dictionary<string, dynamic> Options { get; set; }
 
 		/// <summary>
 		/// Information about the running Mountebank process
 		/// </summary>
-		[JsonProperty("process")]
+		[JsonPropertyName("process")]
 		public Dictionary<string, dynamic> Process { get; set; }
 	}
 }

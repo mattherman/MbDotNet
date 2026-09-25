@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace MbDotNet.Models.Requests
 {
@@ -10,7 +10,7 @@ namespace MbDotNet.Models.Requests
 		/// <summary>
 		/// The client socket, primarily used for logging and debugging
 		/// </summary>
-		[JsonProperty("requestFrom")]
+		[JsonPropertyName("requestFrom")]
 		public string RequestFrom { get; set; }
 	}
 }

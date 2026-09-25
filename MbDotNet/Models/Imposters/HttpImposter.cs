@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using MbDotNet.Models.Responses.Fields;
 using MbDotNet.Models.Stubs;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace MbDotNet.Models.Imposters
 {
@@ -13,17 +13,18 @@ namespace MbDotNet.Models.Imposters
 		/// <summary>
 		/// The stubs defined for this imposter
 		/// </summary>
-		[JsonProperty("stubs")]
+		[JsonInclude]
+		[JsonPropertyName("stubs")]
 		public IList<HttpStub> Stubs { get; private set; }
 
 		/// <inheritdoc />
-		[JsonProperty("defaultResponse")]
+		[JsonPropertyName("defaultResponse")]
 		public HttpResponseFields DefaultResponse { get; set;  }
 
 		/// <summary>
 		/// Enables CORS requests when set to true, false by default
 		/// </summary>
-		[JsonProperty("allowCORS")]
+		[JsonPropertyName("allowCORS")]
 		public bool AllowCORS { get; set; }
 
 		/// <summary>

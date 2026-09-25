@@ -1,5 +1,5 @@
 using System;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace MbDotNet.Models.Responses
 {
@@ -11,7 +11,8 @@ namespace MbDotNet.Models.Responses
 		/// <summary>
 		/// Links to various information about the Mountebank server
 		/// </summary>
-		[JsonProperty("_links")]
+		[JsonInclude]
+		[JsonPropertyName("_links")]
 		public Link Links { get; internal set; }
 
 	}
@@ -24,19 +25,22 @@ namespace MbDotNet.Models.Responses
 		/// <summary>
 		/// Link to the configured imposters
 		/// </summary>
-		[JsonProperty("imposters")]
+		[JsonInclude]
+		[JsonPropertyName("imposters")]
 		public HrefField Imposters { get; internal set; }
 
 		/// <summary>
 		/// Link to the server configuration
 		/// </summary>
-		[JsonProperty("config")]
+		[JsonInclude]
+		[JsonPropertyName("config")]
 		public HrefField Config { get; internal set; }
 
 		/// <summary>
 		/// Link to the server logs
 		/// </summary>
-		[JsonProperty("logs")]
+		[JsonInclude]
+		[JsonPropertyName("logs")]
 		public HrefField Logs { get; internal set; }
 	}
 
@@ -48,7 +52,8 @@ namespace MbDotNet.Models.Responses
 		/// <summary>
 		/// An href
 		/// </summary>
-		[JsonProperty("href")]
+		[JsonInclude]
+		[JsonPropertyName("href")]
 		public string Href { get; internal set; }
 	}
 }

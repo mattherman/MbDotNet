@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace MbDotNet.Models.Imposters
 {
@@ -11,19 +11,22 @@ namespace MbDotNet.Models.Imposters
 		/// <summary>
 		/// The port the imposter is set up to accept requests on.
 		/// </summary>
-		[JsonProperty("port")]
+		[JsonInclude]
+		[JsonPropertyName("port")]
 		public int Port { get; internal set; }
 
 		/// <summary>
 		/// The protocol the imposter is set up to accept requests through.
 		/// </summary>
-		[JsonProperty("protocol")]
+		[JsonInclude]
+		[JsonPropertyName("protocol")]
 		public string Protocol { get; internal set; }
 
 		/// <summary>
 		/// The number of requests that have been made to this imposter
 		/// </summary>
-		[JsonProperty("numberOfRequests")]
+		[JsonInclude]
+		[JsonPropertyName("numberOfRequests")]
 		public int NumberOfRequests { get; internal set; }
 	}
 }

@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace MbDotNet.Models.Predicates
 {
@@ -10,7 +10,8 @@ namespace MbDotNet.Models.Predicates
 		/// <summary>
 		/// The predicate that is being negated
 		/// </summary>
-		[JsonProperty("not")]
+		[JsonInclude]
+		[JsonPropertyName("not")]
 		public Predicate ChildPredicate { get; private set; }
 
 		/// <summary>

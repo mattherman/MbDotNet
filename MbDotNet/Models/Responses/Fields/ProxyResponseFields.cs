@@ -2,8 +2,7 @@ using System;
 using System.Collections.Generic;
 using MbDotNet.Models.Predicates;
 using MbDotNet.Models.Predicates.Fields;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using System.Text.Json.Serialization;
 
 namespace MbDotNet.Models.Responses.Fields
 {
@@ -16,20 +15,20 @@ namespace MbDotNet.Models.Responses.Fields
 		/// <summary>
 		/// The origin server that the request should proxy to
 		/// </summary>
-		[JsonProperty("to", NullValueHandling = NullValueHandling.Ignore)]
+		[JsonPropertyName("to")]
 		public Uri To { get; set; }
 
 		/// <summary>
 		/// The replay behavior of the proxy
 		/// </summary>
-		[JsonProperty("mode", NullValueHandling = NullValueHandling.Ignore)]
-		[JsonConverter(typeof(StringEnumConverter))]
+		[JsonPropertyName("mode")]
+		[JsonConverter(typeof(JsonStringEnumConverter))]
 		public ProxyMode Mode { get; set; }
 
 		/// <summary>
 		/// An array of objects that defines how the predicates for new stubs are created
 		/// </summary>
-		[JsonProperty("predicateGenerators", NullValueHandling = NullValueHandling.Ignore)]
+		[JsonPropertyName("predicateGenerators")]
 		public IList<MatchesPredicate<T>> PredicateGenerators { get; set; }
 	}
 }

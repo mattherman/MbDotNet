@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace MbDotNet.Models.Predicates
 {
@@ -11,7 +11,8 @@ namespace MbDotNet.Models.Predicates
 		/// <summary>
 		/// The predicates that are being combined
 		/// </summary>
-		[JsonProperty("or")]
+		[JsonInclude]
+		[JsonPropertyName("or")]
 		public IEnumerable<Predicate> Predicates { get; private set; }
 
 		/// <summary>

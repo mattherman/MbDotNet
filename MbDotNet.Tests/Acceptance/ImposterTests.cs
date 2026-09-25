@@ -15,7 +15,7 @@ using MbDotNet.Models.Predicates;
 using MbDotNet.Models.Predicates.Fields;
 using MbDotNet.Models.Responses;
 using MbDotNet.Models.Stubs;
-using Newtonsoft.Json.Linq;
+using System.Text.Json;
 
 using Xunit;
 
@@ -602,7 +602,7 @@ namespace MbDotNet.Tests.Acceptance
 			var receivedRequest = retrievedImposter.Requests[0];
 
 			Assert.Equal("/customers", receivedRequest.Path);
-			Assert.Equal("123", receivedRequest.QueryParameters["id"]);
+			Assert.Equal("123", receivedRequest.QueryParameters["id"].ToString());
 			Assert.Equal("<TestData>\r\n  <Name>Bob</Name>\r\n  <Email>bob@zmail.com</Email>\r\n</TestData>", receivedRequest.Body);
 			Assert.Equal(Method.Post, receivedRequest.Method);
 			Assert.NotEqual(default, receivedRequest.Timestamp);
@@ -677,10 +677,10 @@ namespace MbDotNet.Tests.Acceptance
 			// For the request field to be populated, mountebank must be run with the --mock parameter
 			// http://www.mbtest.org/docs/api/overview#get-imposter
 			var receivedRequest = retrievedImposter.Requests[0];
-			var idQueryParameters = (JArray)receivedRequest.QueryParameters["id"];
+			var idQueryParameters = (JsonElement)receivedRequest.QueryParameters["id"];
 
-			Assert.Equal("123", idQueryParameters[0]);
-			Assert.Equal("456", idQueryParameters[1]);
+			Assert.Equal("123", idQueryParameters[0].GetString());
+			Assert.Equal("456", idQueryParameters[1].GetString());
 		}
 
 		[Fact]

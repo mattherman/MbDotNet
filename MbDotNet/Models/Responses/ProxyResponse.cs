@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using MbDotNet.Models.Responses.Fields;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace MbDotNet.Models.Responses
 {
@@ -13,7 +13,7 @@ namespace MbDotNet.Models.Responses
 		/// <summary>
 		/// The fields that should be captured for generated predicates
 		/// </summary>
-		[JsonProperty("proxy")]
+		[JsonPropertyName("proxy")]
 		public T Fields { get; set; }
 
 		/// <summary>

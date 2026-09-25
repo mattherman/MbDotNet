@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace MbDotNet.Models.Requests
 {
@@ -13,31 +13,36 @@ namespace MbDotNet.Models.Requests
 		/// <summary>
 		/// The type of the attachment
 		/// </summary>
-		[JsonProperty("type")]
+		[JsonInclude]
+		[JsonPropertyName("type")]
 		public string Type { get; internal set; }
 
 		/// <summary>
 		/// The content type of the attachment
 		/// </summary>
-		[JsonProperty("contentType")]
+		[JsonInclude]
+		[JsonPropertyName("contentType")]
 		public string ContentType { get; internal set; }
 
 		/// <summary>
 		/// The content of the attachment
 		/// </summary>
-		[JsonProperty("content")]
+		[JsonInclude]
+		[JsonPropertyName("content")]
 		public EmailContent Content { get; internal set; }
 
 		/// <summary>
 		/// The content disposition of the attachment
 		/// </summary>
-		[JsonProperty("contentDisposition")]
+		[JsonInclude]
+		[JsonPropertyName("contentDisposition")]
 		public string ContentDisposition { get; internal set; }
 
 		/// <summary>
 		/// The size of the attachment
 		/// </summary>
-		[JsonProperty("size")]
+		[JsonInclude]
+		[JsonPropertyName("size")]
 		public long Size { get; internal set; }
 	}
 }

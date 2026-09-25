@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using System.Text.Json.Serialization;
 
 namespace MbDotNet.Models.Responses
 {
@@ -12,8 +11,8 @@ namespace MbDotNet.Models.Responses
 		/// <summary>
 		/// The type of fault to return in the response
 		/// </summary>
-		[JsonProperty("fault")]
-		[JsonConverter(typeof(StringEnumConverter))]
+		[JsonPropertyName("fault")]
+		[JsonConverter(typeof(JsonStringEnumConverter))]
 		public Fault Fault { get; set; }
 
 		/// <summary>

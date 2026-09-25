@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace MbDotNet.Models.Requests
 {
@@ -10,7 +10,8 @@ namespace MbDotNet.Models.Requests
 		/// <summary>
 		/// The data in the request
 		/// </summary>
-		[JsonProperty("data")]
+		[JsonInclude]
+		[JsonPropertyName("data")]
 		public string Data { get; internal set; }
 	}
 }

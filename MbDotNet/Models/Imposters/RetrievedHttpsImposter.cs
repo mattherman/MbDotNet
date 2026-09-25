@@ -1,6 +1,6 @@
 using MbDotNet.Models.Requests;
 using MbDotNet.Models.Responses.Fields;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace MbDotNet.Models.Imposters
 {
@@ -12,19 +12,22 @@ namespace MbDotNet.Models.Imposters
 		/// <summary>
 		/// The configured SSL private key
 		/// </summary>
-		[JsonProperty("key")]
+		[JsonInclude]
+		[JsonPropertyName("key")]
 		public string Key { get; internal set; }
 
 		/// <summary>
 		/// The configured SSL certificate
 		/// </summary>
-		[JsonProperty("cert")]
+		[JsonInclude]
+		[JsonPropertyName("cert")]
 		public string Cert { get; internal set; }
 
 		/// <summary>
 		/// The configured mutual auth setting
 		/// </summary>
-		[JsonProperty("mutualAuth")]
+		[JsonInclude]
+		[JsonPropertyName("mutualAuth")]
 		public bool MutualAuthRequired { get; internal set; }
 	}
 }

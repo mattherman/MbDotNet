@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace MbDotNet.Models.Predicates
 {
@@ -12,7 +12,8 @@ namespace MbDotNet.Models.Predicates
 		/// The function should take a single request object that will contain the request, an
 		/// empty state object to share with response injectors, and a logger.
 		/// </summary>
-		[JsonProperty("inject")]
+		[JsonInclude]
+		[JsonPropertyName("inject")]
 		public string InjectedFunction { get; private set; }
 
 		/// <summary>

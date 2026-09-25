@@ -25,7 +25,7 @@ The library is available for install as a NuGet package.
 
 https://www.nuget.org/packages/MbDotNet
 
-The project currently targets .NET Standard 2.0, which is compatible with .NET Framework 4.6.1+. If you need to use it in a project targeting an older framework version, such as .NET Framework 4.5, please use version 3.x of the package.
+The project currently multi-targets .NET Standard 2.0 and .NET 10, using System.Text.Json for serialization in both. The .NET Standard 2.0 target is compatible with .NET Framework 4.6.1+. If you need to use it in a project targeting an older framework version, such as .NET Framework 4.5, please use version 3.x of the package.
 
 ## Upgrading from v4 (or earlier) to v5
 

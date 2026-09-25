@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using MbDotNet.Models.Responses.Fields;
 using MbDotNet.Models.Stubs;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace MbDotNet.Models.Imposters
 {
@@ -13,7 +13,8 @@ namespace MbDotNet.Models.Imposters
 	public class HttpsImposter : Imposter, IWithStubs<HttpStub>, IWithResponseFields<HttpResponseFields>
 	{
 		/// <inheritdoc />
-		[JsonProperty("stubs")]
+		[JsonInclude]
+		[JsonPropertyName("stubs")]
 		public IList<HttpStub> Stubs { get; private set; }
 
 		private static bool IsPEMFormatted(string value)
@@ -25,7 +26,7 @@ namespace MbDotNet.Models.Imposters
 		/// <summary>
 		/// An optional SSL certificate used by the imposter
 		/// </summary>
-		[JsonProperty("cert", NullValueHandling = NullValueHandling.Ignore)]
+		[JsonPropertyName("cert")]
 		public string Cert
 		{
 			get => _cert;
@@ -43,7 +44,7 @@ namespace MbDotNet.Models.Imposters
 		/// <summary>
 		/// An optional SSL private key used by the imposter
 		/// </summary>
-		[JsonProperty("key", NullValueHandling = NullValueHandling.Ignore)]
+		[JsonPropertyName("key")]
 		public string Key
 		{
 			get => _key;
@@ -61,17 +62,17 @@ namespace MbDotNet.Models.Imposters
 		/// <summary>
 		/// The server will request a client certificate if enabled
 		/// </summary>
-		[JsonProperty("mutualAuth")]
+		[JsonPropertyName("mutualAuth")]
 		public bool MutualAuthRequired { get; set; }
 
 		/// <inheritdoc />
-		[JsonProperty("defaultResponse", NullValueHandling = NullValueHandling.Ignore)]
+		[JsonPropertyName("defaultResponse")]
 		public HttpResponseFields DefaultResponse { get; set; }
 
 		/// <summary>
 		/// Enables CORS requests when set to true, false by default
 		/// </summary>
-		[JsonProperty("allowCORS")]
+		[JsonPropertyName("allowCORS")]
 		public bool AllowCORS { get; set; }
 
 		/// <summary>

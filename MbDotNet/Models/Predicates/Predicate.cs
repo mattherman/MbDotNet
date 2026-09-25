@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace MbDotNet.Models.Predicates
 {
@@ -10,25 +10,29 @@ namespace MbDotNet.Models.Predicates
 		/// <summary>
 		/// Whether or not the predicate should be case sensitive when performing matches
 		/// </summary>
-		[JsonProperty("caseSensitive", NullValueHandling = NullValueHandling.Ignore)]
+		[JsonInclude]
+		[JsonPropertyName("caseSensitive")]
 		public bool IsCaseSensitive { get; private set; }
 
 		/// <summary>
 		/// A regular expression to strip out of the request field before matching
 		/// </summary>
-		[JsonProperty("except", NullValueHandling = NullValueHandling.Ignore)]
+		[JsonInclude]
+		[JsonPropertyName("except")]
 		public string ExceptExpression { get; private set; }
 
 		/// <summary>
 		/// A xpath selector to narrow the value being matched
 		/// </summary>
-		[JsonProperty("xpath", NullValueHandling = NullValueHandling.Ignore)]
+		[JsonInclude]
+		[JsonPropertyName("xpath")]
 		public XPathSelector XPathSelector { get; private set; }
 
 		/// <summary>
 		/// A jsonpath selector to narrow the value being matched
 		/// </summary>
-		[JsonProperty("jsonpath", NullValueHandling = NullValueHandling.Ignore)]
+		[JsonInclude]
+		[JsonPropertyName("jsonpath")]
 		public JsonPathSelector JsonPathSelector { get; private set; }
 
 		/// <summary>

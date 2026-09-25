@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace MbDotNet.Models.Predicates
 {
@@ -11,13 +11,15 @@ namespace MbDotNet.Models.Predicates
 		/// <summary>
 		/// A xpath selector
 		/// </summary>
-		[JsonProperty("selector", NullValueHandling = NullValueHandling.Ignore)]
+		[JsonInclude]
+		[JsonPropertyName("selector")]
 		public string Selector { get; private set; }
 
 		/// <summary>
 		/// The xpath namespace map
 		/// </summary>
-		[JsonProperty("ns", NullValueHandling = NullValueHandling.Ignore)]
+		[JsonInclude]
+		[JsonPropertyName("ns")]
 		public IDictionary<string, string> Namespaces { get; private set; }
 
 		/// <summary>

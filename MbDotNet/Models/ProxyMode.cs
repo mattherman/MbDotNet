@@ -1,4 +1,4 @@
-using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 #pragma warning disable CS1591
 
@@ -9,13 +9,13 @@ namespace MbDotNet.Models
 	/// </summary>
 	public enum ProxyMode
 	{
-		[EnumMember(Value = "proxyOnce")]
+		[JsonStringEnumMemberName("proxyOnce")]
 		ProxyOnce,
 
-		[EnumMember(Value = "proxyAlways")]
+		[JsonStringEnumMemberName("proxyAlways")]
 		ProxyAlways,
 
-		[EnumMember(Value = "proxyTransparent")]
+		[JsonStringEnumMemberName("proxyTransparent")]
 		ProxyTransparent
 	}
 }

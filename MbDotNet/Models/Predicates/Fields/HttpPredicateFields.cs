@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace MbDotNet.Models.Predicates.Fields
 {
@@ -11,23 +11,25 @@ namespace MbDotNet.Models.Predicates.Fields
 		/// <summary>
 		/// The path of the request, without the querystring
 		/// </summary>
-		[JsonProperty("path", NullValueHandling = NullValueHandling.Ignore)]
+		[JsonPropertyName("path")]
 		public string Path { get; set; }
 
 		/// <summary>
 		/// The request body
 		/// </summary>
-		[JsonProperty("body", NullValueHandling = NullValueHandling.Ignore)]
+		[JsonPropertyName("body")]
+		[JsonConverter(typeof(JsonHelper.ConsumerPayloadConverter))]
 		public object RequestBody { get; set; }
 
 		/// <summary>
 		/// Form-encoded key-value pairs in the body.
 		/// Supports key-specific predicates.
 		/// </summary>
-		[JsonProperty("form", NullValueHandling = NullValueHandling.Ignore)]
+		[JsonPropertyName("form")]
 		public Dictionary<string, string> FormContent { get; set; }
 
-		[JsonProperty("method", NullValueHandling = NullValueHandling.Ignore)]
+		[JsonInclude]
+		[JsonPropertyName("method")]
 		private string RawMethod => Method?.ToString().ToUpper();
 
 		/// <summary>
@@ -39,19 +41,19 @@ namespace MbDotNet.Models.Predicates.Fields
 		/// <summary>
 		/// The HTTP headers
 		/// </summary>
-		[JsonProperty("headers", NullValueHandling = NullValueHandling.Ignore)]
+		[JsonPropertyName("headers")]
 		public IDictionary<string, object> Headers { get; set; }
 
 		/// <summary>
 		/// The querystring of the request
 		/// </summary>
-		[JsonProperty("query", NullValueHandling = NullValueHandling.Ignore)]
+		[JsonPropertyName("query")]
 		public IDictionary<string, object> QueryParameters { get; set; }
 
 		/// <summary>
 		/// The client socket, primarily used for logging and debugging
 		/// </summary>
-		[JsonProperty("requestFrom", NullValueHandling = NullValueHandling.Ignore)]
+		[JsonPropertyName("requestFrom")]
 		public string RequestFrom { get; set; }
 	}
 }

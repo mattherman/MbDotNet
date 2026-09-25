@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;net10.0</TargetFrameworks>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>MbDotNetKey.snk</AssemblyOriginatorKeyFile>
     <!-- This is necessary until full signing is available on non-windows platforms -->
@@ -29,8 +29,8 @@
     <BuildOutputTargetFolder>lib</BuildOutputTargetFolder>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="System.Text.Json" Version="9.0.4" />
   </ItemGroup>
 
 </Project>

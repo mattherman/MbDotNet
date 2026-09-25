@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using MbDotNet.Models.Responses.Fields;
 using MbDotNet.Models.Stubs;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace MbDotNet.Models.Imposters
 {
@@ -11,10 +11,12 @@ namespace MbDotNet.Models.Imposters
 	public class TcpImposter : Imposter, IWithStubs<TcpStub>, IWithResponseFields<TcpResponseFields>
 	{
 		/// <inheritdoc />
-		[JsonProperty("stubs")]
+		[JsonInclude]
+		[JsonPropertyName("stubs")]
 		public IList<TcpStub> Stubs { get; private set; }
 
-		[JsonProperty("mode")]
+		[JsonInclude]
+		[JsonPropertyName("mode")]
 		internal string ModeAsText;
 
 		/// <summary>
@@ -36,7 +38,7 @@ namespace MbDotNet.Models.Imposters
 		}
 
 		/// <inheritdoc />
-		[JsonProperty("defaultResponse", NullValueHandling = NullValueHandling.Ignore)]
+		[JsonPropertyName("defaultResponse")]
 		public TcpResponseFields DefaultResponse { get; set; }
 
 		/// <summary>

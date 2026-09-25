@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace MbDotNet.Models.Responses
 {
@@ -12,7 +12,7 @@ namespace MbDotNet.Models.Responses
 		/// <summary>
 		/// Configured response behaviors
 		/// </summary>
-		[JsonProperty("behaviors", NullValueHandling = NullValueHandling.Ignore)]
+		[JsonPropertyName("behaviors")]
 		public IList<Behavior> Behaviors { get; set; }
 
 		/// <summary>
