@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   mountebank:
     image: "bbyars/mountebank:2.9.1"
