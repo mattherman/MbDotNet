@@ -6,7 +6,7 @@ using MbDotNet.Exceptions;
 using MbDotNet.Models.Imposters;
 using MbDotNet.Models.Stubs;
 using Moq;
-using Newtonsoft.Json;
+using System.Text.Json;
 using Xunit;
 
 namespace MbDotNet.Tests
@@ -99,9 +99,8 @@ namespace MbDotNet.Tests
 			await _proxy.CreateImposterAsync(imposter);
 
 			var json = await content.ReadAsStringAsync();
-			var serializedImposter = JsonConvert.DeserializeObject<HttpImposter>(json);
-
-			Assert.Equal(imposter.Port, serializedImposter.Port);
+			using var doc = JsonDocument.Parse(json);
+			Assert.Equal(imposter.Port, doc.RootElement.GetProperty("port").GetInt32());
 		}
 
 		[Fact]

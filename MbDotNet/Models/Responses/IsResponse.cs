@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using MbDotNet.Models.Responses.Fields;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace MbDotNet.Models.Responses
 {
@@ -13,7 +13,7 @@ namespace MbDotNet.Models.Responses
 		/// <summary>
 		/// Response fields to return when matched
 		/// </summary>
-		[JsonProperty("is")]
+		[JsonPropertyName("is")]
 		public T Fields { get; set; }
 
 		/// <summary>

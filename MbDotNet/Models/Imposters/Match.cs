@@ -1,6 +1,6 @@
 using MbDotNet.Models.Requests;
 using MbDotNet.Models.Responses.Fields;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace MbDotNet.Models.Imposters
 {
@@ -16,19 +16,19 @@ namespace MbDotNet.Models.Imposters
 		/// <summary>
 		/// The request that was matched by the stub
 		/// </summary>
-		[JsonProperty("request")]
+		[JsonPropertyName("request")]
 		public TRequest Request { get; set; }
 
 		/// <summary>
 		/// The response returned when the stub was matched
 		/// </summary>
-		[JsonProperty("response")]
+		[JsonPropertyName("response")]
 		public TResponseFields Response { get; set; }
 
 		/// <summary>
 		/// When the match occurred
 		/// </summary>
-		[JsonProperty("timestamp")]
+		[JsonPropertyName("timestamp")]
 		public string Timestamp { get; set; }
 	}
 }

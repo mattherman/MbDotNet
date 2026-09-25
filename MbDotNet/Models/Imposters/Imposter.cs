@@ -1,5 +1,5 @@
 using MbDotNet.Exceptions;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace MbDotNet.Models.Imposters
 {
@@ -13,7 +13,8 @@ namespace MbDotNet.Models.Imposters
 		/// <summary>
 		/// The port the imposter is set up to accept requests on.
 		/// </summary>
-		[JsonProperty(PropertyName = "port", DefaultValueHandling = DefaultValueHandling.Ignore)]
+		[JsonPropertyName("port")]
+		[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 		public int Port
 		{
 			get => _port;
@@ -31,19 +32,20 @@ namespace MbDotNet.Models.Imposters
 		/// <summary>
 		/// The protocol the imposter is set up to accept requests through.
 		/// </summary>
-		[JsonProperty("protocol")]
+		[JsonInclude]
+		[JsonPropertyName("protocol")]
 		public string Protocol { get; private set; }
 
 		/// <summary>
 		/// Optional name for the imposter, used in the logs.
 		/// </summary>
-		[JsonProperty("name")]
+		[JsonPropertyName("name")]
 		public string Name { get; set; }
 
 		/// <summary>
 		/// Enables recording requests to use the imposter as a mock. See <see href="http://www.mbtest.org/docs/api/mocks">here</see> for more details on Mountebank verification.
 		/// </summary>
-		[JsonProperty("recordRequests")]
+		[JsonPropertyName("recordRequests")]
 		public bool RecordRequests { get; set; }
 
 		/// <summary>

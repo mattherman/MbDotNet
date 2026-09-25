@@ -1,4 +1,4 @@
-﻿using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 #pragma warning disable CS1591
 
@@ -9,10 +9,10 @@ namespace MbDotNet.Models.Responses
 	/// </summary>
 	public enum Fault
 	{
-		[EnumMember(Value = "CONNECTION_RESET_BY_PEER")]
+		[JsonStringEnumMemberName("CONNECTION_RESET_BY_PEER")]
 		ConnectionResetByPeer,
 
-		[EnumMember(Value = "RANDOM_DATA_THEN_CLOSE")]
+		[JsonStringEnumMemberName("RANDOM_DATA_THEN_CLOSE")]
 		RandomDataThenClose
 	}
 }

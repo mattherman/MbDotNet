@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace MbDotNet.Models.Predicates
 {
@@ -11,7 +11,8 @@ namespace MbDotNet.Models.Predicates
 		/// <summary>
 		/// A jsonpath selector
 		/// </summary>
-		[JsonProperty("selector", NullValueHandling = NullValueHandling.Ignore)]
+		[JsonInclude]
+		[JsonPropertyName("selector")]
 		public string Selector { get; private set; }
 
 		/// <summary>

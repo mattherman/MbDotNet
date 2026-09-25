@@ -1,5 +1,5 @@
 using MbDotNet.Models.Predicates.Fields;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace MbDotNet.Models.Predicates
 {
@@ -12,7 +12,8 @@ namespace MbDotNet.Models.Predicates
 		/// <summary>
 		/// The predicate fields to match on
 		/// </summary>
-		[JsonProperty("deepEquals")]
+		[JsonInclude]
+		[JsonPropertyName("deepEquals")]
 		public T Fields { get; private set; }
 
 		/// <summary>

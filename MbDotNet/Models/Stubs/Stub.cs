@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using MbDotNet.Models.Predicates;
 using MbDotNet.Models.Responses;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace MbDotNet.Models.Stubs
 {
@@ -13,13 +13,13 @@ namespace MbDotNet.Models.Stubs
 		/// <summary>
 		/// A collection of all of the responses set up on this stub.
 		/// </summary>
-		[JsonProperty("predicates", NullValueHandling = NullValueHandling.Ignore)]
+		[JsonPropertyName("predicates")]
 		public IList<Predicate> Predicates { get; set; }
 
 		/// <summary>
 		/// A collection of all of the predicates set up on this stub.
 		/// </summary>
-		[JsonProperty("responses", NullValueHandling = NullValueHandling.Ignore)]
+		[JsonPropertyName("responses")]
 		public IList<Response> Responses { get; set; }
 
 		/// <summary>

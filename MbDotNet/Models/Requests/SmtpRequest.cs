@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace MbDotNet.Models.Requests
 {
@@ -13,73 +13,85 @@ namespace MbDotNet.Models.Requests
 		/// <summary>
 		/// The from address sent in the MAIL command
 		/// </summary>
-		[JsonProperty("envelopeFrom")]
+		[JsonInclude]
+		[JsonPropertyName("envelopeFrom")]
 		public string EnvelopeFrom { get; internal set; }
 
 		/// <summary>
 		/// The address sent using the RCPT command
 		/// </summary>
-		[JsonProperty("envelopeTo")]
+		[JsonInclude]
+		[JsonPropertyName("envelopeTo")]
 		public IReadOnlyList<string> EnvelopeTo { get; internal set; }
 
 		/// <summary>
 		/// The sender of the message
 		/// </summary>
-		[JsonProperty("from")]
+		[JsonInclude]
+		[JsonPropertyName("from")]
 		public EmailAddress From { get; internal set; }
 
 		/// <summary>
 		/// The recipients of the message
 		/// </summary>
-		[JsonProperty("to")]
+		[JsonInclude]
+		[JsonPropertyName("to")]
 		public IReadOnlyList<EmailAddress> To { get; internal set; }
 
 		/// <summary>
 		/// The CC recipients of the message
 		/// </summary>
-		[JsonProperty("cc")]
+		[JsonInclude]
+		[JsonPropertyName("cc")]
 		public IReadOnlyList<EmailAddress> Cc { get; internal set; }
 
 		/// <summary>
 		/// The BCC recipients of the message
 		/// </summary>
-		[JsonProperty("bcc")]
+		[JsonInclude]
+		[JsonPropertyName("bcc")]
 		public IReadOnlyList<EmailAddress> Bcc { get; internal set; }
 
 		/// <summary>
 		/// The subject of the message
 		/// </summary>
-		[JsonProperty("subject")]
+		[JsonInclude]
+		[JsonPropertyName("subject")]
 		public string Subject { get; internal set; }
 
 		/// <summary>
 		/// The priority of the message
 		/// </summary>
-		[JsonProperty("priority")]
+		[JsonInclude]
+		[JsonPropertyName("priority")]
 		public string Priority { get; internal set; }
 
 		/// <summary>
 		/// The in reply to of the message
 		/// </summary>
-		[JsonProperty("inReplyTo")]
+		[JsonInclude]
+		[JsonPropertyName("inReplyTo")]
 		public IReadOnlyList<EmailAddress> InReplyTo { get; internal set; }
 
 		/// <summary>
 		/// The text-only message
 		/// </summary>
-		[JsonProperty("text")]
+		[JsonInclude]
+		[JsonPropertyName("text")]
 		public string Text { get; internal set; }
 
 		/// <summary>
 		/// The html message
 		/// </summary>
-		[JsonProperty("html")]
+		[JsonInclude]
+		[JsonPropertyName("html")]
 		public string Html { get; internal set; }
 
 		/// <summary>
 		/// The message attachments
 		/// </summary>
-		[JsonProperty("attachments")]
+		[JsonInclude]
+		[JsonPropertyName("attachments")]
 		public IReadOnlyList<EmailAttachment> Attachments { get; internal set; }
 	}
 }

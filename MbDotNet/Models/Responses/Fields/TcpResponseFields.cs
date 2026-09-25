@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace MbDotNet.Models.Responses.Fields
 {
@@ -10,7 +10,7 @@ namespace MbDotNet.Models.Responses.Fields
 		/// <summary>
 		/// The response data
 		/// </summary>
-		[JsonProperty("data", NullValueHandling = NullValueHandling.Ignore)]
+		[JsonPropertyName("data")]
 		public string Data { get; set; }
 	}
 }

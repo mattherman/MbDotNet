@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace MbDotNet.Models.Predicates.Fields
 {
@@ -10,13 +10,13 @@ namespace MbDotNet.Models.Predicates.Fields
 		/// <summary>
 		/// The client socket, primarily used for logging and debugging
 		/// </summary>
-		[JsonProperty("requestFrom", NullValueHandling = NullValueHandling.Ignore)]
+		[JsonPropertyName("requestFrom")]
 		public bool? RequestFrom { get; set; }
 
 		/// <summary>
 		/// The request data
 		/// </summary>
-		[JsonProperty("data", NullValueHandling = NullValueHandling.Ignore)]
+		[JsonPropertyName("data")]
 		public bool? Data { get; set; }
 	}
 }

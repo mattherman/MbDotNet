@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace MbDotNet.Models.Requests
 {
@@ -13,13 +13,13 @@ namespace MbDotNet.Models.Requests
 		/// <summary>
 		/// An email address
 		/// </summary>
-		[JsonProperty("address")]
+		[JsonPropertyName("address")]
 		public string Address { get; set; }
 
 		/// <summary>
 		/// A name associated with the email address
 		/// </summary>
-		[JsonProperty("name")]
+		[JsonPropertyName("name")]
 		public string Name { get; set; }
 	}
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using MbDotNet.Exceptions;
@@ -9,8 +10,6 @@ using MbDotNet.Models;
 using MbDotNet.Models.Imposters;
 using MbDotNet.Models.Responses;
 using MbDotNet.Models.Stubs;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 
 namespace MbDotNet
@@ -53,7 +52,7 @@ namespace MbDotNet
 
 		public async Task CreateImposterAsync(Imposter imposter, CancellationToken cancellationToken = default)
 		{
-			var json = JsonConvert.SerializeObject(imposter);
+			var json = JsonHelper.Serialize(imposter);
 
 			using (
 				var response = await _httpClient.PostAsync(
@@ -70,7 +69,7 @@ namespace MbDotNet
 
 		public async Task OverwriteAllImpostersAsync(IEnumerable<Imposter> newImposters, CancellationToken cancellationToken = default)
 		{
-			var json = JsonConvert.SerializeObject(new { imposters = newImposters });
+			var json = JsonHelper.Serialize(new { imposters = newImposters });
 
 			using (
 				var response = await _httpClient.PutAsync(
@@ -87,7 +86,7 @@ namespace MbDotNet
 		public async Task ReplaceStubsAsync<T>(int port, IEnumerable<T> replacementStubs,
 			CancellationToken cancellationToken = default) where T: Stub
 		{
-			var json = JsonConvert.SerializeObject(new
+			var json = JsonHelper.Serialize(new
 			{
 				stubs = replacementStubs
 			});
@@ -108,7 +107,7 @@ namespace MbDotNet
 		public async Task ReplaceStubAsync<T>(int port, T newStub, int stubIndex,
 			CancellationToken cancellationToken = default) where T: Stub
 		{
-			var json = JsonConvert.SerializeObject(newStub);
+			var json = JsonHelper.Serialize(newStub);
 
 			using (
 				var response = await _httpClient.PutAsync(
@@ -127,8 +126,8 @@ namespace MbDotNet
 			CancellationToken cancellationToken = default) where T: Stub
 		{
 			var json = newStubIndex.HasValue
-				? JsonConvert.SerializeObject(new { index = newStubIndex, stub = newStub })
-				: JsonConvert.SerializeObject(new { stub = newStub });
+				? JsonHelper.Serialize(new { index = newStubIndex, stub = newStub })
+				: JsonHelper.Serialize(new { stub = newStub });
 
 			using (
 				var response = await _httpClient.PostAsync(
@@ -164,7 +163,7 @@ namespace MbDotNet
 				await HandleResponse(response, HttpStatusCode.OK, $"Failed to get the entry hypermedia")
 					.ConfigureAwait(false);
 				var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-				return JsonConvert.DeserializeObject<Home>(content);
+				return JsonHelper.Deserialize<Home>(content);
 			}
 		}
 
@@ -174,10 +173,12 @@ namespace MbDotNet
 			{
 				await HandleResponse(response, HttpStatusCode.OK, $"Failed to get the logs").ConfigureAwait(false);
 				var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-				var logs = JObject.Parse(content)["logs"]?.ToString();
-				if (logs == null)
-					throw new Exception("Expected response to include a \"logs\" property");
-				return JsonConvert.DeserializeObject<List<Log>>(logs);
+				using (var doc = JsonDocument.Parse(content))
+				{
+					if (!doc.RootElement.TryGetProperty("logs", out var logsElement))
+						throw new Exception("Expected response to include a \"logs\" property");
+					return JsonHelper.Deserialize<List<Log>>(logsElement.GetRawText());
+				}
 			}
 		}
 
@@ -187,10 +188,12 @@ namespace MbDotNet
 			{
 				await HandleResponse(response, HttpStatusCode.OK, $"Failed to retrieve the list of imposters").ConfigureAwait(false);
 				var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-				var imposters = JObject.Parse(content)["imposters"]?.ToString();
-				if (imposters == null)
-					throw new Exception("Expected response to include an \"imposters\" property");
-				return JsonConvert.DeserializeObject<List<SimpleRetrievedImposter>>(imposters);
+				using (var doc = JsonDocument.Parse(content))
+				{
+					if (!doc.RootElement.TryGetProperty("imposters", out var impostersElement))
+						throw new Exception("Expected response to include an \"imposters\" property");
+					return JsonHelper.Deserialize<List<SimpleRetrievedImposter>>(impostersElement.GetRawText());
+				}
 			}
 		}
 
@@ -243,7 +246,7 @@ namespace MbDotNet
 
 				var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-				return JsonConvert.DeserializeObject<T>(content);
+				return JsonHelper.Deserialize<T>(content);
 			}
 		}
 
@@ -268,7 +271,7 @@ namespace MbDotNet
 				try
 				{
 					var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-					var returnedImposter = JsonConvert.DeserializeObject<CreateImposterResponse>(content);
+					var returnedImposter = JsonHelper.Deserialize<CreateImposterResponse>(content);
 					imposter.Port = returnedImposter.Port;
 				}
 				catch (Exception e)
@@ -285,7 +288,7 @@ namespace MbDotNet
 			{
 				await HandleResponse(response, HttpStatusCode.OK, $"Failed to get config").ConfigureAwait(false);
 				var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-				return JsonConvert.DeserializeObject<Config>(content);
+				return JsonHelper.Deserialize<Config>(content);
 			}
 		}
 	}

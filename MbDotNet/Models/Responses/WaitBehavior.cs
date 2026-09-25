@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace MbDotNet.Models.Responses
 {
@@ -10,7 +10,7 @@ namespace MbDotNet.Models.Responses
 		/// <summary>
 		/// The latency to add to the response
 		/// </summary>
-		[JsonProperty("wait", NullValueHandling = NullValueHandling.Ignore)]
+		[JsonPropertyName("wait")]
 		public int LatencyInMilliseconds { get; set; }
 
 		/// <summary>

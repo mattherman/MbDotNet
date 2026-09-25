@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using MbDotNet.Models.Requests;
 using MbDotNet.Models.Responses.Fields;
 using MbDotNet.Models.Stubs;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace MbDotNet.Models.Imposters
 {
@@ -18,43 +18,50 @@ namespace MbDotNet.Models.Imposters
 		/// <summary>
 		/// The port the imposter is set up to accept requests on.
 		/// </summary>
-		[JsonProperty("port")]
+		[JsonInclude]
+		[JsonPropertyName("port")]
 		public int Port { get; internal set; }
 
 		/// <summary>
 		/// The protocol the imposter is set up to accept requests through.
 		/// </summary>
-		[JsonProperty("protocol")]
+		[JsonInclude]
+		[JsonPropertyName("protocol")]
 		public string Protocol { get; internal set; }
 
 		/// <summary>
 		/// Optional name for the imposter, used in the logs.
 		/// </summary>
-		[JsonProperty("name")]
+		[JsonInclude]
+		[JsonPropertyName("name")]
 		public string Name { get; internal set; }
 
 		/// <summary>
 		/// The number of requests that have been made to this imposter
 		/// </summary>
-		[JsonProperty("numberOfRequests")]
+		[JsonInclude]
+		[JsonPropertyName("numberOfRequests")]
 		public int NumberOfRequests { get; internal set; }
 
 		/// <summary>
 		/// The requests that have been made to this imposter
 		/// </summary>
-		[JsonProperty("requests")]
+		[JsonInclude]
+		[JsonPropertyName("requests")]
 		public IReadOnlyList<TRequest> Requests { get; internal set; }
 
 		/// <summary>
 		/// A set of behaviors used to generate a response for an imposter
 		/// </summary>
-		[JsonProperty("stubs")]
+		[JsonInclude]
+		[JsonPropertyName("stubs")]
 		public IReadOnlyList<RetrievedStub<TRequest, TResponseFields>> Stubs { get; internal set; }
 
 		/// <summary>
 		/// Optional default response that imposter sends back if no predicate matches a request
 		/// </summary>
-		[JsonProperty("defaultResponse", NullValueHandling = NullValueHandling.Ignore)]
+		[JsonInclude]
+		[JsonPropertyName("defaultResponse")]
 		public TResponseFields DefaultResponse { get; internal set; }
 	}
 }
