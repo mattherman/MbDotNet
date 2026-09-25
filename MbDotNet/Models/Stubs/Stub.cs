@@ -11,13 +11,13 @@ namespace MbDotNet.Models.Stubs
 	public abstract class Stub
 	{
 		/// <summary>
-		/// A collection of all of the responses set up on this stub.
+		/// A collection of all of the predicates set up on this stub.
 		/// </summary>
 		[JsonProperty("predicates", NullValueHandling = NullValueHandling.Ignore)]
 		public IList<Predicate> Predicates { get; set; }
 
 		/// <summary>
-		/// A collection of all of the predicates set up on this stub.
+		/// A collection of all of the responses set up on this stub.
 		/// </summary>
 		[JsonProperty("responses", NullValueHandling = NullValueHandling.Ignore)]
 		public IList<Response> Responses { get; set; }

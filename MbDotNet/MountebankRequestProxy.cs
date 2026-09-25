@@ -15,10 +15,11 @@ using Newtonsoft.Json.Linq;
 
 namespace MbDotNet
 {
-	internal class MountebankRequestProxy : IRequestProxy
+	internal class MountebankRequestProxy : IRequestProxy, IDisposable
 	{
 		private const string DefaultMountebankUrl = "http://127.0.0.1:2525";
 		private readonly IHttpClientWrapper _httpClient;
+		private bool _disposed;
 
 		public MountebankRequestProxy() : this(new Uri(DefaultMountebankUrl)) { }
 
@@ -34,6 +35,14 @@ namespace MbDotNet
 			_httpClient = httpClient;
 		}
 
+		public void Dispose()
+		{
+			if (_disposed)
+				return;
+
+			_httpClient.Dispose();
+			_disposed = true;
+		}
 
 		public async Task DeleteAllImpostersAsync(CancellationToken cancellationToken = default)
 		{
