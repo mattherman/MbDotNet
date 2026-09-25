@@ -7,7 +7,7 @@ on:
   pull_request:
 
 env:
-  DOTNET_VERSION: '6.0.x'
+  DOTNET_VERSION: '10.0.x'
 
 jobs:
   build:
@@ -15,16 +15,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v7
     - name: Setup .NET Core
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v6
       with:
         dotnet-version: ${{env.DOTNET_VERSION}}
     - name: Build
       run: dotnet build --configuration Release
     - name: Start Mountebank
       run: docker compose up -d
+    - name: Wait for Mountebank
+      run: |
+        for i in $(seq 1 30); do
+          if curl -sf http://localhost:2525/ > /dev/null; then
+            echo "Mountebank is ready"
+            exit 0
+          fi
+          sleep 1
+        done
+        echo "Mountebank did not become ready in time" >&2
+        docker compose logs
+        exit 1
     - name: Test
       run: dotnet test --configuration Release --no-build
     - name: Stop Mountebank
+      if: always()
       run: docker compose down
